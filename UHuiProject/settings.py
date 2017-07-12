@@ -25,7 +25,7 @@ SECRET_KEY = 'ylf276l+_vgkj0pzran@17+pg@%r_=g3xwdd%&)^55=_i#wr(n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -78,7 +78,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'uhuiforciti',
         'USER': 'root',
-        'PASSWORD': 'uhuiforciti',
+        'PASSWORD': 'wang9405',
     }
 }
 
@@ -123,7 +123,7 @@ STATIC_URL = '/static/'
 
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "/UHuiProject/UHuiWebApp/static/"),
+    os.path.join(BASE_DIR, "/UHuiWebApp/static/"),
 ]
 
 print(STATICFILES_DIRS)
