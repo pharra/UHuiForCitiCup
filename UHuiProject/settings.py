@@ -121,7 +121,7 @@ STATIC_URL = '/static/'
 
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "/UHuiWebApp/static"),
+    os.path.join(BASE_DIR, "/UHuiProject/UHuiWebApp/static/"),
 ]
 
-print(BASE_DIR)
+print(STATICFILES_DIRS)
