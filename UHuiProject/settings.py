@@ -76,8 +76,8 @@ WSGI_APPLICATION = 'UHuiProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'uhuiforciti',
-        'USER': 'root',
+        'NAME': 'uhui',
+        'USER': 'uhui',
         'PASSWORD': 'uhuiforciti',
     }
 }
