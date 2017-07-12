@@ -78,7 +78,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'uhuiforciti',
         'USER': 'root',
-        'PASSWORD': 'wang9405',
+        'PASSWORD': 'uhuiforciti',
     }
 }
 
@@ -123,7 +123,7 @@ STATIC_URL = '/static/'
 
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "/UHuiWebApp/static/"),
+     "%s/UHuiWebApp/static/"%BASE_DIR,
 ]
-
+print(BASE_DIR)
 print(STATICFILES_DIRS)
