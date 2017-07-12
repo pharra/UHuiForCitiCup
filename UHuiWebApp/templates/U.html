@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE = edge">
     <meta name="viewport" content="width = device - width, initial - scale = 1">
-
-    <title>Homepage</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <title>{{question}}</title>
+    {% load static %}
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -88,14 +88,14 @@
             <!-- 轮播（Carousel）项目 -->
             <div class="carousel-inner">
                 <div class="item active">
-                    <img src="dva_1.jpg" alt="First slide">
+                    <img src="/static/images/dva_1.jpg" alt="First slide">
                     <!--<div class = "carousel-caption">张文纬</div>-->
                 </div>
                 <div class="item">
-                    <img src="dva_2.jpg" alt="Second slide">
+                    <img src="/static/images/dva_2.jpg" alt="Second slide">
                 </div>
                 <div class="item">
-                    <img src="dva_3.jpg" alt="Third slide">
+                    <img src="/static/images/dva_3.jpg" alt="Third slide">
                 </div>
             </div>
             <!-- 轮播（Carousel）导航 -->
@@ -105,7 +105,7 @@
     </div>
 
 </body>
-<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="/static/js/jquery-3.2.1.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
 
 </html>
