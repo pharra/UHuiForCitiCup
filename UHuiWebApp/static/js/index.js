@@ -1,14 +1,19 @@
-$(".category-list-a").hover(
+$(".category-list").hover(
     function(event) {
-        $($(this).attr("href")).css("height", $('#myCarousel').height());
-        $($(this).attr("href")).css("width", $('#myCarousel').width());
-        $($(this).attr("href")).removeClass("being-hidden");
-        $($(this).attr("href")).css("left", $('#myCarousel').offset().left);
-        $($(this).attr("href")).css("top", $('#myCarousel').offset().top);
+        $($(this).children().attr("href")).css("height", $('#myCarousel').height());
+        $($(this).children().attr("href")).css("width", $('#myCarousel').width());
+        $($(this).children().attr("href")).removeClass("being-hidden");
+        $($(this).children().attr("href")).css("left", $('#myCarousel').offset().left);
+        $($(this).children().attr("href")).css("top", $('#myCarousel').offset().top);
         $('#myCarousel').addClass("being-hidden");
     },
     function() {
-        $($(this).attr("href")).addClass("being-hidden");
+        $($(this).children().attr("href")).addClass("being-hidden");
         $('#myCarousel').removeClass("being-hidden");
     }
 );
+$(".category-left").css("height", $('#myCarousel').height());
+
+$(window).resize(function() {
+    $(".category-left").css("height", $('#myCarousel').height());
+});
