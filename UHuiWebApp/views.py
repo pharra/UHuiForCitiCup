@@ -6,7 +6,4 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, 'U.html', {
-            'question': "a",
-            'error_message': "You didn't select a choice.",
-        })
+    return render(request, 'index.html')

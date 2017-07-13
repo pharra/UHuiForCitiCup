@@ -25,10 +25,66 @@
 .navbar-search .form-group .form-control {
     display: inline-block;
     width: 100%;
+    border-radius: 0;
+}
+
+.navbar-search .form-group .form-control:focus {
+    border-radius: 0;
+}
+
+.navbar-search .btn {
+    left: -4px;
+    position: relative;
+    border-radius: 0;
+    border: 1px solid #0f88eb;
+    border-left: 0;
+    width: 40px;
+    background-color: #0f88eb;
+    color: white;
 }
 
 @media screen and (max-width: 767px) {
     .navbar-search {
         display: none;
     }
+}
+
+.category-left {
+    float: left;
+    height: 300px;
+    width: 10%;
+}
+
+.category-center {
+    float: left;
+    width: 80%;
+}
+
+.category-right {
+    width: 10%;
+    float: left;
+}
+
+.category-menu {
+    padding: 0;
+    margin: 0 auto;
+}
+
+.category-list {
+    list-style-type: none;
+}
+
+.category-list .a {
+    font-size: 1em;
+}
+
+.category-list-dropdown {
+    position: absolute;
+    height: 300px;
+    width: 300px;
+    left: 0;
+}
+
+.being-hidden {
+    display: none;
 }
