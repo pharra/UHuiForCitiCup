@@ -1,9 +1,63 @@
 body {
-    font-family: "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑", serif;
+    font-family: "Work Sans", Arial, "Microsoft YaHei", "微软雅黑", "华文细黑", serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #828282;
+    background: #fff;
+}
+
+a {
+    -webkit-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
 }
 
 li {
     list-style-type: none;
+}
+
+a:hover,
+a:active,
+a:focus {
+    outline: none;
+    text-decoration: none;
+}
+
+p,
+ul,
+ol {
+    margin-bottom: 30px;
+    font-size: 18px;
+    line-height: 38px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+figure {
+    color: #000;
+    font-family: "Work Sans", Arial, sans-serif;
+    font-weight: 400;
+    margin: 0 0 30px 0;
+}
+
+::-webkit-selection {
+    color: #fff;
+    background: #FC5185;
+}
+
+::-moz-selection {
+    color: #fff;
+    background: #FC5185;
+}
+
+::selection {
+    color: #fff;
+    background: #FC5185;
 }
 
 .navbar {
@@ -59,8 +113,9 @@ li {
 
 .category-left {
     float: left;
+    height: 300px;
     width: 15%;
-    background-color: #B0C4DE;
+    background-color: #faae6b;
     color: white;
 }
 
@@ -95,44 +150,119 @@ li {
     height: 300px;
     width: 300px;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 10000;
-    margin: 0 0 0 4px;
-    display: none;
-}
-
-.category-list:hover .category-list-dropdown {
-    display: block;
+    background-color: whitesmoke;
 }
 
 .being-hidden {
     display: none;
 }
 
-.ul_left {
-    padding: 0;
-}
-
-.li_offset {
-    padding: 3px 0 0 10px;
-}
-
-.outdiv {
-    overflow: hidden;
+.form-container {
+    width: 340px;
     margin: 0 auto;
 }
 
-.leftdiv {
-    margin-bottom: -9999px;
-    padding-bottom: 9999px;
+.login-li {
+    list-style-type: none;
+    float: left;
+    font-size: 24px;
+    width: 50%;
+    text-align: center;
+    padding: 10px 0 10px 0;
 }
 
-.rightdiv {
-    margin-bottom: -9999px;
-    padding-bottom: 9999px;
+.login-ul {
+    margin: 0;
+    padding: 0;
+    height: auto;
+    height: 54px;
 }
 
-.img_suit {
-    height: 100%;
-    width: 100%;
+.panel-container input {
+    margin: 10px 20px 10px 20px;
+    display: block;
+    padding: 5px 10px 5px 10px;
+    width: 300px;
+}
+
+.content {
+    text-align: center;
+}
+
+.verification_code input {
+    width: 200px;
+    display: inline-block;
+    margin: 10px 0 10px 20px;
+    padding: 5px 10px 5px 10px;
+}
+
+.verification_code button {
+    float: right;
+    padding: 5px 10px 5px 10px;
+    margin: 10px 20px 10px 0;
+    width: 100px;
+    font-size: 16px;
+    background-color: #0f88eb;
+    color: white;
+    border: 2px solid #0f88eb;
+    border-radius: 0;
+}
+
+.verification_code button a {
+    color: white;
+}
+
+.verification_code .float_left {
+    float: left;
+    margin: 10px 0 10px 20px;
+    padding: 5px 10px 5px 10px;
+}
+
+.login-active a {
+    color: black;
+}
+
+.clear {
+    clear: both;
+}
+
+.login-a {
+    display: block;
+    margin: 5px 20px 5px 20px;
+    padding: 0 10px 0 10px;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.otherlogin {
+    margin: 10px 20px 0 20px;
+    padding: 5px 10px 0 10px;
+    text-align: center;
+}
+
+.otherlogin a {
+    font-size: 12px;
+    color: gray;
+}
+
+.otherlogin i {
+    display: block;
+    width: 60px;
+}
+
+.otherlogin>div {
+    margin: 0 10px 0 10px;
+    padding: 0 5px 0 5px;
+    width: 70px;
+}
+
+.otherlogin-content {
+    margin: 10px 20px 10px 20px;
+    padding: 0;
 }

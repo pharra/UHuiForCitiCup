@@ -11,92 +11,126 @@
     </title>
 
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+
 
     <nav class="navbar navbar-container navbar-default">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-targer="#bs-example-navbar-collapse-1" aria-expanded="false">
-                      <span class = "sr-only">Toggle navigation</span>
-                      <span class = "icon-bar"></span>
-                      <span class = "icon-bar"></span>
-                      <span class = "icon-bar"></span>
-                </button>
+
                 <a class="navbar-brand" href="#">Brand</a>
             </div>
         </div>
     </nav>
 
-    <div class="col-md-offset-4 col-md-4">
-        <div class="panel panel-primary" style="margin-top:3em;">
-            <ul id="user_tab" class="nav nav-tabs">
-                <li class="active"><a href="#register" data-toggle="tab">注册</a></li>
-                <li><a href="#login" data-toggle="tab">登录</a></li>
-            </ul>
-            <div id="user_tab_content" class="tab-content">
-                <div class="tab-pane fade in active" id="register">
-                    <div class="panel-body">
-                        <div class="col-sm-9 col-md-9">
-                            <div class="form-group">
-                                <i class="fa fa-user fa-lg"></i>
-                                <input class="form-control required" type="text" placeholder="Username" name="username" autofocus="autofocus" />
-                            </div>
-                            <div class="form-group">
-                                <i class="fa fa-lock fa-lg"></i>
-                                <input class="form-control required" type="password" placeholder="Password" id="register_password" name="password" />
-                            </div>
-                            <div class="form-group">
-                                <i class="fa fa-check fa-lg"></i>
-                                <input class="form-control required" type="password" placeholder="请确认您的密码" name="re-password" />
-                            </div>
-                            <div class="form-group">
-                                <i class="fa fa-envelope fa-lg"></i>
-                                <input class="form-control email" type="text" placeholder="电话号码" name="phone_num" />
-                            </div>
-                            <!--
-                            <form action="" method="get">您的性别:&nbsp&nbsp
-                                <label><input name = "sex" type = "radio" value = ""/>男&nbsp&nbsp</label>
-                                <label><input name = "sex" type = "radio" value = ""/>女&nbsp&nbsp</label>
+    <div class="container">
+        <div class="form-container">
+            <div class="content">
+                <h1>U惠</h1>
+                <h3>FBI WARNING</h3>
+            </div>
+            <div>
+                <ul class="login-ul">
+                    <li class="login-li"><a href="#register">注册</a></li>
+                    <li class="login-li login-active"><a href="#login">登录</a></li>
+                </ul>
+            </div>
+            <div>
+                <div id="user_tab_content" class="tab-content">
+                    <div class="tab-pane fade  " id="register">
+
+                        <div class="panel-container">
+                            <form action="/sign-up" method="post" accept-charset="utf-8" onsubmit="return checkForm()">
+
+
+                                <input type="text" placeholder="电话号码" name="phone_num" />
+
+                                <input type="password" placeholder="密码" id="register_password" id="password" />
+
+
+
+                                <input type="password" placeholder="请确认您的密码" id="re-password" />
+                                <input type="password" name="password" style="display: none;" />
+                                <div class="verification_code">
+                                    <input type="text" placeholder="手机验证码" name="verification_code" />
+                                    <button>点击获取</button>
+                                </div>
+
+
+
+
+                                <div class="verification_code">
+                                    <button class="float_left"><a href="/">返回</a></button>
+                                    <button type="submit">注册</button>
+
+                                    <div class="clear"></div>
+                                </div>
                             </form>
-                            -->
-                            <div class="form-group">
-                                <input type="submit" class="btn btn-success pull-right" value="Sign up" />
-                                <a class="btn btn-primary" href="/" role="button">返回</a>
-                            </div>
                         </div>
+
                     </div>
-                </div>
-                <div class="tab-pane fade" id="login">
-                    <div class="panel-body">
-                        <div class="col-sm-9 col-md-9">
-                            <div class="form-group">
-                                <i class="fa fa-user fa-lg"></i>
-                                <input class="form-control required" type="text" placeholder="Username" name="username" autofocus="autofocus" maxlength="20" />
+                    <div class="tab-pane fade in active " id="login">
+
+                        <div class="panel-container">
+                            <form action="/sign-up" method="post" accept-charset="utf-8" onsubmit="return checkForm()">
+
+                                <input type="text" placeholder="电话号码/邮箱" name="phone_num" />
+
+
+                                <input type="password" placeholder="密码" name="password" maxlength="8" />
+
+
+                                <div>
+
+                                    <a href="" class="login-a float-right">无法登录？</a>
+                                    <div class="clear"></div>
+                                </div>
+
+                                <div class="verification_code">
+
+                                    <button class="float_left"><a href="/">返回</a></button>
+                                    <button type="submit">登录</button>
+                                    <div class="clear"></div>
+                                </div>
+                            </form>
+                            <div class="otherlogin-content">
+                                <h5>社交账户登陆</h5>
                             </div>
-                            <div class="form-group">
-                                <i class="fa fa-lock fa-lg"></i>
-                                <input class="form-control required" type="password" placeholder="Password" name="password" maxlength="8" />
+                            <div class="otherlogin">
+
+                                <div class="float-left ">
+                                    <a href=""><i class="fa fa-weibo fa-2x"></i>
+                                    </a>
+
+                                </div>
+                                <div class="float-left ">
+                                    <a href="/"><i class="fa fa-wechat fa-2x"></i>
+                                    </a>
+
+                                </div>
+
+                                <div class="float-left">
+                                    <a href=""><i class="fa fa-qq fa-2x"></i> </a>
+
+                                </div>
+                                <div class="clear"></div>
                             </div>
-                            <div class="form-group">
-                                <label class="checkbox"><input type="checkbox" name="remember" value = "1"/>记住密码</label>
-                                <hr/>
-                                <a href="/login#register" id="register_btn" class="">创建新的账户</a>
-                            </div>
-                            <div class="form-group">
-                                <a class="btn btn-primary" href="/" role="button">返回</a>
-                                <input type="submit" class="btn btn_success pull-right" value="Login" />
-                            </div>
+
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="js/main.js"></script>
+
 </body>
+<script src="/static/js/jquery-3.2.1.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/index.js"></script>
 
 </html>

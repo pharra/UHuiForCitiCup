@@ -7,13 +7,14 @@ class user(models.Model):
     username = models.CharField(max_length=16, unique=True)
     nickname = models.CharField(max_length=32, unique=True)
     password = models.CharField(max_length=16)
-    phoneNum = models.CharField(max_length=16, unique=True)
+    phoneNum = models.CharField(max_length=16, unique=True, null=True)
     gender_choice = (
         ('1', '男'),
         ('2', '女')
     )
     gender = models.CharField(max_length=2, choices=gender_choice)
     avatar = models.CharField(max_length=128, null=True)
+    email = models.CharField(max_length=32, unique=True, null=True)
 
 
 class brand(models.Model):
@@ -29,8 +30,8 @@ class category(models.Model):
 
 class coupon(models.Model):
     couponID = models.CharField(max_length=16, primary_key=True)
-    brandID = models.ForeignKey(brand)
-    catID = models.ForeignKey(category)
+    brandID = models.ForeignKey(brand, related_name="bID")
+    catID = models.ForeignKey(category, related_name="cID")
     listPrice = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     value = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     product = models.CharField(max_length=16, null=True)
