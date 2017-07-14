@@ -17,3 +17,11 @@ $(".category-left").css("height", $('#myCarousel').height());
 $(window).resize(function() {
     $(".category-left").css("height", $('#myCarousel').height());
 });
+
+
+$(".login-li").click(function() {
+    $(this).addClass("login-active");
+    $(this).siblings().removeClass("login-active")
+    $($(this).children().attr("href")).addClass("active in");
+    $($(this).siblings().children().attr("href")).removeClass("active in");
+});
