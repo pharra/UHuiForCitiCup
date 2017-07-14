@@ -1,3 +1,7 @@
+body {
+    font-family: "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑", serif;
+}
+
 .navbar {
     background-color: rgba(0, 0, 0, 0);
 }
@@ -36,10 +40,10 @@
     left: -4px;
     position: relative;
     border-radius: 0;
-    border: 1px solid #0f88eb;
+    border: 1px solid #f25039;
     border-left: 0;
     width: 40px;
-    background-color: #0f88eb;
+    background-color: #f25039;
     color: white;
 }
 
@@ -52,17 +56,16 @@
 .category-left {
     float: left;
     height: 300px;
-    width: 10%;
-}
-
-.category-center {
-    float: left;
-    width: 80%;
+    width: 15%;
+    background-color: #faae6b;
+    color: white;
 }
 
 .category-right {
-    width: 10%;
-    float: left;
+    float: right;
+    width: 85%;
+    position: relative;
+    left: 4px;
 }
 
 .category-menu {
@@ -72,6 +75,12 @@
 
 .category-list {
     list-style-type: none;
+    padding: 5px 12px 5px 5px;
+    margin: 0;
+}
+
+.category-list:hover {
+    background-color: #f25039;
 }
 
 .category-list .a {
@@ -83,6 +92,7 @@
     height: 300px;
     width: 300px;
     left: 0;
+    background-color: whitesmoke;
 }
 
 .being-hidden {
