@@ -10,5 +10,5 @@ def index(request):
 
 
 def login(request):
-
+    print(request.GET.get('method'))
     return render(request, 'login.html')
