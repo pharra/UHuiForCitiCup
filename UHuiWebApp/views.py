@@ -20,11 +20,13 @@ def signUp(request):
     password = request.GET['password']
 
     #查询数据库中昵称是否存在
-    if(user.objects.filter(nickname= _nickname)):
+    if user.objects.filter(nickname= _nickname):
         pass
-    if(emailAddress != 0):
+    if emailAddress != 0:
         # 将邮箱作为用户名存入数据库中
+        pass
         newUser = user(email=emailAddress)
-    elif(phoneNumber!=0):
+    elif phoneNumber!=0 :
         # 将手机号作为用户名存入数据库中
+        pass
 

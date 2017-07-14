@@ -67,7 +67,7 @@ class listItem(models.Model):
     couponID = models.ForeignKey(coupon, primary_key=True)
 
 
-class massage(models.Model):
+class message(models.Model):
     messageID = models.CharField(max_length=16, primary_key=True)
     userID = models.CharField(max_length=16, null=True)
     content = models.CharField(max_length=128, null=True)
