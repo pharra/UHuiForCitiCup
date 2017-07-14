@@ -2,6 +2,20 @@ from django.db import models
 
 
 # Create your models here.
+class user(models.Model):
+    ID = models.CharField(max_length=16, primary_key=True, unique=True)
+    username = models.CharField(max_length=16, unique=True)
+    nickname = models.CharField(max_length=32, unique=True)
+    password = models.CharField(max_length=16)
+    phoneNum = models.CharField(max_length=16, unique=True)
+    gender_choice = (
+        ('1', '男'),
+        ('2', '女')
+    )
+    gender = models.CharField(max_length=2, choices=gender_choice)
+    avatar = models.CharField(max_length=128, null=True)
+
+
 class brand(models.Model):
     brandID = models.AutoField(primary_key=True)
     name = models.CharField(max_length=16, unique=True)
@@ -38,7 +52,7 @@ class couponList(models.Model):
         ('4', 'onSell'),
         ('5', 'like')
     )
-    stat = models.CharField(choices=choice_stat, null=True)
+    stat = models.CharField(max_length=8, choices=choice_stat, null=True)
     userID = models.ForeignKey(user)
 
 
@@ -67,18 +81,6 @@ class massage(models.Model):
         ('7', '我的优惠券已过期'),
         ('8', '系统通知')
     )
-    messageCat = models.CharField(choices=messageCat_choice, null=True)
+    messageCat = models.CharField(max_length=32, choices=messageCat_choice, null=True)
 
 
-class user(models.Model):
-    ID = models.CharField(max_length=16, primary_key=True, unique=True)
-    username = models.CharField(max_length=16, unique=True)
-    nickname = models.CharField(max_length=32, unique=True)
-    password = models.CharField(max_length=16)
-    phoneNum = models.CharField(max_length=16, unique=True)
-    gender_choice = (
-        ('1', '男'),
-        ('2', '女')
-    )
-    gender = models.CharField(choices=gender_choice)
-    avatar = models.CharField(max_length=128, null=True)
