@@ -47,15 +47,21 @@
                             <form action="/sign-up" method="post" accept-charset="utf-8" onsubmit="return checkForm()">
 
 
-                                <input type="text" placeholder="电话号码" name="phone_num" />
-
-                                <input type="password" placeholder="密码" id="register_password" id="password" />
+                                <input type="text" placeholder="电话号码/邮箱" name="phone_num" id="user_id" />
+                                <div class="user_id_content being-hidden" id="user_id_content">
+                                    <i class="fa fa-times" aria-hidden="true" style="color:red;">您输入的手机号或邮箱有误</i>
+                                </div>
+                                <input type="text" placeholder="用户名" id="password" />
+                                <input type="password" placeholder="密码" id="password" />
 
 
 
                                 <input type="password" placeholder="请确认您的密码" id="re-password" />
-                                <input type="password" name="password" style="display: none;" />
-                                <div class="verification_code">
+                                <div class="user_id_content being-hidden" id="password_content">
+                                    <i class="fa fa-times" aria-hidden="true" style="color:red;">两次密码不一致</i>
+                                </div>
+                                <input type="password" name="password" style="display: none;" id="md5-password" />
+                                <div class="verification_code being-hidden" id="verification_code_div">
                                     <input type="text" placeholder="手机验证码" name="verification_code" />
                                     <button>点击获取</button>
                                 </div>
@@ -132,5 +138,18 @@
 <script src="/static/js/jquery-3.2.1.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/index.js"></script>
+<script>
+    //获取url中的参数
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg); //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+    var xx = getUrlParam('method');
+    if (xx == "register") {
+        $(".login-li")[0].click();
+    }
+</script>
 
 </html>

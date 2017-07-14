@@ -2,13 +2,17 @@ $(".category-list").hover(
     function(event) {
         $($(this).children().attr("href")).css("height", $('#myCarousel').height());
         $($(this).children().attr("href")).css("width", $('#myCarousel').width());
-        $($(this).children().attr("href")).css("left", $('#myCarousel').offset().left - 4);
+        $($(this).children().attr("href")).removeClass("being-hidden");
+        $($(this).children().attr("href")).css("left", $('#myCarousel').offset().left);
         $($(this).children().attr("href")).css("top", $('#myCarousel').offset().top);
-        //$('#myCarousel').addClass("being-hidden");
+        $('#myCarousel').addClass("being-hidden");
     },
-    function() {}
+    function() {
+        $($(this).children().attr("href")).addClass("being-hidden");
+        $('#myCarousel').removeClass("being-hidden");
+    }
 );
-//$(".category-left").css("height", $('#myCarousel').height());
+$(".category-left").css("height", $('#myCarousel').height());
 
 $(window).resize(function() {
     $(".category-left").css("height", $('#myCarousel').height());
@@ -20,4 +24,74 @@ $(".login-li").click(function() {
     $(this).siblings().removeClass("login-active")
     $($(this).children().attr("href")).addClass("active in");
     $($(this).siblings().children().attr("href")).removeClass("active in");
+});
+
+
+function isPhoneNo(phone) {
+    var pattern = /^1[34578]\d{9}$/;
+    return pattern.test(phone);
+}
+
+function isEmail(email) {
+    var emailreg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+    return emailreg.test(email);
+}
+
+function CheckedCss(id) {
+    var left1 = $(id).offset().left + $(id).width() - 20 + 'px';
+    var top1 = $(id).offset().top + $(id).height() - 28 + 'px';
+    id = id.split('#')[1]
+    var thisid = "for" + id;
+    newdom = $("<i></i>").addClass("fa fa-check").css("position", "absolute").attr("aria-hidden", "true").attr("id", thisid);
+    newdom.css("left", left1);
+    newdom.css("top", top1);
+    newdom.css("color", "green");
+    $("body").append(newdom);
+}
+
+function removechecked(id) {
+    id = id.split('#')[1];
+    var thisid = "#for" + id;
+    $(thisid).remove();
+}
+
+$('#user_id').bind('input propertychange', function() {
+    if (isPhoneNo($('#user_id').val())) {
+        $('#verification_code_div').show();
+        $('#user_id_content').hide();
+        CheckedCss("#user_id");
+    } else if (isEmail($('#user_id').val())) {
+        $('#verification_code_div').hide();
+        $('#user_id_content').hide();
+        CheckedCss("#user_id");
+    } else {
+        $('#verification_code_div').hide();
+        $('#user_id_content').hide();
+        removechecked("#user_id");
+
+    }
+    //进行相关操作 
+});
+
+$('#user_id').blur('input propertychange', function() {
+    if (isPhoneNo($('#user_id').val())) {
+        $('#verification_code_div').show();
+    } else if (isEmail($('#user_id').val())) {
+        $('#verification_code_div').hide();
+    } else {
+        $('#verification_code_div').hide();
+        $('#user_id_content').show();
+    }
+    //进行相关操作 
+});
+
+$('#re-password').blur('input propertychange', function() {
+    if (($('#re-password').val() == $("#password").val()) && $('#re-password').val() != "") {
+        $('#password_content').hide();
+        CheckedCss("#re-password");
+    } else {
+        $('#password_content').show();
+        removechecked("#re-password");
+    }
+    //进行相关操作 
 });

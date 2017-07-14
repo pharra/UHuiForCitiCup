@@ -155,11 +155,15 @@ li {
     left: 0;
     background-color: rgba(0, 0, 0, 0.6);
     z-index: 10000;
-    margin: 0 0 0 4px;
+    padding: 0 0 0 5px;
     display: none;
 }
 
 .category-list:hover .category-list-dropdown {
+    display: block;
+}
+
+.category-list-dropdown:hover {
     display: block;
 }
 
@@ -285,22 +289,12 @@ li {
     padding: 3px 0 0 10px;
 }
 
-.outdiv {
-    overflow: hidden;
-    margin: 0 auto;
-}
-
-.leftdiv {
-    margin-bottom: -9999px;
-    padding-bottom: 9999px;
-}
-
-.rightdiv {
-    margin-bottom: -9999px;
-    padding-bottom: 9999px;
-}
-
 .img_suit {
     height: 100%;
     width: 100%;
+}
+
+.user_id_content {
+    margin: 0 20px 0 20px;
+    font-size: 16px;
 }
