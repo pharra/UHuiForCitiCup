@@ -6,12 +6,27 @@ from django.shortcuts import render
 import hashlib
 import json
 
+#普通函数
+def encode(md5):
+    key = 'UHuiForCiti'
+    m = hashlib.md5()
+    m.update(md5.join(key))
+    return m.hexdigest()
 
+
+
+#get方法函数
 def index(request):
     return render(request, 'index.html')
 
-
 def login(request):
+    return render(request, 'login.html')
+
+
+
+
+#post方法加上前缀post_
+def post_login(request):
     u_name = request.POST.get('username')
     if models.user.objects.filter(username=u_name).count()==0:
         return
@@ -24,7 +39,7 @@ def login(request):
         return
 
 
-def signUp(request):
+def post_signUp(request):
     emailAddress = request.POST.get('email', 0)
     _nickname = request.POST.get('nickname', 0)
     phoneNumber = request.POST.get('phoneNum', 0)
@@ -41,8 +56,4 @@ def signUp(request):
         pass
 
 
-def encode(md5):
-    key = 'UHuiForCiti'
-    m = hashlib.md5()
-    m.update(md5.join(key))
-    return m.hexdigest()
+
