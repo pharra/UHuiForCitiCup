@@ -45,19 +45,23 @@ figure {
     margin: 0 0 30px 0;
 }
 
-::-webkit-selection {
+ ::-webkit-selection {
     color: #fff;
     background: #FC5185;
 }
 
-::-moz-selection {
+ ::-moz-selection {
     color: #fff;
     background: #FC5185;
 }
 
-::selection {
+ ::selection {
     color: #fff;
     background: #FC5185;
+}
+
+li {
+    list-style-type: none;
 }
 
 .navbar {
@@ -113,9 +117,8 @@ figure {
 
 .category-left {
     float: left;
-    height: 300px;
     width: 15%;
-    background-color: #faae6b;
+    background-color: #B0C4DE;
     color: white;
 }
 
@@ -150,7 +153,14 @@ figure {
     height: 300px;
     width: 300px;
     left: 0;
-    background-color: whitesmoke;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 10000;
+    margin: 0 0 0 4px;
+    display: none;
+}
+
+.category-list:hover .category-list-dropdown {
+    display: block;
 }
 
 .being-hidden {
@@ -265,4 +275,32 @@ figure {
 .otherlogin-content {
     margin: 10px 20px 10px 20px;
     padding: 0;
+}
+
+.ul_left {
+    padding: 0;
+}
+
+.li_offset {
+    padding: 3px 0 0 10px;
+}
+
+.outdiv {
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.leftdiv {
+    margin-bottom: -9999px;
+    padding-bottom: 9999px;
+}
+
+.rightdiv {
+    margin-bottom: -9999px;
+    padding-bottom: 9999px;
+}
+
+.img_suit {
+    height: 100%;
+    width: 100%;
 }
