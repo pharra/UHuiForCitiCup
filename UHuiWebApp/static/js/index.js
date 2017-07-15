@@ -133,9 +133,12 @@ function login_handler() {
     function erryFunction() {}
 
     function succFunction(data) {
-        var error = $.parsejson(data).error;
-
-        alert(error);
+        if (data.error == "") {
+            window.location.href = "/";
+        } else {
+            $("#login_failed_content").children().text(data.error)
+            $("#login_failed_content").show();
+        }
 
     }
 };
