@@ -15,7 +15,7 @@ import json
 def encode(md5):
     key = 'UHuiForCiti'
     m = hashlib.md5()
-    m.update(md5.join(key))
+    m.update(md5.join(key).encode("UTF-8"))
     return m.hexdigest()
 
 
@@ -48,7 +48,7 @@ def post_login(request):
         pswObj = models.User.objects.get(phonenum=u_name)
 
     psw = encode(request.POST.get('password'))
-    password = pswObj.password.encode('UTF-8')
+    password = bytes.decode(pswObj.password.encode("UTF-8"))
     if psw == password:
         response = HttpResponseRedirect("/")
         value = u_name + "_" + encode(u_name + psw)
