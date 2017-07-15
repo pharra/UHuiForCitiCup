@@ -109,6 +109,6 @@ $('#re-password,#password').blur('input propertychange', function() {
 
 
 $("#login-password").bind('input propertychange', function() {
-    $("#login-md5-password").val() = $.md5($("#login-password").val());
+    $("#login-md5-password").val() = $.md5($("#login-password").val() + "hhh");
     //进行相关操作 
 });
