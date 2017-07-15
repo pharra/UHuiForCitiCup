@@ -21,10 +21,11 @@ def encryption(md5):
 
 def randomID():
     signUpTime = int(time.time())
+    append = ''
     for i in range(0, 4):
-        append = append + random.random('abcdefghijklmopqrstuvwxyz')
+        append = append + random.choice('abcdefghijklmopqrstuvwxyz')
     ID = "%d%s" % (signUpTime, append)
-    if models.User.objects.filter(ID=ID).count() != 0:
+    if models.User.objects.filter(id=ID).count() != 0:
         return randomID()
     return ID
 
@@ -77,23 +78,26 @@ def post_signUp(request):
     password = encryption(request.POST.get('password'))
     gender = request.POST.get('gender')
 
-    # 查询数据库中昵称是否存在
-    if models.User.objects.filter(nickname=nickname):
-        return JsonResponse({'errno': '1', 'message': '昵称已存在'})
+
     if '@' in username:
         if models.User.objects.filter(email=username).count() != 0:
             return JsonResponse({'errno': '1', 'message': '邮箱已被注册'})
-
+        # 查询数据库中昵称是否存在
+        if models.User.objects.filter(nickname=nickname):
+            return JsonResponse({'errno': '1', 'message': '昵称已存在'})
         # 邮箱验证
         # 将邮箱作为用户名存入数据库中
-        models.User.objects.create(ID=randomID(), nickname=nickname, password=password, gender=gender, email=username)
+        models.User.objects.create(id=randomID(), nickname=nickname, password=password, gender=gender, email=username)
         return JsonResponse({'errno': '0', 'message': '请检查验证邮件'})
     else:
         if models.User.objects.filter(phonenum=username).count() != 0:
             return JsonResponse({'errno': '1', 'message': '手机号已被注册'})
+        # 查询数据库中昵称是否存在
+        if models.User.objects.filter(nickname=nickname):
+            return JsonResponse({'errno': '1', 'message': '昵称已存在'})
         # 短信验证码验证
         pass
         # 将手机号作为用户名存入数据库中
-        models.User.objects.create(ID=randomID(), nickname=nickname, password=password, gender=gender,
-                                   phoneNum=username)
+        models.User.objects.create(id=randomID(), nickname=nickname, password=password, gender=gender,
+                                   phonenum=username)
         return JsonResponse({'errno': '0', 'message': '注册成功'})
