@@ -60,11 +60,11 @@ function removechecked(id) {
 }
 
 $('#user_id').bind('input propertychange', function() {
-    if (isPhoneNo($('#user_id').val())) {
+    if (isPhoneNo($('#user_id').val()) && $('#user_id').val()) {
         $('#verification_code_div').show();
         $('#user_id_content').hide();
         CheckedCss("#user_id");
-    } else if (isEmail($('#user_id').val())) {
+    } else if (isEmail($('#user_id').val()) && $('#user_id').val()) {
         $('#verification_code_div').hide();
         $('#user_id_content').hide();
         CheckedCss("#user_id");
@@ -82,6 +82,10 @@ $('#user_id').blur('input propertychange', function() {
         $('#verification_code_div').show();
     } else if (isEmail($('#user_id').val())) {
         $('#verification_code_div').hide();
+    } else if (!($('#user_id').val())) {
+        $('#verification_code_div').hide();
+        $('#user_id_content').hide();
+
     } else {
         $('#verification_code_div').hide();
         $('#user_id_content').show();
@@ -89,10 +93,13 @@ $('#user_id').blur('input propertychange', function() {
     //进行相关操作 
 });
 
-$('#re-password').blur('input propertychange', function() {
-    if (($('#re-password').val() == $("#password").val()) && $('#re-password').val() != "") {
+$('#re-password,#password').blur('input propertychange', function() {
+    if (($('#re-password').val() == $("#password").val()) && ($('#re-password').val() != "") && $('#password').val() != "") {
         $('#password_content').hide();
         CheckedCss("#re-password");
+    } else if (($('#re-password').val() == "") || ($('#password').val() == "")) {
+        $('#password_content').hide();
+        removechecked("#re-password");
     } else {
         $('#password_content').show();
         removechecked("#re-password");
