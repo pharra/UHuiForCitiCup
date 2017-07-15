@@ -84,11 +84,11 @@
                         <div class="panel-container">
                             <form action="/sign-up" method="post" accept-charset="utf-8" onsubmit="return checkForm()">
 
-                                <input type="text" placeholder="电话号码/邮箱" name="phone_num" />
+                                <input type="text" placeholder="电话号码/邮箱" name="username" id="login-username" />
 
 
-                                <input type="password" placeholder="密码" name="password" maxlength="8" />
-
+                                <input type="password" placeholder="密码" id="login-password" maxlength="16" />
+                                <input type="password" placeholder="密码" name="password" style="display:none;" id="login-md5-password" maxlength="16" />
 
                                 <div>
 
@@ -99,7 +99,7 @@
                                 <div class="verification_code">
 
                                     <a href="/" class="button float-left">返回</a>
-                                    <div type="submit" class="button float-right">登录</div>
+                                    <button type="submit" class="button float-right">登录</button>
                                     <div class="clear"></div>
                                 </div>
                             </form>
@@ -137,7 +137,9 @@
 </body>
 <script src="/static/js/jquery-3.2.1.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/jquery.md5.js"></script>
 <script src="/static/js/index.js"></script>
+
 <script>
     //获取url中的参数
     function getUrlParam(name) {
