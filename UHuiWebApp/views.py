@@ -63,7 +63,8 @@ def post_login(request):
     if psw == password:
         # 返回cookie，在浏览器关闭前维持登录状态
         response = JsonResponse({'error': ''})
-        value = u_name + "_" + encryption(u_name + psw)
+        u_id = bytes.decode(pswObj.id.encode("UTF-8"))
+        value = u_id + "_" + encryption(u_id + psw)
         response.set_cookie(key="uhui", value=value, httponly=True)
         return response
     else:
