@@ -44,7 +44,7 @@
                     <div class="tab-pane fade  " id="register">
 
                         <div class="panel-container">
-                            <form action="/sign-up" method="post" accept-charset="utf-8" onsubmit="return checkForm()">
+                            <form method="post" accept-charset="utf-8">
 
 
                                 <input type="text" placeholder="电话号码/邮箱" name="username" id="user_id" />
@@ -52,6 +52,14 @@
                                     <i class="fa fa-times" aria-hidden="true" style="color:red;">您输入的手机号或邮箱有误</i>
                                 </div>
                                 <input type="text" placeholder="用户名" id="nickname" />
+                                <div>
+                                    <div class="float-left gender_select">选择性别</div>
+                                    <select class="gender_select float-right">
+                                    <option>男</option>
+                                    <option>女</option>
+                                </select>
+                                    <div class="clear"></div>
+                                </div>
                                 <input type="password" placeholder="密码" id="password" />
 
 
@@ -67,11 +75,9 @@
                                 </div>
 
 
-
-
                                 <div class="verification_code">
                                     <a href="/" class="button float-left">返回</a>
-                                    <div type="submit" class="button float-right">注册</div>
+                                    <div type="submit" class="button float-right" onclick="sign_up();">注册</div>
 
                                     <div class="clear"></div>
                                 </div>
@@ -97,6 +103,7 @@
                                     <a href="" class="login-a float-right">无法登录？</a>
                                     <div class="clear"></div>
                                 </div>
+
 
                                 <div class="verification_code">
 
