@@ -106,3 +106,9 @@ $('#re-password,#password').blur('input propertychange', function() {
     }
     //进行相关操作 
 });
+
+
+$("#login-password").bind('input propertychange', function() {
+    $("#login-md5-password").val() = $.md5($("#login-password").val());
+    //进行相关操作 
+});
