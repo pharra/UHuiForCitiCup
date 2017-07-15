@@ -29,8 +29,6 @@ def randomID():
     return ID
 
 
-
-
 # get方法函数
 def index(request):
     return render(request, 'index.html')
@@ -78,24 +76,23 @@ def post_signUp(request):
     password = encryption(request.POST.get('password'))
     gender = request.POST.get('gender')
 
-
     # 查询数据库中昵称是否存在
     if models.User.objects.filter(nickname=nickname):
-        return HttpResponse(u"昵称已存在", content_type="text/plain")
+        return JsonResponse({'errno': '1', 'message': '昵称已存在'})
     if '@' in username:
         if models.User.objects.filter(email=username).count() != 0:
-            return HttpResponse(u"邮箱已被注册", content_type="text/plain")
+            return JsonResponse({'errno': '1', 'message': '邮箱已被注册'})
 
         # 邮箱验证
         # 将邮箱作为用户名存入数据库中
         models.User.objects.create(ID=randomID(), nickname=nickname, password=password, gender=gender, email=username)
-        return HttpResponse(u"请检查验证邮件", content_type="text/plain")
+        return JsonResponse({'errno': '0', 'message': '请检查验证邮件'})
     else:
         if models.User.objects.filter(phonenum=username).count() != 0:
-            return HttpResponse(u"手机号已被注册", content_type="text/plain")
+            return JsonResponse({'errno': '1', 'message': '手机号已被注册'})
         # 短信验证码验证
         pass
         # 将手机号作为用户名存入数据库中
         models.User.objects.create(ID=randomID(), nickname=nickname, password=password, gender=gender,
                                    phoneNum=username)
-        return HttpResponse(u"注册成功", content_type="text/plain")
+        return JsonResponse({'errno': '0', 'message': '注册成功'})
