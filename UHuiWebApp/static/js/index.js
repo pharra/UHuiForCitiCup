@@ -20,6 +20,8 @@ $(window).resize(function() {
 
 
 $(".login-li").click(function() {
+    removechecked("#re-password");
+    removechecked("#user_id");
     $(this).addClass("login-active");
     $(this).siblings().removeClass("login-active")
     $($(this).children().attr("href")).addClass("active in");
@@ -38,14 +40,16 @@ function isEmail(email) {
 }
 
 function CheckedCss(id) {
-    var left1 = $(id).offset().left + $(id).width() - 20 + 'px';
-    var top1 = $(id).offset().top + $(id).height() - 28 + 'px';
+    var left1 = $(id).offset().left + $(id).width() + 'px';
+    var top1 = $(id).offset().top + ($(id).height() / 2) + 'px';
     id = id.split('#')[1]
     var thisid = "for" + id;
     newdom = $("<i></i>").addClass("fa fa-check").css("position", "absolute").attr("aria-hidden", "true").attr("id", thisid);
     newdom.css("left", left1);
     newdom.css("top", top1);
     newdom.css("color", "green");
+    newdom.css("height", "15px");
+    newdom.css("width", "15px");
     $("body").append(newdom);
 }
 
@@ -56,11 +60,11 @@ function removechecked(id) {
 }
 
 $('#user_id').bind('input propertychange', function() {
-    if (isPhoneNo($('#user_id').val())) {
+    if (isPhoneNo($('#user_id').val()) && $('#user_id').val()) {
         $('#verification_code_div').show();
         $('#user_id_content').hide();
         CheckedCss("#user_id");
-    } else if (isEmail($('#user_id').val())) {
+    } else if (isEmail($('#user_id').val()) && $('#user_id').val()) {
         $('#verification_code_div').hide();
         $('#user_id_content').hide();
         CheckedCss("#user_id");
@@ -78,6 +82,10 @@ $('#user_id').blur('input propertychange', function() {
         $('#verification_code_div').show();
     } else if (isEmail($('#user_id').val())) {
         $('#verification_code_div').hide();
+    } else if (!($('#user_id').val())) {
+        $('#verification_code_div').hide();
+        $('#user_id_content').hide();
+
     } else {
         $('#verification_code_div').hide();
         $('#user_id_content').show();
@@ -85,10 +93,13 @@ $('#user_id').blur('input propertychange', function() {
     //进行相关操作 
 });
 
-$('#re-password').blur('input propertychange', function() {
-    if (($('#re-password').val() == $("#password").val()) && $('#re-password').val() != "") {
+$('#re-password,#password').blur('input propertychange', function() {
+    if (($('#re-password').val() == $("#password").val()) && ($('#re-password').val() != "") && $('#password').val() != "") {
         $('#password_content').hide();
         CheckedCss("#re-password");
+    } else if (($('#re-password').val() == "") || ($('#password').val() == "")) {
+        $('#password_content').hide();
+        removechecked("#re-password");
     } else {
         $('#password_content').show();
         removechecked("#re-password");
