@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from UHuiWebApp import models
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 import hashlib
 import time
@@ -52,24 +52,24 @@ def post_login(request):
         # 查询用户是否存在
         user = models.User.objects.filter(email=u_name)
         if user is None:
-            return HttpResponse(u"用户不存在", content_type="text/plain")
+            return JsonResponse({'error': '用户不存在'})
         pswObj = models.User.objects.get(email=u_name)
     else:
         user = models.User.objects.filter(phonenum=u_name)
         if user is None:
-            return HttpResponse(u"用户不存在", content_type="text/plain")
+            return JsonResponse({'error': '用户不存在'})
         pswObj = models.User.objects.get(phonenum=u_name)
 
     psw = encryption(request.POST.get('password'))
     password = bytes.decode(pswObj.password.encode("UTF-8"))
     if psw == password:
         # 返回cookie，在浏览器关闭前维持登录状态
-        response = HttpResponseRedirect("/")
+        response = JsonResponse({'error': ''})
         value = u_name + "_" + encryption(u_name + psw)
         response.set_cookie(key="uhui", value=value, httponly=True)
         return response
     else:
-        return HttpResponse(u"密码错误", content_type="text/plain")
+        return JsonResponse({'error': '密码错误'})
 
 
 def post_signUp(request):
