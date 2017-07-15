@@ -112,3 +112,13 @@ $("#login-password").blur('input propertychange', function() {
     $("#login-md5-password").val($.md5($("#login-password").val() + "UHui"));
     //进行相关操作 
 });
+
+
+function login_handler() {
+    $.post("/post_login", { "username": $("#login-username").val(), "password": $("#login-md5-password").val() }, function(data) {
+        var error = $.parsejson(data).error;
+        if (error) {
+            alert(error);
+        }
+    })
+}
