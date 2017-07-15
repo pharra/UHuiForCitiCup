@@ -1,4 +1,3 @@
-
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -88,7 +87,7 @@ class Messege(models.Model):
 
 class User(models.Model):
     id = models.CharField(db_column='ID', primary_key=True, max_length=16)  # Field name made lowercase.
-    username = models.CharField(unique=True, max_length=16)
+    # username = models.CharField(unique=True, max_length=16)
     nickname = models.CharField(unique=True, max_length=32, blank=True, null=True)
     phonenum = models.CharField(db_column='phoneNum', unique=True, max_length=11, blank=True, null=True)  # Field name made lowercase.
     gender = models.CharField(max_length=1)
