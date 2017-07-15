@@ -47,11 +47,11 @@
                             <form action="/sign-up" method="post" accept-charset="utf-8" onsubmit="return checkForm()">
 
 
-                                <input type="text" placeholder="电话号码/邮箱" name="phone_num" id="user_id" />
+                                <input type="text" placeholder="电话号码/邮箱" name="username" id="user_id" />
                                 <div class="user_id_content being-hidden" id="user_id_content">
                                     <i class="fa fa-times" aria-hidden="true" style="color:red;">您输入的手机号或邮箱有误</i>
                                 </div>
-                                <input type="text" placeholder="用户名" id="username" />
+                                <input type="text" placeholder="用户名" id="nickname" />
                                 <input type="password" placeholder="密码" id="password" />
 
 
@@ -60,7 +60,7 @@
                                 <div class="user_id_content being-hidden" id="password_content">
                                     <i class="fa fa-times" aria-hidden="true" style="color:red;">两次密码不一致</i>
                                 </div>
-                                <input type="password" name="password" style="display: none;" id="md5-password" />
+                                <input type="password" name="password" style="display: none;" id="signup-md5-password" />
                                 <div class="verification_code being-hidden" id="verification_code_div">
                                     <input type="text" placeholder="手机验证码" name="verification_code" />
                                     <a href="" class="button float-right">点击获取</a>
@@ -82,7 +82,7 @@
                     <div class="tab-pane fade in active " id="login">
 
                         <div class="panel-container">
-                            <form action="/post_login" method="post" accept-charset="utf-8">
+                            <form method="post" accept-charset="utf-8">
 
                                 <input type="text" placeholder="电话号码/邮箱" name="username" id="login-username" />
 
@@ -99,7 +99,7 @@
                                 <div class="verification_code">
 
                                     <a href="/" class="button float-left">返回</a>
-                                    <button type="submit" class="button float-right">登录</button>
+                                    <button type="submit" class="button float-right" onclick="login_handler()">登录</button>
                                     <div class="clear"></div>
                                 </div>
                             </form>
