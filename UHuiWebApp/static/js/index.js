@@ -20,6 +20,8 @@ $(window).resize(function() {
 
 
 $(".login-li").click(function() {
+    removechecked("#re-password");
+    removechecked("#user_id");
     $(this).addClass("login-active");
     $(this).siblings().removeClass("login-active")
     $($(this).children().attr("href")).addClass("active in");
@@ -38,14 +40,16 @@ function isEmail(email) {
 }
 
 function CheckedCss(id) {
-    var left1 = $(id).offset().left + $(id).width() - 20 + 'px';
-    var top1 = $(id).offset().top + $(id).height() - 28 + 'px';
+    var left1 = $(id).offset().left + $(id).width() + 'px';
+    var top1 = $(id).offset().top + ($(id).height() / 2) + 'px';
     id = id.split('#')[1]
     var thisid = "for" + id;
     newdom = $("<i></i>").addClass("fa fa-check").css("position", "absolute").attr("aria-hidden", "true").attr("id", thisid);
     newdom.css("left", left1);
     newdom.css("top", top1);
     newdom.css("color", "green");
+    newdom.css("height", "15px");
+    newdom.css("width", "15px");
     $("body").append(newdom);
 }
 
