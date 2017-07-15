@@ -50,13 +50,13 @@ def post_login(request):
     # 通过@判断用户名为email/手机号
     if "@" in u_name:
         # 查询用户是否存在
-        user = models.User.objects.filter(email=u_name)
-        if user is None:
+        user = models.User.objects.filter(email=u_name).count()
+        if user == 0:
             return JsonResponse({'error': '用户不存在'})
         pswObj = models.User.objects.get(email=u_name)
     else:
-        user = models.User.objects.filter(phonenum=u_name)
-        if user is None:
+        user = models.User.objects.filter(phonenum=u_name).count()
+        if user == 0:
             return JsonResponse({'error': '用户不存在'})
         pswObj = models.User.objects.get(phonenum=u_name)
 
