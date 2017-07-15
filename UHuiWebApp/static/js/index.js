@@ -97,6 +97,7 @@ $('#re-password,#password').blur('input propertychange', function() {
     if (($('#re-password').val() == $("#password").val()) && ($('#re-password').val() != "") && $('#password').val() != "") {
         $('#password_content').hide();
         CheckedCss("#re-password");
+        $("#signup-md5-password").val($.md5($("#re-password").val() + "UHui"));
     } else if (($('#re-password').val() == "") || ($('#password').val() == "")) {
         $('#password_content').hide();
         removechecked("#re-password");
@@ -139,6 +140,30 @@ function login_handler() {
             $("#login_failed_content").children().text(data.error)
             $("#login_failed_content").show();
         }
+
+    }
+};
+
+function sign_up() {
+
+    $.ajax({
+        url: '/post_signup',
+        type: 'POST',
+        dataType: 'json',
+        data: { "username": $("#user_id").val(), "password": $("#signup-md5-password").val(), "nickname": $("#nickname").val(), "gender": "男" },
+        timeout: 3000,
+        cache: false,
+        beforeSend: LoadFunction, //加载执行方法      
+        error: erryFunction, //错误执行方法      
+        success: succFunction //成功执行方法      
+    })
+
+    function LoadFunction() {}
+
+    function erryFunction() {}
+
+    function succFunction(data) {
+        alert(data.message);
 
     }
 };
