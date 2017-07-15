@@ -115,10 +115,27 @@ $("#login-password").blur('input propertychange', function() {
 
 
 function login_handler() {
-    $.post("/post_login", { "username": $("#login-username").val(), "password": $("#login-md5-password").val() }, function(data) {
-        var error = $.parsejson(data).error;
-        if (error) {
-            alert(error);
-        }
+
+    $.ajax({
+        url: '/post_login',
+        type: 'POST',
+        dataType: 'json',
+        data: { "username": $("#login-username").val(), "password": $("#login-md5-password").val() },
+        timeout: 3000,
+        cache: false,
+        beforeSend: LoadFunction, //加载执行方法      
+        error: erryFunction, //错误执行方法      
+        success: succFunction //成功执行方法      
     })
-}
+
+    function LoadFunction() {}
+
+    function erryFunction() {}
+
+    function succFunction(data) {
+        var error = $.parsejson(data).error;
+
+        alert(error);
+
+    }
+};
