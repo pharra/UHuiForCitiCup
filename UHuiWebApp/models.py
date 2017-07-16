@@ -74,7 +74,7 @@ class Listitem(models.Model):
 
 
 class Message(models.Model):
-    messegeid = models.CharField(db_column='messegeID', primary_key=True, max_length=16)  # Field name made lowercase.
+    messageid = models.CharField(db_column='messegeID', primary_key=True, max_length=16)  # Field name made lowercase.
     userid = models.CharField(db_column='userID', max_length=16, blank=True, null=True)  # Field name made lowercase.
     content = models.CharField(max_length=128, blank=True, null=True)
     time = models.DateField(blank=True, null=True)
@@ -88,7 +88,7 @@ class Message(models.Model):
 class User(models.Model):
     id = models.CharField(db_column='ID', primary_key=True, max_length=16)  # Field name made lowercase.
     # username = models.CharField(unique=True, max_length=16)
-    nickname = models.CharField(unique=True, max_length=32, blank=True, null=True)
+    nickname = models.CharField(unique=True, max_length=32, blank=True)
     phonenum = models.CharField(db_column='phoneNum', unique=True, max_length=11, blank=True, null=True)  # Field name made lowercase.
     gender = models.CharField(max_length=1)
     avatar = models.CharField(max_length=128, blank=True, null=True)
