@@ -309,3 +309,9 @@ li {
     border-radius: 0;
     display: block;
 }
+
+button[type=button]:disabled {
+    border: 1px solid #DDD;
+    background-color: #F5F5F5;
+    color: #ACA899;
+}
