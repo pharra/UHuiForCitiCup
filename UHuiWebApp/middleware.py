@@ -34,9 +34,7 @@ class SimpleMiddleware(object):
             elif response.type == "render":
                 response.addContent(views.post_userInfo(request.uid))
 
-
         # Code to be executed for each request/response after
         # the view is called.
 
         return response
-
