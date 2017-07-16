@@ -30,6 +30,25 @@ def randomID():
     return ID
 
 
+def get_uid(request):
+    cookie_content = request.COOKIES.get('uhui')
+    if cookie_content:
+        content = cookie_content.split("_")
+    else:
+        return None
+    uid = content[0]
+    psw = content[1]
+    pswObj = models.User.objects.get(id=uid)
+    password = bytes.decode(pswObj.password.encode("UTF-8"))
+    u_id = bytes.decode(pswObj.id.encode("UTF-8"))
+    encrypPsw = encryption(uid + password)
+    if u_id == uid:
+        return None
+    if psw == encrypPsw:
+        return uid
+    else:
+        return None
+
 # get方法函数
 def index(request):
     return render(request, 'index.html')
@@ -78,7 +97,6 @@ def post_signUp(request):
     password = encryption(request.POST.get('password'))
     gender = request.POST.get('gender')
 
-
     if '@' in username:
         if models.User.objects.filter(email=username).count() != 0:
             return JsonResponse({'errno': '1', 'message': '邮箱已被注册'})
@@ -101,3 +119,25 @@ def post_signUp(request):
         models.User.objects.create(id=randomID(), nickname=nickname, password=password, gender=gender,
                                    phonenum=username)
         return JsonResponse({'errno': '0', 'message': '注册成功'})
+
+
+def post_userInfo(request):
+    # 判断是否存在cookie及cookie中信息是否正确
+    u_id = get_uid(request)
+    if u_id is None:
+        return login(request)
+    user = models.User.objects.get(id=u_id)
+    lists = models.Couponlist.objects.filter(userid=u_id)
+    couponList = []
+    for item in lists:
+        couponList.append({'type': item.stat, 'listid': item.listid})
+    result = json.dumps(couponList)
+    nickname = user.nickname
+    gender = user.gender
+    # {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList}
+
+
+def post_couponInfo(request):
+    pass
+
+
