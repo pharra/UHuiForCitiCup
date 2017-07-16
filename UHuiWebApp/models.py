@@ -73,7 +73,7 @@ class Listitem(models.Model):
         unique_together = (('couponid', 'listid'),)
 
 
-class Messege(models.Model):
+class Message(models.Model):
     messegeid = models.CharField(db_column='messegeID', primary_key=True, max_length=16)  # Field name made lowercase.
     userid = models.CharField(db_column='userID', max_length=16, blank=True, null=True)  # Field name made lowercase.
     content = models.CharField(max_length=128, blank=True, null=True)
