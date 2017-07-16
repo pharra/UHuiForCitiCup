@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from UHuiWebApp import models
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from .shortcut import render, JsonResponse
 import hashlib
 import time
 import random
 import json
 
+# 初始化render
+# render = render()
 
 # Create your views here.
 
@@ -57,6 +58,7 @@ def createLists(uid):
 
 # get方法函数
 def index(request):
+
     return render(request, 'index.html')
 
 
@@ -134,11 +136,8 @@ def post_signUp(request):
         return JsonResponse({'errno': '0', 'message': '注册成功'})
 
 
-def post_userInfo(request):
+def post_userInfo(u_id):
     # 判断是否存在cookie及cookie中信息是否正确
-    u_id = get_uid(request)
-    if u_id is None:
-        return login(request)
     user = models.User.objects.get(id=u_id)
     lists = models.Couponlist.objects.filter(userid=u_id)
     couponList = []
@@ -148,7 +147,8 @@ def post_userInfo(request):
     gender = user.gender
     # {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList}
     content = [{'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList}]
-    return JsonResponse(json.dumps(content))
+    content = content[0]
+    return content
 
 
 def post_couponInfo(request):
