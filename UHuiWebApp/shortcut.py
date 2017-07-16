@@ -3,7 +3,7 @@ import django.http
 
 
 class render(django.http.HttpResponse):
-    def __init__(self, request, template_name, context=None, content_type=None, status=None, using=None):
+    def __init__(self, request, template_name, context={}, content_type=None, status=None, using=None):
         content = loader.render_to_string(template_name, context, request, using=using)
         self.contentlist = [template_name, context, request, using]
         super(render, self).__init__(content, content_type, status)

@@ -59,7 +59,7 @@ def createLists(uid):
 # get方法函数
 def index(request):
 
-    return render(request, 'index.html',{"a":"a"})
+    return render(request, 'index.html', {"a": "a"})
 
 
 def login(request):
