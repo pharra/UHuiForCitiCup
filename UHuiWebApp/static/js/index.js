@@ -59,6 +59,13 @@ function removechecked(id) {
     $(thisid).remove();
 }
 
+function getchecked(id) {
+    id = id.split('#')[1];
+    var thisid = "#for" + id;
+    alert($(thisid).length)
+    return ($(thisid).length >= 1);
+}
+
 $('#user_id').bind('input propertychange', function() {
     if (isPhoneNo($('#user_id').val()) && $('#user_id').val()) {
         $('#verification_code_div').show();
@@ -74,7 +81,6 @@ $('#user_id').bind('input propertychange', function() {
         removechecked("#user_id");
 
     }
-    //进行相关操作 
 });
 
 $('#user_id').blur('input propertychange', function() {
@@ -90,8 +96,9 @@ $('#user_id').blur('input propertychange', function() {
         $('#verification_code_div').hide();
         $('#user_id_content').show();
     }
-    //进行相关操作 
 });
+
+
 
 $('#re-password,#password').blur('input propertychange', function() {
     if (($('#re-password').val() == $("#password").val()) && ($('#re-password').val() != "") && $('#password').val() != "") {
@@ -105,15 +112,21 @@ $('#re-password,#password').blur('input propertychange', function() {
         $('#password_content').show();
         removechecked("#re-password");
     }
-    //进行相关操作 
 });
 
 
 $("#login-password").blur('input propertychange', function() {
     $("#login-md5-password").val($.md5($("#login-password").val() + "UHui"));
-    //进行相关操作 
 });
 
+
+$('#user_id,#re-password,#password,#nickname').bind('input propertychange', function() {
+    if ((isPhoneNo($('#user_id').val()) || isEmail($('#user_id').val())) && (($('#re-password').val() == $("#password").val()) && ($('#re-password').val() != "") && $('#password').val() != "") && ($('#nickname').val().length > 0)) {
+        $("#login-button").attr("disabled", false);
+    } else {
+        $("#login-button").attr("disabled", "disabled");
+    }
+});
 
 function login_handler() {
 
@@ -124,9 +137,9 @@ function login_handler() {
         data: { "username": $("#login-username").val(), "password": $("#login-md5-password").val() },
         timeout: 3000,
         cache: false,
-        beforeSend: LoadFunction, //加载执行方法      
-        error: erryFunction, //错误执行方法      
-        success: succFunction //成功执行方法      
+        beforeSend: LoadFunction,
+        error: erryFunction,
+        success: succFunction
     })
 
     function LoadFunction() {}
@@ -150,12 +163,12 @@ function sign_up() {
         url: '/post_signup',
         type: 'POST',
         dataType: 'json',
-        data: { "username": $("#user_id").val(), "password": $("#signup-md5-password").val(), "nickname": $("#nickname").val(), "gender": "男" },
+        data: { "username": $("#user_id").val(), "password": $("#signup-md5-password").val(), "nickname": $("#nickname").val(), "gender": $('#genderchoice option:selected').text() },
         timeout: 3000,
         cache: false,
-        beforeSend: LoadFunction, //加载执行方法      
-        error: erryFunction, //错误执行方法      
-        success: succFunction //成功执行方法      
+        beforeSend: LoadFunction,
+        error: erryFunction,
+        success: succFunction
     })
 
     function LoadFunction() {}
@@ -163,6 +176,7 @@ function sign_up() {
     function erryFunction() {}
 
     function succFunction(data) {
+        alert($('#genderchoice option:selected').text())
         alert(data.message);
 
     }
