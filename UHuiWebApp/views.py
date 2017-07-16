@@ -1,6 +1,6 @@
-from django.shortcuts import render
+
 from UHuiWebApp import models
-from .shortcut import render, JsonResponse
+from .shortcut import JsonResponse, render
 import hashlib
 import time
 import random
@@ -59,7 +59,7 @@ def createLists(uid):
 # get方法函数
 def index(request):
 
-    return render(request, 'index.html')
+    return render(request, 'index.html',{"a":"a"})
 
 
 def login(request):
