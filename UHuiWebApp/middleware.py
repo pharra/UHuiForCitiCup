@@ -30,6 +30,10 @@ class SimpleMiddleware(object):
                 userinfo = views.post_userInfo(request.uid)
                 for key in userinfo:
                     content[key] = userinfo[key]
+                response.content = content
+            elif response.type == "render":
+                response.addContent(views.post_userInfo(request.uid))
+
 
         # Code to be executed for each request/response after
         # the view is called.
