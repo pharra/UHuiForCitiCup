@@ -33,7 +33,7 @@ def randomID():
 
 # 根据request的COOKIES判断登录uid
 def get_uid(request):
-    cookie_content = request.COOKIES['uhui']
+    cookie_content = request.COOKIES.get('uhui', False)
     print(type(cookie_content))
     if cookie_content:
         content = cookie_content.split('_')
