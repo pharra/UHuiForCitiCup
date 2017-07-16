@@ -1,10 +1,10 @@
-
 from UHuiWebApp import models
 from .shortcut import JsonResponse, render
 import hashlib
 import time
 import random
 import json
+
 
 # 初始化render
 # render = render()
@@ -58,8 +58,7 @@ def createLists(uid):
 
 # get方法函数
 def index(request):
-
-    return render(request, 'index.html',{"a":"a"})
+    return render(request, 'index.html', {"a": "a"})
 
 
 def login(request):
@@ -153,5 +152,3 @@ def post_userInfo(u_id):
 
 def post_couponInfo(request):
     pass
-
-
