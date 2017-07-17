@@ -1,9 +1,9 @@
+from UHuiProject.settings import DEBUG
 from UHuiWebApp import models
 from .shortcut import JsonResponse, render
 import hashlib
 import time
 import random
-import django.http.request
 import json
 
 
@@ -33,32 +33,50 @@ def randomID():
     return ID
 
 
-# 根据request的COOKIES判断登录uid
-def get_uid(request):
-    cookie_content = request.COOKIES.get('uhui', False)
-    print(type(cookie_content))
-    if cookie_content:
-        content = cookie_content.split('_')
-    else:
-        return None
-    uid = content[0]
-    psw = content[1]
-    pswObj = models.User.objects.get(id=uid)
-    password = bytes.decode(pswObj.password.encode("UTF-8"))
-    encrypPsw = encryption(uid + password)
-    if psw == encrypPsw:
-        return uid
-    else:
-        return None
+def post_couponInfo(couponID):
+    coupon = models.Coupon.objects.get(couponid=couponID)
+    limits = models.Limit.objects.filter(couponID=couponID)
+    couponInfo = {}
+    couponInfo['couponID'] = coupon.couponid
+    couponInfo['brandID'] = coupon.brandid
+    couponInfo['catID'] = coupon.catid
+    couponInfo['listPrice'] = coupon.listprice
+    couponInfo['value'] = coupon.value
+    couponInfo['product'] = coupon.product
+    couponInfo['discount'] = coupon.discount
+    couponInfo['stat'] = coupon.stat
+    couponInfo['pic'] = coupon.pic
+    limitList = []
+    for content in limits:
+        limitList.append(content.content)
+    couponInfo['limits'] = limitList
+    return couponInfo
+
+
+
+def post_storeCouponInfo(request):
+    pass
+
+
+def post_userInfo(u_id):
+    user = models.User.objects.get(id=u_id)
+    lists = models.Couponlist.objects.filter(userid=u_id)
+    couponList = []
+    for item in lists:
+        couponList.append({'type': item.stat, 'listid': item.listid})
+    nickname = user.nickname
+    gender = user.gender
+    # {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList}
+    content = {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList}
+    return content
 
 
 # 为用户添加各种表
-def createLists(uid):
+def createLists(user):
     # models.User.objects.create
-    lid = uid[-4:]
     stat = ['own', 'sold', 'brought', 'onSell', 'like']
     for content in stat:
-        models.Couponlist.objects.create(userid=uid, stat=content, listid=lid+stat)
+        models.Couponlist.objects.create(userid=user, stat=content, listid=None)
 
 
 # get方法函数
@@ -109,11 +127,8 @@ def post_signUp(request):
     nickname = request.POST.get('nickname')
     password = encryption(request.POST.get('password'))
     gender = request.POST.get('gender')
-    print(username+nickname+gender)
-    if gender == '1':
-        gender = '男'
-    elif gender == '0':
-        gender = '女'
+    if DEBUG is True:
+        print(username + nickname + gender)
 
     if '@' in username:
         if models.User.objects.filter(email=username).count() != 0:
@@ -138,27 +153,28 @@ def post_signUp(request):
         pass
         # 将手机号作为用户名存入数据库中
         uid = randomID()
-        models.User.objects.create(id=uid, nickname=nickname, password=password, gender=gender,
-                                   phonenum=username)
+        user = models.User(id=uid, nickname=nickname, password=password, gender=gender,
+                           phonenum=username)
+        user.save()
         # 创建列表
-        createLists(uid)
+        createLists(user)
         return JsonResponse({'errno': '0', 'message': '注册成功'})
 
 
-def post_userInfo(u_id):
-    # 判断是否存在cookie及cookie中信息是否正确
-    user = models.User.objects.get(id=u_id)
-    lists = models.Couponlist.objects.filter(userid=u_id)
-    couponList = []
-    for item in lists:
-        couponList.append({'type': item.stat, 'listid': item.listid})
-    nickname = user.nickname
-    gender = user.gender
-    # {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList}
-    content = [{'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList}]
-    content = content[0]
-    return content
-
-
-def post_couponInfo(request):
-    pass
+# 根据request的COOKIES判断登录uid
+def get_uid(request):
+    cookie_content = request.COOKIES.get('uhui', False)
+    print(type(cookie_content))
+    if cookie_content:
+        content = cookie_content.split('_')
+    else:
+        return None
+    uid = content[0]
+    psw = content[1]
+    pswObj = models.User.objects.get(id=uid)
+    password = bytes.decode(pswObj.password.encode("UTF-8"))
+    encrypPsw = encryption(uid + password)
+    if psw == encrypPsw:
+        return uid
+    else:
+        return None
