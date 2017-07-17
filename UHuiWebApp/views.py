@@ -53,12 +53,11 @@ def get_uid(request):
 
 
 # 为用户添加各种表
-def createLists(uid):
+def createLists(user):
     # models.User.objects.create
-    lid = uid[-4:]
     stat = ['own', 'sold', 'brought', 'onSell', 'like']
     for content in stat:
-        models.Couponlist.objects.create(userid=uid, stat=content, listid=lid+stat)
+        models.Couponlist.objects.create(userid=user, stat=content, listid=None)
 
 
 # get方法函数
@@ -110,10 +109,6 @@ def post_signUp(request):
     password = encryption(request.POST.get('password'))
     gender = request.POST.get('gender')
     print(username+nickname+gender)
-    if gender == '1':
-        gender = '男'
-    elif gender == '0':
-        gender = '女'
 
     if '@' in username:
         if models.User.objects.filter(email=username).count() != 0:
@@ -124,9 +119,10 @@ def post_signUp(request):
         # 邮箱验证
         # 将邮箱作为用户名存入数据库中
         uid = randomID()
-        models.User.objects.create(id=uid, nickname=nickname, password=password, gender=gender, email=username)
+        user = models.User(id=uid, nickname=nickname, password=password, gender=gender, email=username)
         # 创建列表
-        createLists(uid)
+        user.save()
+        createLists(user)
         return JsonResponse({'errno': '0', 'message': '请检查验证邮件'})
     else:
         if models.User.objects.filter(phonenum=username).count() != 0:
@@ -138,10 +134,11 @@ def post_signUp(request):
         pass
         # 将手机号作为用户名存入数据库中
         uid = randomID()
-        models.User.objects.create(id=uid, nickname=nickname, password=password, gender=gender,
+        user = models.User(id=uid, nickname=nickname, password=password, gender=gender,
                                    phonenum=username)
         # 创建列表
-        createLists(uid)
+        user.save()
+        createLists(user)
         return JsonResponse({'errno': '0', 'message': '注册成功'})
 
 
