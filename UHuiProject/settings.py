@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'UHuiWebApp',
     'rest_framework',
+    'apiForAndroid',
 ]
 
 MIDDLEWARE = [

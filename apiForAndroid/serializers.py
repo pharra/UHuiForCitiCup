@@ -2,40 +2,40 @@ from rest_framework import serializers
 from UHuiWebApp.models import *
 class userSerializer(serializers.ModelSerializer):
     class Meta:
-        model = user
+        model = User
         fields = ('ID','username','nickname','password','phoneNum','gender','avatar','email')
 
 class brandSerializer(serializers.ModelSerializer):
     class Meta:
-        model = brand
+        model = Brand
         fields = ('brandID','name','address')
 
 class categorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = category
+        model = Category
         fields = ('catID','name')
 
 class couponSerializer(serializers.ModelSerializer):
     class Meta:
-        model = coupon
+        model = Coupon
         fields =('couponID','brandID','catID','listPrice','value','product','stat')
 
 class couponListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = couponList
+        model = Couponlist
         fields = ('listID','stat','userID')
 
 class limitSerializer(serializers.ModelSerializer):
     class Meta:
-        model = limit
+        model = Limit
         fields = ('couponID','content')
 
 class listItemSerializer(serializers.ModelSerializer):
     class Meta:
-        model = listItem
+        model = Listitem
         fields =('listID','couponID')
 
 class messageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = message
+        model = Message
         fields = ('messageID','useID','content','time','messageCat')
