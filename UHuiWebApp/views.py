@@ -47,6 +47,13 @@ def getListItem(listid):
 def post_couponInfo(couponID):
     coupon = models.Coupon.objects.get(couponid=couponID)
     limits = models.Limit.objects.filter(couponID=couponID)
+    lists = models.Listitem.objects.filter(couponid=couponID)
+    sellerInfo = {}
+    for listItem in lists:
+        listID = listItem.listid
+        listStat = models.Couponlist.objects.get(listid=listID)
+        if listStat.stat == 'onSale':
+            sellerInfo = post_userInfo(listStat.userid)
     couponInfo = {}
     couponInfo['couponID'] = coupon.couponid
     couponInfo['brand'] = getBrand(coupon.brandid)
@@ -61,6 +68,7 @@ def post_couponInfo(couponID):
     for content in limits:
         limitList.append(content.content)
     couponInfo['limits'] = limitList
+    couponInfo['sellerInfo'] = sellerInfo
     return couponInfo
 
 
@@ -103,14 +111,26 @@ def getMessage(uid):
 
 
 # 存储数据
-def post_storeCouponInfo(request):
+def post_storeCoupon(request):
+    pass
+
+
+def post_storeBrand(request):
+    pass
+
+
+def post_storeCat(request):
+    pass
+
+
+def post_storeMessage():
     pass
 
 
 # 为用户添加各种表
 def createLists(user):
     # models.User.objects.create
-    stat = ['own', 'sold', 'brought', 'onSell', 'like']
+    stat = ['own', 'sold', 'brought', 'onSale', 'like']
     for content in stat:
         models.Couponlist.objects.create(userid=user, stat=content, listid=None)
 
