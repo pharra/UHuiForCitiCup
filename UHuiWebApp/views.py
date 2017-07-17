@@ -3,6 +3,7 @@ from .shortcut import JsonResponse, render
 import hashlib
 import time
 import random
+import django.http.request
 import json
 
 
@@ -53,7 +54,11 @@ def get_uid(request):
 
 # 为用户添加各种表
 def createLists(uid):
-    pass
+    # models.User.objects.create
+    lid = uid[-4:]
+    stat = ['own', 'sold', 'brought', 'onSell', 'like']
+    for content in stat:
+        models.Couponlist.objects.create(userid=uid, stat=content, listid=lid+stat)
 
 
 # get方法函数
@@ -104,6 +109,11 @@ def post_signUp(request):
     nickname = request.POST.get('nickname')
     password = encryption(request.POST.get('password'))
     gender = request.POST.get('gender')
+    print(username+nickname+gender)
+    if gender == '1':
+        gender = '男'
+    elif gender == '0':
+        gender = '女'
 
     if '@' in username:
         if models.User.objects.filter(email=username).count() != 0:
