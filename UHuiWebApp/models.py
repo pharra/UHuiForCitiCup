@@ -3,7 +3,7 @@
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
 #   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+#   * Remove `managed = True` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from __future__ import unicode_literals
 
@@ -16,7 +16,7 @@ class Brand(models.Model):
     address = models.CharField(max_length=128, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'brand'
 
 
@@ -25,7 +25,7 @@ class Category(models.Model):
     name = models.CharField(unique=True, max_length=16)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'category'
 
 
@@ -44,7 +44,7 @@ class Coupon(models.Model):
     pic = models.CharField(max_length=128, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'coupon'
 
 
@@ -54,7 +54,7 @@ class Couponlist(models.Model):
     userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userID')  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'couponlist'
 
 
@@ -64,7 +64,7 @@ class Limit(models.Model):
     content = models.CharField(max_length=128, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'limit'
 
 
@@ -74,7 +74,7 @@ class Listitem(models.Model):
                                  primary_key=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'listitem'
         unique_together = (('couponid', 'listid'),)
 
@@ -89,7 +89,7 @@ class Message(models.Model):
     hasread = models.IntegerField(db_column='hasRead')  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'message'
 
 
@@ -104,5 +104,5 @@ class User(models.Model):
     email = models.CharField(unique=True, max_length=32, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'user'
