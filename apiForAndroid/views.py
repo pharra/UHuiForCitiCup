@@ -35,11 +35,10 @@ def post_loginForAndroid(request):
     psw = encryption(request.POST.get('password'))
     password = bytes.decode(pswObj.password.encode("UTF-8"))
     if psw == password:
-        response = JSONResponse({'res': 'success'})
+        response = JSONResponse({'result': 'success'})
         return response
     else:
         return JsonResponse({'error': '密码错误'})
-
 #搜索
 def searchForAndroid(request):
     searchKeyWord = request.POST.get('keyWord',0)
@@ -47,7 +46,6 @@ def searchForAndroid(request):
         result = Coupon.objects.filter(product__contains=searchKeyWord)
     except Coupon.DoesNotExist:
         return JSONResponse({'error':'内容不存在'})
-
     couponSeria = couponSerializer(result)
     return JSONResponse(couponSeria.data)
 
