@@ -33,13 +33,24 @@ def randomID():
     return ID
 
 
+# 获取数据
+def getListItem(listid):
+    lists = models.Couponlist.objects.get(listid=listid)
+    listItems = models.Listitem.objects.filter(listid=listid)
+    coupon = []
+    for item in listItems:
+        coupon.append(item.couponid)
+    listInfo = {'listID': listid, 'stat': lists.stat, 'coupons': coupon}
+    return listInfo
+
+
 def post_couponInfo(couponID):
     coupon = models.Coupon.objects.get(couponid=couponID)
     limits = models.Limit.objects.filter(couponID=couponID)
     couponInfo = {}
     couponInfo['couponID'] = coupon.couponid
-    couponInfo['brandID'] = coupon.brandid
-    couponInfo['catID'] = coupon.catid
+    couponInfo['brand'] = getBrand(coupon.brandid)
+    couponInfo['cat'] = getCat(coupon.catid)
     couponInfo['listPrice'] = coupon.listprice
     couponInfo['value'] = coupon.value
     couponInfo['product'] = coupon.product
@@ -53,11 +64,6 @@ def post_couponInfo(couponID):
     return couponInfo
 
 
-
-def post_storeCouponInfo(request):
-    pass
-
-
 def post_userInfo(u_id):
     user = models.User.objects.get(id=u_id)
     lists = models.Couponlist.objects.filter(userid=u_id)
@@ -69,6 +75,36 @@ def post_userInfo(u_id):
     # {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList}
     content = {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList}
     return content
+
+
+def getCat(cid):
+    cat = models.Category.objects.get(catid=cid)
+    return cat.name
+
+
+def getBrand(bid):
+    brand = models.Brand.objects.get(brandid=bid)
+    info = {}
+    info['name'] = brand.name
+    info['address'] = brand.address
+    return info
+
+
+def getMessage(uid):
+    messages = models.Message.objects.filter(userid=uid).order_by('time')
+    info = post_userInfo(uid)
+    content = []
+    for item in messages:
+        message = {'messageID': item.messageid, 'time': item.time, 'messageCat': item.messagecat,
+                   'hasRead': item.hasread, 'content': item.content}
+        content.append(message)
+    info['messages'] = content
+    return info
+
+
+# 存储数据
+def post_storeCouponInfo(request):
+    pass
 
 
 # 为用户添加各种表
@@ -139,10 +175,11 @@ def post_signUp(request):
         # 邮箱验证
         # 将邮箱作为用户名存入数据库中
         uid = randomID()
-        models.User.objects.create(id=uid, nickname=nickname, password=password, gender=gender, email=username)
+        user = models.User(id=uid, nickname=nickname, password=password, gender=gender, email=username)
         # 创建列表
-        createLists(uid)
-        return JsonResponse({'errno': '0', 'message': '请检查验证邮件'})
+        user.save()
+        createLists(user)
+        return JsonResponse({'errno': '2', 'message': '请检查验证邮件'})
     else:
         if models.User.objects.filter(phonenum=username).count() != 0:
             return JsonResponse({'errno': '1', 'message': '手机号已被注册'})
