@@ -1,3 +1,4 @@
+/*
 $(".category-list").hover(
     function (event) {
         $($(this).children().attr("href")).css("height", $('#myCarousel').height());
@@ -18,6 +19,7 @@ $(window).resize(function () {
     $(".category-left").css("height", $('#myCarousel').height());
 });
 
+*/
 
 $(".login-li").click(function () {
     removechecked("#re-password");
