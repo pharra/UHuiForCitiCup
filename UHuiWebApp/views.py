@@ -4,15 +4,16 @@ from .shortcut import JsonResponse, render
 import hashlib
 import time
 import random
-import json
+import datetime
 
+DEFAULT_PIC = '/pic/pic1.jpg'
 
-DEFAULT_PIC = '/'
 
 # 初始化render
 # render = render()
 
 # Create your views here.
+# 估值算法
 def calculateValue():
     pass
 
@@ -84,8 +85,9 @@ def post_userInfo(u_id):
         couponList.append({'type': item.stat, 'listid': item.listid})
     nickname = user.nickname
     gender = user.gender
+    UCoin = user.ucoin
     # {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList}
-    content = {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList}
+    content = {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList, 'UCoin': UCoin}
     return content
 
 
@@ -119,35 +121,45 @@ def post_storeCoupon(request):
     uid = request.POST['userID']
     brand = request.POST['brand']
     cat = request.POST['category']
+    expiredTime = datetime.datetime.strptime(request.POST['expired time'], '%Y-%m-%d')
     listPrice = request.POST['listPrice']
     value = calculateValue()
     product = request.POST['product']
     discount = request.POST['discount']
-    stat =  request.POST['stat']
+    stat = request.POST['stat']
     pic = request.POST.get('pic', DEFAULT_PIC)
-    # 判断brand是否存在
 
+    # 判断brand是否存在
     if models.Brand.objects.filter(name=brand).count() == 0:
         brandID = models.Brand(brandid=None, name=brand)
     else:
-        brandID = models.Brand.objects.get(name=brand).brandid
+        brandID = models.Brand.objects.get(name=brand)
 
     # 获取catID
-    # if models.Category.objects.filter()
+    if models.Category.objects.filter(name=cat).count() == 0:
+        return {'errno': 1, 'message': 'category not found'}
+    else:
+        catID = models.Category.objects.get(name=cat)
+
+    user = models.User.objects.get(id=uid)
+    models.Coupon.objects.create(couponid=randomID(), brandid=brandID, catid=catID, listPrice=listPrice,
+                                 value=value, product=product, discount=discount, stat=stat, pic=pic,
+                                 expiredTime=expiredTime)
+    return {'errno': 0, 'message': 'store success'}
 
 
-    pass
-
-
+# 添加商家。后台接口，前端不连接
 def post_storeBrand(request):
     pass
 
 
+# 添加商家。后台接口，前端不连接
 def post_storeCat(request):
     pass
 
 
-def post_storeMessage():
+# 创建message
+def post_createMessage():
     pass
 
 
@@ -212,7 +224,6 @@ def post_signUp(request):
 
     if DEBUG is True:
         print(username + nickname + gender)
-
 
     if '@' in username:
         if models.User.objects.filter(email=username).count() != 0:
