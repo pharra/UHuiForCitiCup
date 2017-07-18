@@ -7,10 +7,14 @@ import random
 import json
 
 
+DEFAULT_PIC = '/'
+
 # 初始化render
 # render = render()
 
 # Create your views here.
+def calculateValue():
+    pass
 
 
 # 普通函数
@@ -112,6 +116,26 @@ def getMessage(uid):
 
 # 存储数据
 def post_storeCoupon(request):
+    uid = request.POST['userID']
+    brand = request.POST['brand']
+    cat = request.POST['category']
+    listPrice = request.POST['listPrice']
+    value = calculateValue()
+    product = request.POST['product']
+    discount = request.POST['discount']
+    stat =  request.POST['stat']
+    pic = request.POST.get('pic', DEFAULT_PIC)
+    # 判断brand是否存在
+
+    if models.Brand.objects.filter(name=brand).count() == 0:
+        brandID = models.Brand(brandid=None, name=brand)
+    else:
+        brandID = models.Brand.objects.get(name=brand).brandid
+
+    # 获取catID
+    # if models.Category.objects.filter()
+
+
     pass
 
 
