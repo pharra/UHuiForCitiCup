@@ -169,6 +169,9 @@ def index(request):
 def login(request):
     return render(request, 'login.html')
 
+def user(request):
+    return render(request, 'user.html')
+
 
 # post方法加上前缀post_
 def post_login(request):
