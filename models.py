@@ -4,11 +4,14 @@
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
 #   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+#   * Remove `managed = True` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from __future__ import unicode_literals
 
 from django.db import models
+
+
+
 
 
 class Brand(models.Model):
@@ -17,7 +20,7 @@ class Brand(models.Model):
     address = models.CharField(max_length=128, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'brand'
 
 
@@ -26,18 +29,15 @@ class Category(models.Model):
     name = models.CharField(unique=True, max_length=16)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'category'
 
 
 class Coupon(models.Model):
     couponid = models.CharField(db_column='couponID', primary_key=True, max_length=16)  # Field name made lowercase.
-    brandid = models.ForeignKey(Brand, models.DO_NOTHING, db_column='brandID', blank=True,
-                                null=True)  # Field name made lowercase.
-    catid = models.ForeignKey(Category, models.DO_NOTHING, db_column='catID', blank=True,
-                              null=True)  # Field name made lowercase.
-    listprice = models.DecimalField(db_column='listPrice', max_digits=10, decimal_places=0, blank=True,
-                                    null=True)  # Field name made lowercase.
+    brandid = models.ForeignKey(Brand, models.DO_NOTHING, db_column='brandID', blank=True, null=True)  # Field name made lowercase.
+    catid = models.ForeignKey(Category, models.DO_NOTHING, db_column='catID', blank=True, null=True)  # Field name made lowercase.
+    listprice = models.DecimalField(db_column='listPrice', max_digits=10, decimal_places=0, blank=True, null=True)  # Field name made lowercase.
     value = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
     product = models.CharField(max_length=16, blank=True, null=True)
     discount = models.CharField(max_length=16, blank=True, null=True)
@@ -45,7 +45,7 @@ class Coupon(models.Model):
     pic = models.CharField(max_length=128, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'coupon'
 
 
@@ -55,55 +55,54 @@ class Couponlist(models.Model):
     userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userID')  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'couponlist'
 
 
+
+
 class Limit(models.Model):
-    couponid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='couponID', blank=True,
-                                 null=True)  # Field name made lowercase.
+    couponid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='couponID', blank=True, null=True)  # Field name made lowercase.
     content = models.CharField(max_length=128, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'limit'
 
 
 class Listitem(models.Model):
     listid = models.ForeignKey(Couponlist, models.DO_NOTHING, db_column='listID')  # Field name made lowercase.
-    couponid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='couponID',
-                                 primary_key=True)  # Field name made lowercase.
+    couponid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='couponID', primary_key=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'listitem'
         unique_together = (('couponid', 'listid'),)
 
 
 class Message(models.Model):
     messageid = models.CharField(db_column='messageID', primary_key=True, max_length=16)  # Field name made lowercase.
-    userid = models.CharField(db_column='userID', max_length=16, blank=True, null=True)  # Field name made lowercase.
+    userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userID', blank=True, null=True)  # Field name made lowercase.
     content = models.CharField(max_length=128, blank=True, null=True)
     time = models.DateField(blank=True, null=True)
-    messagecat = models.CharField(db_column='messageCat', max_length=10, blank=True,
-                                  null=True)  # Field name made lowercase.
+    messagecat = models.CharField(db_column='messageCat', max_length=10, blank=True, null=True)  # Field name made lowercase.
     hasread = models.IntegerField(db_column='hasRead')  # Field name made lowercase.
+    couponid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='couponID')  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'message'
 
 
 class User(models.Model):
     id = models.CharField(db_column='ID', primary_key=True, max_length=16)  # Field name made lowercase.
     nickname = models.CharField(unique=True, max_length=32)
-    phonenum = models.CharField(db_column='phoneNum', unique=True, max_length=11, blank=True,
-                                null=True)  # Field name made lowercase.
+    phonenum = models.CharField(db_column='phoneNum', unique=True, max_length=11, blank=True, null=True)  # Field name made lowercase.
     gender = models.CharField(max_length=1)
     avatar = models.CharField(max_length=128, blank=True, null=True)
     password = models.CharField(max_length=32)
     email = models.CharField(unique=True, max_length=32, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'user'
