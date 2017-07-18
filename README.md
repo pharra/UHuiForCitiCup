@@ -5,4 +5,3 @@ The Web for CitiCup
 django,pymysql,djangorestframework
 ### mysql
 
-
