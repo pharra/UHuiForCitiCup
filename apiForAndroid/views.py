@@ -77,7 +77,7 @@ def ownerDetailForAndroid(request):
     cpID = request.POST.get('couponID',0)
     checklistitem = Listitem.objects.filter(couponid=cpID)
     checklistID = checklistitem.values('listid')
-    checkCouponlist = Couponlist.objects.filter(listid=checklistID).filter(stat='OnSale')
+    checkCouponlist = Couponlist.objects.filter(listid=checklistID).filter(stat='onSale')
     checkUserid =  checkCouponlist.values('userid')
     try:
         result = User.objects.filter(id=checkUserid)
@@ -89,17 +89,29 @@ def ownerDetailForAndroid(request):
 #购买后修改优惠券信息
 def buyCoupon(request):
     cpID = request.POST.get('couponID',0)
-    userID = request.POST.get('userID',0)
+    u_id = request.POST.get('userID',0)
     cp = Coupon.objects.get(couponid=cpID)
     #修改优惠券stat信息
     Coupon.objects.filter(couponid=cpID).update(stat = 'store')
     #将优惠券从拥有者的OnSale list、own list中删除并加入sold list中
-    #找到拥有者各个list对应的listID
     checklistitem = Listitem.objects.filter(couponid=cpID)
     checklistID = checklistitem.values('listid')
-    checkCouponlist = Couponlist.objects.filter(listid=checklistID).filter(stat='OnSale')
-    ownID = checkCouponlist.values('userid')
+    checkCouponlist = Couponlist.objects.filter(listid=checklistID).filter(stat='onSale')
+    ownerID = checkCouponlist.values('userid')
+    ownerOnsaleList = Couponlist.objects.filter(userid=ownerID).filter(stat='onSale').values('listid')
+    ownerOwnList = Couponlist.objects.filter(userid = ownerID).filter(stat = 'own').values('listid')
+    ownerSoldList = Couponlist.objects.filter(userid=ownerID).filter(stat='sold').values('listid')
+    Listitem.objects.filter(couponid=cpID).filter(listid=ownerOnsaleList).delete()
+    Listitem.objects.filter(couponid=cpID).filter(listid=ownerOwnList).delete()
+    Listitem.objects.create(couponID = cpID,listID=ownerSoldList)
     #将优惠券加入购买者的brought list和own list中
+    buyerBroughtList = Couponlist.objects.filter(userid=u_id).filter(stat = 'brought').values('listid')
+    buyerOwnList = Couponlist.objects.filter(userid=u_id).filter(stat='own').values('listid')
+    Listitem.objects.create(couponID = cpID,listID = buyerBroughtList)
+    Listitem.objects.create(couponID = cpID,listID = buyerOwnList)
+    #生成通知拥有者的message
+    pass
+    #生成通知关注者的message
     pass
 
 #消息发送接口
