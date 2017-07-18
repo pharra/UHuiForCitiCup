@@ -194,9 +194,23 @@ def post_putOnSale(request):
     couponID = request.POST['couponID']
     sellerID = get_uid(request)
     coupon = models.Coupon.objects.get(couponid=couponID)
+    if coupon.stat != 'store':
+        return {'errno': 1, 'message': '上架失败'}
     onSaleList = models.Couponlist.objects.get(stat='onSale', userid=sellerID)
     models.Listitem.objects.create(listid=onSaleList, couponid=coupon)
     return {'errno': '0', 'message': '上架成功'}
+
+
+def post_like(request):
+    # 优惠券加入like列表
+    couponID = request.POST['couponID']
+    sellerID = get_uid(request)
+    coupon = models.Coupon.objects.get(couponid=couponID)
+    likeList = models.Couponlist.objects.get(stat='like', userid=sellerID)
+    if models.Listitem.objects.filter(listid=likeList.listid, couponid=couponID).count() != 0:
+        return {'errno': 1, 'message': '该优惠券已被关注'}
+    models.Listitem.objects.create(listid=likeList, couponid=coupon)
+    return {'errno': '0', 'message': '关注成功'}
 
 
 # 添加商家。后台接口，前端不连接
@@ -210,7 +224,8 @@ def post_storeCat(request):
 
 
 # 创建message
-def post_createMessage():
+def post_createMessage(messageType, couponID):
+
     pass
 
 
