@@ -122,6 +122,19 @@ li {
     color: white;
 }
 
+.menu-left {
+    float: left;
+    width: 10%;
+    background-color: grey;
+    color: white;
+}
+
+.menu-right {
+    float: right;
+    width: 85%;
+    position: relative;
+}
+
 .category-right {
     float: right;
     width: 85%;
