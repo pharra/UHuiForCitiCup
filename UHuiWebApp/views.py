@@ -144,8 +144,8 @@ def post_storeCoupon(request):
     user = models.User.objects.get(id=uid)
     couponID = randomID()
     coupon = models.Coupon(couponid=couponID, brandid=brandID, catid=catID, listPrice=listPrice,
-                                 value=value, product=product, discount=discount, stat=stat, pic=pic,
-                                 expiredTime=expiredTime)
+                           value=value, product=product, discount=discount, stat=stat, pic=pic,
+                           expiredTime=expiredTime)
     coupon.save()
     if stat == 'onSale':
         list = models.Couponlist.objects.get(stat='onSale', userid=user.id)
@@ -167,27 +167,36 @@ def post_buy(request):
     # 检查卖家UCoin是否足够
     buyerUCoin = models.User.objects.get(id=buyerID).ucoin
     if buyerUCoin < coupon.listprice:
-        return {'errno': 1, 'message': ''}
+        return {'errno': 1, 'message': 'UCoin不足以支付'}
     # 优惠券状态由onSale修改为store
     coupon.stat = 'store'
     coupon.save()
+    # 优惠券由卖家的own列表移除
+    sellerOwnList = models.Couponlist.objects.get(stat='own', userid=sellerID)
+    models.Listitem.objects.get(listid=sellerOwnList.listid, couponid=couponID).delete()
     # 优惠券由卖家的onSale列表移除
     onSaleList = models.Couponlist.objects.get(stat='onSale', userid=sellerID)
     models.Listitem.objects.get(listid=onSaleList.listid, couponid=couponID).delete()
     # 优惠券存入卖家的sold列表
     soldList = models.Couponlist.objects.get(stat='sold', userid=sellerID)
-    models.Listitem.objects.create(listid=soldList.listid, couponid=couponID)
+    models.Listitem.objects.create(listid=soldList, couponid=coupon)
     # 优惠券存入买家的brought列表
     broughtList = models.Couponlist.objects.get(stat='brought', userid=buyerID)
-    models.Listitem.objects.create(listid=broughtList.listid, couponID=couponID)
+    models.Listitem.objects.create(listid=broughtList, couponID=coupon)
     # 优惠券存入买家的own列表
     ownList = models.Couponlist.objects.get(stat='own', userid=buyerID)
-    models.Listitem.objects.create(listid=ownList.listid, couponID=couponID)
+    models.Listitem.objects.create(listid=ownList, couponID=coupon)
     return {'errno': 0, 'message': 'successfully brought'}
 
 
-def post_onSale(request):
-    pass
+def post_putOnSale(request):
+    # 优惠券加入卖家的onSale列表
+    couponID = request.POST['couponID']
+    sellerID = get_uid(request)
+    coupon = models.Coupon.objects.get(couponid=couponID)
+    onSaleList = models.Couponlist.objects.get(stat='onSale', userid=sellerID)
+    models.Listitem.objects.create(listid=onSaleList, couponid=coupon)
+    return {'errno': '0', 'message': '上架成功'}
 
 
 # 添加商家。后台接口，前端不连接
@@ -208,9 +217,7 @@ def post_createMessage():
 # 为用户添加各种表
 def createLists(user):
     # models.User.objects.create
-
     stat = ['own', 'sold', 'brought', 'onSale', 'like']
-
     for content in stat:
         models.Couponlist.objects.create(userid=user, stat=content, listid=None)
 
