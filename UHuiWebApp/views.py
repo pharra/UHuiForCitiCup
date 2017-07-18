@@ -126,7 +126,7 @@ def post_storeCoupon(request):
     value = calculateValue()
     product = request.POST['product']
     discount = request.POST['discount']
-    stat = request.POST['stat']
+    stat = request.POST.get('stat', 'store')
     pic = request.POST.get('pic', DEFAULT_PIC)
 
     # 判断brand是否存在
@@ -142,10 +142,52 @@ def post_storeCoupon(request):
         catID = models.Category.objects.get(name=cat)
 
     user = models.User.objects.get(id=uid)
-    models.Coupon.objects.create(couponid=randomID(), brandid=brandID, catid=catID, listPrice=listPrice,
+    couponID = randomID()
+    coupon = models.Coupon(couponid=couponID, brandid=brandID, catid=catID, listPrice=listPrice,
                                  value=value, product=product, discount=discount, stat=stat, pic=pic,
                                  expiredTime=expiredTime)
+    coupon.save()
+    if stat == 'onSale':
+        list = models.Couponlist.objects.get(stat='onSale', userid=user.id)
+    else:
+        list = models.Couponlist.objects.get(stat='own', userid=user.id)
+
+    models.Listitem.objects.create(listid=list, couponid=coupon)
     return {'errno': 0, 'message': 'store success'}
+
+
+def post_buy(request):
+    couponID = request.POST['couponID']
+    sellerID = request.POST['sellerID']
+    buyerID = get_uid(request)
+    # 检查优惠券是否存在
+    coupon = models.Coupon.objects.get(couponid=couponID)
+    if coupon.stat != 'onSale':
+        return {'errno': 1, 'message': '优惠券已下架'}
+    # 检查卖家UCoin是否足够
+    buyerUCoin = models.User.objects.get(id=buyerID).ucoin
+    if buyerUCoin < coupon.listprice:
+        return {'errno': 1, 'message': ''}
+    # 优惠券状态由onSale修改为store
+    coupon.stat = 'store'
+    coupon.save()
+    # 优惠券由卖家的onSale列表移除
+    onSaleList = models.Couponlist.objects.get(stat='onSale', userid=sellerID)
+    models.Listitem.objects.get(listid=onSaleList.listid, couponid=couponID).delete()
+    # 优惠券存入卖家的sold列表
+    soldList = models.Couponlist.objects.get(stat='sold', userid=sellerID)
+    models.Listitem.objects.create(listid=soldList.listid, couponid=couponID)
+    # 优惠券存入买家的brought列表
+    broughtList = models.Couponlist.objects.get(stat='brought', userid=buyerID)
+    models.Listitem.objects.create(listid=broughtList.listid, couponID=couponID)
+    # 优惠券存入买家的own列表
+    ownList = models.Couponlist.objects.get(stat='own', userid=buyerID)
+    models.Listitem.objects.create(listid=ownList.listid, couponID=couponID)
+    return {'errno': 0, 'message': 'successfully brought'}
+
+
+def post_onSale(request):
+    pass
 
 
 # 添加商家。后台接口，前端不连接
@@ -180,6 +222,7 @@ def index(request):
 
 def login(request):
     return render(request, 'login.html')
+
 
 def user(request):
     return render(request, 'user.html')
