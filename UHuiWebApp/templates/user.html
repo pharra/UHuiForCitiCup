@@ -28,9 +28,7 @@
 
             <div class="navbar-search">
                 <form class="navbar-form ">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="搜索">
-                    </div>
+                    <input type="text" class="form-control" placeholder="搜索">
                     <button type="submit" class="btn btn-default"><span class="fa fa-arrow-right"></span></button>
                 </form>
             </div>
@@ -67,28 +65,62 @@
         </div>
     </nav>
 
-    <div>
-        <div class="category-left">
-            <ul class="category-menu" id="user_nav">
-                <li class="category-list">
-                    <a href="#"></a>
-                    <ul class="ul_left">电子产品
-                    </ul>
+    <div class="container">
+
+        <div class="panel-group menu-left">
+            <p>Username</p>
+            <div class="panel panel-default" id="user_own_menu">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#user_own_menu" href="#user_own_content">
+                            我的优惠
+                        </a>
+                    </h4>
+                </div>
+                <div class="panel-collapse collapse" id="user_own_content">
+                    <div class="panel-body">
+                        <li><a href="#">当前持有</a></li>
+                        <li><a href="#">正在出售</a></li>
+                        <li><a href="#">最近买入</a></li>
+                        <li><a href="#">最近卖出</a></li>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default" id="user_message_menu">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#user_message_menu" href="#user_message_content">
+                            我的消息
+                        </a>
+                    </h4>
+                </div>
+                <div class="panel-collapse collapse" id="user_message_content">
+                    <div class="panel-body">
+                        <li><a href="#">系统公告</a></li>
+                        <li><a href="#">交易提示</a></li>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="menu-right">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active">
+                    <a href="#">当前持有</a>
                 </li>
-                <ul id="user_tab" class="nav nav-tabs">
-                    <li class="active">
-                        <a href="#user_concern" data-toggle="tab">我的关注</a>
-                    </li>
-                    <li><a href="#user_trade" data-toggle="tab">我的交易</a>
-                    </li>
-                </ul>
+                <li role="presentation">
+                    <a href="#">正在出售</a>
+                </li>
+                <li role="presentation">
+                    <a href="#">最近卖出</a>
+                </li>
+                <li role="presentation">
+                    <a href="#">最近买入</a>
+                </li>
             </ul>
         </div>
-    </div>
-
-    <div class="tab-content">
-        <div class="tab-pane fade in active" id="user_concern"></div>
-        <div class="tab-pane fade" id="user_trade"></div>
     </div>
 
     <script src="/static/js/jquery-3.2.1.js"></script>
