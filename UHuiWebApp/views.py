@@ -213,6 +213,10 @@ def post_like(request):
     return {'errno': '0', 'message': '关注成功'}
 
 
+def post_buyCredit(request):
+    pass
+
+
 # 添加商家。后台接口，前端不连接
 def post_storeBrand(request):
     pass
@@ -225,7 +229,6 @@ def post_storeCat(request):
 
 # 创建message
 def post_createMessage(messageType, couponID):
-
     pass
 
 
@@ -302,7 +305,7 @@ def post_signUp(request):
         # 邮箱验证
         # 将邮箱作为用户名存入数据库中
         uid = randomID()
-        user = models.User(id=uid, nickname=nickname, password=password, gender=gender, email=username)
+        user = models.User(id=uid, nickname=nickname, password=password, gender=gender, email=username, ucoin=0)
         # 创建列表
         user.save()
         createLists(user)
@@ -321,7 +324,7 @@ def post_signUp(request):
         uid = randomID()
         user = models.User(id=uid, nickname=nickname, password=password, gender=gender,
 
-                           phonenum=username)
+                           phonenum=username, ucoin=0)
         user.save()
         # 创建列表
 
