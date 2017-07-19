@@ -236,6 +236,24 @@ def post_storeCat(request):
 
 # 创建message
 def post_createMessage(messageType, couponID):
+    messageID = randomID()
+
+    # 找owner
+    lists = models.Listitem.objects.filter(couponid=couponID)
+    # 根据messageType的不同寻找不同的接收USER，并填入相应的content
+    types = ['上架的优惠券被购买', '上架的优惠券即将过期', '上架的优惠券已过期', '关注的优惠券即将过期', '关注的优惠券已被购买', '我的优惠券即将过期', '我的优惠券已过期', '系统通知']
+    userlist = []
+    if messageType == types[3] or messageType == types[4]:
+        # like列表
+
+        for listid in lists:
+            if models.Couponlist.objects.filter(stat='like', listid=listid).count() != 0:
+                userlist.append(models.Couponlist.objects.get(stat='like', listid=listid))
+
+        pass
+    elif messageType in types:
+        # own列表
+        pass
     pass
 
 
