@@ -18,131 +18,140 @@
 <body>
 
 
-    <nav class="navbar navbar-container navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-
-                <a class="navbar-brand" href="#">Brand</a>
-            </div>
-        </div>
-    </nav>
-
+<nav class="navbar navbar-container navbar-default">
     <div class="container">
-        <div class="form-container">
-            <div class="content">
-                <h1>U惠</h1>
-                <h3>FBI WARNING</h3>
-            </div>
-            <div>
-                <ul class="login-ul">
-                    <li class="login-li"><a href="#register">注册</a></li>
-                    <li class="login-li login-active"><a href="#login">登录</a></li>
-                </ul>
-            </div>
-            <div>
-                <div id="user_tab_content" class="tab-content">
-                    <div class="tab-pane fade  " id="register">
+        <div class="navbar-header">
 
-                        <div class="panel-container">
-                            <form method="post" accept-charset="utf-8">
+            <a class="navbar-brand" href="#">Brand</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="form-container">
+        <div class="content">
+            <h1>U惠</h1>
+            <h3>FBI WARNING</h3>
+        </div>
+        <div>
+            <ul class="login-ul">
+                <li class="login-li"><a href="#register">注册</a></li>
+                <li class="login-li login-active"><a href="#login">登录</a></li>
+            </ul>
+        </div>
+        <div>
+            <div id="user_tab_content" class="tab-content">
+                <div class="tab-pane fade  " id="register">
+
+                    <div class="panel-container">
+                        <form method="post" accept-charset="utf-8">
 
 
-                                <input type="text" placeholder="电话号码/邮箱" name="username" id="user_id" />
-                                <div class="user_id_content being-hidden" id="user_id_content">
-                                    <i class="fa fa-times" aria-hidden="true" style="color:red;">您输入的手机号或邮箱有误</i>
-                                </div>
-                                <input type="text" placeholder="用户名" id="nickname" />
-                                <input type="password" placeholder="密码" id="password" />
+
+                            <input type="text" placeholder="电话号码/邮箱" name="username" id="user_id"/>
+                            <div class="user_id_content being-hidden" id="user_id_content">
+                                <i class="fa fa-times" aria-hidden="true" style="color:red;">您输入的手机号或邮箱有误</i>
+                            </div>
+                            <input type="text" placeholder="用户名" id="nickname"/>
 
 
+                            <input type="password" placeholder="密码" id="password"/>
 
-                                <input type="password" placeholder="请确认您的密码" id="re-password" />
-                                <div class="user_id_content being-hidden" id="password_content">
-                                    <i class="fa fa-times" aria-hidden="true" style="color:red;">两次密码不一致</i>
-                                </div>
-                                <div class="verification_code">
-                                    <div class="float-left gender_select">请选择您的性别</div>
-                                    <select class="gender_select float-right" id="genderchoice">
+
+                            <input type="password" placeholder="请确认您的密码" id="re-password"/>
+                            <div class="user_id_content being-hidden" id="password_content">
+                                <i class="fa fa-times" aria-hidden="true" style="color:red;">两次密码不一致</i>
+                            </div>
+                            <div class="verification_code">
+                                <div class="float-left gender_select">请选择您的性别</div>
+                                <select class="gender_select float-right" id="genderchoice">
                                     <option>男</option>
                                     <option>女</option>
                                 </select>
-                                    <div class="clear"></div>
-                                </div>
-                                <input type="password" name="password" style="display: none;" id="signup-md5-password" />
-                                <div class="verification_code being-hidden" id="verification_code_div">
-                                    <input type="text" placeholder="手机验证码" name="verification_code" />
-                                    <a href="" class="button float-right">点击获取</a>
-                                </div>
-                                <div class="user_id_content being-hidden" id="login-failed">
+                                <div class="clear"></div>
+                            </div>
+                            <input type="password" name="password" style="display: none;" id="signup-md5-password"/>
+                            <div class="verification_code being-hidden" id="verification_code_div">
+                                <input type="text" placeholder="手机验证码" name="verification_code"/>
+                                <a href="" class="button float-right">点击获取</a>
+                            </div>
+                            <div class="user_id_content being-hidden" id="login-failed">
+                                <i class="fa fa-times" aria-hidden="true" style="color:red;"></i>
+                            </div>
+
+                            <div class="verification_code">
+                                <a href="/" class="button float-left">返回</a>
+                                <button type="button" class="button float-right" onclick="sign_up();" id="login-button">
+                                    注册
+                                </button>
+
+                                <div class="clear"></div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="tab-pane fade in active " id="login">
+
+                    <div class="panel-container">
+                        <form method="post" accept-charset="utf-8">
+
+                            <input type="text" placeholder="电话号码/邮箱" name="username" id="login-username"/>
+
+
+                            <input type="password" placeholder="密码" id="login-password" maxlength="16"/>
+                            <input type="password" placeholder="密码" name="password" style="display:none;"
+                                   id="login-md5-password" maxlength="16"/>
+
+
+
+                            <div>
+                                <div class="user_id_content float-left being-hidden" id="login_failed_content"
+                                     style="width:150px;">
                                     <i class="fa fa-times" aria-hidden="true" style="color:red;"></i>
                                 </div>
-
-                                <div class="verification_code">
-                                    <a href="/" class="button float-left">返回</a>
-                                    <button type="button" class="button float-right" onclick="sign_up();" id="login-button">注册</button>
-
-                                    <div class="clear"></div>
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-                    <div class="tab-pane fade in active " id="login">
-
-                        <div class="panel-container">
-                            <form method="post" accept-charset="utf-8">
-                                {% csrf_token %}
-                                <input type="text" placeholder="电话号码/邮箱" name="username" id="login-username" />
-
-                                <input type="password" placeholder="密码" id="login-password" maxlength="16" />
-                                <input type="password" placeholder="密码" name="password" style="display:none;" id="login-md5-password" maxlength="16" />
-
-                                <div>
-                                    <div class="user_id_content float-left being-hidden" id="login_failed_content" style="width:150px;">
-                                        <i class="fa fa-times" aria-hidden="true" style="color:red;"></i>
-                                    </div>
-                                    <a href="" class="login-a float-right">无法登录？</a>
-                                    <div class="clear"></div>
-                                </div>
-
-
-                                <div class="verification_code">
-
-                                    <a href="/" class="button float-left">返回</a>
-                                    <button type="button" class="button float-right" onclick="login_handler();">登录</button>
-                                    <div class="clear"></div>
-                                </div>
-                            </form>
-                            <div class="otherlogin-content">
-                                <h5>社交账户登陆</h5>
-                            </div>
-                            <div class="otherlogin">
-
-                                <div class="float-left ">
-                                    <a href=""><i class="fa fa-weibo fa-2x"></i>
-                                    </a>
-
-                                </div>
-                                <div class="float-left ">
-                                    <a href="/"><i class="fa fa-wechat fa-2x"></i>
-                                    </a>
-
-                                </div>
-
-                                <div class="float-left">
-                                    <a href=""><i class="fa fa-qq fa-2x"></i> </a>
-
-                                </div>
+                                <a href="" class="login-a float-right">无法登录？</a>
                                 <div class="clear"></div>
                             </div>
 
+
+                            <div class="verification_code">
+
+                                <a href="/" class="button float-left">返回</a>
+                                <button type="button" class="button float-right" onclick="login_handler();">登录</button>
+                                <div class="clear"></div>
+                            </div>
+                        </form>
+                        <div class="otherlogin-content">
+                            <h5>社交账户登陆</h5>
+                        </div>
+                        <div class="otherlogin">
+
+                            <div class="float-left ">
+                                <a href=""><i class="fa fa-weibo fa-2x"></i>
+                                </a>
+
+                            </div>
+                            <div class="float-left ">
+                                <a href="/"><i class="fa fa-wechat fa-2x"></i>
+                                </a>
+
+                            </div>
+
+                            <div class="float-left">
+                                <a href=""><i class="fa fa-qq fa-2x"></i> </a>
+
+                            </div>
+                            <div class="clear"></div>
                         </div>
 
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 </body>
 <script src="/static/js/jquery-3.2.1.js"></script>
