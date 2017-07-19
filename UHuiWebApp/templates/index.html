@@ -13,7 +13,7 @@
 
 <div>
     <!--导航栏部分：Logo/搜索栏/注册/登录-->
-    <nav class="navbar navbar-container navbar-default">
+    <nav class="navbar navbar-container navbar-default" id="homepage_nav">
         <div class="recontainer">
             <div class="navbar-search">
                 <form class="navbar-form ">
@@ -25,8 +25,7 @@
             </div>
             <!--Logo-->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-targer="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-targer="#bs-example-navbar-collapse-1" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -54,8 +53,7 @@
             <div class="collapse navbar-collapse" id="homepage_user">
                 <ul class="nav navbar-nav navbar-right being-hidden">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <span class="glyphicon glyphicon-user"></span> 用户中心
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -64,15 +62,10 @@
                             <li><a href="#">我的交易</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">
+                    <li>
+                        <a href="#">
                             <span class="glyphicon glyphicon-envelope"></span>消息中心
-                            <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">系统消息</a></li>
-                            <li><a href="#">交易信息</a></li>
-                        </ul>
+                        </a>
                     </li>
                     <li>
                         <a href="#">
@@ -89,16 +82,20 @@
         <div class=" category-left" id="homepage_navigation">
             <ul class="category-menu">
                 <!--#homepage_top-->
+                <li><i class="fa fa-angle-up"></i>
+                    <a href="#homepage_nav"></a>
+                </li>
+                <li><i class="fa fa-thumbs-o-up"></i><a href="/user">每日推荐</a></li>
+                <li><i class="fa fa-shopping-basket"></i>生活百货</li>
+                <li><i class="fa fa-laptop"></i>电子产品</li>
+                <li><i class="fa fa-cutlery"></i>饮食保健</li>
+                <li><i class="fa fa-commenting-o"></i>服装装饰</li>
+                <li><i class="fa fa-video-camera"></i>文娱体育</li>
+                <li><i class="fa fa-car"></i>旅行住宿</li>
+                <li><i class="fa fa-home"></i>家具家居</li>
+                <li><i class="fa fa-female"></i>美妆妆饰</li>
                 <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
+                <li><i class="fa fa-file"></i>用户投票</li>
             </ul>
         </div>
 
