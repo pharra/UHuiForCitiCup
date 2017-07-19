@@ -146,6 +146,10 @@ li {
     text-overflow: ellipsis;
 }
 
+.nav-login li a i {
+    padding: 0 5px 0 0;
+}
+
 @media screen and (max-width: 768px) {
     .navbar-search {
         display: none;
@@ -401,23 +405,4 @@ button[type=button]:disabled {
     border: 1px solid #DDD;
     background-color: #F5F5F5;
     color: #ACA899;
-}
-
-.classify-all {
-    width: 100%;
-}
-
-.classify {
-    width: 247px;
-    padding: 5px;
-    height: 272px;
-    display: inline-block;
-}
-
-.classify-img {
-    height: 247px;
-}
-
-.classify-word {
-    height: 25px;
 }
