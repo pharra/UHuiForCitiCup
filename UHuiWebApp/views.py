@@ -314,6 +314,8 @@ def post_login(request):
 
 def post_signUp(request):
     username = request.POST.get('username')
+    if username == '':
+        return JsonResponse({'errno': '1', 'message': '手机号或邮箱不能为空'})
     nickname = request.POST.get('nickname')
     password = encryption(request.POST.get('password'))
     gender = request.POST.get('gender')
@@ -330,7 +332,6 @@ def post_signUp(request):
         # 邮箱验证
         # 将邮箱作为用户名存入数据库中
         uid = randomID()
-
 
         user = models.User(id=uid, nickname=nickname, password=password, gender=gender, email=username, ucoin=0)
 
