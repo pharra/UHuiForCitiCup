@@ -1,9 +1,10 @@
+
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
 #   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = True` lines if you wish to allow Django to create, modify, and delete the table
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from __future__ import unicode_literals
 
@@ -16,7 +17,7 @@ class Brand(models.Model):
     address = models.CharField(max_length=128, blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'brand'
 
 
@@ -25,7 +26,7 @@ class Category(models.Model):
     name = models.CharField(unique=True, max_length=16)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'category'
 
 
@@ -42,7 +43,7 @@ class Coupon(models.Model):
     expiredtime = models.DateField(db_column='expiredTime', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'coupon'
 
 
@@ -52,9 +53,18 @@ class Couponlist(models.Model):
     userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userID')  # Field name made lowercase.
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'couponlist'
 
+
+class DjangoMigrations(models.Model):
+    app = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    applied = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'django_migrations'
 
 
 class Limit(models.Model):
@@ -62,7 +72,7 @@ class Limit(models.Model):
     content = models.CharField(max_length=128, blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'limit'
 
 
@@ -71,7 +81,7 @@ class Listitem(models.Model):
     couponid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='couponID', primary_key=True)  # Field name made lowercase.
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'listitem'
         unique_together = (('couponid', 'listid'),)
 
@@ -87,7 +97,7 @@ class Message(models.Model):
     hassend = models.IntegerField(db_column='hasSend')  # Field name made lowercase.
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'message'
 
 
@@ -102,5 +112,5 @@ class User(models.Model):
     ucoin = models.IntegerField(db_column='UCoin')  # Field name made lowercase.
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'user'

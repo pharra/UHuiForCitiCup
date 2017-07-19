@@ -38,11 +38,12 @@ def post_loginForAndroid(request):
     psw = encryption(request.POST.get('password'))
     password = bytes.decode(pswObj.password.encode("UTF-8"))
     if psw == password:
-        response = JSONResponse({'result': 'success','userid':uid})
+        response = JsonResponse({'result': 'success','userid':uid})
         return response
     else:
         return JsonResponse({'error': '密码错误'})
 #搜索
+
 def searchForAndroid(request):
     searchKeyWord = request.POST.get('keyWord',0)
     try:
@@ -72,6 +73,7 @@ def couponDetailForAndroid(request):
     couponSeria = couponSerializer(result)
     return JSONResponse(couponSeria.data)
 
+'''
 #通过优惠券ID查询所有者
 def ownerDetailForAndroid(request):
     cpID = request.POST.get('couponID',0)
@@ -114,13 +116,23 @@ def buyCoupon(request):
     #生成通知关注者的message
     pass
 
+#关注优惠券接口
+def likeCoupon(request):
+    cpID = request.POST.get('couponID',0)
+    u_ID = request.POST.get('userID',0)
+    userLikeList = Couponlist.objects.filter(userid=u_ID).filter(stat='like').values('listid')
+    Listitem.objects.create(couponID = cpID,listID = userLikeList)
+    return JsonResponse({'result':'success'})
+
+
 #消息发送接口
-def sendMessage(request):
+def post_sendMessage(request):
     userID = request.POST.get('userID',0)
     msg = Message.objects.filter(userid=userID)
     msgSeria = messageSerializer(msg)
-    return JSONResponse(msgSeria.data)
+    return JsonResponse({'result': 'success'})
 
 #消息生成接口
 def createMessage():
     pass
+    '''
