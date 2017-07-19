@@ -109,7 +109,7 @@ class User(models.Model):
     avatar = models.CharField(max_length=128, blank=True, null=True)
     password = models.CharField(max_length=32)
     email = models.CharField(unique=True, max_length=32, blank=True, null=True)
-    ucoin = models.IntegerField(db_column='UCoin')  # Field name made lowercase.
+    ucoin = models.IntegerField(db_column='UCoin',default=0)  # Field name made lowercase.
 
     class Meta:
         managed = False

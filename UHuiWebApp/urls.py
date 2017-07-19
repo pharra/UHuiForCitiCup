@@ -11,5 +11,5 @@ urlpatterns = [
     url(r'^post_signup$', views.post_signUp, name='post_signUp'),
     url(r'^post_loginForAndroid$', views.post_loginForAndroid, name='post_loginForAndroid'),
     url(r'^post_signUpForAndroid$', views.post_signUpForAndroid, name='post_signUpForAndroid'),
-    #url(r'^post_sendMessage$', views.post_sendMessage, name='post_sendMessage'),
+    url(r'^post_sendMessage$', views.post_sendMessage, name='post_sendMessage'),
 ]

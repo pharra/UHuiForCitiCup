@@ -1,12 +1,15 @@
 from django.shortcuts import render
 
 from django.http import HttpResponse
+from django.http import JsonResponse
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from UHuiWebApp.models import *
 from apiForAndroid.serializers import *
 from UHuiWebApp.views import *
+from django.core import serializers
 #返回json数据
+
 class JSONResponse(HttpResponse):
     def __init__(self,data,**kwargs):
         content = JSONRenderer().render(data)
@@ -46,12 +49,9 @@ def post_loginForAndroid(request):
 
 def searchForAndroid(request):
     searchKeyWord = request.POST.get('keyWord',0)
-    try:
-        result = Coupon.objects.filter(product__contains=searchKeyWord).filter(stat='onSale')
-    except Coupon.DoesNotExist:
-        return JSONResponse({'error':'内容不存在'})
-    couponSeria = couponSerializer(result)
-    return JSONResponse(couponSeria.data)
+    result = Coupon.objects.filter(product__contains=searchKeyWord).filter(stat='onSale')
+    resultdata = serializers.serialize('json',result)
+    return HttpResponse(resultdata, content_type="application/json")
 
 #点击种类进行查询
 def selectCategoryForAndroid(request):
@@ -73,7 +73,7 @@ def couponDetailForAndroid(request):
     couponSeria = couponSerializer(result)
     return JSONResponse(couponSeria.data)
 
-'''
+
 #通过优惠券ID查询所有者
 def ownerDetailForAndroid(request):
     cpID = request.POST.get('couponID',0)
@@ -129,10 +129,9 @@ def likeCoupon(request):
 def post_sendMessage(request):
     userID = request.POST.get('userID',0)
     msg = Message.objects.filter(userid=userID)
-    msgSeria = messageSerializer(msg)
-    return JsonResponse({'result': 'success'})
+    msgdata = serializers.serialize("json",msg,fields = ('messageid','content','time','messagecat','couponid'))
+    return HttpResponse(msgdata,content_type="application/json")
 
 #消息生成接口
 def createMessage():
     pass
-    '''
