@@ -40,29 +40,37 @@
 
                     <ul class="float-right nav-login">
                         {% if userid %}
-                            <a href="/login?method=register">{{ nickname }}
-                                <span class="glyphicon glyphicon-user"></span>
-                            </a>
+                            <li>
+                                <a href="/login?method=register"> <span
+                                        class="glyphicon glyphicon-user"></span>{{ nickname }}
+
+                                </a>
                             </li>
                             <li>
-                                <a href="/login?method=login">{{ gender }}
-                                    <span class="glyphicon glyphicon-user"></span>
+                                <a href="/login?method=login"> <span class="glyphicon glyphicon-user"></span>您的消息
+
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/login?method=login"> <span class="glyphicon glyphicon-user"></span>充值中心
+
                                 </a>
                             </li>
 
-                    {% else %}
-                        <li>
-                            <a href="/login?method=register">注册
-                                <span class="glyphicon glyphicon-user"></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/login?method=login">登录
-                                <span class="glyphicon glyphicon-user"></span>
-                            </a>
-                        </li>
+                        {% else %}
+                            <li>
+                                <a href="/login?method=register">注册
+                                    <span class="glyphicon glyphicon-user"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/login?method=login">登录
+                                    <span class="glyphicon glyphicon-user"></span>
+                                </a>
+                            </li>
+                        {% endif %}
                     </ul>
-                     {% endif %}
+
                 </form>
             </div>
 

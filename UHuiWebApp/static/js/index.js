@@ -199,7 +199,30 @@ function sign_up() {
             $("#login-failed").show();
         }
         else if (data.errno == "0") {
-            window.location.href = "/";
+
+
+            $.ajax({
+                url: '/post_login',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    "username": $("#user_id").val(),
+                    "password": $("#signup-md5-password").val()
+                },
+                timeout: 3000,
+                cache: false,
+                success: succFunction
+            })
+
+
+            function succFunction(data) {
+                if (data.error == "") {
+                    window.location.href = "/";
+                }
+
+            }
+
+
         }
 
         else if (data.errno == "2") {
@@ -209,7 +232,7 @@ function sign_up() {
 
 };
 
-$(document).ready(function() {
+$(document).ready(function () {
     $(window).scroll(function (event) {
         $("#homepage_navigation").css("top", $(window).scrollTop() + 'px');
 
