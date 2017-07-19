@@ -108,7 +108,7 @@ li {
 }
 .navbar-search .form-group {
     display: inline-block;
-    width: 33%;
+    width: 50%;
     float: left;
 }
 
@@ -132,7 +132,11 @@ li {
     background-color: #f25039;
     color: white;
 }
-
+.nav-login li{
+    display: inline-block;
+    margin-left: 30px;
+    margin-right: 30px;
+}
 @media screen and (max-width: 768px) {
     .navbar-search {
         display: none;

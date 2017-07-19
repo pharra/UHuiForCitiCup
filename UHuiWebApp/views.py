@@ -237,7 +237,7 @@ def post_signUp(request):
         # 邮箱验证
         # 将邮箱作为用户名存入数据库中
         uid = randomID()
-        user = models.User(id=uid, nickname=nickname, password=password, gender=gender, email=username)
+        user = models.User(id=uid, nickname=nickname, password=password, gender=gender, email=username, )
         # 创建列表
         user.save()
         createLists(user)
