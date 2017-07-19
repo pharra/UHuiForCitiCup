@@ -147,6 +147,10 @@ li {
     text-overflow: ellipsis;
 }
 
+.nav-login li a i{
+   padding: 0 5px 0 0;
+}
+
 @media screen and (max-width: 768px) {
     .navbar-search {
         display: none;
@@ -385,3 +389,5 @@ button[type=button]:disabled {
     background-color: #F5F5F5;
     color: #ACA899;
 }
+
+
