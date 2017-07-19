@@ -126,7 +126,7 @@ def post_storeCoupon(request):
     value = calculateValue()
     product = request.POST['product']
     discount = request.POST['discount']
-    stat = request.POST['stat']
+    stat = request.POST.get('stat', 'store')
     pic = request.POST.get('pic', DEFAULT_PIC)
 
     # 判断brand是否存在
@@ -142,10 +142,86 @@ def post_storeCoupon(request):
         catID = models.Category.objects.get(name=cat)
 
     user = models.User.objects.get(id=uid)
-    models.Coupon.objects.create(couponid=randomID(), brandid=brandID, catid=catID, listPrice=listPrice,
-                                 value=value, product=product, discount=discount, stat=stat, pic=pic,
-                                 expiredTime=expiredTime)
+    couponID = randomID()
+    coupon = models.Coupon(couponid=couponID, brandid=brandID, catid=catID, listPrice=listPrice,
+                           value=value, product=product, discount=discount, stat=stat, pic=pic,
+                           expiredTime=expiredTime)
+    coupon.save()
+    if stat == 'onSale':
+        list = models.Couponlist.objects.get(stat='onSale', userid=user.id)
+    else:
+        list = models.Couponlist.objects.get(stat='own', userid=user.id)
+
+    models.Listitem.objects.create(listid=list, couponid=coupon)
     return {'errno': 0, 'message': 'store success'}
+
+
+def post_buy(request):
+    couponID = request.POST['couponID']
+    sellerID = request.POST['sellerID']
+    buyerID = get_uid(request)
+    # 检查优惠券是否存在
+    coupon = models.Coupon.objects.get(couponid=couponID)
+    if coupon.stat != 'onSale':
+        return {'errno': 1, 'message': '优惠券已下架'}
+    # 检查卖家UCoin是否足够
+    buyerUCoin = models.User.objects.get(id=buyerID).ucoin
+    if buyerUCoin < coupon.listprice:
+        return {'errno': 1, 'message': 'UCoin不足以支付'}
+    # 优惠券状态由onSale修改为store
+    coupon.stat = 'store'
+    coupon.save()
+    # 优惠券由卖家的own列表移除
+    sellerOwnList = models.Couponlist.objects.get(stat='own', userid=sellerID)
+    models.Listitem.objects.get(listid=sellerOwnList.listid, couponid=couponID).delete()
+    # 优惠券由卖家的onSale列表移除
+    onSaleList = models.Couponlist.objects.get(stat='onSale', userid=sellerID)
+    models.Listitem.objects.get(listid=onSaleList.listid, couponid=couponID).delete()
+    # 优惠券存入卖家的sold列表
+    soldList = models.Couponlist.objects.get(stat='sold', userid=sellerID)
+    models.Listitem.objects.create(listid=soldList, couponid=coupon)
+    # 优惠券存入买家的brought列表
+    broughtList = models.Couponlist.objects.get(stat='brought', userid=buyerID)
+    models.Listitem.objects.create(listid=broughtList, couponID=coupon)
+    # 优惠券存入买家的own列表
+    ownList = models.Couponlist.objects.get(stat='own', userid=buyerID)
+    models.Listitem.objects.create(listid=ownList, couponID=coupon)
+    return {'errno': 0, 'message': 'successfully brought'}
+
+
+def post_putOnSale(request):
+    # 优惠券加入卖家的onSale列表
+    couponID = request.POST['couponID']
+    sellerID = get_uid(request)
+    coupon = models.Coupon.objects.get(couponid=couponID)
+    if coupon.stat != 'store':
+        return {'errno': 1, 'message': '上架失败'}
+    onSaleList = models.Couponlist.objects.get(stat='onSale', userid=sellerID)
+    models.Listitem.objects.create(listid=onSaleList, couponid=coupon)
+    return {'errno': '0', 'message': '上架成功'}
+
+
+def post_like(request):
+    # 优惠券加入like列表
+    couponID = request.POST['couponID']
+    sellerID = get_uid(request)
+    coupon = models.Coupon.objects.get(couponid=couponID)
+    likeList = models.Couponlist.objects.get(stat='like', userid=sellerID)
+    if models.Listitem.objects.filter(listid=likeList.listid, couponid=couponID).count() != 0:
+        return {'errno': 1, 'message': '该优惠券已被关注'}
+    models.Listitem.objects.create(listid=likeList, couponid=coupon)
+    return {'errno': '0', 'message': '关注成功'}
+
+
+def post_buyCredit(request):
+    uid = get_uid(request)
+    amount = request.POST['amount']
+    if request.POST['pay'] == 'failed':
+        return {'errno': 1, 'message': '支付失败'}
+    user = models.User.objects.get(id=uid)
+    user.ucoin = user.ucoin + amount
+    user.save()
+    return {'errno': 0, 'message': '充值成功'}
 
 
 # 添加商家。后台接口，前端不连接
@@ -159,16 +235,32 @@ def post_storeCat(request):
 
 
 # 创建message
-def post_createMessage():
+def post_createMessage(messageType, couponID):
+    messageID = randomID()
+
+    # 找owner
+    lists = models.Listitem.objects.filter(couponid=couponID)
+    # 根据messageType的不同寻找不同的接收USER，并填入相应的content
+    types = ['上架的优惠券被购买', '上架的优惠券即将过期', '上架的优惠券已过期', '关注的优惠券即将过期', '关注的优惠券已被购买', '我的优惠券即将过期', '我的优惠券已过期', '系统通知']
+    userlist = []
+    if messageType == types[3] or messageType == types[4]:
+        # like列表
+
+        for listid in lists:
+            if models.Couponlist.objects.filter(stat='like', listid=listid).count() != 0:
+                userlist.append(models.Couponlist.objects.get(stat='like', listid=listid))
+
+        pass
+    elif messageType in types:
+        # own列表
+        pass
     pass
 
 
 # 为用户添加各种表
 def createLists(user):
     # models.User.objects.create
-
     stat = ['own', 'sold', 'brought', 'onSale', 'like']
-
     for content in stat:
         models.Couponlist.objects.create(userid=user, stat=content, listid=None)
 
@@ -180,6 +272,7 @@ def index(request):
 
 def login(request):
     return render(request, 'login.html')
+
 
 def user(request):
     return render(request, 'user.html')
@@ -221,6 +314,8 @@ def post_login(request):
 
 def post_signUp(request):
     username = request.POST.get('username')
+    if username == '':
+        return JsonResponse({'errno': '1', 'message': '手机号或邮箱不能为空'})
     nickname = request.POST.get('nickname')
     password = encryption(request.POST.get('password'))
     gender = request.POST.get('gender')
@@ -237,7 +332,9 @@ def post_signUp(request):
         # 邮箱验证
         # 将邮箱作为用户名存入数据库中
         uid = randomID()
-        user = models.User(id=uid, nickname=nickname, password=password, gender=gender, email=username)
+
+        user = models.User(id=uid, nickname=nickname, password=password, gender=gender, email=username, ucoin=0)
+
         # 创建列表
         user.save()
         createLists(user)
@@ -256,7 +353,7 @@ def post_signUp(request):
         uid = randomID()
         user = models.User(id=uid, nickname=nickname, password=password, gender=gender,
 
-                           phonenum=username)
+                           phonenum=username, ucoin=0)
         user.save()
         # 创建列表
 

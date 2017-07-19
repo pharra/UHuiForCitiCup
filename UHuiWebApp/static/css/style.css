@@ -71,13 +71,13 @@ li {
     padding-left: 15px;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
     .recontainer {
         width: 750px;
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
     .recontainer {
         width: 1170px;
     }
@@ -92,19 +92,27 @@ li {
     margin-left: auto;
 }
 
-.navbar-search {
-    width: 100%;
+.nav-position {
     position: absolute;
+}
+
+.navbar-search {
+    width: 88%;
+    float: right;
     height: 50px;
     left: 0;
     right: 0;
-    text-align: center;
     display: inline-block;
+}
+
+.navbar-form {
+    padding: 0;
 }
 
 .navbar-search .form-group {
     display: inline-block;
-    width: 33%;
+    width: 50%;
+    float: left;
 }
 
 .navbar-search .form-group .form-control {
@@ -128,7 +136,17 @@ li {
     color: white;
 }
 
-@media screen and (max-width: 767px) {
+.nav-login li {
+    display: inline-block;
+    margin: 0 0 0 30px;
+    width: 100px;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 768px) {
     .navbar-search {
         display: none;
     }
@@ -139,6 +157,7 @@ li {
     display: inline-block;
     background-color: white;
     padding: 0 5px 0 0;
+    position: relative;
 }
 
 .menu-left {
@@ -165,7 +184,6 @@ li {
     letter-spacing: 1px;
     border: 1px solid coral;
     border-radius: 4px;
-
 }
 
 @media (max-width: 768px) {
@@ -173,8 +191,8 @@ li {
         display: none;
     }
     .category-right {
-    width: 100%;
-}
+        width: 100%;
+    }
 }
 
 .category-menu li {
@@ -192,6 +210,15 @@ li {
     font-size: 14px;
     margin: 0 5px 0 0;
 }
+
+.category-menu a {
+    color: black;
+}
+
+.category-right a {
+    color: black;
+}
+
 
 /*
 .category-list {
@@ -331,7 +358,7 @@ li {
     width: 60px;
 }
 
-.otherlogin > div {
+.otherlogin>div {
     margin: 0 10px 0 10px;
     padding: 0 5px 0 5px;
     width: 70px;
@@ -374,4 +401,23 @@ button[type=button]:disabled {
     border: 1px solid #DDD;
     background-color: #F5F5F5;
     color: #ACA899;
+}
+
+.classify-all {
+    width: 100%;
+}
+
+.classify {
+    width: 247px;
+    padding: 5px;
+    height: 272px;
+    display: inline-block;
+}
+
+.classify-img {
+    height: 247px;
+}
+
+.classify-word {
+    height: 25px;
 }
