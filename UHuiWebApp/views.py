@@ -214,7 +214,14 @@ def post_like(request):
 
 
 def post_buyCredit(request):
-    pass
+    uid = get_uid(request)
+    amount = request.POST['amount']
+    if request.POST['pay'] == 'failed':
+        return {'errno': 1, 'message': '支付失败'}
+    user = models.User.objects.get(id=uid)
+    user.ucoin = user.ucoin + amount
+    user.save()
+    return {'errno': 0, 'message': '充值成功'}
 
 
 # 添加商家。后台接口，前端不连接
