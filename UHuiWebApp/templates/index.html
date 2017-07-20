@@ -16,43 +16,44 @@
 <nav class="navbar">
 
 
-    <div class="recontainer">
-        <!--Logo-->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-targer="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-
-            </button>
-            <a class="navbar-brand" href="">Brand</a>
-        </div>
-        <!--注册/登录-->
-        <div class="navbar-search">
-            <form class="navbar-form">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="搜索">
-                </div>
-                <button type="submit" class="btn btn-default"><span class="fa fa-arrow-right"></span></button>
+    <div class="container">
+        <div class="row">
+            <!--Logo-->
+            <div class="navbar-header col-lg-2">
+                <a class="navbar-brand" href="">Brand</a>
+            </div>
+            <div class="col-lg-1">城市定位</div>
+            <!--注册/登录-->
+            <div class="navbar-search col-lg-6">
+                <form class="navbar-form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="搜索">
+                    </div>
+                    <button type="submit" class="btn btn-default"><span class="fa fa-arrow-right"></span></button>
 
 
+
+
+                </form>
+            </div>
+            <div class="col-lg-3">
                 <ul class="float-right nav-login">
                     {% if userid %}
 
                     <li>
                         <a href="/login?method=login"><i class="fa fa-comment"></i>
-                                您的消息
+
 
                             </a>
                     </li>
                     <li>
-                        <a href="/login?method=login"> <i class="fa fa-comment"></i>充值中心
+                        <a href="/login?method=login"> <i class="fa fa-comment"></i>
 
                         </a>
                     </li>
                     <li>
-                        <a href="/login?method=register"> <i class="fa fa-comment"></i>{{ nickname }}
+                        <a href="/login?method=register">
+                            <div class="profile-photo-div"><img src="/static/images/dva_1.jpg"></div>
 
                         </a>
                     </li>
@@ -69,8 +70,7 @@
                     </li>
                     {% endif %}
                 </ul>
-
-            </form>
+            </div>
         </div>
 
         <div class="collapse navbar-collapse" id="homepage_user">
@@ -122,7 +122,8 @@
         </ul>
     </div>
 
-    <div class="category-right" id="index_ad">
+
+    <div class="category-right">
         <div id="myCarousel" class="carousel slide">
             <ol class="carousel-indicators">
                 <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -150,121 +151,44 @@
 
     <hr id="index_commodity" />
 
-    <a href="#">
-        <p align="center">电子产品</p>
-    </a>
 
-    <div class="uhui">
-        <div class="uhui-head">
-            这里是商家名
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <a href="#" class="thumbnail">
+                <img src="/static/images/dva_1.jpg" alt="">
+            </a>
         </div>
-        <div class="uhui-body">
-            <div class="uhui-body-img">
-                <img src="/static/images/dva_1.jpg" alt="" class="img_suit">
-            </div>
-            <div class="uhui-body-content">
-                这里是内容
-            </div>
-            <div class="uhui-body-value">
-                这里是估值
-            </div>
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <a href="#" class="thumbnail">
+                <img src="/static/images/dva_1.jpg" alt="">
+            </a>
         </div>
-        <div class="uhui-tail">
-            这里是优惠券截止时间
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <a href="#" class="thumbnail">
+                <img src="/static/images/dva_1.jpg" alt="">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <a href="#" class="thumbnail">
+                <img src="/static/images/dva_1.jpg" alt="">
+            </a>
         </div>
     </div>
-
-
-
-    <hr/>
-
-
-    <a href="#">
-        <p align="center">用户讨论区</p>
-    </a>
-    <div class="col-md-12">
-        <div id="homepage_user_discuss" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="item active">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <a href="#" class="thumbnail">
-                                <img src="/static/images/dva_1.jpg" class="img-responsive">
-                            </a>
-                        </div>
-                        <div class="col-sm-3">
-                            <a href="#" class="thumbnail">
-                                <img src="/static/images/dva_1.jpg" class="img-responsive">
-                            </a>
-                        </div>
-                        <div class="col-sm-3">
-                            <a href="#" class="thumbnail">
-                                <img src="/static/images/dva_1.jpg" class="img-responsive">
-                            </a>
-                        </div>
-                        <div class="col-sm-3">
-                            <a href="#" class="thumbnail">
-                                <img src="/static/images/dva_1.jpg" class="img-responsive">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <a href="#" class="thumbnail">
-                                <img src="/static/images/dva_1.jpg" class="img-responsive">
-                            </a>
-                        </div>
-                        <div class="col-sm-3">
-                            <a href="#" class="thumbnail">
-                                <img src="/static/images/dva_1.jpg" class="img-responsive">
-                            </a>
-                        </div>
-                        <div class="col-sm-3">
-                            <a href="#" class="thumbnail">
-                                <img src="/static/images/dva_1.jpg" class="img-responsive">
-                            </a>
-                        </div>
-                        <div class="col-sm-3">
-                            <a href="#" class="thumbnail">
-                                <img src="/static/images/dva_1.jpg" class="img-responsive">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <a href="#" class="thumbnail">
-                                <img src="/static/images/dva_1.jpg" class="img-responsive">
-                            </a>
-                        </div>
-                        <div class="col-sm-3">
-                            <a href="#" class="thumbnail">
-                                <img src="/static/images/dva_1.jpg" class="img-responsive">
-                            </a>
-                        </div>
-                        <div class="col-sm-3">
-                            <a href="#" class="thumbnail">
-                                <img src="/static/images/dva_1.jpg" class="img-responsive">
-                            </a>
-                        </div>
-                        <div class="col-sm-3">
-                            <a href="#" class="thumbnail">
-                                <img src="/static/images/dva_1.jpg" class="img-responsive">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <a class="left carousel-control" href="#homepage_user_discuss" data-slide="prev"></a>
-            <a class="right carousel-control" href="#homepage_user_discuss" data-slide="next"></a>
-        </div>
-
+    <div class="uhui-tail">
+        这里是优惠券截止时间
     </div>
 </div>
+
+
+
+
+
+
+
+
+
 </div>
+<!-- recontainer -->
 
 
 </body>

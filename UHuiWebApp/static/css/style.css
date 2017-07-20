@@ -97,8 +97,6 @@ li {
 }
 
 .navbar-search {
-    width: 88%;
-    float: right;
     height: 50px;
     left: 0;
     right: 0;
@@ -136,6 +134,12 @@ li {
     color: white;
 }
 
+.nav-login {
+    margin-bottom: 0;
+    line-height: 40px;
+    font-size: 16px;
+}
+
 .nav-login li {
     display: inline-block;
     margin: 0 0 0 30px;
@@ -148,6 +152,7 @@ li {
 
 .nav-login li a i {
     padding: 0 5px 0 0;
+    font-size: 34px;
 }
 
 @media screen and (max-width: 768px) {
@@ -405,4 +410,22 @@ button[type=button]:disabled {
     border: 1px solid #DDD;
     background-color: #F5F5F5;
     color: #ACA899;
+}
+
+.profile-photo-div {
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    height: 34px;
+    width: 34px;
+    display: inline-block;
+    margin: 0 5px 0 0;
+}
+
+.profile-photo-div img {
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    height: 100%;
+    width: 100%;
 }
