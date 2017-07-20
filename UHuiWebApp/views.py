@@ -1,4 +1,5 @@
 from UHuiProject.settings import DEBUG
+from django.core.exceptions import ObjectDoesNotExist
 from UHuiWebApp import models
 from .shortcut import JsonResponse, render
 import hashlib
@@ -33,7 +34,7 @@ def randomID():
     for i in range(0, 4):
         append = append + random.choice('abcdefghijklmopqrstuvwxyz')
     ID = "%d%s" % (signUpTime, append)
-    if models.User.objects.filter(id=ID).count() != 0:
+    if models.User.objects.filter(id=ID).exists():
         return randomID()
     return ID
 
@@ -49,6 +50,25 @@ def getListItem(listid):
     return listInfo
 
 
+def post_getCouponByCat(request):
+    catid = request.POST['catID']
+    cookie_content = request.COOKIES.get('page', False)
+    coupons = models.Coupon.objects.filter(catid=catid, stat='onSale')
+    if not cookie_content:
+        page = 0
+    else:
+        page = cookie_content
+    result = []
+    for i in range(0,9):
+        result.append(coupons[9*page+i])
+    resultSet = {}
+    for coupon in result:
+        resultSet[coupon.couponid] = post_couponInfo(coupon.couponid)
+    response = JsonResponse(resultSet)
+    response.set_cookie('page', page+1)
+    return response
+
+
 def post_couponInfo(couponID):
     coupon = models.Coupon.objects.get(couponid=couponID)
     limits = models.Limit.objects.filter(couponID=couponID)
@@ -61,8 +81,8 @@ def post_couponInfo(couponID):
             sellerInfo = post_userInfo(listStat.userid)
     couponInfo = {}
     couponInfo['couponID'] = coupon.couponid
-    couponInfo['brand'] = getBrand(coupon.brandid)
-    couponInfo['cat'] = getCat(coupon.catid)
+    couponInfo['brand'] = getBrandInfo(coupon.brandid)
+    couponInfo['cat'] = getCatName(coupon.catid)
     couponInfo['listPrice'] = coupon.listprice
     couponInfo['value'] = coupon.value
     couponInfo['product'] = coupon.product
@@ -86,18 +106,25 @@ def post_userInfo(u_id):
     nickname = user.nickname
     gender = user.gender
     UCoin = user.ucoin
+    avatar = user.avatar
     # {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList}
-    content = {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList, 'UCoin': UCoin}
+    content = {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList, 'UCoin': UCoin, 'avatar': avatar}
     return content
 
 
-def getCat(cid):
-    cat = models.Category.objects.get(catid=cid)
+def getCatName(cid):
+    try:
+        cat = models.Category.objects.get(catid=cid)
+    except ObjectDoesNotExist:
+        return 'cat does not exist'
     return cat.name
 
 
-def getBrand(bid):
-    brand = models.Brand.objects.get(brandid=bid)
+def getBrandInfo(bid):
+    try:
+        brand = models.Brand.objects.get(brandid=bid)
+    except ObjectDoesNotExist:
+        return {'brand': 'no brand info'}
     info = {}
     info['name'] = brand.name
     info['address'] = brand.address
@@ -130,13 +157,13 @@ def post_storeCoupon(request):
     pic = request.POST.get('pic', DEFAULT_PIC)
 
     # 判断brand是否存在
-    if models.Brand.objects.filter(name=brand).count() == 0:
+    if not models.Brand.objects.filter(name=brand).exists():
         brandID = models.Brand(brandid=None, name=brand)
     else:
         brandID = models.Brand.objects.get(name=brand)
 
     # 获取catID
-    if models.Category.objects.filter(name=cat).count() == 0:
+    if not models.Category.objects.filter(name=cat).exists():
         return {'errno': 1, 'message': 'category not found'}
     else:
         catID = models.Category.objects.get(name=cat)
@@ -207,10 +234,21 @@ def post_like(request):
     sellerID = get_uid(request)
     coupon = models.Coupon.objects.get(couponid=couponID)
     likeList = models.Couponlist.objects.get(stat='like', userid=sellerID)
-    if models.Listitem.objects.filter(listid=likeList.listid, couponid=couponID).count() != 0:
+    if models.Listitem.objects.filter(listid=likeList.listid, couponid=couponID).exists():
         return {'errno': 1, 'message': '该优惠券已被关注'}
     models.Listitem.objects.create(listid=likeList, couponid=coupon)
     return {'errno': '0', 'message': '关注成功'}
+
+
+def post_buyCredit(request):
+    uid = get_uid(request)
+    amount = request.POST['amount']
+    if request.POST['pay'] == 'failed':
+        return {'errno': 1, 'message': '支付失败'}
+    user = models.User.objects.get(id=uid)
+    user.ucoin = user.ucoin + amount
+    user.save()
+    return {'errno': 0, 'message': '充值成功'}
 
 
 # 添加商家。后台接口，前端不连接
@@ -224,9 +262,40 @@ def post_storeCat(request):
 
 
 # 创建message
-def post_createMessage(messageType, couponID):
+def post_createMessage(messageType, couponID, content=None):
 
-    pass
+    messageID = randomID()
+
+    # 找owner
+    lists = models.Listitem.objects.filter(couponid=couponID)
+    # 根据messageType的不同寻找不同的接收USER，并填入相应的content
+    #               0                    1                   2                3                 4
+    types = ['上架的优惠券被购买', '上架的优惠券即将过期', '上架的优惠券已过期', '关注的优惠券即将过期', '关注的优惠券已被购买',
+             '我的优惠券即将过期', '我的优惠券已过期', '系统通知']
+    #               5                   6           7
+    if messageType not in lists:
+        return {'errno': '1', 'message': '消息类型不存在'}
+    userlist = []
+    if messageType == types[3] or messageType == types[4]:
+        # like列表
+
+        for listItem in lists:
+            if models.Couponlist.objects.filter(stat='like', listid=listItem.listid).exists():
+                userlist.append(models.Couponlist.objects.get(stat='like', listid=listItem.listid))
+
+        pass
+    else:
+        # own列表
+        for listItem in lists:
+            if models.Couponlist.objects.filter(stat='own', listid=listItem.listid).exists():
+                userlist.append(models.Couponlist.objects.get(stat='own', listid=listItem.listid))
+    if content is None:
+        content = messageType
+    for user in userlist:
+        models.Message.objects.create(messageID=randomID(), userid=user, content=content,
+                                      time=time.strftime("%Y-%m-%d", time.localtime()), messageCat=messageType,
+                                      couponid=couponID, hasread=False, hassend=False)
+    return {'errno': '0', 'message': '成功'}
 
 
 # 为用户添加各种表
@@ -246,7 +315,7 @@ def login(request):
     return render(request, 'login.html')
 
 
-def user(request):
+def userPage(request):
     return render(request, 'user.html')
 
 
@@ -286,6 +355,8 @@ def post_login(request):
 
 def post_signUp(request):
     username = request.POST.get('username')
+    if username == '':
+        return JsonResponse({'errno': '1', 'message': '手机号或邮箱不能为空'})
     nickname = request.POST.get('nickname')
     password = encryption(request.POST.get('password'))
     gender = request.POST.get('gender')
@@ -294,7 +365,7 @@ def post_signUp(request):
         print(username + nickname + gender)
 
     if '@' in username:
-        if models.User.objects.filter(email=username).count() != 0:
+        if models.User.objects.filter(email=username).exists():
             return JsonResponse({'errno': '1', 'message': '邮箱已被注册'})
         # 查询数据库中昵称是否存在
         if models.User.objects.filter(nickname=nickname):
@@ -302,7 +373,9 @@ def post_signUp(request):
         # 邮箱验证
         # 将邮箱作为用户名存入数据库中
         uid = randomID()
-        user = models.User(id=uid, nickname=nickname, password=password, gender=gender, email=username)
+
+        user = models.User(id=uid, nickname=nickname, password=password, gender=gender, email=username, ucoin=0)
+
         # 创建列表
         user.save()
         createLists(user)
@@ -310,7 +383,7 @@ def post_signUp(request):
         return JsonResponse({'errno': '2', 'message': '请检查验证邮件'})
 
     else:
-        if models.User.objects.filter(phonenum=username).count() != 0:
+        if models.User.objects.filter(phonenum=username).exists():
             return JsonResponse({'errno': '1', 'message': '手机号已被注册'})
         # 查询数据库中昵称是否存在
         if models.User.objects.filter(nickname=nickname):
@@ -321,7 +394,7 @@ def post_signUp(request):
         uid = randomID()
         user = models.User(id=uid, nickname=nickname, password=password, gender=gender,
 
-                           phonenum=username)
+                           phonenum=username, ucoin=0)
         user.save()
         # 创建列表
 
@@ -339,6 +412,8 @@ def get_uid(request):
         return None
     uid = content[0]
     psw = content[1]
+    if not models.User.objects.filter(id=uid).exists():
+        return None
     pswObj = models.User.objects.get(id=uid)
     password = bytes.decode(pswObj.password.encode("UTF-8"))
     encrypPsw = encryption(uid + password)

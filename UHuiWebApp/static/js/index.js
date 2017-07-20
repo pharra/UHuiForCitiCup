@@ -1,25 +1,25 @@
 /*
-$(".category-list").hover(
-    function (event) {
-        $($(this).children().attr("href")).css("height", $('#myCarousel').height());
-        $($(this).children().attr("href")).css("width", $('#myCarousel').width());
-        $($(this).children().attr("href")).removeClass("being-hidden");
-        $($(this).children().attr("href")).css("left", $('#myCarousel').offset().left);
-        $($(this).children().attr("href")).css("top", $('#myCarousel').offset().top);
-        $('#myCarousel').addClass("being-hidden");
-    },
-    function () {
-        $($(this).children().attr("href")).addClass("being-hidden");
-        $('#myCarousel').removeClass("being-hidden");
-    }
-);
-$(".category-left").css("height", $('#myCarousel').height());
+ $(".category-list").hover(
+ function (event) {
+ $($(this).children().attr("href")).css("height", $('#myCarousel').height());
+ $($(this).children().attr("href")).css("width", $('#myCarousel').width());
+ $($(this).children().attr("href")).removeClass("being-hidden");
+ $($(this).children().attr("href")).css("left", $('#myCarousel').offset().left);
+ $($(this).children().attr("href")).css("top", $('#myCarousel').offset().top);
+ $('#myCarousel').addClass("being-hidden");
+ },
+ function () {
+ $($(this).children().attr("href")).addClass("being-hidden");
+ $('#myCarousel').removeClass("being-hidden");
+ }
+ );
+ $(".category-left").css("height", $('#myCarousel').height());
 
-$(window).resize(function () {
-    $(".category-left").css("height", $('#myCarousel').height());
-});
+ $(window).resize(function () {
+ $(".category-left").css("height", $('#myCarousel').height());
+ });
 
-*/
+ */
 
 $(".login-li").click(function () {
     removechecked("#re-password");
@@ -199,7 +199,30 @@ function sign_up() {
             $("#login-failed").show();
         }
         else if (data.errno == "0") {
-            window.location.href = "/";
+
+
+            $.ajax({
+                url: '/post_login',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    "username": $("#user_id").val(),
+                    "password": $("#signup-md5-password").val()
+                },
+                timeout: 3000,
+                cache: false,
+                success: succFunction
+            })
+
+
+            function succFunction(data) {
+                if (data.error == "") {
+                    window.location.href = "/";
+                }
+
+            }
+
+
         }
 
         else if (data.errno == "2") {
@@ -208,3 +231,11 @@ function sign_up() {
     }
 
 };
+
+$(document).ready(function () {
+    $(window).scroll(function (event) {
+        $("#homepage_navigation").css("top", $(window).scrollTop() + 'px');
+
+
+    });
+});
