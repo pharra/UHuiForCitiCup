@@ -16,21 +16,15 @@
 <nav class="navbar">
 
 
-    <div class="recontainer">
+    <div class="container">
+    <div class="row">
         <!--Logo-->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-targer="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-
-            </button>
+        <div class="navbar-header col-lg-2">
             <a class="navbar-brand" href="">Brand</a>
         </div>
+    <div class="col-lg-1">城市定位</div>
         <!--注册/登录-->
-        <div class="navbar-search">
+        <div class="navbar-search col-lg-6">
             <form class="navbar-form">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="搜索">
@@ -38,22 +32,26 @@
                 <button type="submit" class="btn btn-default"><span class="fa fa-arrow-right"></span></button>
 
 
-                <ul class="float-right nav-login">
+
+
+            </form>
+        </div>
+        <div class="col-lg-3">  <ul class="float-right nav-login">
                     {% if userid %}
 
                         <li>
                             <a href="/login?method=login"><i class="fa fa-comment"></i>
-                                您的消息
+
 
                             </a>
                         </li>
                         <li>
-                            <a href="/login?method=login"> <i class="fa fa-comment"></i>充值中心
+                            <a href="/login?method=login"> <i class="fa fa-comment"></i>
 
                             </a>
                         </li>
                         <li>
-                            <a href="/login?method=register"> <i class="fa fa-comment"></i>{{ nickname }}
+                            <a href="/login?method=register"><div class="profile-photo-div"><img src="/static/images/dva_1.jpg" ></div>
 
                             </a>
                         </li>
@@ -69,9 +67,7 @@
                             </a>
                         </li>
                     {% endif %}
-                </ul>
-
-            </form>
+                </ul></div>
         </div>
 
         <div class="collapse navbar-collapse" id="homepage_user">
@@ -125,86 +121,7 @@
         </ul>
     </div>
 
-    <!--商品推荐栏-->
 
-    <!-- <div class="category-left">
-
-         <ul class="category-menu" id="homepage_ad">
-             <li class="category-list">
-                 <a href="#category-list-dropdown_1"></a>
-                 <ul class="ul_left">电子产品
-                     <div class="category-list-dropdown" id="category-list-dropdown_1">
-                         <a href="#"><img class="img_suit" src="/static/images/dva_4.jpg"></a>
-                     </div>
-                 </ul>
-             </li>
-
-             <li class="category-list">
-                 <a href="#category-list-dropdown_2"></a>
-                 <ul class="ul_left">生活家居
-                     <div class="category-list-dropdown" id="category-list-dropdown_2">
-                         <a href="#"><img class="img_suit" src="/static/images/dva_4.jpg"></a>
-                     </div>
-                 </ul>
-             </li>
-
-             <li class="category-list">
-                 <a href="#category-list-dropdown_3"></a>
-                 <ul class="ul_left">服饰妆饰
-                     <div class="category-list-dropdown" id="category-list-dropdown_3">
-                         <a href="/login"><img class="img_suit" src="/static/images/dva_4.jpg"></a>
-                     </div>
-                 </ul>
-             </li>
-
-             <li class="category-list">
-                 <a href="#category-list-dropdown_4"></a>
-                 <ul class="ul_left">饮食烟酒
-                     <div class="category-list-dropdown" id="category-list-dropdown_4">
-                         <a href="/login"><img class="img_suit" src="/static/images/dva_4.jpg"></a>
-                     </div>
-                 </ul>
-             </li>
-
-             <li class="category-list">
-                 <a href="#category-list-dropdown_5"></a>
-                 <ul class="ul_left">图书音像
-                     <div class="category-list-dropdown" id="category-list-dropdown_5">
-                         <a href="/login"><img class="img_suit" src="/static/images/dva_4.jpg"></a>
-                     </div>
-                 </ul>
-             </li>
-
-             <li class="category-list">
-                 <a href="#category-list-dropdown_6"></a>
-                 <ul class="ul_left">旅行住宿
-                     <div class="category-list-dropdown" id="category-list-dropdown_6">
-                         <a href="/login"><img class="img_suit" src="/static/images/dva_4.jpg"></a>
-                     </div>
-                 </ul>
-             </li>
-
-             <li class="category-list">
-                 <a href="#category-list-dropdown_7"></a>
-                 <ul class="ul_left">礼品特产
-                     <div class="category-list-dropdown" id="category-list-dropdown_7">
-                         <a href="/login"><img class="img_suit" src="/static/images/dva_4.jpg"></a>
-                     </div>
-                 </ul>
-             </li>
-
-             <li class="category-list">
-                 <a href="#category-list-dropdown_8"></a>
-                 <ul class="ul_left">文娱体育
-                     <div class="category-list-dropdown" id="category-list-dropdown_8">
-                         <a href="/login"><img class="img_suit" src="/static/images/dva_4.jpg"></a>
-                     </div>
-                 </ul>
-             </li>
-         </ul>
-
-     </div>
--->
     <div class="category-right">
         <div id="myCarousel" class="carousel slide">
             <!-- 轮播（Carousel）指标 -->
@@ -232,36 +149,24 @@
         </div>
 
 
-        <a href="#">
-            <p align="center">电子产品</p>
-        </a>
+
         <div class="row">
-            <div class="col-xs-12 col-md-2">
+            <div class="col-lg-3 col-md-3 col-sm-3">
                 <a href="#" class="thumbnail">
                     <img src="/static/images/dva_1.jpg" alt="">
                 </a>
             </div>
-            <div class="col-xs-12 col-md-2">
+            <div class="col-lg-3 col-md-3 col-sm-3">
                 <a href="#" class="thumbnail">
                     <img src="/static/images/dva_1.jpg" alt="">
                 </a>
             </div>
-            <div class="col-xs-12 col-md-2">
+            <div class="col-lg-3 col-md-3 col-sm-3">
                 <a href="#" class="thumbnail">
                     <img src="/static/images/dva_1.jpg" alt="">
                 </a>
             </div>
-            <div class="col-xs-12 col-md-2">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-xs-12 col-md-2">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-xs-12 col-md-2">
+            <div class="col-lg-3 col-md-3 col-sm-3">
                 <a href="#" class="thumbnail">
                     <img src="/static/images/dva_1.jpg" alt="">
                 </a>
@@ -269,95 +174,13 @@
         </div>
 
 
-        <hr/>
 
 
-        <a href="#">
-            <p align="center">用户讨论区</p>
-        </a>
-        <div class="col-md-12">
-            <div id="homepage_user_discuss" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="item active">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <a href="#" class="thumbnail">
-                                    <img src="/static/images/dva_1.jpg" class="img-responsive">
-                                </a>
-                            </div>
-                            <div class="col-sm-3">
-                                <a href="#" class="thumbnail">
-                                    <img src="/static/images/dva_1.jpg" class="img-responsive">
-                                </a>
-                            </div>
-                            <div class="col-sm-3">
-                                <a href="#" class="thumbnail">
-                                    <img src="/static/images/dva_1.jpg" class="img-responsive">
-                                </a>
-                            </div>
-                            <div class="col-sm-3">
-                                <a href="#" class="thumbnail">
-                                    <img src="/static/images/dva_1.jpg" class="img-responsive">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <a href="#" class="thumbnail">
-                                    <img src="/static/images/dva_1.jpg" class="img-responsive">
-                                </a>
-                            </div>
-                            <div class="col-sm-3">
-                                <a href="#" class="thumbnail">
-                                    <img src="/static/images/dva_1.jpg" class="img-responsive">
-                                </a>
-                            </div>
-                            <div class="col-sm-3">
-                                <a href="#" class="thumbnail">
-                                    <img src="/static/images/dva_1.jpg" class="img-responsive">
-                                </a>
-                            </div>
-                            <div class="col-sm-3">
-                                <a href="#" class="thumbnail">
-                                    <img src="/static/images/dva_1.jpg" class="img-responsive">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <a href="#" class="thumbnail">
-                                    <img src="/static/images/dva_1.jpg" class="img-responsive">
-                                </a>
-                            </div>
-                            <div class="col-sm-3">
-                                <a href="#" class="thumbnail">
-                                    <img src="/static/images/dva_1.jpg" class="img-responsive">
-                                </a>
-                            </div>
-                            <div class="col-sm-3">
-                                <a href="#" class="thumbnail">
-                                    <img src="/static/images/dva_1.jpg" class="img-responsive">
-                                </a>
-                            </div>
-                            <div class="col-sm-3">
-                                <a href="#" class="thumbnail">
-                                    <img src="/static/images/dva_1.jpg" class="img-responsive">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <a class="left carousel-control" href="#homepage_user_discuss" data-slide="prev"></a>
-                <a class="right carousel-control" href="#homepage_user_discuss" data-slide="next"></a>
-            </div>
 
-        </div>
-    </div>
-</div>
+
+
+
+</div> <!-- recontainer -->
 
 
 </body>
