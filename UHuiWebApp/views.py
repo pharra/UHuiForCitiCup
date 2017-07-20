@@ -2,9 +2,12 @@ from UHuiProject.settings import DEBUG
 from django.core.exceptions import ObjectDoesNotExist
 from UHuiWebApp import models
 from .shortcut import JsonResponse, render
+
 import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
+from email.utils import parseaddr, formataddr
+
 import hashlib
 import time
 import random
@@ -42,32 +45,39 @@ def randomID():
     return ID
 
 
-def sendConfirmMail():
-    # 第三方 SMTP 服务
-    mail_host = "smtp.126.com"  # 设置服务器
-    mail_user = "uhuiforciti@126.com"  # 用户名
-    mail_pass = "uhuiforciti123"  # 口令
+def _format_addr(s):
+    name, addr = parseaddr(s)
+    return formataddr((Header(name, 'utf-8').encode(), addr))
 
-    sender = 'confirm@uhui.com'
-    receivers = ['929527511@qq.com']  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
 
-    message = MIMEText('Python 邮件发送测试...', 'plain', 'utf-8')
-    message['From'] = Header("菜鸟教程", 'utf-8')
-    message['To'] = Header("测试", 'utf-8')
+def sendConfirmMail(to_addr, address):
+    # address 为登录判断的一条request
+    from_addr = 'manager@uhuiforciti.cn'
+    password = 'uhuiforciti'
+    smtp_server = 'smtp.ym.163.com'
+    msg = MIMEText('请点击下方链接确认注册\n %s' % address, 'plain', 'utf-8')
+    msg['From'] = _format_addr('No-Reply <%s>' % from_addr)
+    msg['To'] = _format_addr('管理员 <%s>' % to_addr)
+    msg['Subject'] = Header('U惠网注册确认', 'utf-8').encode()
 
-    subject = 'Python SMTP 邮件测试'
-    message['Subject'] = Header(subject, 'utf-8')
-
+    server = smtplib.SMTP(smtp_server, 25)
+    server.set_debuglevel(1)
     try:
-        smtpObj = smtplib.SMTP()
-        smtpObj.connect(mail_host, 25)  # 25 为 SMTP 端口号
-        smtpObj.login(mail_user, mail_pass)
-        smtpObj.sendmail(sender, receivers, message.as_string())
-        print
-        "邮件发送成功"
-    except smtplib.SMTPException:
-        print
-        "Error: 无法发送邮件"
+        server.login(from_addr, password)
+        server.sendmail(from_addr, [to_addr], msg.as_string())
+        return True
+    except smtplib.SMTPException as smtpe:
+        print(str(smtpe))
+        return False
+    finally:
+        server.quit()
+
+
+# 定时任务
+def timer():
+    pass
+
+
 # 获取数据
 def getListItem(listid):
     lists = models.Couponlist.objects.get(listid=listid)
@@ -79,6 +89,15 @@ def getListItem(listid):
     return listInfo
 
 
+def post_getUserCoupon(request):
+    userid = get_uid(request)
+    coupons = models.Coupon.objects.filter(userid=userid)
+    coupondict = {}
+    for i in range(0, coupons.count()):
+        coupondict[coupons[i].couponid] = coupons.values()[i]
+    return JsonResponse(coupondict)
+
+
 def post_getCouponByCat(request):
     catid = request.POST['catID']
     cookie_content = request.COOKIES.get('page', False)
@@ -88,13 +107,13 @@ def post_getCouponByCat(request):
     else:
         page = cookie_content
     result = []
-    for i in range(0,9):
-        result.append(coupons[9*page+i])
+    for i in range(0, 9):
+        result.append(coupons[9 * page + i])
     resultSet = {}
     for coupon in result:
         resultSet[coupon.couponid] = post_couponInfo(coupon.couponid)
     response = JsonResponse(resultSet)
-    response.set_cookie('page', page+1)
+    response.set_cookie('page', page + 1)
     return response
 
 
@@ -137,7 +156,8 @@ def post_userInfo(u_id):
     UCoin = user.ucoin
     avatar = user.avatar
     # {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList}
-    content = {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList, 'UCoin': UCoin, 'avatar': avatar}
+    content = {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList, 'UCoin': UCoin,
+               'avatar': avatar}
     return content
 
 
@@ -292,7 +312,6 @@ def post_storeCat(request):
 
 # 创建message
 def post_createMessage(messageType, couponID, content=None):
-
     messageID = randomID()
 
     # 找owner
