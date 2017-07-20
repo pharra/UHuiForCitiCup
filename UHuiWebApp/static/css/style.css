@@ -444,4 +444,45 @@ button[type=button]:disabled {
     -moz-border-radius: 2px;
     top:34px;
     margin-top: 8px;
+    padding:0 15px 0 15px;
+}
+.nav-login li .message-div-arrow{
+    position: absolute;
+    top:34px;
+    font-size: 8px;
+    color: white;
+    left: 35px;
+
+}
+.message-div-header{
+    height: 50px;
+    border-bottom: 1px solid #ebeef5;
+}
+
+.border-right{
+    border-right:1px solid #e8e8e8 ;
+}
+.message-div-header-category{
+    height: 39px;
+    line-height: 39px;
+   text-align: center;
+}
+
+.message-div-header-category i {
+    padding: 5px 5px 5px 5px;
+}
+
+.message-div-header-category img{
+    padding: 5px 5px 5px 5px;
+    height: 42px;
+    width: 42px;
+}
+
+.message-div-body{
+    height: 350px;
+}
+
+.message-div-footer{
+    border-top:1px solid #e8e8e8;
+    height: 39px;
 }
