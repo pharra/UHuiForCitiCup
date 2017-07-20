@@ -19,12 +19,12 @@
     <div class="container">
         <div class="row">
             <!--Logo-->
-            <div class="navbar-header col-lg-2 col-md-2">
+            <div class="navbar-header col-lg-1 col-md-1  col-sm-1 ">
                 <a class="navbar-brand" href="">Brand</a>
             </div>
-            <div class="col-lg-1 col-md-1">定位</div>
+            <div class="col-lg-2 col-md-2  col-sm-2 city-position"><div style="margin: 0 15px 0 15px;"><i class="fa fa-location-arrow"></i> 定位</div></div>
             <!--注册/登录-->
-            <div class="navbar-search col-lg-6 col-md-6">
+            <div class="navbar-search col-lg-6 col-md-6  col-sm-6">
                 <form class="navbar-form">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="搜索">
@@ -36,26 +36,25 @@
 
                 </form>
             </div>
-            <div class="col-lg-3 col-md-3">
-                <ul class="float-right nav-login">
+            <div class="col-lg-3 col-md-3  col-sm-3">
+                <ul class="nav-login row">
                     {% if userid %}
+                    <li class="col-lg-4 col-md-4  col-sm-4">
+                        <i class="fa fa-comment point showsinglemessage" id="singlemessage"></i>
+<div  class="being-hidden message-div" id="forsinglemessage"></div>
 
-                    <li>
-                        <a href="/login?method=login"><i class="fa fa-comment"></i>
 
-
-                            </a>
                     </li>
-                    <li>
-                        <a href="/login?method=login"> <i class="fa fa-comment"></i>
+                    <li class="col-lg-4 col-md-4 col-sm-4">
+                        <i class="fa fa-comment point"></i>
 
-                        </a>
+
                     </li>
-                    <li>
-                        <a href="/login?method=register">
-                            <div class="profile-photo-div"><img src="/static/images/dva_1.jpg"></div>
+                    <li class="col-lg-4 col-md-4 col-sm-4">
 
-                        </a>
+                            <div class="profile-photo-div point"><img src="/static/images/dva_1.jpg"></div>
+
+
                     </li>
                     {% else %}
                     <li>
@@ -79,7 +78,7 @@
 <!--主页推送轮播-->
 <!--轮播一张图-->
 <div class="container">
-    <div class=" category-left" id="homepage_navigation">
+    <div class="col-lg-2 col-md-2  category-left" id="homepage_navigation">
         <ul class="category-menu">
             <!--#homepage_top-->
             <li><i class="fa fa-commenting-o"></i>用户讨论</li>
@@ -96,7 +95,7 @@
     </div>
 
 
-    <div class="category-right">
+    <div class="category-right col-lg-10 col-md-10 ">
         <div id="myCarousel" class="carousel slide">
             <!-- 轮播（Carousel）指标 -->
             <ol class="carousel-indicators">
