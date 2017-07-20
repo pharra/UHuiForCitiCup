@@ -17,10 +17,11 @@ class JSONResponse(HttpResponse):
         super(JSONResponse,self).__init__(content,**kwargs)
 # Create your views here.
 
+
+#注册
 def post_signUpForAndroid(request):
     return post_signUp(request)
-
-
+#登录
 def post_loginForAndroid(request):
     u_name = request.POST.get('username')
     # 通过@判断用户名为email/手机号
@@ -46,36 +47,27 @@ def post_loginForAndroid(request):
     else:
         return JsonResponse({'error': '密码错误'})
 #搜索
-
-def searchForAndroid(request):
+def post_searchForAndroid(request):
     searchKeyWord = request.POST.get('keyWord',0)
     result = Coupon.objects.filter(product__contains=searchKeyWord).filter(stat='onSale')
     resultdata = serializers.serialize('json',result)
     return HttpResponse(resultdata, content_type="application/json")
-
 #点击种类进行查询
-def selectCategoryForAndroid(request):
+def post_selectCategoryForAndroid(request):
     selectCategory = request.POST.get('categoryID',0)
-    try:
-        result = Coupon.objects.filter(catID=selectCategory).filter(stat='onSale')
-    except Coupon.DoesNotExist:
-        return JSONResponse({'error': '内容不存在'})
-    couponSeria = couponSerializer(result)
-    return JSONResponse(couponSeria.data)
-
+    result = Coupon.objects.filter(catID=selectCategory).filter(stat='onSale')
+    resultdata = serializers.serialize('json',result)
+    return HttpResponse(resultdata,content_type="application/json")
 #查询优惠券详细信息
-def couponDetailForAndroid(request):
+def post_couponDetailForAndroid(request):
     cpID = request.POST.get('couponID',0)
-    try:
-        result = Coupon.objects.filter(couponID=cpID)
-    except Coupon.DoesNotExist:
-        return JSONResponse({'error': '内容不存在'})
-    couponSeria = couponSerializer(result)
-    return JSONResponse(couponSeria.data)
-
-
+    if cpID == 0 :
+        return JsonResponse({'error':'优惠券不存在'})
+    result = Coupon.objects.filter(pk=cpID)
+    resultdata = serializers.serialize('json',result)
+    return HttpResponse(resultdata, content_type="application/json")
 #通过优惠券ID查询所有者
-def ownerDetailForAndroid(request):
+def post_ownerDetailForAndroid(request):
     cpID = request.POST.get('couponID',0)
     checklistitem = Listitem.objects.filter(couponid=cpID)
     checklistID = checklistitem.values('listid')
@@ -85,11 +77,10 @@ def ownerDetailForAndroid(request):
         result = User.objects.filter(id=checkUserid)
     except User.DoesNotExist:
         return JsonResponse({'error':'用户不存在'})
-    UserSeria = userSerializer(result)
-    return JSONResponse(UserSeria.data)
-
+    resultdata = serializers.serialize('json',result)
+    return HttpResponse(resultdata,content_type='application/json')
 #购买后修改优惠券信息
-def buyCoupon(request):
+def post_buyCoupon(request):
     cpID = request.POST.get('couponID',0)
     u_id = request.POST.get('userID',0)
     cp = Coupon.objects.get(couponid=cpID)
@@ -115,23 +106,19 @@ def buyCoupon(request):
     pass
     #生成通知关注者的message
     pass
-
 #关注优惠券接口
-def likeCoupon(request):
+def post_likeCoupon(request):
     cpID = request.POST.get('couponID',0)
     u_ID = request.POST.get('userID',0)
     userLikeList = Couponlist.objects.filter(userid=u_ID).filter(stat='like').values('listid')
     Listitem.objects.create(couponID = cpID,listID = userLikeList)
     return JsonResponse({'result':'success'})
-
-
 #消息发送接口
 def post_sendMessage(request):
     userID = request.POST.get('userID',0)
     msg = Message.objects.filter(userid=userID)
     msgdata = serializers.serialize("json",msg,fields = ('messageid','content','time','messagecat','couponid'))
     return HttpResponse(msgdata,content_type="application/json")
-
 #消息生成接口
 def createMessage():
     pass
