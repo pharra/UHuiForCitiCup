@@ -17,94 +17,68 @@
 
 
     <div class="container">
-    <div class="row">
-        <!--Logo-->
-        <div class="navbar-header col-lg-2">
-            <a class="navbar-brand" href="">Brand</a>
-        </div>
-    <div class="col-lg-1">城市定位</div>
-        <!--注册/登录-->
-        <div class="navbar-search col-lg-6">
-            <form class="navbar-form">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="搜索">
-                </div>
-                <button type="submit" class="btn btn-default"><span class="fa fa-arrow-right"></span></button>
+        <div class="row">
+            <!--Logo-->
+            <div class="navbar-header col-lg-2 col-md-2">
+                <a class="navbar-brand" href="">Brand</a>
+            </div>
+            <div class="col-lg-1 col-md-1">定位</div>
+            <!--注册/登录-->
+            <div class="navbar-search col-lg-6 col-md-6">
+                <form class="navbar-form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="搜索">
+                    </div>
+                    <button type="submit" class="btn btn-default"><span class="fa fa-arrow-right"></span></button>
 
 
 
 
-            </form>
-        </div>
-        <div class="col-lg-3">  <ul class="float-right nav-login">
+                </form>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <ul class="float-right nav-login">
                     {% if userid %}
 
-                        <li>
-                            <a href="/login?method=login"><i class="fa fa-comment"></i>
+                    <li>
+                        <a href="/login?method=login"><i class="fa fa-comment"></i>
 
 
                             </a>
-                        </li>
-                        <li>
-                            <a href="/login?method=login"> <i class="fa fa-comment"></i>
+                    </li>
+                    <li>
+                        <a href="/login?method=login"> <i class="fa fa-comment"></i>
 
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/login?method=register"><div class="profile-photo-div"><img src="/static/images/dva_1.jpg" ></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/login?method=register">
+                            <div class="profile-photo-div"><img src="/static/images/dva_1.jpg"></div>
 
-                            </a>
-                        </li>
+                        </a>
+                    </li>
                     {% else %}
-                        <li>
-                            <a href="/login?method=register">注册
+                    <li>
+                        <a href="/login?method=register">注册
                                 <span class="glyphicon glyphicon-user"></span>
                             </a>
-                        </li>
-                        <li>
-                            <a href="/login?method=login">登录
+                    </li>
+                    <li>
+                        <a href="/login?method=login">登录
                                 <span class="glyphicon glyphicon-user"></span>
                             </a>
-                        </li>
+                    </li>
                     {% endif %}
-                </ul></div>
+                </ul>
+            </div>
         </div>
 
-        <div class="collapse navbar-collapse" id="homepage_user">
-            <ul class="nav navbar-nav navbar-right being-hidden">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">
-                        <span class="glyphicon glyphicon-user"></span> 用户中心
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">我的关注</a></li>
-                        <li><a href="#">我的优惠</a></li>
-                        <li><a href="#">我的交易</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">
-                        <span class="glyphicon glyphicon-envelope"></span>消息中心
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">系统消息</a></li>
-                        <li><a href="#">交易信息</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="glyphicon glyphicon-usd"></span>充值中心
-                    </a>
-                </li>
-            </ul>
-        </div>
+
     </div>
 </nav>
 <!--主页推送轮播-->
 <!--轮播一张图-->
-<div class="recontainer">
+<div class="container">
     <div class=" category-left" id="homepage_navigation">
         <ul class="category-menu">
             <!--#homepage_top-->
@@ -180,12 +154,13 @@
 
 
 
-</div> <!-- recontainer -->
+    </div>
+    <!-- recontainer -->
 
 
-</body>
-<script src="/static/js/jquery-3.2.1.min.js"></script>
-<script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/js/index.js"></script>
+    </body>
+    <script src="/static/js/jquery-3.2.1.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/index.js"></script>
 
 </html>

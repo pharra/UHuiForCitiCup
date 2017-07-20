@@ -109,7 +109,7 @@ li {
 
 .navbar-search .form-group {
     display: inline-block;
-    width: 50%;
+    width: 80%;
     float: left;
 }
 
@@ -129,28 +129,30 @@ li {
     border-radius: 0;
     border: 1px solid #f25039;
     border-left: 0;
-    width: 40px;
+    width: 12%;
     background-color: #f25039;
     color: white;
 }
-.nav-login{
-    margin-bottom: 0;
-    line-height: 40px;
-    font-size: 16px;
-}
-.nav-login li {
-    display: inline-block;
-    margin: 0 0 0 30px;
-    width: 100px;
-    word-break: keep-all;
 
+.nav-login {
+    line-height: 34px;
+    font-size: 16px;
+    width: 100%;
+    margin: 8px 0 8px 0;
+    height: 34px;
+}
+
+.nav-login li {
+    margin: 0 0 0 30px;
+    word-break: keep-all;
+    display: inline-block;
     white-space: nowrap;
     overflow-x: hidden;
     text-overflow: ellipsis;
 }
 
-.nav-login li a i{
-   padding: 0 5px 0 0;
+.nav-login li a i {
+    padding: 0 5px 0 0;
     font-size: 34px;
 }
 
@@ -181,14 +183,12 @@ li {
     letter-spacing: 1px;
     border: 1px solid coral;
     border-radius: 4px;
-
 }
 
 @media (max-width: 768px) {
     .category-menu {
         display: none;
     }
-
     .category-right {
         width: 100%;
     }
@@ -209,6 +209,7 @@ li {
     font-size: 14px;
     margin: 0 5px 0 0;
 }
+
 
 /*
 .category-list {
@@ -348,7 +349,7 @@ li {
     width: 60px;
 }
 
-.otherlogin > div {
+.otherlogin>div {
     margin: 0 10px 0 10px;
     padding: 0 5px 0 5px;
     width: 70px;
@@ -393,17 +394,17 @@ button[type=button]:disabled {
     color: #ACA899;
 }
 
-.profile-photo-div{
+.profile-photo-div {
     border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     height: 34px;
     width: 34px;
     display: inline-block;
-    margin: 0 5px 0 0 ;
+    margin: 0 5px 0 0;
 }
 
-.profile-photo-div img{
+.profile-photo-div img {
     border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
