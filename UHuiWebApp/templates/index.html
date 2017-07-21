@@ -58,11 +58,17 @@
                                     <div class="clear"></div>
                                 </div>
                                 <div class="message-div-body">
+                                    {% for i in couponsOwn %}
 
+                                    <div class="message-div-body-content">
+                                        {{ i.product }}
+                                    </div>
+                                    {% endfor %}
                                 </div>
 
                                 <div class="message-div-footer">
-
+                                    <div class="col-lg-4 col-md-4  col-lg-4 col-lg-offset-8 col-md-offset-8  col-sm-offset-8 ">
+                                        <a href="#">查看全部</a></div>
                                 </div>
                             </div>
                         </div>
@@ -174,7 +180,6 @@
     这里是优惠券截止时间
 </div>
 </div>
-
 
 
 </div>
