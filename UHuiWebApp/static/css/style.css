@@ -550,3 +550,8 @@ button[type=button]:disabled {
     top: 34px;
     margin-top: 8px;
 }
+
+.username-text-css{
+    text-align: center;
+    padding: 15px;
+}
