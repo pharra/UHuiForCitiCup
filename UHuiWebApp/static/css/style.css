@@ -529,7 +529,7 @@ button[type=button]:disabled {
     text-align: center;
 }
 
-.message-div-body-content{
+.message-div-body-content {
     padding: 15px;
     position: relative;
     font-size: 14px;
@@ -537,8 +537,7 @@ button[type=button]:disabled {
     color: #262626;
 }
 
-
-.userinfo-div{
+.userinfo-div {
     position: absolute;
     width: 120px;
     padding: 15px;
@@ -548,7 +547,7 @@ button[type=button]:disabled {
     border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
-    top:34px;
+    top: 34px;
     margin-top: 8px;
 }
 
