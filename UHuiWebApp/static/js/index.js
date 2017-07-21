@@ -318,7 +318,7 @@ $('#edit_userinfo_submit').blur('input propertychange', function () {
 
 });
 
-function edit_userinfo_submit() {
+function func_edit_userinfo_submit() {
     var content = {};
     if ($("#newname").val()) {
         content.nickname = $("#newname").val();
@@ -343,7 +343,7 @@ function edit_userinfo_submit() {
         timeout: 3000,
         cache: false,
     });
-}
+};
 
 function get_email_verificationcode() {
     var email = $("#newemail").val();
@@ -356,7 +356,7 @@ function get_email_verificationcode() {
         cache: false,
     });
 
-}
+};
 
 function get_phone_verificationcode() {
     var phonenum = $("#newtelno").val();
@@ -369,7 +369,7 @@ function get_phone_verificationcode() {
         cache: false,
     });
 
-}
+};
 $(".max").click(function () {
     var tab_div = '#info_' + $(this).attr("id");
     $(tab_div).parent().parent().show();
