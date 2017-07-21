@@ -145,7 +145,10 @@ def post_search(request):
     key = request.POST.get('keyWord', False)
     if not key:
         return {'result': "请输入关键词"}
-    result = models.Coupon.objects.filter(product__contains=key, stat='onSale').values()
+    productResult = models.Coupon.objects.filter(product__contains=key, stat='onSale').values()
+    result = []
+    for coupon in productResult:
+        result.append(coupon)
     brandIDResult = models.Brand.objects.filter(name__contains=key)
     for brand in brandIDResult:
         temp = models.Coupon.objects.filter(brandid=brand.brandid)
@@ -504,7 +507,7 @@ def post_signUp(request):
         uid = randomID()
 
         user = models.User(id=uid, nickname=nickname, password=password, gender=gender, email=username, ucoin=0,
-                           hasConfirm=False)
+                           hasconfirm=False)
 
         # 创建列表
         user.save()
@@ -524,7 +527,7 @@ def post_signUp(request):
         uid = randomID()
         user = models.User(id=uid, nickname=nickname, password=password, gender=gender,
 
-                           phonenum=username, ucoin=0, hasConfirm=True)
+                           phonenum=username, ucoin=0, hasconfirm=True)
         user.save()
         # 创建列表
 
