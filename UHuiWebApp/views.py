@@ -92,10 +92,8 @@ def getListItem(listid):
 def post_getUserCoupon(request):
     userid = get_uid(request)
     coupons = models.Coupon.objects.filter(userid=userid)
-    coupondict = {}
-    for i in range(0, coupons.count()):
-        coupondict[coupons[i].couponid] = coupons.values()[i]
-    return JsonResponse(coupondict)
+    coupondict = {'coupons': coupons.values()}
+    return coupondict
 
 
 def post_getCouponByCat(request):
@@ -356,7 +354,7 @@ def createLists(user):
 
 # get方法函数
 def index(request):
-    return render(request, 'index.html', {"a": "a"})
+    return render(request, 'index.html', post_getUserCoupon(request))
 
 
 def login(request):
