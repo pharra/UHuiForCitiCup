@@ -480,9 +480,26 @@ button[type=button]:disabled {
 
 .message-div-body{
     height: 350px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .message-div-footer{
     border-top:1px solid #e8e8e8;
     height: 39px;
+}
+
+.message-div-footer div {
+    line-height: 39px;
+    font-size: 14px;
+    height: 39px;
+    text-align: center;
+}
+
+.message-div-body-content{
+    padding: 15px;
+    position: relative;
+    font-size: 14px;
+    line-height: 24px;
+    color: #262626;
 }
