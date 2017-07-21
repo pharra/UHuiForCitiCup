@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'UHuiWebApp',
     'rest_framework',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -101,6 +102,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+CRONJOBS = [
+    ('0 2 * * *', 'UHuiWebApp.views.timer')
+]
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
