@@ -1,3 +1,4 @@
+
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -58,6 +59,15 @@ class Couponlist(models.Model):
         db_table = 'couponlist'
 
 
+class DjangoMigrations(models.Model):
+    app = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    applied = models.DateTimeField()
+
+    class Meta:
+        managed = True
+        db_table = 'django_migrations'
+
 
 
 
@@ -105,6 +115,7 @@ class User(models.Model):
     email = models.CharField(unique=True, max_length=32, blank=True, null=True)
     ucoin = models.IntegerField(db_column='UCoin')  # Field name made lowercase.
     hasconfirm = models.IntegerField(db_column='hasConfirm')  # Field name made lowercase.
+
 
     class Meta:
         managed = True

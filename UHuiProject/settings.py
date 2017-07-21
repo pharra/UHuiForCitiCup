@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'UHuiWebApp',
     'rest_framework',
     'django_crontab',
+    'apiForAndroid',
 ]
 
 MIDDLEWARE = [
