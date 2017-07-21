@@ -48,12 +48,13 @@
                                     <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
                                         <img src="/static/images/youhuiquan.png">
                                     </div>
-                                    <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
-                                        <img src="/static/images/systemmessage.png">
-                                    </div>
+                                    <div class="message-div-body">
+                                        {% for i in couponsOwn %}
 
-                                    <div class="col-lg-4 col-md-4  col-sm-4 message-div-header-category">
-                                        <img src="/static/images/systemmessage.png">
+                                        <div class="message-div-body-content">
+                                            {{ i.product }}
+                                        </div>
+                                        {% endfor %}
                                     </div>
                                     <div class="clear"></div>
                                 </div>
@@ -116,93 +117,125 @@
 <div class="container">
     <div class="col-lg-2 col-md-2  category-left" id="homepage_navigation">
         <ul class="category-menu">
-            <!--#homepage_top-->
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
+            <a href="#index_nav">
+                <li><i class="fa fa-angle-up"></i></li>
+            </a>
+            <a href="#index_ad">
+                <li><i class="fa fa-thumbs-o-up"></i>每日推荐</li>
+            </a>
+            <a href="#index_commodity">
+                <li><i class="fa fa-shopping-basket"></i>生活百货</li>
+            </a>
+            <a href="#index_electronic">
+                <li><i class="fa fa-laptop"></i>电子产品</li>
+            </a>
+            <a href="#index_diet">
+                <li><i class="fa fa-cutlery"></i>饮食保健</li>
+            </a>
+            <a href="#index_cloth">
+                <li><i class="fa fa-commenting-o"></i>服装装饰</li>
+            </a>
+            <a href="#index_play">
+                <li><i class="fa fa-video-camera"></i>文娱体育</li>
+            </a>
+            <a href="#index_travel">
+                <li><i class="fa fa-car"></i>旅行住宿</li>
+            </a>
+            <a href="#index_home">
+                <li><i class="fa fa-home"></i>家具家居</li>
+            </a>
+            <a href="#index_dressing">
+                <li><i class="fa fa-female"></i>美妆妆饰</li>
+            </a>
+            <a href="#index_discuss">
+                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
+            </a>
+            <a href="#index_vote">
+                <li><i class="fa fa-file"></i>用户投票</li>
+            </a>
         </ul>
     </div>
 
 
     <div class="category-right col-lg-10 col-md-10 ">
         <div id="myCarousel" class="carousel slide">
-            <!-- 轮播（Carousel）指标 -->
             <ol class="carousel-indicators">
                 <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                 <li data-target="#myCarousel" data-slide-to="1"></li>
                 <li data-target="#myCarousel" data-slide-to="2"></li>
             </ol>
-            <!-- 轮播（Carousel）项目 -->
             <div class="carousel-inner">
                 <div class="item active">
                     <img src="/static/images/dva_1.jpg" alt="First slide">
                 </div>
                 <div class="item">
-                    <img src="/static/images/dva_2.jpg" alt="Second slide">
+                    <img src="/static/images/dva_2.jpg" alt="">
                 </div>
                 <div class="item">
-                    <img src="/static/images/dva_3.jpg" alt="Third slide">
+                    <img src="/static/images/dva_3.jpg" alt="">
                 </div>
             </div>
-            <!-- 轮播（Carousel）导航 -->
             <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
             <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
-
-
-        <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
-            </div>
-        </div>
-
-
+        <!-- 轮播（Carousel）导航 -->
+        <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+        <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
     </div>
-    <!-- recontainer -->
-    <div id="allmap"></div>
 
-    </body>
-    <script src="/static/js/jquery-3.2.1.min.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-    <script src="/static/js/index.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GeoLBAU1t7TRpqXhtw8VIth4r6PGAU3U"></script>
-    <script type="text/javascript">
-        // 百度地图API功能
-        var map = new BMap.Map("allmap");
-        var point = new BMap.Point(116.331398, 39.897445);
-        map.centerAndZoom(point, 12);
+    <hr id="index_commodity" />
 
-        function myFun(result) {
-            var cityName = result.name;
-            map.setCenter(cityName);
-            $("#city-position").html("<i class=\"fa fa-location-arrow\"></i>" + cityName);
-        }
-        var myCity = new BMap.LocalCity();
-        myCity.get(myFun);
-    </script>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <a href="#" class="thumbnail">
+                <img src="/static/images/dva_1.jpg" alt="">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <a href="#" class="thumbnail">
+                <img src="/static/images/dva_1.jpg" alt="">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <a href="#" class="thumbnail">
+                <img src="/static/images/dva_1.jpg" alt="">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <a href="#" class="thumbnail">
+                <img src="/static/images/dva_1.jpg" alt="">
+            </a>
+        </div>
+    </div>
+</div>
+<div class="uhui-tail">
+    这里是优惠券截止时间
+</div>
+</div>
+
+
+</div>
+<!-- recontainer -->
+<div id="allmap"></div>
+
+</body>
+<script src="/static/js/jquery-3.2.1.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/index.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GeoLBAU1t7TRpqXhtw8VIth4r6PGAU3U"></script>
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point(116.331398, 39.897445);
+    map.centerAndZoom(point, 12);
+
+    function myFun(result) {
+        var cityName = result.name;
+        map.setCenter(cityName);
+        $("#city-position").html("<i class=\"fa fa-location-arrow\"></i>" + cityName);
+    }
+    var myCity = new BMap.LocalCity();
+    myCity.get(myFun);
+</script>
 
 </html>
