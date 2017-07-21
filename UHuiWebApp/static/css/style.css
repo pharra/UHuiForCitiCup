@@ -71,8 +71,6 @@ li {
     padding-left: 15px;
 }
 
-
-
 .navbar {
     background-color: rgba(0, 0, 0, 0);
 }
@@ -139,11 +137,12 @@ li {
     height: 34px;
     line-height: 34px;
 }
-.navbar{
+
+.navbar {
     border-bottom: 1px solid #ebeef5;
 }
 
-.nav-login li  i {
+.nav-login li i {
     font-size: 32px;
     color: #5e5e5e;
 }
@@ -161,6 +160,17 @@ li {
     position: relative;
 }
 
+.menu-left {
+    float: left;
+    width: 10%;
+}
+
+.menu-right {
+    float: right;
+    width: 85%;
+    position: relative;
+}
+
 .category-right {
     float: right;
     position: relative;
@@ -174,6 +184,7 @@ li {
     border: 1px solid coral;
     border-radius: 4px;
 }
+
 @media (max-width: 768px) {
     .category-menu {
         display: none;
@@ -183,7 +194,7 @@ li {
     }
 }
 
-@media (min-width: 768px) and (max-width: 992px){
+@media (min-width: 768px) and (max-width: 992px) {
     .category-menu {
         display: none;
     }
@@ -192,19 +203,17 @@ li {
     }
 }
 
-@media (min-width: 992px) and (max-width: 1200px)
-{
+@media (min-width: 992px) and (max-width: 1200px) {
     .category-menu {
-    margin: 0 10% 0 10%;
-}
-}
-@media (min-width: 1200px)
-{
-    .category-menu {
-    margin: 0 16% 0 16%;
-}
+        margin: 0 10% 0 10%;
+    }
 }
 
+@media (min-width: 1200px) {
+    .category-menu {
+        margin: 0 16% 0 16%;
+    }
+}
 
 .category-menu li {
     margin: 0 8px 0 8px;
@@ -424,15 +433,37 @@ button[type=button]:disabled {
     width: 100%;
 }
 
-.city-position{
+.uhui-body {
+    height: 100px;
+    float: left;
+}
+
+.uhui-partbody {
+    width: 100%;
+    height: 50px;
+    float: left;
+}
+
+.uhui-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-setting {
+    height: 50px;
+}
+
+.city-position {
     height: 50px;
     line-height: 50px;
 }
 
-.point{
+.point {
     cursor: pointer;
 }
-.message-div{
+
+.message-div {
     position: absolute;
     height: 439px;
     width: 360px;
@@ -442,50 +473,52 @@ button[type=button]:disabled {
     border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
-    top:34px;
+    top: 34px;
     margin-top: 8px;
-    padding:0 15px 0 15px;
+    padding: 0 15px 0 15px;
 }
-.nav-login li .message-div-arrow{
+
+.nav-login li .message-div-arrow {
     position: absolute;
-    top:34px;
+    top: 34px;
     font-size: 8px;
     color: white;
     left: 35px;
-
 }
-.message-div-header{
+
+.message-div-header {
     height: 50px;
     border-bottom: 1px solid #ebeef5;
 }
 
-.border-right{
-    border-right:1px solid #e8e8e8 ;
+.border-right {
+    border-right: 1px solid #e8e8e8;
 }
-.message-div-header-category{
+
+.message-div-header-category {
     height: 39px;
     line-height: 39px;
-   text-align: center;
+    text-align: center;
 }
 
 .message-div-header-category i {
     padding: 5px 5px 5px 5px;
 }
 
-.message-div-header-category img{
+.message-div-header-category img {
     padding: 5px 5px 5px 5px;
     height: 42px;
     width: 42px;
 }
 
-.message-div-body{
+.message-div-body {
     height: 350px;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
-.message-div-footer{
-    border-top:1px solid #e8e8e8;
+.message-div-footer {
+    border-top: 1px solid #e8e8e8;
     height: 39px;
 }
 
@@ -502,4 +535,19 @@ button[type=button]:disabled {
     font-size: 14px;
     line-height: 24px;
     color: #262626;
+}
+
+
+.userinfo-div{
+    position: absolute;
+    width: 120px;
+    padding: 15px;
+    z-index: 100000;
+    background-color: #ffffff;
+    border: 1px solid #ebeef5;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    top:34px;
+    margin-top: 8px;
 }

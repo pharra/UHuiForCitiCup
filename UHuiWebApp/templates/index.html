@@ -39,64 +39,70 @@
             <div class="col-lg-3 col-md-3  col-sm-3">
                 <ul class="nav-login row">
                     {% if userid %}
-                        <li class="col-lg-4 col-md-4  col-sm-4">
-                            <i class="fa fa-comment point showsinglemessage" id="singlemessage"></i>
-                            <i class="fa fa-caret-up message-div-arrow" aria-hidden="true"></i>
-                            <div class="being-hidden message-div" id="forsinglemessage">
-                                <div class="message-div-header row">
-                                    <div style="margin: 5px 0 5px 0;">
-                                        <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
-                                            <img src="/static/images/youhuiquan.png">
-                                        </div>
-                                        <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
-                                            <img src="/static/images/systemmessage.png">
-                                        </div>
-
-                                        <div class="col-lg-4 col-md-4  col-sm-4 message-div-header-category">
-                                            <img src="/static/images/systemmessage.png">
-                                        </div>
-                                        <div class="clear"></div>
+                    <li class="col-lg-4 col-md-4  col-sm-4">
+                        <i class="fa fa-comment point showsinglemessage" id="singlemessage"></i>
+                        <i class="fa fa-caret-up message-div-arrow" aria-hidden="true"></i>
+                        <div class="being-hidden message-div" id="forsinglemessage">
+                            <div class="message-div-header row">
+                                <div style="margin: 5px 0 5px 0;">
+                                    <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
+                                        <img src="/static/images/youhuiquan.png">
                                     </div>
-                                    <div class="message-div-body">
-                                        {% for i in couponsOwn %}
+                                    <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
+                                        <img src="/static/images/systemmessage.png">
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-4  col-sm-4 message-div-header-category">
+                                        <img src="/static/images/systemmessage.png">
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="message-div-body">
+                                    {% for i in couponsOwn %}
 
                                     <div class="message-div-body-content">
-                                    {{ i.product }}
+                                        {{ i.product }}
                                     </div>
-                                        {% endfor %}
-                                    </div>
+                                    {% endfor %}
+                                </div>
 
-                                    <div class="message-div-footer">
-                                        <div class="col-lg-4 col-md-4  col-lg-4 col-lg-offset-8 col-md-offset-8  col-sm-offset-8 ">
-                                            <a href="#">查看全部</a></div>
-                                    </div>
+                                <div class="message-div-footer">
+                                    <div class="col-lg-4 col-md-4  col-lg-4 col-lg-offset-8 col-md-offset-8  col-sm-offset-8 ">
+                                        <a href="#">查看全部</a></div>
                                 </div>
                             </div>
+                        </div>
 
 
-                        </li>
-                        <li class="col-lg-4 col-md-4 col-sm-4">
-                            <i class="fa fa-comment point"></i>
+                    </li>
+                    <li class="col-lg-4 col-md-4 col-sm-4">
+                        <i class="fa fa-comment point"></i>
 
 
-                        </li>
-                        <li class="col-lg-4 col-md-4 col-sm-4">
+                    </li>
+                    <li class="col-lg-4 col-md-4 col-sm-4">
 
-                            <div class="profile-photo-div point"><img src="/static/images/dva_1.jpg"></div>
+                        <div class="profile-photo-div point" id="userinfo"><img src="/static/images/dva_1.jpg">
+                        </div>
+                        <div class="being-hidden userinfo-div" id="foruserinfo">
 
+                            <span> {{ nickname }}</span>
+                            <span> U币余额:{{ UCoin }}</span>
+                            <span><a href="/user">用户中心</a></span>
+                        </div>
 
-                        </li>
+                    </li>
                     {% else %}
-                        <li class="col-lg-6 col-md-6  col-sm-6">
-                            <a href="/login?method=register">注册
+                    <li class="col-lg-6 col-md-6  col-sm-6">
+                        <a href="/login?method=register">注册
                                 <span class="glyphicon glyphicon-user hidden-sm"></span>
                             </a>
-                        </li>
-                        <li class="col-lg-6 col-md-6  col-sm-6">
-                            <a href="/login?method=login">登录
+                    </li>
+                    <li class="col-lg-6 col-md-6  col-sm-6">
+                        <a href="/login?method=login">登录
                                 <span class="glyphicon glyphicon-user  hidden-sm"></span>
                             </a>
-                        </li>
+                    </li>
                     {% endif %}
                 </ul>
             </div>
@@ -183,8 +189,7 @@
     <script src="/static/js/jquery-3.2.1.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/index.js"></script>
-    <script type="text/javascript"
-            src="http://api.map.baidu.com/api?v=2.0&ak=GeoLBAU1t7TRpqXhtw8VIth4r6PGAU3U"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GeoLBAU1t7TRpqXhtw8VIth4r6PGAU3U"></script>
     <script type="text/javascript">
         // 百度地图API功能
         var map = new BMap.Map("allmap");
