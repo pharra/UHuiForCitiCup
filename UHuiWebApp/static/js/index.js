@@ -336,7 +336,7 @@ function func_edit_userinfo_submit() {
         content.newphone_verification_code = $("#newphone_verification_code").val();
     }
     $.ajax({
-        url: '/post_sendEmailVerifyCode',
+        url: '/post_modifyUserInfo',
         type: 'POST',
         dataType: 'json',
         data: content,
