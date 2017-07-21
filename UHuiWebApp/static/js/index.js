@@ -242,16 +242,15 @@ $(document).ready(function () {
 });
 
 
-
-$(".showsinglemessage").click(function () {
-    var being_hidden_message= '#for' + $(this).attr("id");
+$("#singlemessage, #userinfo").click(function () {
+    var being_hidden_message = '#for' + $(this).attr("id");
     $(being_hidden_message).toggleClass("being-hidden");
-    var offsetleft = '-' + $(being_hidden_message).width()/2 + "px";
+    var offsetleft = '-' + ($(being_hidden_message).width() / 2 - $(this).parent().width() / 2) + "px";
     // var offsetleft = $(this).offset().left;
     // var offsettop = $(this).offset().top;
     // $(being_hidden_message).css("top",offsettop);
     // $(being_hidden_message).css("left",offsetleft);
-    $(being_hidden_message).css("left",offsetleft);
+    $(being_hidden_message).css("left", offsetleft);
 
 
 });

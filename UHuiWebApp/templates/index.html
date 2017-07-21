@@ -60,9 +60,9 @@
                                     <div class="message-div-body">
                                         {% for i in couponsOwn %}
 
-                                    <div class="message-div-body-content">
-                                    {{ i.product }}
-                                    </div>
+                                            <div class="message-div-body-content">
+                                                {{ i.product }}
+                                            </div>
                                         {% endfor %}
                                     </div>
 
@@ -82,8 +82,14 @@
                         </li>
                         <li class="col-lg-4 col-md-4 col-sm-4">
 
-                            <div class="profile-photo-div point"><img src="/static/images/dva_1.jpg"></div>
+                            <div class="profile-photo-div point" id="userinfo"><img src="/static/images/dva_1.jpg">
+                            </div>
+                            <div class="being-hidden userinfo-div" id="foruserinfo">
 
+                                <span> {{ nickname }}</span>
+                                <span> U币余额:{{ UCoin }}</span>
+                                <span><a href="/user">用户中心</a></span>
+                            </div>
 
                         </li>
                     {% else %}
