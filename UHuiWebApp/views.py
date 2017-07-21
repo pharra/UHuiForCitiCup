@@ -117,7 +117,7 @@ def modifyUserInfo(request):
     if newGender:
         user.gender = newGender
     if newPsw and oldPsw:
-        if encryption(oldPsw) == user.password:
+        if encryption(oldPsw) == bytes.decode(user.password.encode("UTF-8")):
             user.Psw = encryption(newPsw)
         else:
             return {'errno': '1', 'message': '旧密码不正确'}
@@ -139,6 +139,20 @@ def getListItem(listid):
         coupon.append(item.couponid.couponid)
     listInfo = {'listID': listid, 'stat': lists.stat, 'coupons': coupon}
     return listInfo
+
+
+def post_search(request):
+    key = request.POST.get('keyWord', False)
+    if not key:
+        return {'result': "请输入关键词"}
+    result = models.Coupon.objects.filter(product__contains=key, stat='onSale').values()
+    brandIDResult = models.Brand.objects.filter(name__contains=key)
+    for brand in brandIDResult:
+        temp = models.Coupon.objects.filter(brandid=brand.brandid)
+        if temp.exists():
+            for info in temp.values():
+                result.append(info)
+    return {'coupons': result}
 
 
 def post_getUserCoupon(request):
