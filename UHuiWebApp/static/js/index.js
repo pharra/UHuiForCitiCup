@@ -21,7 +21,7 @@
 
  */
 
-$(".login-li").click(function () {
+$(".login-li").click(function() {
     removechecked("#re-password");
     removechecked("#user_id");
     $(this).addClass("login-active");
@@ -67,7 +67,8 @@ function getchecked(id) {
     return ($(thisid).length >= 1);
 }
 
-$('#user_id').bind('input propertychange', function () {
+
+$('#user_id').bind('input propertychange', function() {
     if (isPhoneNo($('#user_id').val()) && $('#user_id').val()) {
         $('#verification_code_div').show();
         $('#user_id_content').hide();
@@ -84,7 +85,7 @@ $('#user_id').bind('input propertychange', function () {
     }
 });
 
-$('#user_id').blur('input propertychange', function () {
+$('#user_id').blur('input propertychange', function() {
     if (isPhoneNo($('#user_id').val())) {
         $('#verification_code_div').show();
     } else if (isEmail($('#user_id').val())) {
@@ -100,7 +101,7 @@ $('#user_id').blur('input propertychange', function () {
 });
 
 
-$('#re-password,#password').blur('input propertychange', function () {
+$('#re-password,#password').blur('input propertychange', function() {
     if (($('#re-password').val() == $("#password").val()) && ($('#re-password').val() != "") && $('#password').val() != "") {
         $('#password_content').hide();
         CheckedCss("#re-password");
@@ -115,19 +116,19 @@ $('#re-password,#password').blur('input propertychange', function () {
 });
 
 
-$("#login-password").blur('input propertychange', function () {
+$("#login-password").blur('input propertychange', function() {
     $("#login-md5-password").val($.md5($("#login-password").val() + "UHui"));
 });
 
 
-$('#user_id,#re-password,#password,#nickname').bind('input propertychange', function () {
+$('#user_id,#re-password,#password,#nickname').bind('input propertychange', function() {
     if ((isPhoneNo($('#user_id').val()) || isEmail($('#user_id').val())) && (($('#re-password').val() == $("#password").val()) && ($('#re-password').val() != "") && $('#password').val() != "") && ($('#nickname').val().length > 0)) {
         $("#login-button").attr("disabled", false);
     } else {
         $("#login-button").attr("disabled", "disabled");
     }
 });
-$(window).resize(function () {
+$(window).resize(function() {
     if (getchecked("#user_id")) {
         removechecked("#user_id");
         CheckedCss("#user_id");
@@ -137,13 +138,14 @@ $(window).resize(function () {
         CheckedCss("#re-password");
     }
 });
+
 function login_handler() {
 
     $.ajax({
         url: '/post_login',
         type: 'POST',
         dataType: 'json',
-        data: {"username": $("#login-username").val(), "password": $("#login-md5-password").val()},
+        data: { "username": $("#login-username").val(), "password": $("#login-md5-password").val() },
         timeout: 3000,
         cache: false,
         beforeSend: LoadFunction,
@@ -151,11 +153,9 @@ function login_handler() {
         success: succFunction
     })
 
-    function LoadFunction() {
-    }
+    function LoadFunction() {}
 
-    function erryFunction() {
-    }
+    function erryFunction() {}
 
     function succFunction(data) {
         if (data.error == "") {
@@ -187,18 +187,15 @@ function sign_up() {
         success: succFunction
     })
 
-    function LoadFunction() {
-    }
+    function LoadFunction() {}
 
-    function erryFunction() {
-    }
+    function erryFunction() {}
 
     function succFunction(data) {
         if (data.errno == "1") {
             $("#login-failed").children()[0].innerHTML = data.message;
             $("#login-failed").show();
-        }
-        else if (data.errno == "0") {
+        } else if (data.errno == "0") {
 
 
             $.ajax({
@@ -223,19 +220,31 @@ function sign_up() {
             }
 
 
-        }
-
-        else if (data.errno == "2") {
+        } else if (data.errno == "2") {
             window.location.href = "/";
         }
     }
 
 };
 
-$(document).ready(function () {
-    $(window).scroll(function (event) {
-        $("#homepage_navigation").css("top", $(window).scrollTop() + 'px');
+$(document).ready(function() {
+    $(window).scroll(function(event) {
+        $("#index_navigation").css("top", $(window).scrollTop() + 'px');
 
 
     });
+});
+
+
+$("#singlemessage, #userinfo").click(function() {
+    var being_hidden_message = '#for' + $(this).attr("id");
+    $(being_hidden_message).toggleClass("being-hidden");
+    var offsetleft = '-' + ($(being_hidden_message).width() / 2 - $(this).parent().width() / 2) + "px";
+    // var offsetleft = $(this).offset().left;
+    // var offsettop = $(this).offset().top;
+    // $(being_hidden_message).css("top",offsettop);
+    // $(being_hidden_message).css("left",offsetleft);
+    $(being_hidden_message).css("left", offsetleft);
+
+
 });

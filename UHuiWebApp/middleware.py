@@ -16,7 +16,7 @@ class SimpleMiddleware(object):
         request.uid = None
         if uid:
             request.uid = uid
-        elif url.startswith("/manage"):
+        elif url.startswith("/manage") or url.startswith('/user'):
             return HttpResponseRedirect("/login")
 
     def __call__(self, request):
