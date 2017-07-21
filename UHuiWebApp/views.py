@@ -84,7 +84,7 @@ def getListItem(listid):
     listItems = models.Listitem.objects.filter(listid=listid)
     coupon = []
     for item in listItems:
-        coupon.append(item.couponid)
+        coupon.append(item.couponid.couponid)
     listInfo = {'listID': listid, 'stat': lists.stat, 'coupons': coupon}
     return listInfo
 
@@ -130,18 +130,18 @@ def post_getCouponByCat(request):
 
 def post_couponInfo(couponID):
     coupon = models.Coupon.objects.get(couponid=couponID)
-    limits = models.Limit.objects.filter(couponID=couponID)
+    limits = models.Limit.objects.filter(couponid=couponID)
     lists = models.Listitem.objects.filter(couponid=couponID)
     sellerInfo = {}
     for listItem in lists:
-        listID = listItem.listid
+        listID = listItem.listid.listid
         listStat = models.Couponlist.objects.get(listid=listID)
         if listStat.stat == 'onSale':
             sellerInfo = post_userInfo(listStat.userid)
     couponInfo = {}
     couponInfo['couponID'] = coupon.couponid
-    couponInfo['brand'] = getBrandInfo(coupon.brandid)
-    couponInfo['cat'] = getCatName(coupon.catid)
+    couponInfo['brand'] = coupon.brandid.name
+    couponInfo['cat'] = coupon.catid.name
     couponInfo['listPrice'] = coupon.listprice
     couponInfo['value'] = coupon.value
     couponInfo['product'] = coupon.product
@@ -246,7 +246,7 @@ def post_storeCoupon(request):
 def post_buy(request):
     couponID = request.POST['couponID']
     sellerID = request.POST['sellerID']
-    buyerID = get_uid(request)
+    buyerID = request.uid
     # 检查优惠券是否存在
     coupon = models.Coupon.objects.get(couponid=couponID)
     if coupon.stat != 'onSale':
@@ -279,7 +279,7 @@ def post_buy(request):
 def post_putOnSale(request):
     # 优惠券加入卖家的onSale列表
     couponID = request.POST['couponID']
-    sellerID = get_uid(request)
+    sellerID = request.uid
     coupon = models.Coupon.objects.get(couponid=couponID)
     if coupon.stat != 'store':
         return {'errno': 1, 'message': '上架失败'}
@@ -291,7 +291,7 @@ def post_putOnSale(request):
 def post_like(request):
     # 优惠券加入like列表
     couponID = request.POST['couponID']
-    sellerID = get_uid(request)
+    sellerID = request.uid
     coupon = models.Coupon.objects.get(couponid=couponID)
     likeList = models.Couponlist.objects.get(stat='like', userid=sellerID)
     if models.Listitem.objects.filter(listid=likeList.listid, couponid=couponID).exists():
@@ -301,7 +301,7 @@ def post_like(request):
 
 
 def post_buyCredit(request):
-    uid = get_uid(request)
+    uid = request.uid
     amount = request.POST['amount']
     if request.POST['pay'] == 'failed':
         return {'errno': 1, 'message': '支付失败'}
@@ -383,7 +383,7 @@ def post_login(request):
     # cookie_content = request.COOKIES.get('uhui')
     # if cookie_content:
     #     u_name = cookie_content.split("_")[0]
-    # uid = get_uid(request)
+    # uid = request.uid
     u_name = request.POST.get('username')
     # 通过@判断用户名为email/手机号
     if "@" in u_name:
