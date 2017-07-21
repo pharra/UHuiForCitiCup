@@ -10,6 +10,8 @@ from __future__ import unicode_literals
 from django.db import models
 
 
+
+
 class Brand(models.Model):
     brandid = models.AutoField(db_column='brandID', primary_key=True)  # Field name made lowercase.
     name = models.CharField(unique=True, max_length=16)
@@ -57,6 +59,8 @@ class Couponlist(models.Model):
 
 
 
+
+
 class Limit(models.Model):
     couponid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='couponID', blank=True, null=True)  # Field name made lowercase.
     content = models.CharField(max_length=128, blank=True, null=True)
@@ -100,6 +104,7 @@ class User(models.Model):
     password = models.CharField(max_length=32)
     email = models.CharField(unique=True, max_length=32, blank=True, null=True)
     ucoin = models.IntegerField(db_column='UCoin')  # Field name made lowercase.
+    hasconfirm = models.IntegerField(db_column='hasConfirm')  # Field name made lowercase.
 
     class Meta:
         managed = True

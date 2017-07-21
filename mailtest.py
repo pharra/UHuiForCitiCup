@@ -13,8 +13,8 @@ def _format_addr(s):
 
 def sendConfirmMail(to_addr, address):
     # address 为登录判断的一条request
-    from_addr = 'manager@uhuiforciti.cn'
-    password = 'uhuiforciti'
+    from_addr = 'No-Reply@uhuiforciti.cn'
+    password = 'pj4lkqMF4b'
     smtp_server = 'smtp.ym.163.com'
     msg = MIMEText('请点击下方链接确认注册\n %s' % address, 'plain', 'utf-8')
     msg['From'] = _format_addr('No-Reply <%s>' % from_addr)

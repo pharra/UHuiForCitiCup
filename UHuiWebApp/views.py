@@ -44,21 +44,23 @@ def randomID():
         return randomID()
     return ID
 
+def verifyCode():
+    code  = ''
+    for i in range(0, 4):
+        code = code + random.choice('abcdefghijklmopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    return code
+
 
 def _format_addr(s):
     name, addr = parseaddr(s)
     return formataddr((Header(name, 'utf-8').encode(), addr))
 
 
-def sendConfirmMail(to_addr, address):
+def sendMail(to_addr, msg):
     # address 为登录判断的一条request
-    from_addr = 'manager@uhuiforciti.cn'
-    password = 'uhuiforciti'
+    from_addr = 'No-Reply@uhuiforciti.cn'
+    password = 'pj4lkqMF4b'
     smtp_server = 'smtp.ym.163.com'
-    msg = MIMEText('请点击下方链接确认注册\n %s' % address, 'plain', 'utf-8')
-    msg['From'] = _format_addr('No-Reply <%s>' % from_addr)
-    msg['To'] = _format_addr('管理员 <%s>' % to_addr)
-    msg['Subject'] = Header('U惠网注册确认', 'utf-8').encode()
 
     server = smtplib.SMTP(smtp_server, 25)
     server.set_debuglevel(1)
@@ -73,9 +75,59 @@ def sendConfirmMail(to_addr, address):
         server.quit()
 
 
+def sendConfirmMail(to_addr, address):
+    msg = MIMEText('请点击下方链接确认注册\n %s' % address, 'plain', 'utf-8')
+    msg['From'] = _format_addr('No-Reply <No-Reply@uhuiforciti.cn>')
+    msg['To'] = _format_addr('管理员 <%s>' % to_addr)
+    msg['Subject'] = Header('U惠网注册确认', 'utf-8').encode()
+
+
+def sendVerifyCode(to_addr):
+    code = verifyCode()
+    msg = MIMEText('您的验证码是：\n %s' % code)
+    msg['From'] = _format_addr('No-Reply <No-Reply@uhuiforciti.cn>')
+    msg['To'] = _format_addr('管理员 <%s>' % to_addr)
+    msg['Subject'] = Header('U惠网验证码', 'utf-8').encode()
+    return {'verifyCode': code}
+
+
 # 定时任务
 def timer():
     pass
+
+
+# 修改用户信息
+def modifyUserInfo(request):
+    uid = request.uid
+    oldPsw = request.POST.get('oldPassword', False)
+    newNickName = request.POST.get('nickname', False)
+    newPhoneNum = request.POST.get('phoneNum', False)
+    newAvatar = request.POST.get('avatar', False)
+    newGender = request.POST.get('gender', False)
+    newPsw = request.POST.get('password', False)
+    newEmail = request.POST.get('email', False)
+    user = models.User.objects.get(id=uid)
+    if newNickName:
+        user.nickname = newNickName
+    if newPhoneNum:
+        # 需要短信验证码
+        user.phonenum = newPhoneNum
+    if newAvatar:
+        user.avatar = newAvatar
+    if newGender:
+        user.gender = newGender
+    if newPsw and oldPsw:
+        if encryption(oldPsw) == user.password:
+            user.Psw = encryption(newPsw)
+        else:
+            return {'errno': '1', 'message': '旧密码不正确'}
+    elif newPsw and not oldPsw:
+        return {'errno': '1', 'message': '请输入旧密码'}
+    if newEmail:
+        # 向邮箱发送验证码
+        user.email = newEmail
+    return {'errno': '0', 'message': '修改成功'}
+
 
 
 # 获取数据
@@ -273,6 +325,8 @@ def post_buy(request):
     # 优惠券存入买家的own列表
     ownList = models.Couponlist.objects.get(stat='own', userid=buyerID)
     models.Listitem.objects.create(listid=ownList, couponID=coupon)
+
+    post_createMessage('上架的优惠券被购买', couponID)
     return {'errno': 0, 'message': 'successfully brought'}
 
 
@@ -392,6 +446,8 @@ def post_login(request):
         if user == 0:
             return JsonResponse({'error': '用户不存在'})
         pswObj = models.User.objects.get(email=u_name)
+        if pswObj.hasconfirm is False:
+            return JsonResponse({'error': '请到邮箱验证您的账号'})
     else:
         user = models.User.objects.filter(phonenum=u_name).count()
         if user == 0:
@@ -433,7 +489,8 @@ def post_signUp(request):
         # 将邮箱作为用户名存入数据库中
         uid = randomID()
 
-        user = models.User(id=uid, nickname=nickname, password=password, gender=gender, email=username, ucoin=0)
+        user = models.User(id=uid, nickname=nickname, password=password, gender=gender, email=username, ucoin=0,
+                           hasConfirm=False)
 
         # 创建列表
         user.save()
@@ -453,7 +510,7 @@ def post_signUp(request):
         uid = randomID()
         user = models.User(id=uid, nickname=nickname, password=password, gender=gender,
 
-                           phonenum=username, ucoin=0)
+                           phonenum=username, ucoin=0, hasConfirm=True)
         user.save()
         # 创建列表
 
