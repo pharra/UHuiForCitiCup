@@ -19,7 +19,7 @@
         transition: 0.5s;
         -webkit-transition: 0.5s;
     }
-    
+
     .float {
         margin: 0 auto;
         padding: 600px 0 0 0;
@@ -27,16 +27,16 @@
 </style>
 
 <script type="text/javascript">
-    window.onload = function() {
+    window.onload = function () {
         var oDiv = document.getElementById('div');
         oDiv.style.height = window.innerHeight + 'px';
         var distX = 0;
         var distY = 0;
-        oDiv.onmousedown = function(ev) {
+        oDiv.onmousedown = function (ev) {
             var oEvent = ev || event;
             distX = oEvent.clientX - oDiv.offsetLeft; //获取边界到鼠标的距离  
             distY = oEvent.clientY - oDiv.offsetTop;
-            document.onmousemove = function(ev) {
+            document.onmousemove = function (ev) {
                 var oEvent = ev || event;
                 var x = oEvent.clientX - distX;
                 var y = oEvent.clientY - distY;
@@ -59,7 +59,7 @@
                 oDiv.style.top = y + 'px';
 
             }
-            document.onmouseup = function() {
+            document.onmouseup = function () {
                 document.onmousemove = null;
                 document.onmouseup = null;
                 if (oDiv.offsetTop > (-300)) {
@@ -73,9 +73,9 @@
 
 
 <body>
-    <div id="div" style="background-image:url(1.jpg);">
-        <div class="float"><span class="glyphicon glyphicon-chevron-up"></span></div>
-    </div>
+<div id="div" style="background-image:url(1.jpg);">
+    <div class="float"><span class="glyphicon glyphicon-chevron-up"></span></div>
+</div>
 </body>
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
