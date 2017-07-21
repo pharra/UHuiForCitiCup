@@ -90,10 +90,23 @@ def getListItem(listid):
 
 
 def post_getUserCoupon(request):
-    userid = get_uid(request)
-    coupons = models.Coupon.objects.filter(userid=userid)
-    coupondict = {'coupons': coupons.values()}
-    return coupondict
+    if not request.uid:
+        return {}
+    ownList = models.Couponlist.objects.get(userid=request.uid, stat='own')
+    likeList = models.Couponlist.objects.get(userid=request.uid, stat='like')
+    ownCoupons = models.Listitem.objects.filter(listid=ownList.listid)
+    likeCoupons = models.Listitem.objects.filter(listid=likeList.listid)
+    own = []
+    like = []
+    if ownCoupons.exists():
+        for coupon in ownCoupons:
+            own.append(models.Coupon.objects.filter(pk=coupon.couponid.couponid).values()[0])
+
+    if likeCoupons.exists():
+        for coupon in likeCoupons:
+            like.append(models.Coupon.objects.filter(couponid=coupon.couponid.couponid).values()[0])
+    couponDict = {'couponsOwn': own, 'couponsLike': like}
+    return couponDict
 
 
 def post_getCouponByCat(request):
