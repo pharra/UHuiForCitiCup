@@ -320,7 +320,17 @@ li {
     text-align: center;
     display: block;
 }
-
+.button {
+    padding: 5px 10px 5px 10px;
+    width: 100px;
+    font-size: 16px;
+    background-color: #0f88eb;
+    color: white;
+    border: 2px solid #0f88eb;
+    border-radius: 0;
+    text-align: center;
+    display: block;
+}
 .verification_code .float-left {
     margin: 10px 0 10px 20px;
     padding: 5px 10px 5px 10px;
@@ -592,8 +602,31 @@ button[type=button]:disabled {
 .userinfo-setting-body{
     padding: 15px 0 0 0;
 }
-.userinfo-setting-body .form-group .col-md-7{
+.userinfo-setting-body .form-group .col-md-5{
     text-align: left;
 }
-.userinfo-setting-body .form-group span{
+.userinfo-setting-body .form-group input{
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+}
+
+.edit-verification_code .form-control{
+    display: inline-block;
+    width: 100px;
+}
+
+.edit-verification_code{
+    padding: 15px 15px 0 15px;
+}
+
+
+.edit-verification_code .button{
+    padding:0;
+    width: 80px;
+    height: 34px;
+}
+
+.userinfo-setting-body .user_id_content{
+    margin: 0;
 }
