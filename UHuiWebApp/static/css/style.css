@@ -536,3 +536,18 @@ button[type=button]:disabled {
     line-height: 24px;
     color: #262626;
 }
+
+
+.userinfo-div{
+    position: absolute;
+    width: 120px;
+    padding: 15px;
+    z-index: 100000;
+    background-color: #ffffff;
+    border: 1px solid #ebeef5;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    top:34px;
+    margin-top: 8px;
+}
