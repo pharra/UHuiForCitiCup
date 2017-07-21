@@ -235,9 +235,12 @@ def post_userInfo(u_id):
     gender = user.gender
     UCoin = user.ucoin
     avatar = user.avatar
+    phoneNum = user.phonenum
+    phoneNum = phoneNum[0:3] + '****' + phoneNum[7:]
+    email = user.email
     # {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList}
     content = {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList, 'UCoin': UCoin,
-               'avatar': avatar}
+               'avatar': avatar, 'phoneNum': phoneNum, 'email': email}
     return content
 
 
