@@ -236,6 +236,58 @@ $(document).ready(function () {
 
 
     });
+    function edit_userinfo_submit() {
+        var content = {};
+        if ($("#newname").val()) {
+            content.nickname = $("#newname").val();
+        }
+        if ($("#newpassword").val() && $("#oldpassword").val()) {
+            content.password = $.md5($("#newpassword").val() + 'UHui');
+            content.oldPassword = $.md5($("#oldpassword").val() + 'UHui');
+        }
+        if ($("#newemail").val() && $("#email_verification_code").val()) {
+            content.email = $("#newemail").val();
+            content.email_verification_code = $("#email_verification_code").val();
+        }
+        if ($("#newtelno").val() && $("#newphone_verification_code").val()) {
+            content.phoneNum = $("#newtelno").val();
+            content.newphone_verification_code = $("#newphone_verification_code").val();
+        }
+        $.ajax({
+            url: '/post_sendEmailVerifyCode',
+            type: 'POST',
+            dataType: 'json',
+            data: content,
+            timeout: 3000,
+            cache: false,
+        });
+    }
+
+    function get_email_verificationcode() {
+        var email = $("#newemail").val();
+        $.ajax({
+            url: '/post_sendEmailVerifyCode',
+            type: 'POST',
+            dataType: 'json',
+            data: {"email": email},
+            timeout: 3000,
+            cache: false,
+        });
+
+    }
+
+    function get_email_verificationcode() {
+        var phonenum = $("#newtelno").val();
+        $.ajax({
+            url: '/post_sendMobileVerifyCode',
+            type: 'POST',
+            dataType: 'json',
+            data: {"phonenum": phonenum},
+            timeout: 3000,
+            cache: false,
+        });
+
+    }
 });
 
 
@@ -318,58 +370,7 @@ $('#edit_userinfo_submit').blur('input propertychange', function () {
 
 });
 
-function edit_userinfo_submit() {
-    var content = {};
-    if ($("#newname").val()) {
-        content.nickname = $("#newname").val();
-    }
-    if ($("#newpassword").val() && $("#oldpassword").val()) {
-        content.password = $.md5($("#newpassword").val() + 'UHui');
-        content.oldPassword = $.md5($("#oldpassword").val() + 'UHui');
-    }
-    if ($("#newemail").val() && $("#email_verification_code").val()) {
-        content.email = $("#newemail").val();
-        content.email_verification_code = $("#email_verification_code").val();
-    }
-    if ($("#newtelno").val() && $("#newphone_verification_code").val()) {
-        content.phoneNum = $("#newtelno").val();
-        content.newphone_verification_code = $("#newphone_verification_code").val();
-    }
-    $.ajax({
-        url: '/post_sendEmailVerifyCode',
-        type: 'POST',
-        dataType: 'json',
-        data: content,
-        timeout: 3000,
-        cache: false,
-    });
-}
 
-function get_email_verificationcode() {
-    var email = $("#newemail").val();
-    $.ajax({
-        url: '/post_sendEmailVerifyCode',
-        type: 'POST',
-        dataType: 'json',
-        data: {"email": email},
-        timeout: 3000,
-        cache: false,
-    });
-
-}
-
-function get_email_verificationcode() {
-    var phonenum = $("#newtelno").val();
-    $.ajax({
-        url: '/post_sendMobileVerifyCode',
-        type: 'POST',
-        dataType: 'json',
-        data: {"phonenum": phonenum},
-        timeout: 3000,
-        cache: false,
-    });
-
-}
 $(".max").click(function () {
     var tab_div = '#info_' + $(this).attr("id");
     $(tab_div).parent().parent().show();
