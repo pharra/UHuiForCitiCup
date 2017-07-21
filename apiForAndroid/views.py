@@ -84,33 +84,40 @@ def post_buyCoupon(request):
     cpID = request.POST.get('couponID',0)
     u_id = request.POST.get('userID',0)
     cp = Coupon.objects.get(couponid=cpID)
+    #检查优惠券是否存在
+    coupon = models.Coupon.objects.get(couponid=cpID)
+    if coupon.stat != 'onSale':
+        return JsonResponse({'errno': 1, 'message': '优惠券已下架'})
+    #检查用户UCoin
+    buyerUCoin = models.User.objects.get(id=u_id).ucoin
+    if buyerUCoin < coupon.listprice:
+        return {'errno': 1, 'message': 'UCoin不足以支付'}
     #修改优惠券stat信息
     Coupon.objects.filter(couponid=cpID).update(stat = 'store')
     #将优惠券从拥有者的OnSale list、own list中删除并加入sold list中
-    checklistitem = Listitem.objects.filter(couponid=cpID)
-    checklistID = checklistitem.values('listid')
-    checkCouponlist = Couponlist.objects.filter(listid=checklistID).filter(stat='onSale')
-    ownerID = checkCouponlist.values('userid')
-    ownerOnsaleList = Couponlist.objects.filter(userid=ownerID).filter(stat='onSale').values('listid')
-    ownerOwnList = Couponlist.objects.filter(userid = ownerID).filter(stat = 'own').values('listid')
-    ownerSoldList = Couponlist.objects.filter(userid=ownerID).filter(stat='sold').values('listid')
+    checklistID = Listitem.objects.get(couponid=cpID).listid
+    ownerID = Couponlist.objects.get(listid=checklistID,stat = 'onSale').userid
+    ownerOnsaleList = Couponlist.objects.get(userid=ownerID,stat='onSale').listid
+    ownerOwnList = Couponlist.objects.get(userid = ownerID,stat = 'own').listid
+    ownerSoldList = Couponlist.objects.get(userid=ownerID,stat='sold').listid
     Listitem.objects.filter(couponid=cpID).filter(listid=ownerOnsaleList).delete()
     Listitem.objects.filter(couponid=cpID).filter(listid=ownerOwnList).delete()
     Listitem.objects.create(couponID = cpID,listID=ownerSoldList)
     #将优惠券加入购买者的brought list和own list中
-    buyerBroughtList = Couponlist.objects.filter(userid=u_id).filter(stat = 'brought').values('listid')
-    buyerOwnList = Couponlist.objects.filter(userid=u_id).filter(stat='own').values('listid')
+    buyerBroughtList = Couponlist.objects.get(userid=u_id,stat = 'brought').listid
+    buyerOwnList = Couponlist.objects.get(userid=u_id,stat='own').listid
     Listitem.objects.create(couponID = cpID,listID = buyerBroughtList)
     Listitem.objects.create(couponID = cpID,listID = buyerOwnList)
     #生成通知拥有者的message
     pass
     #生成通知关注者的message
     pass
+    return JsonResponse({'result':'success'})
 #关注优惠券接口
 def post_likeCoupon(request):
     cpID = request.POST.get('couponID',0)
     u_ID = request.POST.get('userID',0)
-    userLikeList = Couponlist.objects.filter(userid=u_ID).filter(stat='like').values('listid')
+    userLikeList = Couponlist.objects.get(userid=u_ID,stat='like').listid
     Listitem.objects.create(couponID = cpID,listID = userLikeList)
     return JsonResponse({'result':'success'})
 #消息发送接口
@@ -119,6 +126,22 @@ def post_sendMessage(request):
     msg = Message.objects.filter(userid=userID)
     msgdata = serializers.serialize("json",msg,fields = ('messageid','content','time','messagecat','couponid'))
     return HttpResponse(msgdata,content_type="application/json")
-#消息生成接口
-def createMessage():
-    pass
+#修改密码接口
+def post_updatePassword(request):
+    newPassword = request.POST.get('password',0)
+    userID = request.POST.get('userID',0)
+    newPassword = encryption(newPassword)
+    User.objects.filter(pk=userID).update(password = newPassword)
+    return JsonResponse({'result':'success'})
+#判断手机/邮箱是否存在
+def post_checkUsername(request):
+    username = request.POST.get('username')
+    if '@' in username:
+        if User.objects.filter(email=username).exists():
+            return JsonResponse({'result':'0'})
+        return JsonResponse({'result':'1'})
+    else:
+        if User.objects.filter(phonenum=username).exists():
+            return JsonResponse({'result': '0'})
+        return JsonResponse({'result': '1'})
+#修改密码

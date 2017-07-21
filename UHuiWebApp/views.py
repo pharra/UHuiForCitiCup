@@ -17,16 +17,12 @@ DEFAULT_PIC = '/pic/pic1.jpg'
 # 估值算法
 def calculateValue():
     pass
-
-
 # 普通函数
 def encryption(md5):
     key = 'UHuiForCiti'
     m = hashlib.md5()
     m.update(md5.join(key).encode("UTF-8"))
     return m.hexdigest()
-
-
 # 获取随机ID
 def randomID():
     signUpTime = int(time.time())
@@ -37,8 +33,6 @@ def randomID():
     if models.User.objects.filter(id=ID).exists():
         return randomID()
     return ID
-
-
 # 获取数据
 def getListItem(listid):
     lists = models.Couponlist.objects.get(listid=listid)
@@ -48,8 +42,6 @@ def getListItem(listid):
         coupon.append(item.couponid)
     listInfo = {'listID': listid, 'stat': lists.stat, 'coupons': coupon}
     return listInfo
-
-
 def post_getCouponByCat(request):
     catid = request.POST['catID']
     cookie_content = request.COOKIES.get('page', False)
@@ -67,8 +59,6 @@ def post_getCouponByCat(request):
     response = JsonResponse(resultSet)
     response.set_cookie('page', page+1)
     return response
-
-
 def post_couponInfo(couponID):
     coupon = models.Coupon.objects.get(couponid=couponID)
     limits = models.Limit.objects.filter(couponID=couponID)
@@ -95,8 +85,6 @@ def post_couponInfo(couponID):
     couponInfo['limits'] = limitList
     couponInfo['sellerInfo'] = sellerInfo
     return couponInfo
-
-
 def post_userInfo(u_id):
     user = models.User.objects.get(id=u_id)
     lists = models.Couponlist.objects.filter(userid=u_id)
@@ -110,16 +98,12 @@ def post_userInfo(u_id):
     # {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList}
     content = {'userid': u_id, 'nickname': nickname, 'gender': gender, 'lists': couponList, 'UCoin': UCoin, 'avatar': avatar}
     return content
-
-
 def getCatName(cid):
     try:
         cat = models.Category.objects.get(catid=cid)
     except ObjectDoesNotExist:
         return 'cat does not exist'
     return cat.name
-
-
 def getBrandInfo(bid):
     try:
         brand = models.Brand.objects.get(brandid=bid)
@@ -129,8 +113,6 @@ def getBrandInfo(bid):
     info['name'] = brand.name
     info['address'] = brand.address
     return info
-
-
 def getMessage(uid):
     messages = models.Message.objects.filter(userid=uid).order_by('time')
     info = post_userInfo(uid)
@@ -141,8 +123,6 @@ def getMessage(uid):
         content.append(message)
     info['messages'] = content
     return info
-
-
 # 存储数据
 def post_storeCoupon(request):
     uid = request.POST['userID']
@@ -181,8 +161,6 @@ def post_storeCoupon(request):
 
     models.Listitem.objects.create(listid=list, couponid=coupon)
     return {'errno': 0, 'message': 'store success'}
-
-
 def post_buy(request):
     couponID = request.POST['couponID']
     sellerID = request.POST['sellerID']
@@ -214,8 +192,6 @@ def post_buy(request):
     ownList = models.Couponlist.objects.get(stat='own', userid=buyerID)
     models.Listitem.objects.create(listid=ownList, couponID=coupon)
     return {'errno': 0, 'message': 'successfully brought'}
-
-
 def post_putOnSale(request):
     # 优惠券加入卖家的onSale列表
     couponID = request.POST['couponID']
@@ -226,8 +202,6 @@ def post_putOnSale(request):
     onSaleList = models.Couponlist.objects.get(stat='onSale', userid=sellerID)
     models.Listitem.objects.create(listid=onSaleList, couponid=coupon)
     return {'errno': '0', 'message': '上架成功'}
-
-
 def post_like(request):
     # 优惠券加入like列表
     couponID = request.POST['couponID']
@@ -238,8 +212,6 @@ def post_like(request):
         return {'errno': 1, 'message': '该优惠券已被关注'}
     models.Listitem.objects.create(listid=likeList, couponid=coupon)
     return {'errno': '0', 'message': '关注成功'}
-
-
 def post_buyCredit(request):
     uid = get_uid(request)
     amount = request.POST['amount']
@@ -249,18 +221,12 @@ def post_buyCredit(request):
     user.ucoin = user.ucoin + amount
     user.save()
     return {'errno': 0, 'message': '充值成功'}
-
-
 # 添加商家。后台接口，前端不连接
 def post_storeBrand(request):
     pass
-
-
 # 添加商家。后台接口，前端不连接
 def post_storeCat(request):
     pass
-
-
 # 创建message
 def post_createMessage(messageType, couponID, content=None):
 
@@ -296,29 +262,19 @@ def post_createMessage(messageType, couponID, content=None):
                                       time=time.strftime("%Y-%m-%d", time.localtime()), messageCat=messageType,
                                       couponid=couponID, hasread=False, hassend=False)
     return {'errno': '0', 'message': '成功'}
-
-
 # 为用户添加各种表
 def createLists(user):
     # models.User.objects.create
     stat = ['own', 'sold', 'brought', 'onSale', 'like']
     for content in stat:
         models.Couponlist.objects.create(userid=user, stat=content, listid=None)
-
-
 # get方法函数
 def index(request):
     return render(request, 'index.html', {"a": "a"})
-
-
 def login(request):
     return render(request, 'login.html')
-
-
 def userPage(request):
     return render(request, 'user.html')
-
-
 # post方法加上前缀post_
 def post_login(request):
     # cookie_content = request.COOKIES.get('uhui')
@@ -351,8 +307,6 @@ def post_login(request):
         return response
     else:
         return JsonResponse({'error': '密码错误'})
-
-
 def post_signUp(request):
     username = request.POST.get('username')
     if username == '':
@@ -400,8 +354,6 @@ def post_signUp(request):
 
         createLists(user)
         return JsonResponse({'errno': '0', 'message': '注册成功'})
-
-
 # 根据request的COOKIES判断登录uid
 def get_uid(request):
     cookie_content = request.COOKIES.get('uhui', False)
