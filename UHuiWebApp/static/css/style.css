@@ -320,6 +320,7 @@ li {
     text-align: center;
     display: block;
 }
+
 .button {
     padding: 5px 10px 5px 10px;
     width: 100px;
@@ -331,6 +332,7 @@ li {
     text-align: center;
     display: block;
 }
+
 .verification_code .float-left {
     margin: 10px 0 10px 20px;
     padding: 5px 10px 5px 10px;
@@ -560,73 +562,76 @@ button[type=button]:disabled {
     margin-top: 8px;
 }
 
-.username-text-css{
+.username-text-css {
     text-align: center;
     padding: 15px;
 }
 
-.username-text-css span{
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+.username-text-css span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.user-left-menu .panel-default{
-    border:0;
+.user-left-menu .panel-default {
+    border: 0;
     border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
 }
 
-.user-left-menu .panel-default .panel-heading{
+.user-left-menu .panel-default .panel-heading {
     border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
 }
-.user-left-menu .panel-default .panel-collapse .panel-body{
+
+.user-left-menu .panel-default .panel-collapse .panel-body {
     padding: 0;
 }
 
-.user-left-menu .panel-default .panel-collapse .panel-body li{
+.user-left-menu .panel-default .panel-collapse .panel-body li {
     text-align: center;
     padding: 7.5px 15px 7.5px 15px;
 }
-.user-left-menu .panel-default .panel-collapse .panel-body li:hover{
+
+.user-left-menu .panel-default .panel-collapse .panel-body li:hover {
     background-color: #f5f5f5;
 }
-.user-left-menu .panel-default .panel-collapse .panel-body li a{
+
+.user-left-menu .panel-default .panel-collapse .panel-body li a {
     color: #262626;
 }
 
-
-.userinfo-setting-body{
+.userinfo-setting-body {
     padding: 15px 0 0 0;
 }
-.userinfo-setting-body .form-group .col-md-5{
+
+.userinfo-setting-body .form-group .col-md-5 {
     text-align: left;
 }
-.userinfo-setting-body .form-group input{
+
+.userinfo-setting-body .form-group input {
     border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
 }
 
-.edit-verification_code .form-control{
+.edit-verification_code .form-control {
     display: inline-block;
     width: 100px;
 }
 
-.edit-verification_code{
+.edit-verification_code {
     padding: 15px 15px 0 15px;
 }
 
-
-.edit-verification_code .button{
-    padding:0;
+.edit-verification_code .button {
+    padding: 0;
     width: 80px;
     height: 34px;
 }
 
-.userinfo-setting-body .user_id_content{
+.userinfo-setting-body .user_id_content {
     margin: 0;
 }

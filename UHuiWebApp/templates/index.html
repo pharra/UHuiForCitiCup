@@ -187,24 +187,24 @@
     <!-- recontainer -->
     <div id="allmap"></div>
 </div>
-    </body>
-    <script src="/static/js/jquery-3.2.1.min.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-    <script src="/static/js/index.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GeoLBAU1t7TRpqXhtw8VIth4r6PGAU3U"></script>
-    <script type="text/javascript">
-        // 百度地图API功能
-        var map = new BMap.Map("allmap");
-        var point = new BMap.Point(116.331398, 39.897445);
-        map.centerAndZoom(point, 12);
+</body>
+<script src="/static/js/jquery-3.2.1.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/index.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GeoLBAU1t7TRpqXhtw8VIth4r6PGAU3U"></script>
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point(116.331398, 39.897445);
+    map.centerAndZoom(point, 12);
 
-        function myFun(result) {
-            var cityName = result.name;
-            map.setCenter(cityName);
-            $("#city-position").html("<i class=\"fa fa-location-arrow\"></i>" + cityName);
-        }
-        var myCity = new BMap.LocalCity();
-        myCity.get(myFun);
-    </script>
+    function myFun(result) {
+        var cityName = result.name;
+        map.setCenter(cityName);
+        $("#city-position").html("<i class=\"fa fa-location-arrow\"></i>" + cityName);
+    }
+    var myCity = new BMap.LocalCity();
+    myCity.get(myFun);
+</script>
 
 </html>
