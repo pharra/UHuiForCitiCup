@@ -88,6 +88,7 @@ def sendConfirmMail(to_addr, address):
     msg['From'] = _format_addr('No-Reply <No-Reply@uhuiforciti.cn>')
     msg['To'] = _format_addr('管理员 <%s>' % to_addr)
     msg['Subject'] = Header('U惠网注册确认', 'utf-8').encode()
+    sendConfirmMail(to_addr, msg)
 
 
 # 定时任务
@@ -110,7 +111,7 @@ def modifyUserInfo(request):
         user.nickname = newNickName
     if newPhoneNum:
         # 需要短信验证码
-        if request.POST['phoneVerifyCode'] == request.COOKIES.get('VCm', -1):
+        if encryption(request.POST['phoneVerifyCode']) == request.COOKIES.get('VCm', -1):
             user.phonenum = newPhoneNum
         else:
             return {'errno': '1', 'message': '手机验证码不正确'}
@@ -127,7 +128,7 @@ def modifyUserInfo(request):
         return {'errno': '1', 'message': '请输入旧密码'}
     if newEmail:
         # 向邮箱发送验证码
-        if request.POST['emailVerifyCode'] == request.COOKIES.get('VCe', -1):
+        if encryption(request.POST['emailVerifyCode']) == request.COOKIES.get('VCe', -1):
             user.email = newEmail
         else:
             return {'errno': '1', 'message': '邮箱验证码不正确'}
@@ -163,6 +164,7 @@ def post_sendEmailVerifyCode(request):
     msg['From'] = _format_addr('No-Reply <No-Reply@uhuiforciti.cn>')
     msg['To'] = _format_addr('管理员 <%s>' % to_addr)
     msg['Subject'] = Header('U惠网验证码', 'utf-8').encode()
+    sendMail(to_addr, msg)
     response = JsonResponse({'send': 'success'})
     response.set_cookie('VCe', encryption(code))
     return response

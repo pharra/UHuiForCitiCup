@@ -326,7 +326,7 @@ function get_email_verificationcode() {
 
 }
 
-function get_email_verificationcode() {
+function get_phone_verificationcode() {
     var phonenum = $("#newtelno").val();
     $.ajax({
         url: '/post_sendMobileVerifyCode',
