@@ -30,7 +30,6 @@ $(".login-li").click(function() {
     $($(this).siblings().children().attr("href")).removeClass("active in");
 });
 
-
 function isPhoneNo(phone) {
     var pattern = /^1[34578]\d{9}$/;
     return pattern.test(phone);
@@ -243,8 +242,15 @@ $("#singlemessage, #userinfo").click(function() {
     // var offsetleft = $(this).offset().left;
     // var offsettop = $(this).offset().top;
     // $(being_hidden_message).css("top",offsettop);
-    // $(being_hidden_message).css("left",offsetleft);
+    // $(being_hidden_message).css.("left",offsetleft);
     $(being_hidden_message).css("left", offsetleft);
+});
 
-
+$(".max").click(function() {
+    var tab_div = '#info_' + $(this).attr("id");
+    $(tab_div).parent().parent().show();
+    $(tab_div).parent().parent().siblings().hide();
+    var tab_content = '#tab_' + $(this).attr("id");
+    $(tab_content).addClass("in active");
+    $(tab_content).siblings().removeClass("in active")
 });
