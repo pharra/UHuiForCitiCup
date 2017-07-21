@@ -107,21 +107,21 @@ def post_modifyUserInfo(request):
     newPsw = request.POST.get('password', False)
     newEmail = request.POST.get('email', False)
     user = models.User.objects.get(id=uid)
-
+    response = JsonResponse({})
     if newPsw and oldPsw:
         if encryption(oldPsw) == bytes.decode(user.password.encode("UTF-8")):
             user.Psw = encryption(newPsw)
         else:
-            response = JsonResponse({'errno': '1', 'message': '旧密码不正确'})
+            response.content = {'errno': '1', 'message': '旧密码不正确'}
 
             return response
     elif newPsw and not oldPsw:
-        response = JsonResponse({'errno': '1', 'message': '请输入旧密码'})
+        response.content = {'errno': '1', 'message': '请输入旧密码'}
         return response
 
     if newNickName:
         if models.User.objects.filter(nickname=newNickName).exists():
-            response = JsonResponse({'errno': '1', 'message': '昵称已存在'})
+            response.content = {'errno': '1', 'message': '昵称已存在'}
             return response
         user.nickname = newNickName
 
@@ -130,7 +130,7 @@ def post_modifyUserInfo(request):
         if encryption(request.POST['newphone_verification_code']) == request.COOKIES.get('VCm', -1):
             user.phonenum = newPhoneNum
         else:
-            response = JsonResponse({'errno': '1', 'message': '手机验证码不正确'})
+            response.content = {'errno': '1', 'message': '手机验证码不正确'}
             return response
 
     if newEmail:
@@ -138,7 +138,7 @@ def post_modifyUserInfo(request):
         if encryption(request.POST['email_verify_code']) == request.COOKIES.get('VCe', -1):
             user.email = newEmail
         else:
-            response = JsonResponse({'errno': '1', 'message': '邮箱验证码不正确'})
+            response.content = {'errno': '1', 'message': '邮箱验证码不正确'}
             return response
 
     if newAvatar:
@@ -147,7 +147,8 @@ def post_modifyUserInfo(request):
     if newGender:
         user.gender = newGender
 
-    response = JsonResponse({'errno': '0', 'message': '修改成功'})
+    user.save()
+    response.content = {'errno': '0', 'message': '修改成功'}
     return response
 
 
