@@ -21,7 +21,7 @@
 
  */
 
-$(".login-li").click(function() {
+$(".login-li").click(function () {
     removechecked("#re-password");
     removechecked("#user_id");
     $(this).addClass("login-active");
@@ -68,7 +68,7 @@ function getchecked(id) {
 }
 
 
-$('#user_id').bind('input propertychange', function() {
+$('#user_id').bind('input propertychange', function () {
     if (isPhoneNo($('#user_id').val()) && $('#user_id').val()) {
         $('#verification_code_div').show();
         $('#user_id_content').hide();
@@ -85,7 +85,7 @@ $('#user_id').bind('input propertychange', function() {
     }
 });
 
-$('#user_id').blur('input propertychange', function() {
+$('#user_id').blur('input propertychange', function () {
     if (isPhoneNo($('#user_id').val())) {
         $('#verification_code_div').show();
     } else if (isEmail($('#user_id').val())) {
@@ -101,7 +101,7 @@ $('#user_id').blur('input propertychange', function() {
 });
 
 
-$('#re-password,#password').blur('input propertychange', function() {
+$('#re-password,#password').blur('input propertychange', function () {
     if (($('#re-password').val() == $("#password").val()) && ($('#re-password').val() != "") && $('#password').val() != "") {
         $('#password_content').hide();
         CheckedCss("#re-password");
@@ -116,19 +116,19 @@ $('#re-password,#password').blur('input propertychange', function() {
 });
 
 
-$("#login-password").blur('input propertychange', function() {
+$("#login-password").blur('input propertychange', function () {
     $("#login-md5-password").val($.md5($("#login-password").val() + "UHui"));
 });
 
 
-$('#user_id,#re-password,#password,#nickname').bind('input propertychange', function() {
+$('#user_id,#re-password,#password,#nickname').bind('input propertychange', function () {
     if ((isPhoneNo($('#user_id').val()) || isEmail($('#user_id').val())) && (($('#re-password').val() == $("#password").val()) && ($('#re-password').val() != "") && $('#password').val() != "") && ($('#nickname').val().length > 0)) {
         $("#login-button").attr("disabled", false);
     } else {
         $("#login-button").attr("disabled", "disabled");
     }
 });
-$(window).resize(function() {
+$(window).resize(function () {
     if (getchecked("#user_id")) {
         removechecked("#user_id");
         CheckedCss("#user_id");
@@ -145,17 +145,19 @@ function login_handler() {
         url: '/post_login',
         type: 'POST',
         dataType: 'json',
-        data: { "username": $("#login-username").val(), "password": $("#login-md5-password").val() },
+        data: {"username": $("#login-username").val(), "password": $("#login-md5-password").val()},
         timeout: 3000,
         cache: false,
         beforeSend: LoadFunction,
         error: erryFunction,
         success: succFunction
-    })
+    });
 
-    function LoadFunction() {}
+    function LoadFunction() {
+    }
 
-    function erryFunction() {}
+    function erryFunction() {
+    }
 
     function succFunction(data) {
         if (data.error == "") {
@@ -185,11 +187,13 @@ function sign_up() {
         beforeSend: LoadFunction,
         error: erryFunction,
         success: succFunction
-    })
+    });
 
-    function LoadFunction() {}
+    function LoadFunction() {
+    }
 
-    function erryFunction() {}
+    function erryFunction() {
+    }
 
     function succFunction(data) {
         if (data.errno == "1") {
@@ -227,8 +231,8 @@ function sign_up() {
 
 };
 
-$(document).ready(function() {
-    $(window).scroll(function(event) {
+$(document).ready(function () {
+    $(window).scroll(function (event) {
         $("#index_navigation").css("top", $(window).scrollTop() + 'px');
 
 
@@ -236,7 +240,7 @@ $(document).ready(function() {
 });
 
 
-$("#singlemessage, #userinfo").click(function() {
+$("#singlemessage, #userinfo").click(function () {
     var being_hidden_message = '#for' + $(this).attr("id");
     $(being_hidden_message).toggleClass("being-hidden");
     var offsetleft = '-' + ($(being_hidden_message).width() / 2 - $(this).parent().width() / 2) + "px";
@@ -248,3 +252,89 @@ $("#singlemessage, #userinfo").click(function() {
 
 
 });
+
+$(".edituserinfo").click(function () {
+    $(this).parent().hide();
+    $(this).parent().nextAll().show();
+    $("#edit-userinfo-commit-div").show();
+});
+
+$('#newemail').blur('input propertychange', function () {
+    if (isEmail($("#newemail").val())) {
+        $("#newemail_button").attr("disabled", false);
+        $("#newemail_content").hide();
+
+    }
+    else {
+        $("#newemail_button").attr("disabled", "disabled");
+        $("#newemail_content").show();
+    }
+
+});
+
+
+$('#newtelno').blur('input propertychange', function () {
+    if (isPhoneNo($("#newtelno").val())) {
+        $("#newtelno_button").attr("disabled", false);
+        $("#newtelno_content").hide();
+    }
+    else {
+        $("#newtelno_button").attr("disabled", "disabled");
+        $("#newtelno_content").show();
+
+    }
+
+});
+
+$('#newemail').bind('input propertychange', function () {
+    if (isEmail($("#newemail").val())) {
+        $("#newemail_button").attr("disabled", false);
+
+
+    }
+    else {
+        $("#newemail_button").attr("disabled", "disabled");
+
+    }
+
+});
+
+
+$('#newtelno').blur('input propertychange', function () {
+    if (isPhoneNo($("#newtelno").val())) {
+        $("#newtelno_button").attr("disabled", false);
+
+    }
+    else {
+        $("#newtelno_button").attr("disabled", "disabled");
+
+
+    }
+
+});
+
+function get_email_verificationcode() {
+    var email = $("#newemail").val();
+    $.ajax({
+        url: '/post_sendEmailVerifyCode',
+        type: 'POST',
+        dataType: 'json',
+        data: {"email": email},
+        timeout: 3000,
+        cache: false,
+    });
+
+}
+
+function get_email_verificationcode() {
+    var phonenum = $("#newtelno").val();
+    $.ajax({
+        url: '/post_sendMobileVerifyCode',
+        type: 'POST',
+        dataType: 'json',
+        data: {"phonenum": phonenum},
+        timeout: 3000,
+        cache: false,
+    });
+
+}
