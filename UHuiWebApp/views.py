@@ -135,7 +135,8 @@ def post_modifyUserInfo(request):
 
     if newEmail:
         # 向邮箱发送验证码
-        if encryption(request.POST['email_verify_code']) == request.COOKIES.get('VCe', -1):
+
+        if encryption(request.POST['email_verification_code']) == request.COOKIES.get('VCe', -1):
             user.email = newEmail
         else:
             response.content = {'errno': '1', 'message': '邮箱验证码不正确'}
