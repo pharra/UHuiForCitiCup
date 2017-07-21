@@ -587,3 +587,13 @@ button[type=button]:disabled {
 .user-left-menu .panel-default .panel-collapse .panel-body li a{
     color: #262626;
 }
+
+
+.userinfo-setting-body{
+    padding: 15px 0 0 0;
+}
+.userinfo-setting-body .form-group .col-md-7{
+    text-align: left;
+}
+.userinfo-setting-body .form-group span{
+}
