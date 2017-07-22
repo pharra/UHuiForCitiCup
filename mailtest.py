@@ -3,22 +3,35 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
+from email.utils import parseaddr, formataddr
 
-sender = 'from@runoob.com'
-receivers = ['929527511@qq.com']  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
 
-# 三个参数：第一个为文本内容，第二个 plain 设置文本格式，第三个 utf-8 设置编码
-message = MIMEText('Python 邮件发送测试...', 'plain', 'utf-8')
-message['From'] = Header("菜鸟教程", 'utf-8')
-message['To'] = Header("测试", 'utf-8')
+def _format_addr(s):
+    name, addr = parseaddr(s)
+    return formataddr((Header(name, 'utf-8').encode(), addr))
 
-subject = 'Python SMTP 邮件测试'
-message['Subject'] = Header(subject, 'utf-8')
 
-try:
-    smtpObj = smtplib.SMTP('localhost')
-    smtpObj.sendmail(sender, receivers, message.as_string())
-    print("邮件发送成功")
-except smtplib.SMTPException as smtpe:
-    print(str(smtpe))
-    print("Error: 无法发送邮件")
+def sendConfirmMail(to_addr, address):
+    # address 为登录判断的一条request
+    from_addr = 'No-Reply@uhuiforciti.cn'
+    password = 'pj4lkqMF4b'
+    smtp_server = 'smtp.ym.163.com'
+    msg = MIMEText('请点击下方链接确认注册\n %s' % address, 'plain', 'utf-8')
+    msg['From'] = _format_addr('No-Reply <%s>' % from_addr)
+    msg['To'] = _format_addr('管理员 <%s>' % to_addr)
+    msg['Subject'] = Header('U惠网注册确认', 'utf-8').encode()
+
+    server = smtplib.SMTP(smtp_server, 25)
+    server.set_debuglevel(1)
+    try:
+        server.login(from_addr, password)
+        server.sendmail(from_addr, [to_addr], msg.as_string())
+        return True
+    except smtplib.SMTPException as smtpe:
+        print(str(smtpe))
+        return False
+    finally:
+        server.quit()
+
+if __name__ == "__main__":
+    sendConfirmMail('527293764@qq.com', '佳佳是zz')

@@ -13,10 +13,14 @@ class SimpleMiddleware(object):
     def process_request(self, request):
         url = request.path
         uid = views.get_uid(request)
+        if uid is False:
+            response = HttpResponseRedirect('/login')
+            response.delete_cookie('uhui')
+            return response
         request.uid = None
         if uid:
             request.uid = uid
-        elif url.startswith("/manage"):
+        elif url.startswith("/manage") or url.startswith('/user'):
             return HttpResponseRedirect("/login")
 
     def __call__(self, request):
