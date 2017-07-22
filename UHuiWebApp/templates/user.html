@@ -14,6 +14,7 @@
 </head>
 
 <body>
+    <!--导航栏-->
     <nav class="navbar">
 
         <div class="container">
@@ -27,7 +28,7 @@
                     <div style="margin: 0 15px 0 15px;"></div>
                 </div>
 
-                <!--注册/登录-->
+                <!--搜索-->
                 <div class="navbar-search col-lg-6 col-md-6  col-sm-6">
                     <form class="navbar-form">
                         <div class="form-group">
@@ -37,6 +38,7 @@
                     </form>
                 </div>
 
+                <!--注册/登录-->
                 <div class="col-lg-3 col-md-3  col-sm-3">
                     <ul class="nav-login row">
                         {% if userid %}
@@ -106,16 +108,21 @@
                         </li>
                         {% endif %}
                     </ul>
+                    <!--end Login-->
                 </div>
+                <!--end row-->
             </div>
-
+            <!--end container-->
         </div>
+        <!--end nav-->
     </nav>
 
     <div class="container">
         <div class="row">
 
-            <div class="panel-group col-md-2 user-left-menu" id="user_menu">
+            <div class="panel-group col-md-2" id="user_menu">
+
+                <!--头像-->
                 <div class="username-text-css">
                     <div class="profile-photo-div">
                         <img src="/static/images/dva_1.jpg">
@@ -123,40 +130,43 @@
                     <span>&nbsp;{{ nickname }}</span>
                 </div>
 
+                <!--我的优惠菜单栏-->
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#user_menu" href="#user_own_list" style="display:block;text-align:center">
                             我的优惠
-                            <span class="caret "></span></a>
+                            <span class="caret"></span></a>
                         </h4>
                     </div>
                     <div class="panel-collapse collapse" id="user_own_list">
-                        <div class="panel-body ">
-                            <li id="own_have" class="max">当前持有</li>
-                            <li id="own_sale" class="max">正在出售</li>
-                            <li id="own_focus" class="max">我的关注</li>
+                        <div class="panel-body">
+                            <li id="own_have" class="point max">当前持有</li>
+                            <li id="own_sale" class="point max">正在出售</li>
+                            <li id="own_focus" class="point max">我的关注</li>
                         </div>
                     </div>
                 </div>
 
+                <!--我的钱包菜单栏-->
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#user_menu" href="#user_trade_list" style="display:block;text-align:center">
                             我的钱包
-                            <span class="caret "></span></a>
+                            <span class="caret"></span></a>
                         </h4>
                     </div>
-                    <div class="panel-collapse collapse " id="user_trade_list">
-                        <div class="panel-body ">
-                            <li id="tra_balance" class="max">我的余额</li>
-                            <li id="tra_buy" class="max">最近买入</li>
-                            <li id="tra_sale" class="max">最近卖出</li>
+                    <div class="panel-collapse collapse" id="user_trade_list">
+                        <div class="panel-body">
+                            <li id="tra_balance" class="point max">我的余额</li>
+                            <li id="tra_buy" class="point max">最近买入</li>
+                            <li id="tra_sale" class="point max">最近卖出</li>
                         </div>
                     </div>
                 </div>
 
+                <!--我的消息菜单栏-->
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
@@ -166,141 +176,161 @@
                     </div>
                     <div class="panel-collapse collapse" id="user_message_list">
                         <div class="panel-body">
-                            <li id="mes_system" class="max">系统公告</li>
-                            <li id="mes_trade" class="max">交易提示</li>
+                            <li id="mes_system" class="point max">系统公告</li>
+                            <li id="mes_trade" class="point max">交易提示</li>
                         </div>
                     </div>
                 </div>
 
-                <div class="panel panel-default" id="user_menu">
+                <!--个人设置菜单栏-->
+                <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4 class="panel-title max" id="set_content">个人设置</h4>
+                        <h4 class="panel-title point max" id="set_content">个人设置</h4>
                     </div>
                 </div>
 
-                <div class="panel panel-default" id="user_menu">
+                <!--帮助菜单栏-->
+                <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4 class="panel-title max" id="hel_content">帮助</h4>
+                        <h4 class="panel-title point max" id="hel_content">帮助</h4>
                     </div>
                 </div>
-
+                <!--end panel group-->
             </div>
 
             <div class="col-md-8">
 
-                <div class="being-hidden" id="own_menu">
-                    <ul class=" nav nav-tabs ">
-                        <li role="presentation " id="info_own_have " class="point ">
-                            <a href="#tab_own_have ">当前持有</a>
+                <!--我的优惠-->
+                <div class="" id="own_menu">
+
+                    <!--选项卡-->
+                    <ul class="nav nav-tabs">
+                        <li id="info_own_have" class="point active">
+                            <a href="#tab_own_have" data-toggle="tab">当前持有</a>
                         </li>
-                        <li role="presentation " id="info_own_sale ">
-                            <a href="#tab_own_sale ">正在出售</a>
+                        <li id="info_own_sale" class="point">
+                            <a href="#tab_own_sale" data-toggle="tab">正在出售</a>
                         </li>
-                        <li role="presentation " id="info_own_focus ">
-                            <a href="#tab_own_focus ">我的关注</a>
+                        <li id="info_own_focus" class="point">
+                            <a href="#tab_own_focus" data-toggle="tab">我的关注</a>
                         </li>
                     </ul>
 
                     <hr/>
 
+                    <!--选项内容-->
                     <div class="tab-content">
+                        <!--当前持有-->
                         <div class="tab-pane fade in active" id="tab_own_have">
                             <div class="row">
                                 <div class="col-md-2 uhui-body">
                                     <img class="img_suit" src="/static/images/dva_4.jpg">
                                 </div>
                                 <div class="col-md-2 uhui-body ">
-                                    <div class="uhui-partbody uhui-content ">
+                                    <div class="uhui-partbody uhui-content">
                                         商家名
                                     </div>
-                                    <div class="uhui-partbody uhui-content ">
+                                    <div class="uhui-partbody uhui-content">
                                         截止时间
                                     </div>
                                 </div>
-                                <div class="col-md-6 uhui-body uhui-content ">
+                                <div class="col-md-6 uhui-body uhui-content">
                                     内容
                                 </div>
-                                <div class="col-md-2 uhui-body uhui-content ">
+                                <div class="col-md-2 uhui-body uhui-content">
                                     估值
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="tab-content ">
-                        <div class="tab-pane fade " id="tab_own_sale ">
+                        <!--正在出售-->
+                        <div class="tab-pane fade" id="tab_own_sale">
+                            <p>sale</p>
                         </div>
-                    </div>
 
-                    <div class="tab-content ">
-                        <div class="tab-pane fade " id="tab_own_focus ">
+                        <!--我的关注-->
+                        <div class="tab-pane fade" id="tab_own_focus">
+                            <p>focus</p>
                         </div>
+
+                        <!--end tab-content-->
                     </div>
+                    <!--end own_menu-->
                 </div>
 
-                <div class="being-hidden " id="tra_menu">
-                    <ul class="nav nav-tabs ">
-                        <li role="presentation " id="info_tra_balance ">
-                            <a href="#tab_tra_balance ">我的余额</a>
-                        </li>
-                        <li role="presentation " id="info_tra_buy ">
-                            <a href="#tra_buy ">最近买入</a>
-                        </li>
-                        <li role="presentation " id="info_tra_sale ">
-                            <a href="#tra_sale ">最近卖出</a>
-                        </li>
-                    </ul>
+                <!--我的钱包-->
+                <div class="being-hidden" id="tra_menu">
 
-                    <hr/>
-
-                    <div class="tab-content ">
-                        <div class="tab-pane fade in active " id="tab_tra_balance ">
-                        </div>
-                    </div>
-
-                    <div class="tab-content ">
-                        <div class="tab-pane fade " id="tab_tra_buy ">
-                        </div>
-                    </div>
-
-                    <div class="tab-content ">
-                        <div class="tab-pane fade " id="tab_tra_sale ">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="being-hidden " id="mes_menu">
-                    <ul class="nav nav-tabs ">
-                        <li role="presentation " id="info_mes_system ">
-                            <a href="#tab_mes_system ">系统公告</a>
-                        </li>
-                        <li role="presentation " id="info_mes_trade ">
-                            <a href="#tab_mes_trade ">交易信息</a>
-                        </li>
-                    </ul>
-
-                    <hr/>
-
-                    <div class="tab-content ">
-                        <div class="tab-pane fade in active " id="tab_mes_system ">
-                        </div>
-                    </div>
-
-                    <div class="tab-content ">
-                        <div class="tab-pane fade " id="tab_mes_trade ">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="">
+                    <!--选项卡-->
                     <ul class="nav nav-tabs">
-                        <li role="presentation" id="user_setting_content" class="active">
-                            <a href="#setting_content">个人资料</a>
+                        <li id="info_tra_balance" class="point active">
+                            <a href="#tab_tra_balance" data-toggle="tab">我的余额</a>
+                        </li>
+                        <li id="info_tra_buy" class="point">
+                            <a href="#tab_tra_buy" data-toggle="tab">最近买入</a>
+                        </li>
+                        <li id="info_tra_sale" class="point">
+                            <a href="#tab_tra_sale" data-toggle="tab">最近卖出</a>
                         </li>
                     </ul>
 
-                    <div class="tab-content userinfo-setting-body" id="setting_content">
-                        <div class="tab-pane fade in active">
+                    <hr/>
+
+                    <!--选项内容-->
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="tab_tra_balance">
+                            <p>balance</p>
+                        </div>
+
+                        <div class="tab-pane fade" id="tab_tra_buy">
+                            <p>buy</p>
+                        </div>
+
+                        <div class="tab-pane fade" id="tab_tra_sale">
+                            <p>sale</p>
+                        </div>
+                    </div>
+                    <!--end tra_menu-->
+                </div>
+
+                <!--我的消息-->
+                <div class="being-hidden" id="mes_menu">
+
+                    <!--选项卡-->
+                    <ul class="nav nav-tabs">
+                        <li id="info_mes_system" class="point active">
+                            <a href="#tab_mes_system" data-toggle="tab">系统公告</a>
+                        </li>
+                        <li id="info_mes_trade" class="point">
+                            <a href="#tab_mes_trade" data-toggle="tab">交易信息</a>
+                        </li>
+                    </ul>
+
+                    <hr/>
+
+                    <!--选项内容-->
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="tab_mes_system">
+                            <p>system</p>
+                        </div>
+
+                        <div class="tab-pane fade" id="tab_mes_trade">
+                            <p>trade</p>
+                        </div>
+                    </div>
+                    <!--end mes_menu-->
+                </div>
+
+
+                <div class="being-hidden" id="set_menu">
+                    <ul class="nav nav-tabs">
+                        <li id="info_set_content" class="point active">
+                            <a href="#tab_set_content" data-toggle="tab">个人资料</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content userinfo-setting-body">
+                        <div class="tab-pane fade in active" id="tab_set_content">
                             <form class="form-horizontal">
                                 <div class="form-group">
                                     <label for="newname" class="col-md-2 control-label">昵称</label>
@@ -364,6 +394,7 @@
                                             <button class="button float-right" type="button" id="newtelno_button" onclick="get_phone_verificationcode();" disabled="disabled">点击获取
                                         </button>
                                         </div>
+
                                     </div>
                                 </div>
                                 <!--       <div class="form-group being-hidden">
@@ -390,15 +421,16 @@
                     </div>
                 </div>
 
-                <div class="being-hidden " id="hel_menu">
-                    <ul class="nav nav-tabs ">
-                        <li role="presentation " id="info_hel_content ">
-                            <a href="#tab_hel_content ">帮助信息</a>
+                <div class="being-hidden" id="hel_menu">
+                    <ul class="nav nav-tabs">
+                        <li id="info_hel_content" class="point active">
+                            <a href="#tab_hel_content" data-toggle="tab">帮助信息</a>
                         </li>
                     </ul>
 
                     <div class="tab-content " id="tab_hel_content ">
                         <div class="tab-pane fade in active ">
+                            <p>help</p>
                         </div>
                     </div>
                 </div>

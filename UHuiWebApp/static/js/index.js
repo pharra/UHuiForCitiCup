@@ -247,6 +247,7 @@ $("#singlemessage, #userinfo").click(function() {
 });
 
 
+
 $(".edituserinfo").click(function() {
     $(this).parent().hide();
     $(this).parent().nextAll().show();
@@ -365,11 +366,18 @@ function get_email_verificationcode() {
     });
 
 };
+
 $(".max").click(function() {
-    var tab_div = '#info_' + $(this).attr("id");
-    $(tab_div).parent().parent().show();
-    $(tab_div).parent().parent().siblings().hide();
+    var str = $(this).attr("id").split("_")[0];
+    var hidden_str = '#' + str + '_menu';
+    $(hidden_str).removeClass(" being-hidden");
+    $(hidden_str).siblings().addClass(" being-hidden");
+
+
     var tab_content = '#tab_' + $(this).attr("id");
-    $(tab_content).addClass("in active");
-    $(tab_content).siblings().removeClass("in active")
+    $(tab_content).addClass(" in active");
+    $(tab_content).siblings().removeClass(" in active");
+
+    var tab_title = '#info_' + $(this).attr("id");
+    $(tab_title).children().click();
 });
