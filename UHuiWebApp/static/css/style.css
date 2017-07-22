@@ -568,7 +568,10 @@ button[type=button]:disabled {
     text-overflow: ellipsis;
     white-space: nowrap;
     margin: 0;
+    font-size: 10px;
 }
+
+
 .username-text-css {
     text-align: center;
     padding: 15px;
