@@ -191,9 +191,16 @@ def post_sendEmailVerifyCode(request):
 
 def post_search(request):
     key = request.POST.get('keyWord', False)
+    orderBy = request.POST.get('order', None)
     if not key:
         return {'result': "请输入关键词"}
-    productResult = models.Coupon.objects.filter(product__contains=key, stat='onSale').values()
+
+    if not orderBy:
+        orderBy = 'expiredtime'
+    else:
+        pass
+
+    productResult = models.Coupon.objects.filter(product__contains=key, stat='onSale').order_by(orderBy).values()
     result = []
     for coupon in productResult:
         result.append(coupon)
@@ -225,8 +232,7 @@ def post_getUserCoupon(request):
     onSale = []
     if ownCoupons.exists():
         for coupon in ownCoupons:
-            info = post_couponInfo(coupon.couponid.couponid)
-            own.append(info)
+            own.append(post_couponInfo(coupon.couponid.couponid))
 
     if likeCoupons.exists():
         for coupon in likeCoupons:
@@ -236,6 +242,9 @@ def post_getUserCoupon(request):
         for coupon in onSaleCoupons:
             onSale.append(post_couponInfo(coupon.couponid.couponid))
 
+    own.reverse()
+    like.reverse()
+    onSale.reverse()
     couponDict = {'couponsOwn': own, 'couponsLike': like, 'couponsOnSale': onSale,
                   'couponMessages': messages['couponMessages'], 'systemMessages': messages['systemMessages']}
 
@@ -353,6 +362,8 @@ def post_getMessage(uid):
             systemMsg.append(message)
         else:
             content.append(message)
+    content.reverse()
+    systemMsg.reverse()
     info['couponMessages'] = content
     info['systemMessages'] = systemMsg
     return info
