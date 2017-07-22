@@ -377,6 +377,9 @@ def login(request):
 def userPage(request):
     return render(request, 'user.html')
 
+def userPage(request):
+    return render(request, 'search.html')
+
 
 # post方法加上前缀post_
 def post_login(request):
