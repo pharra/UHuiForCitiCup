@@ -373,6 +373,8 @@ $(".max").click(function() {
     $(hidden_str).removeClass(" being-hidden");
     $(hidden_str).siblings().addClass(" being-hidden");
 
+    $(this).addClass("liactive");
+    $(this).siblings().removeClass("liactive");
 
     var tab_content = '#tab_' + $(this).attr("id");
     $(tab_content).addClass(" in active");
