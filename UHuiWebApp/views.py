@@ -524,7 +524,7 @@ def post_signUp(request):
         uid = randomID()
         user = models.User(id=uid, nickname=nickname, password=password, gender=gender,
 
-                           phonenum=username, ucoin=0, hasConfirm=True)
+                           phonenum=username, ucoin=0, hasconfirm=True)
         user.save()
         # 创建列表
 

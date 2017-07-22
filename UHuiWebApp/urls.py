@@ -16,4 +16,8 @@ urlpatterns = [
     url(r'^post_couponDetailForAndroid$', views.post_couponDetailForAndroid, name='post_couponDetailForAndroid'),
     url(r'^post_checkUsername$', views.post_checkUsername, name='post_checkUsername'),
     url(r'^post_updatePassword', views.post_updatePassword, name='post_updatePassword'),
+    url(r'^post_getUserInformation',views.post_getUserInformation,name='post_getUserInformation'),
+    url(r'^post_updateUserInformation',views.post_updateUserInformation,name='post_updateUserInformation'),
+    url(r'^post_likeCoupon', views.post_likeCoupon, name='post_likeCoupon'),
+
 ]

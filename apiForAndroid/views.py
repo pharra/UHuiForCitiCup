@@ -48,10 +48,20 @@ def post_loginForAndroid(request):
         return JsonResponse({'error': '密码错误'})
 #搜索
 def post_searchForAndroid(request):
-    searchKeyWord = request.POST.get('keyWord',0)
-    result = Coupon.objects.filter(product__contains=searchKeyWord).filter(stat='onSale')
-    resultdata = serializers.serialize('json',result)
-    return HttpResponse(resultdata, content_type="application/json")
+    key = request.POST.get('keyWord',0)
+    if not key:
+        return {'result': "请输入关键词"}
+    productResult = models.Coupon.objects.filter(product__contains=key, stat='onSale').values()
+    result = []
+    for coupon in productResult:
+        result.append(coupon)
+    brandIDResult = models.Brand.objects.filter(name__contains=key)
+    for brand in brandIDResult:
+        temp = models.Coupon.objects.filter(brandid=brand.brandid)
+        if temp.exists():
+            for info in temp.values():
+                result.append(info)
+        return JsonResponse({'coupons': result})
 #点击种类进行查询
 def post_selectCategoryForAndroid(request):
     selectCategory = request.POST.get('categoryID',0)
@@ -63,9 +73,26 @@ def post_couponDetailForAndroid(request):
     cpID = request.POST.get('couponID',0)
     if cpID == 0 :
         return JsonResponse({'error':'优惠券不存在'})
-    result = Coupon.objects.filter(pk=cpID)
-    resultdata = serializers.serialize('json',result)
-    return HttpResponse(resultdata, content_type="application/json")
+    CouponResult = Coupon.objects.filter(pk=cpID).values()
+    CResult= []
+    for coupon in CouponResult:
+        CResult.append(coupon)
+    LimitResult = Limit.objects.filter(couponid = cpID).values('content')
+    LResult = []
+    for limit in LimitResult:
+        LResult.append(limit)
+    #查询所有者ID
+    checklist = Listitem.objects.filter(couponid=cpID)
+    for each in checklist:
+        listID = each.listid.listid
+        listStat = models.Couponlist.objects.get(listid=listID)
+        if listStat.stat == 'onSale':
+            checkUserid = listStat.userid.id
+    Seller = User.objects.filter(pk = checkUserid).values('nickname','avatar')
+    SResult = []
+    for seller in Seller:
+        SResult.append(seller)
+    return JsonResponse({'coupon':CResult,'limit':LResult,'seller':SResult})
 #通过优惠券ID查询所有者
 def post_ownerDetailForAndroid(request):
     cpID = request.POST.get('couponID',0)
@@ -117,8 +144,11 @@ def post_buyCoupon(request):
 def post_likeCoupon(request):
     cpID = request.POST.get('couponID',0)
     u_ID = request.POST.get('userID',0)
-    userLikeList = Couponlist.objects.get(userid=u_ID,stat='like').listid
-    Listitem.objects.create(couponID = cpID,listID = userLikeList)
+    CouponObj = Coupon.objects.get(pk = cpID)
+    userLikeList = Couponlist.objects.get(userid=u_ID,stat='like')
+    if Listitem.objects.filter(couponid = cpID,listid = userLikeList).exists():
+        return JsonResponse({'result':'already like'})
+    Listitem.objects.create(couponid = CouponObj,listid = userLikeList)
     return JsonResponse({'result':'success'})
 #消息发送接口
 def post_sendMessage(request):
@@ -131,6 +161,8 @@ def post_updatePassword(request):
     newPassword = request.POST.get('password',0)
     userID = request.POST.get('userID',0)
     newPassword = encryption(newPassword)
+    if newPassword == User.objects.get(pk = userID).password:
+        return JsonResponse({'result':'New Password is the same as old'})
     User.objects.filter(pk=userID).update(password = newPassword)
     return JsonResponse({'result':'success'})
 #判断手机/邮箱是否存在
@@ -144,4 +176,45 @@ def post_checkUsername(request):
         if User.objects.filter(phonenum=username).exists():
             return JsonResponse({'result': '0'})
         return JsonResponse({'result': '1'})
-#修改密码
+#获取个人信息
+def post_getUserInformation(request):
+    u_id = request.POST.get('userID')
+    result = User.objects.filter(pk = u_id)
+    resultdata = serializers.serialize('json',result)
+    return HttpResponse(resultdata,content_type='application/json')
+#修改个人信息
+def post_updateUserInformation(request):
+    u_id = request.POST.get('userID')
+    newNickname = request.POST.get('nickname')
+    newGender = request.POST.get('gender')
+    User.objects.filter(pk = u_id).update(nickname = newNickname)
+    User.objects.filter(pk = u_id).update(gender = newGender)
+    return JsonResponse({'result':'success'})
+    pass
+#修改头像
+def post_updateAvatar(request):
+    pass
+#修改手机/邮箱
+def post_updatePhonenumOrEmail(request):
+    u_id = request.POST.get('userID')
+    NewPhonenumOrEmail = request.POST.get('username')
+    userObj = User.objects.get(pk = u_id)
+    if  '@'in NewPhonenumOrEmail:
+        if userObj.phonenum == None:
+            userObj.email = NewPhonenumOrEmail
+            userObj.save()
+            return JsonResponse({'result':'success'})
+        else:
+            return JsonResponse({'result':'该账户使用手机注册'})
+    else:
+        if userObj.email == None:
+            userObj.phonenum = NewPhonenumOrEmail
+            userObj.save()
+            return JsonResponse({'result':'success'})
+        else:
+            return JsonResponse({'result':'该账户使用邮箱注册'})
+#添加优惠券
+def post_addCoupon(request):
+    pass
+
+
