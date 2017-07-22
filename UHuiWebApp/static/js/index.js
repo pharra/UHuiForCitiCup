@@ -30,7 +30,6 @@ $(".login-li").click(function() {
     $($(this).siblings().children().attr("href")).removeClass("active in");
 });
 
-
 function isPhoneNo(phone) {
     var pattern = /^1[34578]\d{9}$/;
     return pattern.test(phone);
@@ -151,7 +150,7 @@ function login_handler() {
         beforeSend: LoadFunction,
         error: erryFunction,
         success: succFunction
-    })
+    });
 
     function LoadFunction() {}
 
@@ -185,7 +184,7 @@ function sign_up() {
         beforeSend: LoadFunction,
         error: erryFunction,
         success: succFunction
-    })
+    });
 
     function LoadFunction() {}
 
@@ -243,8 +242,144 @@ $("#singlemessage, #userinfo").click(function() {
     // var offsetleft = $(this).offset().left;
     // var offsettop = $(this).offset().top;
     // $(being_hidden_message).css("top",offsettop);
-    // $(being_hidden_message).css("left",offsetleft);
+    // $(being_hidden_message).css.("left",offsetleft);
     $(being_hidden_message).css("left", offsetleft);
+});
 
 
+
+$(".edituserinfo").click(function() {
+    $(this).parent().hide();
+    $(this).parent().nextAll().show();
+    $("#edit-userinfo-commit-div").show();
+});
+
+$('#newemail').blur('input propertychange', function() {
+    if (isEmail($("#newemail").val())) {
+        $("#newemail_button").attr("disabled", false);
+        $("#newemail_content").hide();
+
+    } else {
+        $("#newemail_button").attr("disabled", "disabled");
+        $("#newemail_content").show();
+    }
+
+});
+
+
+$('#newtelno').blur('input propertychange', function() {
+    if (isPhoneNo($("#newtelno").val())) {
+        $("#newtelno_button").attr("disabled", false);
+        $("#newtelno_content").hide();
+    } else {
+        $("#newtelno_button").attr("disabled", "disabled");
+        $("#newtelno_content").show();
+
+    }
+
+});
+
+$('#newemail').bind('input propertychange', function() {
+    if (isEmail($("#newemail").val())) {
+        $("#newemail_button").attr("disabled", false);
+
+
+    } else {
+        $("#newemail_button").attr("disabled", "disabled");
+
+    }
+
+});
+
+
+$('#newtelno').blur('input propertychange', function() {
+    if (isPhoneNo($("#newtelno").val())) {
+        $("#newtelno_button").attr("disabled", false);
+
+    } else {
+        $("#newtelno_button").attr("disabled", "disabled");
+
+
+    }
+
+});
+
+
+$('#edit_userinfo_submit').blur('input propertychange', function() {
+    if ($("#newname").val() || ($("#newpassword").val() && $("#oldpassword").val()) || ($("#newemail").val() && $("#email_verification_code").val()) || ($("#newtelno").val() && $("#newphone_verification_code").val())) {
+        $("#edit_userinfo_submit").attr("disabled", false);
+    } else {
+        $("#edit_userinfo_submit").attr("disabled", "disabled");
+    }
+
+});
+
+function func_edit_userinfo_submit() {
+    var content = {};
+    if ($("#newname").val()) {
+        content.nickname = $("#newname").val();
+    }
+    if ($("#newpassword").val() && $("#oldpassword").val()) {
+        content.password = $.md5($("#newpassword").val() + 'UHui');
+        content.oldPassword = $.md5($("#oldpassword").val() + 'UHui');
+    }
+    if ($("#newemail").val() && $("#email_verification_code").val()) {
+        content.email = $("#newemail").val();
+        content.email_verification_code = $("#email_verification_code").val();
+    }
+    if ($("#newtelno").val() && $("#newphone_verification_code").val()) {
+        content.phoneNum = $("#newtelno").val();
+        content.newphone_verification_code = $("#newphone_verification_code").val();
+    }
+    $.ajax({
+        url: '/post_modifyUserInfo',
+        type: 'POST',
+        dataType: 'json',
+        data: content,
+        timeout: 3000,
+        cache: false,
+    });
+};
+
+function get_email_verificationcode() {
+    var email = $("#newemail").val();
+    $.ajax({
+        url: '/post_sendEmailVerifyCode',
+        type: 'POST',
+        dataType: 'json',
+        data: { "email": email },
+        timeout: 3000,
+        cache: false,
+    });
+
+};
+
+function get_phone_verificationcode() {
+    var phonenum = $("#newtelno").val();
+    $.ajax({
+        url: '/post_sendMobileVerifyCode',
+        type: 'POST',
+        dataType: 'json',
+        data: { "phonenum": phonenum },
+        timeout: 3000,
+        cache: false,
+    });
+
+};
+
+$(".max").click(function() {
+    var str = $(this).attr("id").split("_")[0];
+    var hidden_str = '#' + str + '_menu';
+    $(hidden_str).removeClass(" being-hidden");
+    $(hidden_str).siblings().addClass(" being-hidden");
+
+    $(this).addClass("liactive");
+    $(this).siblings().removeClass("liactive");
+
+    var tab_content = '#tab_' + $(this).attr("id");
+    $(tab_content).addClass(" in active");
+    $(tab_content).siblings().removeClass(" in active");
+
+    var tab_title = '#info_' + $(this).attr("id");
+    $(tab_title).children().click();
 });
