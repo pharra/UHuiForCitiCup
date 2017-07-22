@@ -189,6 +189,7 @@ li {
     .category-menu {
         display: none;
     }
+
     .category-right {
         width: 100%;
     }
@@ -198,6 +199,7 @@ li {
     .category-menu {
         display: none;
     }
+
     .category-right {
         width: 100%;
     }
@@ -230,7 +232,6 @@ li {
     font-size: 14px;
     margin: 0 5px 0 0;
 }
-
 
 /*
 .category-list {
@@ -370,7 +371,7 @@ li {
     width: 60px;
 }
 
-.otherlogin>div {
+.otherlogin > div {
     margin: 0 10px 0 10px;
     padding: 0 5px 0 5px;
     width: 70px;
