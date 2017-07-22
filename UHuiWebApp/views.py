@@ -213,28 +213,37 @@ def post_getUserCoupon(request):
         ownList = models.Couponlist.objects.get(userid=request.uid, stat='own')
         likeList = models.Couponlist.objects.get(userid=request.uid, stat='like')
         onSaleList = models.Couponlist.objects.get(userid=request.uid, stat='onSale')
-        ownCoupons = models.Listitem.objects.filter(listid=ownList.listid)
-        likeCoupons = models.Listitem.objects.filter(listid=likeList.listid)
-        onSaleCoupons = models.Listitem.objects.filter(listid=onSaleList.listid)
-        own = []
-        like = []
-        onSale = []
-        if ownCoupons.exists():
-            for coupon in ownCoupons:
-                own.append(post_couponInfo(coupon.couponid))
-
-        if likeCoupons.exists():
-            for coupon in likeCoupons:
-                like.append(post_couponInfo(coupon.couponid))
-
-        if onSaleCoupons.exists():
-            for coupon in onSaleCoupons:
-                onSale.append(post_couponInfo(coupon.couponid))
-        couponDict = {'couponsOwn': own, 'couponsLike': like, 'couponsOnSale': onSale}
-        return couponDict
     except ObjectDoesNotExist:
         print('DoesNotExist')
         return {'couponsOwn': '', 'couponsLike': ''}
+    ownCoupons = models.Listitem.objects.filter(listid=ownList.listid)
+    likeCoupons = models.Listitem.objects.filter(listid=likeList.listid)
+    onSaleCoupons = models.Listitem.objects.filter(listid=onSaleList.listid)
+    messages = post_getMessage(request.uid)
+    own = []
+    like = []
+    onSale = []
+    if ownCoupons.exists():
+        for coupon in ownCoupons:
+            info = post_couponInfo(coupon.couponid.couponid)
+            own.append(info)
+
+    if likeCoupons.exists():
+        for coupon in likeCoupons:
+            like.append(post_couponInfo(coupon.couponid.couponid))
+
+    if onSaleCoupons.exists():
+        for coupon in onSaleCoupons:
+            onSale.append(post_couponInfo(coupon.couponid.couponid))
+
+    couponDict = {'couponsOwn': own, 'couponsLike': like, 'couponsOnSale': onSale,
+                  'couponMessages': messages['couponMessages'], 'systemMessages': messages['systemMessages']}
+
+    if DEBUG is True:
+        jso1n = json.dumps(couponDict)
+        print(jso1n)
+
+    return couponDict
 
 
 def post_getCouponByCat(request):
@@ -268,24 +277,24 @@ def post_couponInfo(couponID):
         listID = listItem.listid.listid
         listStat = models.Couponlist.objects.get(listid=listID)
         if listStat.stat == 'onSale':
-            sellerInfo = post_userInfo(listStat.userid)
+            sellerInfo = post_userInfo(listStat.userid.id)
     couponInfo = {}
     couponInfo['couponID'] = coupon.couponid
     couponInfo['brand'] = coupon.brandid.name
     couponInfo['cat'] = coupon.catid.name
-    couponInfo['listPrice'] = coupon.listprice
-    couponInfo['value'] = coupon.value
+    couponInfo['listPrice'] = str(coupon.listprice)
+    couponInfo['value'] = str(coupon.value)
     couponInfo['product'] = coupon.product
     couponInfo['discount'] = coupon.discount
     couponInfo['stat'] = coupon.stat
     couponInfo['pic'] = coupon.pic
     limitList = []
-    for content in limits:
-        limitList.append(content.content)
+    if limits.exists():
+        for content in limits:
+            limitList.append(content.content)
     couponInfo['limits'] = limitList
     couponInfo['sellerInfo'] = sellerInfo
-    response = JsonResponse(couponInfo)
-    return response
+    return couponInfo
 
 
 def post_userInfo(u_id):
@@ -332,16 +341,20 @@ def getBrandInfo(bid):
     return info
 
 
-def post_getMessage(request):
-    uid = request.uid
+def post_getMessage(uid):
     messages = models.Message.objects.filter(userid=uid).order_by('time')
     info = post_userInfo(uid)
     content = []
+    systemMsg = []
     for item in messages:
         message = {'messageID': item.messageid, 'time': item.time, 'messageCat': item.messagecat,
                    'hasRead': item.hasread, 'content': item.content}
-        content.append(message)
-    info['messages'] = content
+        if item.messagecat == '系统通知':
+            systemMsg.append(message)
+        else:
+            content.append(message)
+    info['couponMessages'] = content
+    info['systemMessages'] = systemMsg
     return info
 
 

@@ -72,12 +72,13 @@ class DjangoMigrations(models.Model):
 
 
 class Limit(models.Model):
-    couponid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='couponID', blank=True, null=True)  # Field name made lowercase.
-    content = models.CharField(max_length=128, blank=True, null=True)
+    couponid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='couponID', blank=True, primary_key=True)  # Field name made lowercase.
+    content = models.CharField(max_length=128, blank=True)
 
     class Meta:
         managed = True
         db_table = 'limit'
+        unique_together = (('couponid', 'content'),)
 
 
 class Listitem(models.Model):
