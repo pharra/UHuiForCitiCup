@@ -561,17 +561,21 @@ button[type=button]:disabled {
     top: 34px;
     margin-top: 8px;
 }
+.userinfo-div p{
+    width: 90px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0;
+    font-size: 10px;
+}
+
 
 .username-text-css {
     text-align: center;
     padding: 15px;
 }
 
-.username-text-css span {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
 
 .user-left-menu .panel-default {
     border: 0;
@@ -584,6 +588,7 @@ button[type=button]:disabled {
     border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
+    text-align: center;
 }
 
 .user-left-menu .panel-default .panel-collapse .panel-body {
@@ -599,9 +604,10 @@ button[type=button]:disabled {
     background-color: #f5f5f5;
 }
 
-.user-left-menu .panel-default .panel-collapse .panel-body li a {
-    color: #262626;
+.user-left-menu .panel-default .panel-collapse .panel-body li.liactive {
+    background-color: #f5f5f5;
 }
+
 
 .userinfo-setting-body {
     padding: 15px 0 0 0;

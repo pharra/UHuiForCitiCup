@@ -1,3 +1,4 @@
+
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -8,6 +9,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
+
+
 
 
 class Brand(models.Model):
@@ -56,14 +59,26 @@ class Couponlist(models.Model):
         db_table = 'couponlist'
 
 
+class DjangoMigrations(models.Model):
+    app = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    applied = models.DateTimeField()
+
+    class Meta:
+        managed = True
+        db_table = 'django_migrations'
+
+
+
 
 class Limit(models.Model):
-    couponid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='couponID', blank=True, null=True)  # Field name made lowercase.
-    content = models.CharField(max_length=128, blank=True, null=True)
+    couponid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='couponID', blank=True, primary_key=True)  # Field name made lowercase.
+    content = models.CharField(max_length=128, blank=True)
 
     class Meta:
         managed = True
         db_table = 'limit'
+        unique_together = (('couponid', 'content'),)
 
 
 class Listitem(models.Model):
@@ -100,6 +115,8 @@ class User(models.Model):
     password = models.CharField(max_length=32)
     email = models.CharField(unique=True, max_length=32, blank=True, null=True)
     ucoin = models.IntegerField(db_column='UCoin')  # Field name made lowercase.
+    hasconfirm = models.IntegerField(db_column='hasConfirm')  # Field name made lowercase.
+
 
     class Meta:
         managed = True
