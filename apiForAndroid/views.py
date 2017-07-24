@@ -92,7 +92,37 @@ def post_couponDetailForAndroid(request):
     SResult = []
     for seller in Seller:
         SResult.append(seller)
-    return JsonResponse({'coupon':CResult,'limit':LResult,'seller':SResult})
+    brandID = Coupon.objects.get(couponid=cpID).brandid
+    brandResult = Brand.objects.filter(brandid=brandID)
+    BResult = []
+    for b in brandResult:
+        BResult.append(b)
+    return JsonResponse({'coupon':CResult,'limit':LResult,'seller':SResult,'brand':BResult})
+#返回使用限制、商家名以及出售者信息
+def post_returnInformation(request):
+    cpID = request.POST.get('couponID')
+    if cpID == 0 :
+        return JsonResponse({'error':'优惠券不存在'})
+    limitResult = Limit.objects.filter(couponid = cpID).values('content')
+    LResult = []
+    for limit in limitResult:
+        LResult.append(limit)
+    checklist = Listitem.objects.filter(couponid=cpID)
+    for each in checklist:
+        listID = each.listid.listid
+        listStat = models.Couponlist.objects.get(listid=listID)
+        if listStat.stat == 'onSale':
+            checkUserid = listStat.userid.id
+    Seller = User.objects.filter(pk=checkUserid).values('nickname', 'avatar')
+    SResult = []
+    for seller in Seller:
+        SResult.append(seller)
+    brandID = Coupon.objects.get(couponid=cpID).brandid
+    brandResult = Brand.objects.filter(brandid=brandID)
+    BResult = []
+    for b in brandResult:
+        BResult.append(b)
+    return JsonResponse({'brand': BResult, 'limit': LResult, 'seller': SResult})
 #通过优惠券ID查询所有者
 def post_ownerDetailForAndroid(request):
     cpID = request.POST.get('couponID',0)
@@ -215,6 +245,43 @@ def post_updatePhonenumOrEmail(request):
             return JsonResponse({'result':'该账户使用邮箱注册'})
 #添加优惠券
 def post_addCoupon(request):
-    pass
+    u_id = request.POST.get('userID')
+    brandName = request.POST.get('brand')
+    cat = request.POST.get('category')
+    expiredTime = datetime.datetime.strptime(request.POST.get('expiredTime'), '%Y-%m-%d')
+    listPrice = request.POST.get('listPrice')
+    product = request.POST.get('product')
+    discount = request.POST.get('discount')
+    stat = request.POST.get('stat', 'store')
+    pic = request.POST.get('pic', DEFAULT_PIC)
+
+    #估值
+    value = 0
+    # 判断brand是否存在
+    if not models.Brand.objects.filter(name=brandName).exists():
+        brandID = models.Brand(brandid=None, name=brandName)
+    else:
+        brandID = models.Brand.objects.get(name=brandName)
+
+    # 获取catID
+    if not models.Category.objects.filter(name=cat).exists():
+        return JsonResponse({'errno': 1, 'message': 'category not found'})
+    else:
+        catID = models.Category.objects.get(name=cat)
+
+    user = models.User.objects.get(id=u_id)
+    couponID = randomID()
+    coupon = models.Coupon(couponid=couponID, brandid=brandID, catid=catID, listPrice=listPrice,
+                           value=value, product=product, discount=discount, stat=stat, pic=pic,
+                           expiredTime=expiredTime)
+    coupon.save()
+    if stat == 'onSale':
+        list = models.Couponlist.objects.get(stat='onSale', userid=user.id)
+    else:
+        list = models.Couponlist.objects.get(stat='own', userid=user.id)
+
+    models.Listitem.objects.create(listid=list, couponid=coupon)
+    return JsonResponse({'errno': 0, 'message': 'store success'})
+
 
 

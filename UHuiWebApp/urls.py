@@ -19,5 +19,6 @@ urlpatterns = [
     url(r'^post_getUserInformation',views.post_getUserInformation,name='post_getUserInformation'),
     url(r'^post_updateUserInformation',views.post_updateUserInformation,name='post_updateUserInformation'),
     url(r'^post_likeCoupon', views.post_likeCoupon, name='post_likeCoupon'),
+    url(r'^post_returnInformation', views.post_returnInformation, name='post_returnInformation'),
 
 ]
