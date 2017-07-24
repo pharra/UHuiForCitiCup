@@ -196,6 +196,7 @@ def post_sendEmailVerifyCode(request):
 def post_search(request):
     key = request.POST.get('keyWord', False)
     orderBy = request.POST.get('order', None)
+    page = int(request.POST.get('page', 1)) - 1
     if not key:
         return {'result': "请输入关键词"}
 
@@ -204,13 +205,13 @@ def post_search(request):
     else:
         pass
 
-    productResult = models.Coupon.objects.filter(product__contains=key, stat='onSale').order_by(orderBy).values()
+    productResult = models.Coupon.objects.filter(product__contains=key, stat='onSale').order_by(orderBy)
     result = []
-    for coupon in productResult:
-        result.append(post_couponInfo(coupon.couponid))
+    for i in range(0, 16):
+        result.append(post_couponInfo(productResult[16 * page + i].couponid))
     brandIDResult = models.Brand.objects.filter(name__contains=key)
-    for brand in brandIDResult:
-        temp = models.Coupon.objects.filter(brandid=brand.brandid)
+    for i in range(0, 16):
+        temp = models.Coupon.objects.filter(brandid=brandIDResult[16 * page + i].brandid)
         if temp.exists():
             for coupon in temp:
                 result.append(post_couponInfo(coupon.couponid))
@@ -261,20 +262,17 @@ def post_getUserCoupon(request):
 
 def post_getCouponByCat(request):
     catid = request.POST['catID']
-    cookie_content = request.COOKIES.get('page', False)
+    page = int(request.POST['page']) - 1
+
     coupons = models.Coupon.objects.filter(catid=catid, stat='onSale')
-    if not cookie_content:
-        page = 0
-    else:
-        page = cookie_content
+
     result = []
-    for i in range(0, 9):
-        result.append(coupons[9 * page + i])
+    for i in range(0, 32):
+        result.append(coupons[32 * page + i])
     resultSet = {}
     for coupon in result:
         resultSet[coupon.couponid] = post_couponInfo(coupon.couponid)
     response = JsonResponse(resultSet)
-    response.set_cookie('page', page + 1)
     return response
 
 
@@ -386,6 +384,7 @@ def readMessage(request):
     message.hasread = True
     message.save()
     return JsonResponse({'errno': '0', 'message': '成功'})
+
 
 # 存储数据
 def post_storeCoupon(request):
