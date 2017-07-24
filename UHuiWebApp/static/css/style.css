@@ -189,7 +189,6 @@ li {
     .category-menu {
         display: none;
     }
-
     .category-right {
         width: 100%;
     }
@@ -199,7 +198,6 @@ li {
     .category-menu {
         display: none;
     }
-
     .category-right {
         width: 100%;
     }
@@ -232,6 +230,7 @@ li {
     font-size: 14px;
     margin: 0 5px 0 0;
 }
+
 
 /*
 .category-list {
@@ -382,7 +381,7 @@ li {
     width: 60px;
 }
 
-.otherlogin > div {
+.otherlogin>div {
     margin: 0 10px 0 10px;
     padding: 0 5px 0 5px;
     width: 70px;
@@ -443,23 +442,6 @@ button[type=button]:disabled {
     -moz-border-radius: 50%;
     height: 100%;
     width: 100%;
-}
-
-.uhui-body {
-    height: 100px;
-    float: left;
-}
-
-.uhui-partbody {
-    width: 100%;
-    height: 50px;
-    float: left;
-}
-
-.uhui-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .user-setting {
@@ -562,7 +544,8 @@ button[type=button]:disabled {
     top: 34px;
     margin-top: 8px;
 }
-.userinfo-div p{
+
+.userinfo-div p {
     width: 90px;
     overflow-x: hidden;
     text-overflow: ellipsis;
@@ -571,12 +554,10 @@ button[type=button]:disabled {
     font-size: 10px;
 }
 
-
 .username-text-css {
     text-align: center;
     padding: 15px;
 }
-
 
 .user-left-menu .panel-default {
     border: 0;
@@ -609,7 +590,6 @@ button[type=button]:disabled {
     background-color: #f5f5f5;
 }
 
-
 .userinfo-setting-body {
     padding: 15px 0 0 0;
 }
@@ -641,4 +621,96 @@ button[type=button]:disabled {
 
 .userinfo-setting-body .user_id_content {
     margin: 0;
+}
+
+.user-coupons {
+    border-left: 1px solid #e7e7e7;
+    border-top: 1px solid #e7e7e7;
+    border-right: 1px solid #e7e7e7;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    height: 160px;
+    margin: 15px;
+    background-image: url("/static/images/coupons.png");
+    background-position: 0 0;
+    background-size: 100% 100%;
+}
+
+.user-coupons .user-coupons-left,
+.user-coupons-middle {
+    height: 120px;
+    padding: 5px;
+    line-height: 30px;
+}
+
+.user-coupons-left {
+    text-align: center;
+}
+
+.user-coupons-middle {
+    padding-left: 15px;
+}
+
+p {
+    font-size: 16px;
+}
+
+.user-coupons p {
+    margin: 0;
+    /*height: 40px;*/
+}
+
+.user-coupons .user-coupons-left-value {
+    font-size: 30px;
+    font-weight: bold;
+    font-family: Century Gothic;
+    color: #ff5a00;
+    height: 50px;
+    line-height: 50px;
+}
+
+.user-coupons .user-coupons-middle-value {
+    line-height: 50px;
+    padding: 0;
+    bottom: 0;
+    height: 50px;
+    /*height: 40px;*/
+}
+
+.user-coupons .user-coupons-middle-value p {
+    display: inline-block;
+    font-size: 14px;
+}
+
+.user-coupons .user-coupons-middle-value .font-class {
+    font-size: 30px;
+    font-weight: bold;
+    font-family: Century Gothic;
+    color: #ff5a00;
+}
+
+.user-coupons-middle span {
+    position: relative;
+    padding: 0;
+    bottom: 0;
+}
+
+.user-coupons-bottom {
+    height: 40px;
+    padding: 5px;
+    text-align: center;
+}
+
+.user-coupons-bottom p {
+    height: 30px;
+    line-height: 30px;
+}
+
+.user-coupons .user-coupons-middle-value .user-coupons-middle-value-limits-p {
+    font-size: 12px;
+    margin: 0;
+    height: 20px;
+    display: block;
+    line-height: 20px;
 }
