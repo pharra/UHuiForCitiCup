@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE = edge">
+    <meta name="viewport" content="width = device - width, initial - scale = 1">
+   <title>{% block title %}{% endblock %}</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    {% block src %}{% endblock %}
+</head>
+<body>
+ <div id="allmap"></div>
+<nav class="navbar">
+
+
+        <div class="container">
+            <div class="row">
+                <!--Logo-->
+                <div class="navbar-header col-lg-1 col-md-1  col-sm-1 ">
+                    <a class="navbar-brand" href="/search">Brand</a>
+                </div>
+                <div class="col-lg-2 col-md-2  col-sm-2 city-position">
+                    <div style="margin: 0 15px 0 15px;" id="city-position"><i class="fa fa-location-arrow"></i> 定位</div>
+                </div>
+                <!--注册/登录-->
+                <div class="navbar-search col-lg-6 col-md-6  col-sm-6">
+                    <form class="navbar-form" action="/post_search" onsubmit="__search();" method="post">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="搜索" id="nav-search" name="keyWord">
+                        </div>
+                         <button type="submit" class="btn btn-default"><span class="fa fa-arrow-right"></span></button>
+
+
+                    </form>
+                </div>
+
+
+                <div class="col-lg-3 col-md-3  col-sm-3">
+                    <ul class="nav-login row">
+                        {% if userid %}
+                        <li class="col-lg-4 col-md-4  col-sm-4">
+                            <i class="fa fa-comment point showsinglemessage" id="singlemessage"></i>
+                            <i class="fa fa-caret-up message-div-arrow" aria-hidden="true"></i>
+                            <div class="being-hidden message-div" id="forsinglemessage">
+                                <div class="message-div-header row">
+                                    <div style="margin: 5px 0 5px 0;">
+                                        <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
+                                            <img src="/static/images/youhuiquan.png">
+                                        </div>
+                                        <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
+                                            <img src="/static/images/systemmessage.png">
+                                        </div>
+
+                                        <div class="col-lg-4 col-md-4  col-sm-4 message-div-header-category">
+                                            <img src="/static/images/systemmessage.png">
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="message-div-body">
+                                        {% for i in couponsOwn %}
+
+                                        <div class="message-div-body-content">
+                                            {{ i.product }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="message-div-footer">
+                                        <div class="col-lg-4 col-md-4  col-lg-4 col-lg-offset-8 col-md-offset-8  col-sm-offset-8 ">
+                                            <a href="#">查看全部</a></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </li>
+                        <li class="col-lg-4 col-md-4 col-sm-4">
+                            <i class="fa fa-comment point"></i>
+
+
+                        </li>
+                        <li class="col-lg-4 col-md-4 col-sm-4">
+
+                            <div class="profile-photo-div point" id="userinfo"><img src="/static/images/dva_1.jpg">
+                            </div>
+                            <div class="being-hidden userinfo-div" id="foruserinfo">
+
+                                <p> {{ nickname }}</p>
+                                <p> U币余额:{{ UCoin }}</p>
+                                <p><a href="/user">用户中心</a></p>
+                            </div>
+
+                        </li>
+                        {% else %}
+                        <li class="col-lg-6 col-md-6  col-sm-6">
+                            <a href="/login?method=register">注册
+                                <span class="glyphicon glyphicon-user hidden-sm"></span>
+                            </a>
+                        </li>
+                        <li class="col-lg-6 col-md-6  col-sm-6">
+                            <a href="/login?method=login">登录
+                                <span class="glyphicon glyphicon-user  hidden-sm"></span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+    </nav>
+{% block body %}{% endblock %}
+</body>
+    <script src="/static/js/jquery-3.2.1.js "></script>
+    <script src="/static/js/bootstrap.min.js "></script>
+    <script src="/static/js/jquery.md5.js "></script>
+    <script src="/static/js/index.js "></script>
+    <script src="/static/js/search.js "></script>
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0&ak=GeoLBAU1t7TRpqXhtw8VIth4r6PGAU3U"></script>
+    <script type="text/javascript">
+        // 百度地图API功能
+        var map = new BMap.Map("allmap");
+        var point = new BMap.Point(116.331398, 39.897445);
+        map.centerAndZoom(point, 12);
+
+        function myFun(result) {
+            var cityName = result.name;
+            map.setCenter(cityName);
+            $("#city-position").html("<i class=\"fa fa-location-arrow\"></i>" + cityName);
+        }
+        var myCity = new BMap.LocalCity();
+        myCity.get(myFun);
+    </script>
+    {% block scripts %}{% endblock %}
+</html>
