@@ -207,13 +207,14 @@ def post_search(request):
     productResult = models.Coupon.objects.filter(product__contains=key, stat='onSale').order_by(orderBy).values()
     result = []
     for coupon in productResult:
-        result.append(post_couponInfo(coupon.couponid))
+        info = post_couponInfo(coupon['couponid'])
+        result.append(info)
     brandIDResult = models.Brand.objects.filter(name__contains=key)
     for brand in brandIDResult:
         temp = models.Coupon.objects.filter(brandid=brand.brandid)
         if temp.exists():
             for coupon in temp:
-                result.append(post_couponInfo(coupon.couponid))
+                result.append(post_couponInfo(coupon['couponid']))
     return render(request, 'search.html', {'coupons': result})
 
 
