@@ -95,6 +95,10 @@ def sendConfirmMail(to_addr, address):
 
 # 定时任务
 def timer():
+    coupons = models.Coupon.objects.all()
+    currentDate = datetime.date.today()
+    for coupon in coupons:
+        expiredtime = coupon.expiredtime
     pass
 
 
@@ -203,13 +207,13 @@ def post_search(request):
     productResult = models.Coupon.objects.filter(product__contains=key, stat='onSale').order_by(orderBy).values()
     result = []
     for coupon in productResult:
-        result.append(coupon)
+        result.append(post_couponInfo(coupon.couponid))
     brandIDResult = models.Brand.objects.filter(name__contains=key)
     for brand in brandIDResult:
         temp = models.Coupon.objects.filter(brandid=brand.brandid)
         if temp.exists():
-            for info in temp.values():
-                result.append(info)
+            for coupon in temp:
+                result.append(post_couponInfo(coupon.couponid))
     return render(request, 'search.html', {'coupons': result})
 
 
@@ -336,7 +340,7 @@ def getCatName(cid):
     try:
         cat = models.Category.objects.get(catid=cid)
     except ObjectDoesNotExist:
-        return 'cat does not exist'
+        return 'category does not exist'
     return cat.name
 
 
@@ -351,7 +355,8 @@ def getBrandInfo(bid):
     return info
 
 
-def post_getMessage(uid):
+def post_getMessage(request):
+    uid = request.uid
     messages = models.Message.objects.filter(userid=uid).order_by('time')
     info = post_userInfo(uid)
     content = []
@@ -373,7 +378,14 @@ def post_getMessage(uid):
 def readMessage(request):
     uid = request.uid
     messageID = request.POST['messageID']
+    try:
+        message = models.Message.objects.get(messageid=messageID)
+    except ObjectDoesNotExist:
+        return JsonResponse({'errno': '1', 'message': '消息不存在'})
 
+    message.hasread = True
+    message.save()
+    return JsonResponse({'errno': '0', 'message': '成功'})
 
 # 存储数据
 def post_storeCoupon(request):
@@ -449,7 +461,7 @@ def post_buy(request):
     ownList = models.Couponlist.objects.get(stat='own', userid=buyerID)
     models.Listitem.objects.create(listid=ownList, couponID=coupon)
 
-    post_createMessage('上架的优惠券被购买', couponID)
+    createMessage('上架的优惠券被购买', couponID)
     return JsonResponse({'errno': '0', 'message': 'successfully brought'})
 
 
@@ -507,7 +519,7 @@ def post_storeCat(request):
 
 
 # 创建message
-def post_createMessage(messageType, couponID, content=None):
+def createMessage(messageType, couponID, content=None):
     messageID = randomID()
 
     # 找owner
