@@ -631,9 +631,7 @@ button[type=button]:disabled {
 .userinfo-setting-body .user_id_content {
     margin: 0;
 }
-.tab-content{
-    margin: 15px;
-}
+
 .user-coupons{
     border-left: 1px solid #e7e7e7;
     border-top: 1px solid #e7e7e7;
@@ -641,23 +639,23 @@ button[type=button]:disabled {
     border-radius: 4px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
-    height: 120px;
+    height: 160px;
     margin: 15px;
     background-image: url("/static/images/coupons.png");
     background-position: 0 0;
     background-size: 100% 100%;
 }
 
-.user-coupons .user-coupons-left,.user-coupons-right{
-    height: 90px;
+.user-coupons .user-coupons-left,.user-coupons-middle{
+    height: 120px;
     padding: 5px;
-    line-height: 10px;
+    line-height: 30px;
 }
 
 .user-coupons-left{
     text-align: center;
 }
-.user-coupons-right{
+.user-coupons-middle{
     padding-left: 15px;
 }
 p{
@@ -668,15 +666,52 @@ p{
     /*height: 40px;*/
 }
 
-.user-coupons  .user-coupons-left-value,.user-coupons-right-value{
+.user-coupons  .user-coupons-left-value{
    font-size: 30px;
     font-weight: bold;
     font-family: Century Gothic;
     color: #ff5a00;
+    height: 50px;
+    line-height: 50px;
+}
+.user-coupons .user-coupons-middle-value{
+
+    line-height:50px;
+    padding: 0;
+    bottom: 0;
+    height: 50px;
     /*height: 40px;*/
 }
+.user-coupons .user-coupons-middle-value p{
+    display: inline-block;
+    font-size: 14px;
+}
+.user-coupons .user-coupons-middle-value .font-class{
+    font-size: 30px;
+    font-weight: bold;
+    font-family: Century Gothic;
+    color: #ff5a00;
+}
+.user-coupons-middle span{
+    position: relative;
+    padding: 0;
+    bottom: 0;
+}
 .user-coupons-bottom{
-    height: 30px;
+    height: 40px;
     padding: 5px;
     text-align: center;
+}
+
+.user-coupons-bottom p{
+    height: 30px;
+    line-height: 30px;
+}
+
+ .user-coupons .user-coupons-middle-value .user-coupons-middle-value-limits-p{
+    font-size: 12px;
+    margin: 0;
+     height: 20px;
+    display: block;
+     line-height: 20px;
 }

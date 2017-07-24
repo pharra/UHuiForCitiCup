@@ -232,20 +232,32 @@
                                             ￥{{ i.listPrice }}
                                         </p>
                                         <p>
-                                           估值:￥{{ i.value }}
+                                            估值:￥{{ i.value }}
                                         </p>
 
                                     </div>
-                                    <div class="col-md-9 col-lg-9 col-sm-9 user-coupons-right">
-                                    <p class="user-coupons-right-value">
-                                            {{ i.brand }}
-                                        </p>
-                                        <p>
-                                            {{ i.discount }}
-                                        </p>
+                                    <div class="col-md-6 col-lg-6 col-sm-6 user-coupons-middle">
+                                        <div class="user-coupons-middle-value col-md-6 col-lg-6 col-sm-6">
+                                            <p class="font-class">
+                                                {{ i.brand }}
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6 col-sm-6 user-coupons-middle-value">
+                                            <p>
+                                                {{ i.discount }}
+                                            </p>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 user-coupons-middle-value">
+                                            {% for k in i.limits %}
+                                                <p class="user-coupons-middle-value-limits-p">{{ k }}</p>
+                                            {% endfor %}
+                                        </div>
+
+
                                     </div>
-                                     <div class="col-md-12 col-lg-12 col-sm-12 user-coupons-bottom">
-                                         <p>{{ i.expiredTime }}</p>
+
+                                    <div class="col-md-12 col-lg-12 col-sm-12 user-coupons-bottom">
+                                        <p>截止时间:{{ i.expiredTime }}</p>
                                     </div>
 
                                 </div>
@@ -500,7 +512,7 @@
                     </li>
                 </ul>
 
-                <div class="tab-content " id="tab_hel_content ">
+                <div class="tab-content" id="tab_hel_content ">
                     <div class="tab-pane fade in active ">
                         <p>help</p>
                     </div>
