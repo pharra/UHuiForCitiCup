@@ -7,19 +7,13 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login$', views.login, name='login'),
     url(r'^user$', views.userPage, name='user'),
-    url(r'^search$',views.userPage,name = 'search'),
+    url(r'^search$', views.search, name='search'),
     url(r'^post_login$', views.post_login, name='post_login'),
     url(r'^post_signup$', views.post_signUp, name='post_signUp'),
     url(r'^post_sendEmailVerifyCode$', views.post_sendEmailVerifyCode, name='post_sendEmailVerifyCode'),
     url(r'^post_sendMobileVerifyCode$', views.post_sendMobileVerifyCode, name='post_sendMobileVerifyCode'),
     url(r'^post_modifyUserInfo$', views.post_modifyUserInfo, name='post_modifyUserInfo'),
-
-
-
-
-
-
-
+    url(r'^post_search', views.post_search, name='post_search'),
 
     url(r'^post_loginForAndroid$', androidViews.post_loginForAndroid, name='post_loginForAndroid'),
     url(r'^post_signUpForAndroid$', androidViews.post_signUpForAndroid, name='post_signUpForAndroid'),
