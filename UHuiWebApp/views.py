@@ -230,7 +230,7 @@ def post_getUserCoupon(request):
     ownCoupons = models.Listitem.objects.filter(listid=ownList.listid)
     likeCoupons = models.Listitem.objects.filter(listid=likeList.listid)
     onSaleCoupons = models.Listitem.objects.filter(listid=onSaleList.listid)
-    messages = post_getMessage(request.uid)
+    messages = post_getMessage(request)
     own = []
     like = []
     onSale = []
@@ -573,9 +573,6 @@ def login(request):
 
 def userPage(request):
     return render(request, 'user.html', post_getUserCoupon(request))
-
-def userPage(request):
-    return render(request, 'search.html')
 
 
 # post方法加上前缀post_
