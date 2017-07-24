@@ -714,3 +714,7 @@ p {
     display: block;
     line-height: 20px;
 }
+
+.button-fix {
+    text-align: center;
+}
