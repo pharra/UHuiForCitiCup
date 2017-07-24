@@ -1,84 +1,74 @@
-{% extends "__base__.html" %}
-{% block title %}U惠网
-{% endblock %}
+{% extends "__base__.html" %} {% block title %}U惠网 {% endblock %} {% block src %} {% endblock %} {% block body %}
+<div class="container">
+    <div class="col-lg-2 col-md-2  category-left" id="homepage_navigation">
+        <ul class="category-menu">
+            <!--#homepage_top-->
+            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
+            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
+            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
+            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
+            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
+            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
+            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
+            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
+            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
+            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
+        </ul>
+    </div>
 
-{% block src %}
-{% endblock %}
-{% block body %}
-    <div class="container">
-        <div class="col-lg-2 col-md-2  category-left" id="homepage_navigation">
-            <ul class="category-menu">
-                <!--#homepage_top-->
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            </ul>
+
+    <div class="category-right col-lg-10 col-md-10 ">
+        <div id="myCarousel" class="carousel slide">
+            <!-- 轮播（Carousel）指标 -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+            <!-- 轮播（Carousel）项目 -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <img src="/static/images/dva_1.jpg" alt="First slide">
+                </div>
+                <div class="item">
+                    <img src="/static/images/dva_2.jpg" alt="Second slide">
+                </div>
+                <div class="item">
+                    <img src="/static/images/dva_3.jpg" alt="Third slide">
+                </div>
+            </div>
+            <!-- 轮播（Carousel）导航 -->
+            <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
 
 
-        <div class="category-right col-lg-10 col-md-10 ">
-            <div id="myCarousel" class="carousel slide">
-                <!-- 轮播（Carousel）指标 -->
-                <ol class="carousel-indicators">
-                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#myCarousel" data-slide-to="1"></li>
-                    <li data-target="#myCarousel" data-slide-to="2"></li>
-                </ol>
-                <!-- 轮播（Carousel）项目 -->
-                <div class="carousel-inner">
-                    <div class="item active">
-                        <img src="/static/images/dva_1.jpg" alt="First slide">
-                    </div>
-                    <div class="item">
-                        <img src="/static/images/dva_2.jpg" alt="Second slide">
-                    </div>
-                    <div class="item">
-                        <img src="/static/images/dva_3.jpg" alt="Third slide">
-                    </div>
-                </div>
-                <!-- 轮播（Carousel）导航 -->
-                <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-                <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <a href="#" class="thumbnail">
+                    <img src="/static/images/dva_1.jpg" alt="">
+                </a>
             </div>
-
-
-            <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-3">
-                    <a href="#" class="thumbnail">
-                        <img src="/static/images/dva_1.jpg" alt="">
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3">
-                    <a href="#" class="thumbnail">
-                        <img src="/static/images/dva_1.jpg" alt="">
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3">
-                    <a href="#" class="thumbnail">
-                        <img src="/static/images/dva_1.jpg" alt="">
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3">
-                    <a href="#" class="thumbnail">
-                        <img src="/static/images/dva_1.jpg" alt="">
-                    </a>
-                </div>
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <a href="#" class="thumbnail">
+                    <img src="/static/images/dva_1.jpg" alt="">
+                </a>
             </div>
-
-
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <a href="#" class="thumbnail">
+                    <img src="/static/images/dva_1.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <a href="#" class="thumbnail">
+                    <img src="/static/images/dva_1.jpg" alt="">
+                </a>
+            </div>
         </div>
-        <!-- recontainer -->
+
 
     </div>
-{% endblock %}
+    <!-- recontainer -->
 
-{% block scripts %}
-
-{% endblock %}
+</div>
+{% endblock %} {% block scripts %} {% endblock %}
