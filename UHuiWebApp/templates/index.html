@@ -4,189 +4,383 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE = edge">
-    <!--<meta name="viewport" content="width = device - width, initial - scale = 1">-->
+    <meta name="viewport" content="width = device - width, initial - scale = 1">
     <title>{{ c }}</title>
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/style.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
+<body>
+    <!--导航栏部分：Logo/搜索栏/注册/登录-->
+    <nav class="navbar" id="index_nav">
+        <div class="container">
+            <div class="row">
 
-<!--导航栏部分：Logo/搜索栏/注册/登录-->
-<nav class="navbar">
+                <!--Logo-->
+                <div class="navbar-header col-lg-1 col-md-1  col-sm-1 ">
+                    <a class="navbar-brand" href="/search">Brand</a>
+                </div>
 
+                <!--定位-->
+                <div class="col-lg-2 col-md-2  col-sm-2 city-position">
+                    <div style="margin: 0 15px 0 15px;" id="city-position"><i class="fa fa-location-arrow"></i> 定位</div>
+                </div>
 
-    <div class="container">
-        <div class="row">
-            <!--Logo-->
-            <div class="navbar-header col-lg-1 col-md-1  col-sm-1 ">
-                <a class="navbar-brand" href="/search">Brand</a>
-            </div>
-            <div class="col-lg-2 col-md-2  col-sm-2 city-position">
-                <div style="margin: 0 15px 0 15px;" id="city-position"><i class="fa fa-location-arrow"></i> 定位</div>
-            </div>
-            <!--注册/登录-->
-            <div class="navbar-search col-lg-6 col-md-6  col-sm-6">
-                <form class="navbar-form">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="搜索">
-                    </div>
-                    <button type="submit" class="btn btn-default"><span class="fa fa-arrow-right"></span></button>
+                <!--搜索-->
+                <div class="navbar-search col-lg-6 col-md-6  col-sm-6">
+                    <form class="navbar-form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="搜索">
+                        </div>
+                        <button type="submit" class="btn btn-default"><span class="fa fa-arrow-right"></span></button>
+                    </form>
+                </div>
 
+                <!--用户中心-->
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <ul class="nav-login row">
+                        {% if userid %}
+                        <li class="col-lg-4 col-md-4  col-sm-4">
+                            <i class="fa fa-comment point showsinglemessage" id="singlemessage"></i>
+                            <i class="fa fa-caret-up message-div-arrow" aria-hidden="true"></i>
+                            <div class="being-hidden message-div" id="forsinglemessage">
+                                <div class="message-div-header row">
+                                    <div style="margin: 5px 0 5px 0;">
+                                        <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
+                                            <img src="/static/images/youhuiquan.png">
+                                        </div>
+                                        <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
+                                            <img src="/static/images/systemmessage.png">
+                                        </div>
 
-                </form>
-            </div>
-
-
-            <div class="col-lg-3 col-md-3  col-sm-3">
-                <ul class="nav-login row">
-                    {% if userid %}
-                    <li class="col-lg-4 col-md-4  col-sm-4">
-                        <i class="fa fa-comment point showsinglemessage" id="singlemessage"></i>
-                        <i class="fa fa-caret-up message-div-arrow" aria-hidden="true"></i>
-                        <div class="being-hidden message-div" id="forsinglemessage">
-                            <div class="message-div-header row">
-                                <div style="margin: 5px 0 5px 0;">
-                                    <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
-                                        <img src="/static/images/youhuiquan.png">
+                                        <div class="col-lg-4 col-md-4  col-sm-4 message-div-header-category">
+                                            <img src="/static/images/systemmessage.png">
+                                        </div>
+                                        <div class="clear"></div>
                                     </div>
-                                    <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
-                                        <img src="/static/images/systemmessage.png">
-                                    </div>
+                                    <div class="message-div-body">
+                                        {% for i in couponsOwn %}
 
-                                    <div class="col-lg-4 col-md-4  col-sm-4 message-div-header-category">
-                                        <img src="/static/images/systemmessage.png">
+                                        <div class="message-div-body-content">
+                                            {{ i.product }}
+                                        </div>
+                                        {% endfor %}
                                     </div>
-                                    <div class="clear"></div>
-                                </div>
-                                <div class="message-div-body">
-                                    {% for i in couponsOwn %}
-
-                                    <div class="message-div-body-content">
-                                        {{ i.product }}
+                                    <div class="message-div-footer">
+                                        <div class="col-lg-4 col-md-4  col-lg-4 col-lg-offset-8 col-md-offset-8  col-sm-offset-8 ">
+                                            <a href="#">查看全部</a></div>
                                     </div>
-                                    {% endfor %}
-                                </div>
-
-                                <div class="message-div-footer">
-                                    <div class="col-lg-4 col-md-4  col-lg-4 col-lg-offset-8 col-md-offset-8  col-sm-offset-8 ">
-                                        <a href="#">查看全部</a></div>
                                 </div>
                             </div>
-                        </div>
+                        </li>
+                        <li class="col-lg-4 col-md-4 col-sm-4">
+                            <i class="fa fa-comment point"></i>
 
 
-                    </li>
-                    <li class="col-lg-4 col-md-4 col-sm-4">
-                        <i class="fa fa-comment point"></i>
+                        </li>
+                        <li class="col-lg-4 col-md-4 col-sm-4">
 
+                            <div class="profile-photo-div point" id="userinfo"><img src="/static/images/dva_1.jpg">
+                            </div>
+                            <div class="being-hidden userinfo-div" id="foruserinfo">
 
-                    </li>
-                    <li class="col-lg-4 col-md-4 col-sm-4">
+                                <p> {{ nickname }}</p>
+                                <p> U币余额:{{ UCoin }}</p>
+                                <p><a href="/user">用户中心</a></p>
+                            </div>
 
-                        <div class="profile-photo-div point" id="userinfo"><img src="/static/images/dva_1.jpg">
-                        </div>
-                        <div class="being-hidden userinfo-div" id="foruserinfo">
-
-                            <p> {{ nickname }}</p>
-                            <p> U币余额:{{ UCoin }}</p>
-                            <p><a href="/user">用户中心</a></p>
-                        </div>
-
-                    </li>
-                    {% else %}
-                    <li class="col-lg-6 col-md-6  col-sm-6">
-                        <a href="/login?method=register">注册
+                        </li>
+                        {% else %}
+                        <li class="col-lg-6 col-md-6  col-sm-6">
+                            <a href="/login?method=register">注册
                                 <span class="glyphicon glyphicon-user hidden-sm"></span>
                             </a>
-                    </li>
-                    <li class="col-lg-6 col-md-6  col-sm-6">
-                        <a href="/login?method=login">登录
+                        </li>
+                        <li class="col-lg-6 col-md-6  col-sm-6">
+                            <a href="/login?method=login">登录
                                 <span class="glyphicon glyphicon-user  hidden-sm"></span>
                             </a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-
-
-    </div>
-</nav>
-<!--主页推送轮播-->
-<!--轮播一张图-->
-<div class="container">
-    <div class="col-lg-2 col-md-2  category-left" id="homepage_navigation">
-        <ul class="category-menu">
-            <!--#homepage_top-->
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-            <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-        </ul>
-    </div>
-
-
-    <div class="category-right col-lg-10 col-md-10 ">
-        <div id="myCarousel" class="carousel slide">
-            <!-- 轮播（Carousel）指标 -->
-            <ol class="carousel-indicators">
-                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#myCarousel" data-slide-to="1"></li>
-                <li data-target="#myCarousel" data-slide-to="2"></li>
-            </ol>
-            <!-- 轮播（Carousel）项目 -->
-            <div class="carousel-inner">
-                <div class="item active">
-                    <img src="/static/images/dva_1.jpg" alt="First slide">
-                </div>
-                <div class="item">
-                    <img src="/static/images/dva_2.jpg" alt="Second slide">
-                </div>
-                <div class="item">
-                    <img src="/static/images/dva_3.jpg" alt="Third slide">
+                        </li>
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
-            <!-- 轮播（Carousel）导航 -->
-            <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+        </div>
+    </nav>
+    <!--主页推送轮播-->
+    <!--轮播一张图-->
+    <div class="container">
+        <div class="col-lg-2 col-md-2  category-left" id="homepage_navigation">
+            <ul class="category-menu">
+                <!--#homepage_top-->
+                <a href="#index_nav">
+                    <li><img src="/static/images/置顶箭头.png">回到顶部</li>
+                </a>
+                <a href="#index_life">
+                    <li><i class="fa fa-commenting-o"></i>生活百货</li>
+                </a>
+                <a href="#index_elec">
+                    <li><i class="fa fa-commenting-o"></i>电子产品</li>
+                </a>
+                <a href="#index_clot">
+                    <li><i class="fa fa-commenting-o"></i>服装装饰</li>
+                </a>
+                <a href="#index_eadr">
+                    <li><i class="fa fa-commenting-o"></i>饮食保健</li>
+                </a>
+                <a href="#index_bili">
+                    <li><i class="fa fa-commenting-o"></i>文娱体育</li>
+                </a>
+                <a href="#index_home">
+                    <li><i class="fa fa-commenting-o"></i>家具家居</li>
+                </a>
+                <a href="#index_trip">
+                    <li><i class="fa fa-commenting-o"></i>旅行住宿</li>
+                </a>
+                <a href="#index_dres">
+                    <li><i class="fa fa-commenting-o"></i>美妆妆饰</li>
+                </a>
+            </ul>
         </div>
 
+        <div class="category-right col-lg-10 col-md-10 ">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <!-- 轮播（Carousel）指标 -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                </ol>
+                <!-- 轮播（Carousel）项目 -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img src="/static/images/dva_1.jpg" alt="First slide">
+                    </div>
+                    <div class="item">
+                        <img src="/static/images/dva_2.jpg" alt="Second slide">
+                    </div>
+                    <div class="item">
+                        <img src="/static/images/dva_3.jpg" alt="Third slide">
+                    </div>
+                </div>
+                <!-- 轮播（Carousel）导航 -->
+                <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+            </div>
 
-        <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
+            <hr id="index_life" />
+
+            <div class="row">
+                <p class="text-fix-center">生活百货</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
             </div>
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
+
+            <hr id="index_elec" />
+
+            <div class="row">
+                <p class="text-fix-center">电子产品</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
             </div>
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
+
+            <hr id="index_clot" />
+
+            <div class="row">
+                <p class="text-fix-center">服装装饰</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
             </div>
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
+
+            <hr id="index_eadr" />
+
+            <div class="row">
+                <p class="text-fix-center">饮食保健</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
             </div>
+
+            <hr id="index_bili" />
+
+            <div class="row">
+                <p class="text-fix-center">文娱体育</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <hr id="index_home" />
+
+            <div class="row">
+                <p class="text-fix-center">家具家居</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <hr id="index_trip" />
+
+            <div class="row">
+                <p class="text-fix-center">旅行住宿</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <hr id="index_dres" />
+
+            <div class="row">
+                <p class="text-fix-center">美妆妆饰</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+
         </div>
-
-
+        <!-- recontainer -->
+        <div id="allmap"></div>
     </div>
-    <!-- recontainer -->
-    <div id="allmap"></div>
-</div>
 </body>
 <script src="/static/js/jquery-3.2.1.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
