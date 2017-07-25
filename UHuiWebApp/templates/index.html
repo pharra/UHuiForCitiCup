@@ -1,29 +1,46 @@
 {% extends "__base__.html" %}
-{% block title %}U慧网
-{% endblock %}
+{% block title %}U惠网 {% endblock %}
+{% block src %} {% endblock %}
+{% block phone_body %}
+    <div class="aui-row">
 
-{% block src %}
+    </div>
 {% endblock %}
 {% block body %}
     <div class="container">
-        <div class="col-lg-2 col-md-2  category-left" id="homepage_navigation">
+        <div class="col-lg-2 col-md-2  category-left being-hidden" id="homepage_navigation">
             <ul class="category-menu">
                 <!--#homepage_top-->
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
-                <li><i class="fa fa-commenting-o"></i>用户讨论</li>
+                <a href="#index_nav">
+                    <li><img src="/static/images/置顶箭头.png">回到顶部</li>
+                </a>
+                <a href="#index_life">
+                    <li><i class="fa fa-commenting-o"></i>生活百货</li>
+                </a>
+                <a href="#index_elec">
+                    <li><i class="fa fa-commenting-o"></i>电子产品</li>
+                </a>
+                <a href="#index_clot">
+                    <li><i class="fa fa-commenting-o"></i>服装装饰</li>
+                </a>
+                <a href="#index_eadr">
+                    <li><i class="fa fa-commenting-o"></i>饮食保健</li>
+                </a>
+                <a href="#index_bili">
+                    <li><i class="fa fa-commenting-o"></i>文娱体育</li>
+                </a>
+                <a href="#index_home">
+                    <li><i class="fa fa-commenting-o"></i>家具家居</li>
+                </a>
+                <a href="#index_trip">
+                    <li><i class="fa fa-commenting-o"></i>旅行住宿</li>
+                </a>
+                <a href="#index_dres">
+                    <li><i class="fa fa-commenting-o"></i>美妆妆饰</li>
+                </a>
             </ul>
         </div>
-
-
-        <div class="category-right col-lg-10 col-md-10 ">
+        <div class="category-right col-lg-12 col-md-12 ">
             <div id="myCarousel" class="carousel slide">
                 <!-- 轮播（Carousel）指标 -->
                 <ol class="carousel-indicators">
@@ -73,12 +90,217 @@
             </div>
 
 
+            <hr id="index_elec"/>
+            <div class="row">
+                <p class="text-fix-center">生活百货</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <hr id="index_elec"/>
+
+            <div class="row">
+                <p class="text-fix-center">电子产品</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <hr id="index_clot"/>
+
+            <div class="row">
+                <p class="text-fix-center">服装装饰</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <hr id="index_eadr"/>
+
+            <div class="row">
+                <p class="text-fix-center">饮食保健</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <hr id="index_bili"/>
+
+            <div class="row">
+                <p class="text-fix-center">文娱体育</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <hr id="index_home"/>
+
+            <div class="row">
+                <p class="text-fix-center">家具家居</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <hr id="index_trip"/>
+
+            <div class="row">
+                <p class="text-fix-center">旅行住宿</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <hr id="index_dres"/>
+
+            <div class="row">
+                <p class="text-fix-center">美妆妆饰</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+
         </div>
-        <!-- recontainer -->
 
     </div>
-{% endblock %}
 
-{% block scripts %}
 
-{% endblock %}
+    </div>
+{% endblock %} {% block scripts %} {% endblock %}
