@@ -34,4 +34,4 @@ def sendConfirmMail(to_addr, address):
         server.quit()
 
 if __name__ == "__main__":
-    sendConfirmMail('527293764@qq.com', '佳佳是zz')
+    sendConfirmMail('1647626066@qq.com', '娘娘傻逼')
