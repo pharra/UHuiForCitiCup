@@ -250,7 +250,7 @@ def post_search(request):
         result.append(post_couponInfo(productResult[16 * page + i].couponid))
     # 数量不够时的结果仍需补全
     for brand in brandIDResult:
-        pc = int(16/brandIDResult.count())
+        pc = int(16 / brandIDResult.count())
         brandItem = models.Coupon.objects.filter(brandid=brand.brandid)
         for i in range(0, pc):
             if (pc * page + i) == brandItem.count():
@@ -263,6 +263,7 @@ def post_search(request):
 
 
 def post_getUserCoupon(request):
+    count = request.POST.get('couponsNumbers', 'all')
     if not request.uid:
         return {'couponsOwn': '', 'couponsLike': ''}
     try:
@@ -294,9 +295,14 @@ def post_getUserCoupon(request):
     own.reverse()
     like.reverse()
     onSale.reverse()
+    if count != 'all':
+        count = int(count)
+        own = own[0:min(count, len(own))]
+        like = like[0:min(count, len(like))]
+        onSale = onSale[0:min(count, len(onSale))]
+
     couponDict = {'couponsOwn': own, 'couponsLike': like, 'couponsOnSale': onSale,
                   'couponMessages': messages['couponMessages'], 'systemMessages': messages['systemMessages']}
-
     if DEBUG is True:
         jso1n = json.dumps(couponDict)
         print(jso1n)
@@ -487,6 +493,7 @@ def post_buy(request):
     if buyerUCoin < coupon.listprice:
         return JsonResponse({'errno': '1', 'message': 'UCoin不足以支付'})
     # 优惠券状态由onSale修改为store
+    createMessage('上架的优惠券被购买', couponID)
     coupon.stat = 'store'
     coupon.save()
     # 优惠券由卖家的own列表移除
@@ -504,8 +511,13 @@ def post_buy(request):
     # 优惠券存入买家的own列表
     ownList = models.Couponlist.objects.get(stat='own', userid=buyerID)
     models.Listitem.objects.create(listid=ownList, couponID=coupon)
-
-    createMessage('上架的优惠券被购买', couponID)
+    # 去掉所有like
+    createMessage('关注的优惠券已被购买', couponID)
+    likeList = models.Listitem.objects.filter(couponid=couponID)
+    for lists in likeList:
+        temp = models.Couponlist.objects.get(listid=lists.listid.listid)
+        if temp.stat == 'like':
+            lists.delete()
     return JsonResponse({'errno': '0', 'message': 'successfully brought'})
 
 
@@ -606,7 +618,7 @@ def createLists(user):
 
 # get方法函数
 def index(request):
-    return render(request, 'index.html', post_getUserCoupon(request))
+    return render(request, 'index.html')
 
 
 def login(request):
