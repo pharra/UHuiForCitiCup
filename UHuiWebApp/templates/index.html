@@ -1,9 +1,122 @@
 {% extends "__base__.html" %}
 {% block title %}U惠网 {% endblock %}
-{% block src %} {% endblock %}
+{% block src %}
+    <link rel="stylesheet" type="text/css" href="/static/css/aui/aui-slide.css"/>
+{% endblock %}
 {% block phone_body %}
     <div class="aui-row">
+        <div id="aui-slide">
+            <div class="aui-slide-wrap">
+                <div class="aui-slide-node bg-dark">
 
+                    <img src="static/images/dva_1.jpg"/>
+                </div>
+                <div class="aui-slide-node bg-dark">
+
+                    <img src="static/images/dva_1.jpg"/>
+                </div>
+                <div class="aui-slide-node bg-dark">
+
+                    <img src="static/images/dva_1.jpg"/>
+                </div>
+            </div>
+
+            <div class="aui-slide-page-wrap"><!--分页容器--></div>
+        </div>
+
+    </div>
+    <script src="/static/js/aui/aui-slide.js"></script>
+    <script type="text/javascript">
+        var slide = new auiSlide({
+            container: document.getElementById("aui-slide"),
+            // "width":300,
+            "height": 200,
+            "speed": 500,
+            "autoPlay": 3000, //自动播放
+            "loop": true,
+            "pageShow": true,
+            "pageStyle": 'dot',
+            'dotPosition': 'center',
+        });
+    </script>
+    <section class="aui-grid">
+        <div class="aui-row">
+            <div class="aui-col-xs-3">
+
+                <i class="aui-iconfont aui-icon-gear"></i>
+
+                <div class="aui-grid-label">首页</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-gear"></i>
+                <div class="aui-grid-label">设置</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-map"></i>
+                <div class="aui-grid-label">地图</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-calendar"></i>
+                <div class="aui-grid-label">日历</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-mobile"></i>
+                <div class="aui-grid-label">电子产品</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-cart"></i>
+                <div class="aui-grid-label">购物车</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-paper"></i>
+                <div class="aui-grid-label">发现</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-video"></i>
+                <div class="aui-grid-label">视频</div>
+            </div>
+        </div>
+    </section>
+    <div class="aui-row">
+        {% for i in couponsOwn %}
+            <div class="aui-col-xs-12">
+                <div class="user-coupons aui-row">
+                    <div class="aui-col-xs-3 user-coupons-left">
+                        <p class="user-coupons-left-value">
+                            ￥{{ i.listPrice }}
+                        </p>
+                        <p>
+                            估值:￥{{ i.value }}
+                        </p>
+
+                    </div>
+                    <div class="aui-col-xs-6 user-coupons-middle">
+                        <div class="user-coupons-middle-value aui-col-xs-6">
+                            <p class="font-class">
+                                {{ i.brand }}
+                            </p>
+                        </div>
+                        <div class="aui-col-xs-6 user-coupons-middle-value">
+                            <p>
+                                {{ i.discount }}
+                            </p>
+                        </div>
+                        <div class="aui-col-xs-12 user-coupons-middle-value">
+                            {% for k in i.limits %}
+                                <p class="user-coupons-middle-value-limits-p">{{ k }}</p>
+                            {% endfor %}
+                        </div>
+
+
+                    </div>
+
+                    <div class="aui-col-xs-12 user-coupons-bottom">
+                        <p>截止时间:{{ i.expiredTime }}</p>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
 {% block body %}
@@ -303,4 +416,87 @@
 
 
     </div>
-{% endblock %} {% block scripts %} {% endblock %}
+{% endblock %}
+{% block scripts %}
+
+{% endblock %}
+
+
+<!-- <div id="aui-slide">
+    <div class="aui-slide-wrap" >
+        <div class="aui-slide-node">
+            <div class="aui-grid">
+                <div class="aui-row">
+                    <div class="aui-col-xs-4">
+                        <div class="aui-badge">88</div>
+                        <i class="aui-iconfont aui-icon-home"></i>
+                        <div class="aui-grid-label">首页</div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <i class="aui-iconfont aui-icon-gear"></i>
+                        <div class="aui-grid-label">设置</div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <i class="aui-iconfont aui-icon-map"></i>
+                        <div class="aui-grid-label">地图</div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <i class="aui-iconfont aui-icon-calendar"></i>
+                        <div class="aui-grid-label">日历</div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <div class="aui-badge"></div>
+                        <i class="aui-iconfont aui-icon-date"></i>
+                        <div class="aui-grid-label">日期</div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <div class="aui-dot"></div>
+                        <i class="aui-iconfont aui-icon-cart"></i>
+                        <div class="aui-grid-label">购物车</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="aui-slide-node aui-slide-node-middle aui-slide-node-center">
+            <div class="aui-content-padded">
+                <span class="aui-text-danger">AUI Slide</span> 轮播组件不只局限于放置图片，可以自定义内容，分页样式有圆点(dot)，线条(line),结合AUI Flex来实现图片及内容的水平、垂直居中
+            </div>
+        </div>
+        <div class="aui-slide-node aui-bg-warning aui-slide-node-middle aui-slide-node-center">
+            <div class="aui-content-padded">
+                <span class="aui-text-danger">AUI Slide</span>提供了常用的配置属性，可以自定义宽度，高度，自动播放，分页器样式等，支持无缝循环轮播
+            </div>
+        </div>
+        <div class="aui-slide-node bg-dark">
+            <img src="../../image/l1.png" />
+        </div>
+        <div class="aui-slide-node bg-dark">
+            <img src="../../image/l2.png" />
+        </div>
+        <div class="aui-slide-node bg-dark">
+            <img src="../../image/l3.png" />
+        </div>
+    </div>
+    <div class="aui-slide-page-wrap"></div>
+</div>
+
+<script src="/static/js/aui/aui-slide.js"></script>
+<script type="text/javascript">
+    var slide = new auiSlide({
+        container:document.getElementById("aui-slide"),
+        // "width":300,
+        "height":260,
+        "speed":300,
+        "autoPlay": 3000,
+        "pageShow":true,
+        "pageStyle":'dot',
+        "loop":true,
+        'dotPosition':'center',
+        currentPage:currentFun
+    });
+
+    function currentFun(index) {
+        console.log(index);
+    }
+</script>
+-->

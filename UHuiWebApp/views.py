@@ -241,7 +241,6 @@ def post_search(request):
     page = int(request.POST.get('page', 1)) - 1
     if not key:
         return render(request, 'search.html', {'keyWord': key})
-
     if not orderBy:
         orderBy = 'expiredtime'
     else:
