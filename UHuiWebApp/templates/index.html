@@ -1,6 +1,10 @@
-{% extends "__base__.html" %} {% block title %}U惠网 {% endblock %} {% block src %} {% endblock %} {% block body %}
+{% extends "__base__.html" %} {% block title %}U惠网 {% endblock %} {% block src %} {% endblock %} {% block phone_body %}
+<div class="aui-row">
+
+</div>
+{% endblock %} {% block body %}
 <div class="container">
-    <div class="col-lg-2 col-md-2  category-left" id="homepage_navigation">
+    <div class="col-lg-2 col-md-2  category-left being-hidden" id="homepage_navigation">
         <ul class="category-menu">
             <!--#homepage_top-->
             <a href="#index_nav">
@@ -32,9 +36,8 @@
             </a>
         </ul>
     </div>
-
-    <div class="category-right col-lg-10 col-md-10 ">
-        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <div class="category-right col-lg-12 col-md-12 ">
+        <div id="myCarousel" class="carousel slide">
             <!-- 轮播（Carousel）指标 -->
             <ol class="carousel-indicators">
                 <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -58,8 +61,32 @@
             <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
 
-        <hr id="index_life" />
 
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <a href="#" class="thumbnail">
+                    <img src="/static/images/dva_1.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <a href="#" class="thumbnail">
+                    <img src="/static/images/dva_1.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <a href="#" class="thumbnail">
+                    <img src="/static/images/dva_1.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <a href="#" class="thumbnail">
+                    <img src="/static/images/dva_1.jpg" alt="">
+                </a>
+            </div>
+        </div>
+
+
+        <hr id="index_elec" />
         <div class="row">
             <p class="text-fix-center">生活百货</p>
             <div class="col-lg-3 col-md-3 col-sm-3">
@@ -267,7 +294,13 @@
         </div>
 
     </div>
-</div>
 
 </div>
-{% endblock %} {% block scripts %} {% endblock %}
+<<<<<<< HEAD </div>
+
+    </div>
+    =======
+
+
+    </div>
+    >>>>>>> wf {% endblock %} {% block scripts %} {% endblock %}
