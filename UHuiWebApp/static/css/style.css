@@ -717,4 +717,22 @@ p {
 
 .button-fix {
     text-align: center;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.page-fix {
+    position: fixed;
+    left: 40%;
+    top: 85%;
+}
+
+.select-div {
+    float: left;
+}
+
+.select-box {
+    width: 47px;
+    height: 24px;
+    float: left;
 }
