@@ -297,9 +297,12 @@ def post_getUserCoupon(request):
     onSale.reverse()
     if count != 'all':
         count = int(count)
-        own = own[0:min(count, len(own))]
-        like = like[0:min(count, len(like))]
-        onSale = onSale[0:min(count, len(onSale))]
+        if own:
+            own = own[0:min(count, len(own))]
+        if like:
+            like = like[0:min(count, len(like))]
+        if onSale:
+            onSale = onSale[0:min(count, len(onSale))]
 
     couponDict = {'couponsOwn': own, 'couponsLike': like, 'couponsOnSale': onSale,
                   'couponMessages': messages['couponMessages'], 'systemMessages': messages['systemMessages']}
