@@ -1,5 +1,6 @@
 import json
 
+
 from UHuiProject.settings import DEBUG
 from django.core.exceptions import ObjectDoesNotExist
 from UHuiWebApp import models
@@ -118,7 +119,6 @@ def post_modifyUserInfo(request):
     oldPsw = request.POST.get('oldPassword', False)
     newNickName = request.POST.get('nickname', False)
     newPhoneNum = request.POST.get('phoneNum', False)
-    newAvatar = request.POST.get('avatar', False)
     newGender = request.POST.get('gender', False)
     newPsw = request.POST.get('password', False)
     newEmail = request.POST.get('email', False)
@@ -160,15 +160,20 @@ def post_modifyUserInfo(request):
             response.delete_cookie('VCe')
             return response
 
-    if newAvatar:
-        user.avatar = newAvatar
-
     if newGender:
         user.gender = newGender
 
     user.save()
     response.content = json.dumps({'errno': '0', 'message': '修改成功'})
     return response
+
+
+def post_changeAvatar(request):
+    uid = request.uid
+    user = models.User.objects.get(id=uid)
+    user.avatar = request.FILES['avatar']
+    user.save()
+    return JsonResponse({'errno': '0', 'message': '成功'})
 
 
 def changeCouponStat(couponID, sellerID, stat):
@@ -235,7 +240,7 @@ def post_search(request):
     orderBy = request.POST.get('order', None)
     page = int(request.POST.get('page', 1)) - 1
     if not key:
-        return {'result': "请输入关键词"}
+        return render(request, 'search.html', {'keyWord': key})
 
     if not orderBy:
         orderBy = 'expiredtime'
@@ -251,7 +256,7 @@ def post_search(request):
     # 数量不够时的结果仍需补全
     for brand in brandIDResult:
         pc = int(16 / brandIDResult.count())
-        brandItem = models.Coupon.objects.filter(brandid=brand.brandid)
+        brandItem = models.Coupon.objects.filter(brandid=brand.brandid, stat='onSale')
         for i in range(0, pc):
             if (pc * page + i) == brandItem.count():
                 break
@@ -259,11 +264,13 @@ def post_search(request):
 
     # if not productResult.exists() and not brandIDResult.exists():
     #     return render(request, 'search.html')
-    return render(request, 'search.html', {'coupons': result})
+    return render(request, 'search.html', {'coupons': result, 'keyWord': key})
 
 
 def post_getUserCoupon(request):
     count = request.POST.get('couponsNumbers', 'all')
+    if count != 'all':
+        count = int(count)
     if not request.uid:
         return {'couponsOwn': '', 'couponsLike': ''}
     try:
@@ -281,28 +288,32 @@ def post_getUserCoupon(request):
     like = []
     onSale = []
     if ownCoupons.exists():
-        for coupon in ownCoupons:
-            own.append(post_couponInfo(coupon.couponid.couponid))
+        if (count != 'all' and ownCoupons.count() <= count) or count == 'all':
+            for coupon in ownCoupons:
+                own.append(post_couponInfo(coupon.couponid.couponid))
+        else:
+            for i in range(0, count):
+                own.append(post_couponInfo(ownCoupons[i].couponid.couponid))
 
     if likeCoupons.exists():
-        for coupon in likeCoupons:
-            like.append(post_couponInfo(coupon.couponid.couponid))
+        if (count != 'all' and likeCoupons.count() <= count) or count == 'all':
+            for coupon in likeCoupons:
+                like.append(post_couponInfo(coupon.couponid.couponid))
+        else:
+            for i in range(0, count):
+                onSale.append(post_couponInfo(likeCoupons[i].couponid.couponid))
 
     if onSaleCoupons.exists():
-        for coupon in onSaleCoupons:
-            onSale.append(post_couponInfo(coupon.couponid.couponid))
+        if (count != 'all' and onSaleCoupons.count() <= count) or count == 'all':
+            for coupon in onSaleCoupons:
+                onSale.append(post_couponInfo(coupon.couponid.couponid))
+        else:
+            for i in range(0, count):
+                onSale.append(post_couponInfo(onSaleCoupons[i].couponid.couponid))
 
     own.reverse()
     like.reverse()
     onSale.reverse()
-    if count != 'all':
-        count = int(count)
-        if own:
-            own = own[0:min(count, len(own))]
-        if like:
-            like = like[0:min(count, len(like))]
-        if onSale:
-            onSale = onSale[0:min(count, len(onSale))]
 
     couponDict = {'couponsOwn': own, 'couponsLike': like, 'couponsOnSale': onSale,
                   'couponMessages': messages['couponMessages'], 'systemMessages': messages['systemMessages']}
@@ -371,7 +382,7 @@ def post_userInfo(u_id):
     nickname = user.nickname
     gender = user.gender
     UCoin = user.ucoin
-    avatar = user.avatar
+    avatar = str(user.avatar)
     phoneNum = user.phonenum
     if phoneNum is None:
         phoneNum = '未绑定手机号'
@@ -492,12 +503,14 @@ def post_buy(request):
     if coupon.stat != 'onSale':
         return JsonResponse({'errno': '1', 'message': '优惠券已下架'})
     # 检查卖家UCoin是否足够
-    buyerUCoin = models.User.objects.get(id=buyerID).ucoin
-    if buyerUCoin < coupon.listprice:
+    buyer = models.User.objects.get(id=buyerID)
+    if buyer.ucoin < coupon.listprice:
         return JsonResponse({'errno': '1', 'message': 'UCoin不足以支付'})
+    buyer.ucoin = buyer.ucoin - coupon.listprice
     # 优惠券状态由onSale修改为store
     createMessage('上架的优惠券被购买', couponID)
     coupon.stat = 'store'
+    buyer.save()
     coupon.save()
     # 优惠券由卖家的own列表移除
     sellerOwnList = models.Couponlist.objects.get(stat='own', userid=sellerID)

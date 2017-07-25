@@ -27,6 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# upload image
+MEDIA_ROOT = 'UHuiWebApp/static/'
+
+MEDIA_URL = 'UHuiWebApp/static/'
+
 # Application definition
 
 INSTALLED_APPS = [
