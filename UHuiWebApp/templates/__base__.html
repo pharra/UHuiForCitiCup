@@ -14,6 +14,7 @@
     <link href="/static/css/style.css" rel="stylesheet">
     <link href="/static/css/__base__.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
     {% block src %}{% endblock %}
 
 </head>
@@ -24,7 +25,7 @@
     <div class="aui-content">
         {% block phone_header %}
             <header class="aui-bar aui-bar-nav">
-                <div class=" aui-col-xs-2 city-position">
+                <div class=" aui-col-xs-2 city-position aui-ellipsis-1 aui-font-size-14">
                     <i class="fa fa-location-arrow"></i>
                 </div>
 
@@ -32,7 +33,7 @@
                     <div class="aui-searchbar" id="search">
                         <div class="aui-searchbar-input aui-border-radius" tapmode onclick="phone_doSearch()">
                             <i class="aui-iconfont aui-icon-search"></i>
-                            <form action="javascript:search();">
+                            <form action="/post_search" method="post">
                                 <input type="search" placeholder="请输入搜索内容" name="keyWord" id="search-input">
                             </form>
                         </div>
