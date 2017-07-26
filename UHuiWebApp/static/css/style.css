@@ -50,10 +50,7 @@ figure {
     background: #FC5185;
 }
 
-::-webkit-selection {
-    color: #fff;
-    background: #FC5185;
-}
+
 
 ::-moz-selection {
     color: #fff;
@@ -743,16 +740,21 @@ p {
     color: white;
 }
 
-.phone-max-user-img {
+
+
+
+.phone-user-avator {
     border-radius: 50%;
     width: 75px;
     height: 75px;
-    margin: 25px 15px 25px 15px;
+    margin: 0 auto;
+}
+.phone-max-user-icon {
+    font-size:1.3rem;
+    width: 1.3rem;
 }
 
-.phone-user-avator{
-    border-radius:50% ;
-    width: 75px;
-    height: 75px;
-    margin: 0 auto;
+.phone-max-user-font{
+    color:black;
+
 }
