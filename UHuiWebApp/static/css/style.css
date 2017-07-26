@@ -714,8 +714,7 @@ p {
     display: block;
     line-height: 20px;
 }
-<<<<<<< HEAD
-=======
+
 
 .button-fix {
     text-align: center;
@@ -750,4 +749,10 @@ p {
     height: 75px;
     margin: 25px 15px 25px 15px;
 }
->>>>>>> M
+
+.phone-user-avator{
+    border-radius:50% ;
+    width: 75px;
+    height: 75px;
+    margin: 0 auto;
+}
