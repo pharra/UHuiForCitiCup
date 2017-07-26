@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^post_sellerInformation$', androidViews.post_sellerInformation, name='post_sellerInformation'),
     url(r'^post_buyCoupon$', androidViews.post_buyCoupon, name='post_buyCoupon'),
     url(r'^post_updatePassword$', androidViews.post_updatePassword, name='post_updatePassword'),
+    url(r'^post_addCoupon$', androidViews.post_addCoupon, name='post_addCoupon'),
 ]

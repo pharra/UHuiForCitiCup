@@ -35,6 +35,7 @@ def post_loginForAndroid(request):
         name = User.objects.get(email=u_name).nickname
         ava = User.objects.get(email=u_name).avatar
         coin = User.objects.get(email=u_name).ucoin
+        gen = User.objects.get(email=u_name).gender
     else:
         user = models.User.objects.filter(phonenum=u_name).count()
         if user == 0:
@@ -44,11 +45,12 @@ def post_loginForAndroid(request):
         name = User.objects.get(phonenum=u_name).nickname
         ava = User.objects.get(phonenum=u_name).avatar
         coin = User.objects.get(phonenum=u_name).ucoin
+        gen = User.objects.get(phonenum = u_name).gender
 
     psw = encryption(request.POST.get('password'))
     password = bytes.decode(pswObj.password.encode("UTF-8"))
     if psw == password:
-        response = JsonResponse({'result': 'success','userid':uid,'nickname':name,'avatar':ava,'Ucoin':coin})
+        response = JsonResponse({'result': 'success','userid':uid,'nickname':name,'avatar':ava,'Ucoin':coin,'gender':gen})
         return response
     else:
         return JsonResponse({'error': '密码错误'})
@@ -73,6 +75,9 @@ def post_searchForAndroid(request):
             for info in temp:
                 result.append(info)
         return JsonResponse({'coupons': result})
+    if result == None:
+        return JsonResponse({'result':'result no exist                                            '})
+    return JsonResponse({'coupon':result})
 #点击种类进行查询
 def post_selectCategoryForAndroid(request):
     selectCategory = request.POST.get('categoryID',0)
