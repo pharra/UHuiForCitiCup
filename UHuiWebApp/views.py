@@ -643,6 +643,9 @@ def login(request):
 def userPage(request):
     return render(request, 'user.html', post_getUserCoupon(request))
 
+def myCouponsPage(request):
+    return render(request, 'mycoupons.html', post_getUserCoupon(request))
+
 
 # post方法加上前缀post_
 def post_login(request):
