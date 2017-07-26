@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^post_sendMobileVerifyCode$', views.post_sendMobileVerifyCode, name='post_sendMobileVerifyCode'),
     url(r'^post_modifyUserInfo$', views.post_modifyUserInfo, name='post_modifyUserInfo'),
     url(r'^post_search$', views.post_search, name='post_search'),
+    url(r'^post_getUserCoupon$', views.post_getUserCoupon, name='post_getUserCoupon'),
 
     url(r'^post_loginForAndroid$', androidViews.post_loginForAndroid, name='post_loginForAndroid'),
     url(r'^post_signUpForAndroid$', androidViews.post_signUpForAndroid, name='post_signUpForAndroid'),
@@ -20,10 +21,4 @@ urlpatterns = [
     url(r'^post_searchForAndroid$', androidViews.post_searchForAndroid, name='post_searchForAndroid'),
     url(r'^post_couponDetailForAndroid$', androidViews.post_couponDetailForAndroid, name='post_couponDetailForAndroid'),
     url(r'^post_ownerDetailForAndroid$', androidViews.post_ownerDetailForAndroid, name='post_ownerDetailForAndroid'),
-    url(r'^post_returnInformation$', androidViews.post_returnInformation, name='post_returnInformation'),
-    url(r'^post_likeCoupon$', androidViews.post_likeCoupon, name='post_likeCoupon'),
-    url(r'^post_sellerInformation$', androidViews.post_sellerInformation, name='post_sellerInformation'),
-    url(r'^post_buyCoupon$', androidViews.post_buyCoupon, name='post_buyCoupon'),
-    url(r'^post_updatePassword$', androidViews.post_updatePassword, name='post_updatePassword'),
-    url(r'^post_addCoupon$', androidViews.post_addCoupon, name='post_addCoupon'),
 ]

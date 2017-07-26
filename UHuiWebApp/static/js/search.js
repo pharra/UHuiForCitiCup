@@ -1,6 +1,7 @@
 /**
  * Created by wf on 17-7-24.
  */
+/**
 function search() {
     $.ajax({
         url: '/post_search',
@@ -10,4 +11,4 @@ function search() {
         timeout: 3000,
         cache: false,
     });
-}
+}*/

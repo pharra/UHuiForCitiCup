@@ -109,3 +109,12 @@ class User(models.Model):
     class Meta:
         managed = True
         db_table = 'user'
+
+
+class Pic(models.Model):
+    id = models.CharField(db_column='ID', primary_key=True, max_length=16)
+    pic = models.ImageField(required=False)
+
+    class Meta:
+        managed = True
+        db_table = 'pic'

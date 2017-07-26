@@ -16,10 +16,10 @@ def sendConfirmMail(to_addr, address):
     from_addr = 'No-Reply@uhuiforciti.cn'
     password = 'pj4lkqMF4b'
     smtp_server = 'smtp.ym.163.com'
-    msg = MIMEText('请点击下方链接确认注册\n %s' % address, 'plain', 'utf-8')
+    msg = MIMEText('\n %s' % address, 'plain', 'utf-8')
     msg['From'] = _format_addr('No-Reply <%s>' % from_addr)
-    msg['To'] = _format_addr('管理员 <%s>' % to_addr)
-    msg['Subject'] = Header('U惠网注册确认', 'utf-8').encode()
+    msg['To'] = _format_addr('CZJ <%s>' % to_addr)
+    msg['Subject'] = Header('CJZSB', 'utf-8').encode()
 
     server = smtplib.SMTP(smtp_server, 25)
     server.set_debuglevel(1)
@@ -34,4 +34,4 @@ def sendConfirmMail(to_addr, address):
         server.quit()
 
 if __name__ == "__main__":
-    sendConfirmMail('527293764@qq.com', '佳佳是zz')
+    sendConfirmMail('453814685@qq.com', '中津傻逼')

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE = edge">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" media="screen and (min-width:767px)" href="/static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" media="screen and (max-width:768px)" href="/static/css/aui/aui.css"/>
+
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/__base__.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    {% block src %}{% endblock %}
+
+</head>
+
+<body>
+<div id="allmap"></div>
+<div class="phone-body">
+    <div class="aui-content">
+        {% block phone_header %}
+            <header class="aui-bar aui-bar-nav">
+                <div class=" aui-col-xs-2 city-position aui-ellipsis-1 aui-font-size-14">
+                    <i class="fa fa-location-arrow"></i>
+                </div>
+
+                <div class=" aui-col-xs-10">
+                    <div class="aui-searchbar" id="search">
+                        <div class="aui-searchbar-input aui-border-radius" tapmode onclick="phone_doSearch()">
+                            <i class="aui-iconfont aui-icon-search"></i>
+                            <form action="/post_search" method="post">
+                                <input type="search" placeholder="请输入搜索内容" name="keyWord" id="search-input">
+                            </form>
+                        </div>
+                        <div class="aui-searchbar-cancel" tapmod>取消&nbsp;</div>
+                        <script type="text/javascript">
+                            apiready = function () {
+                                api.parseTapmode();
+                            };
+                            var searchBar = document.querySelector(".aui-searchbar-input");
+                            document.querySelector(".aui-searchbar-cancel").style.marginRight = "-" + document.querySelector(".aui-searchbar-cancel").offsetWidth + "px";
+                            if (searchBar) {
+                                searchBar.onclick = function () {
+                                    document.querySelector(".aui-searchbar-cancel").style.marginRight = 0;
+                                }
+                            }
+                            document.querySelector(".aui-searchbar-cancel").onclick = function () {
+                                this.style.marginRight = "-" + this.offsetWidth + "px";
+                                $("#search-input").val("");
+                            }
+                        </script>
+                    </div>
+                </div>
+            </header>
+        {% endblock %}
+        {% block phone_body %}
+        {% endblock %}
+        {% block phone_footer %}
+            <footer class="aui-bar aui-bar-tab" id="footer">
+                <div class="aui-bar-tab-item aui-active" tapmode>
+                    <i class="aui-iconfont aui-icon-home"></i>
+                    <div class="aui-bar-tab-label">首页</div>
+                </div>
+                <div class="aui-bar-tab-item" tapmode>
+                    <i class="aui-iconfont aui-icon-star"></i>
+                    <div class="aui-bar-tab-label">收藏</div>
+                </div>
+                <div class="aui-bar-tab-item" tapmode>
+                    <div class="aui-badge">99</div>
+                    <i class="aui-iconfont aui-icon-cart"></i>
+                    <div class="aui-bar-tab-label">购物车</div>
+                </div>
+                <div class="aui-bar-tab-item" tapmode>
+                    <div class="aui-dot"></div>
+                    <i class="aui-iconfont aui-icon-my"></i>
+                    <div class="aui-bar-tab-label">我的</div>
+                </div>
+            </footer>
+        {% endblock %}
+    </div>
+</div>
+<div class="computer-body">
+    {% block computer_navbar %}
+        <nav class="navbar">
+
+
+            <div class="container">
+                <div class="row">
+                    <!--Logo-->
+                    <div class="navbar-header col-lg-1 col-md-1  col-sm-1 ">
+                        <a class="navbar-brand" href="/search">Brand</a>
+                    </div>
+                    <div class="col-lg-2 col-md-2  col-sm-2 city-position">
+                        <div style="margin: 0 15px 0 15px;" id="city-position"><i class="fa fa-location-arrow"></i> 定位
+                        </div>
+                    </div>
+                    <!--注册/登录-->
+                    <div class="navbar-search col-lg-6 col-md-6  col-sm-6">
+                        <form class="navbar-form" action="/post_search" onsubmit="__search();" method="post">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="搜索" id="nav-search" name="keyWord">
+                            </div>
+                            <button type="submit" class="btn btn-default"><span class="fa fa-arrow-right"></span>
+                            </button>
+
+
+                        </form>
+                    </div>
+
+
+                    <div class="col-lg-3 col-md-3  col-sm-3">
+                        <ul class="nav-login row">
+                            {% if userid %}
+                                <li class="col-lg-4 col-md-4  col-sm-4">
+                                    <i class="fa fa-comment point showsinglemessage" id="singlemessage"></i>
+                                    <i class="fa fa-caret-up message-div-arrow" aria-hidden="true"></i>
+                                    <div class="being-hidden message-div" id="forsinglemessage">
+                                        <div class="message-div-header row">
+                                            <div style="margin: 5px 0 5px 0;">
+                                                <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
+                                                    <img src="/static/images/youhuiquan.png">
+                                                </div>
+                                                <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
+                                                    <img src="/static/images/systemmessage.png">
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-4  col-sm-4 message-div-header-category">
+                                                    <img src="/static/images/systemmessage.png">
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                            <div class="message-div-body">
+                                                {% for i in couponsOwn %}
+
+                                                    <div class="message-div-body-content">
+                                                        {{ i.product }}
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+
+                                            <div class="message-div-footer">
+                                                <div class="col-lg-4 col-md-4  col-lg-4 col-lg-offset-8 col-md-offset-8  col-sm-offset-8 ">
+                                                    <a href="#">查看全部</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </li>
+                                <li class="col-lg-4 col-md-4 col-sm-4">
+                                    <i class="fa fa-comment point"></i>
+
+
+                                </li>
+                                <li class="col-lg-4 col-md-4 col-sm-4">
+
+                                    <div class="profile-photo-div point" id="userinfo"><img
+                                            src="/static/images/dva_1.jpg">
+                                    </div>
+                                    <div class="being-hidden userinfo-div" id="foruserinfo">
+
+                                        <p> {{ nickname }}</p>
+                                        <p> U币余额:{{ UCoin }}</p>
+                                        <p><a href="/user">用户中心</a></p>
+                                    </div>
+
+                                </li>
+                            {% else %}
+                                <li class="col-lg-6 col-md-6  col-sm-6">
+                                    <a href="/login?method=register">注册
+                                        <span class="glyphicon glyphicon-user hidden-sm"></span>
+                                    </a>
+                                </li>
+                                <li class="col-lg-6 col-md-6  col-sm-6">
+                                    <a href="/login?method=login">登录
+                                        <span class="glyphicon glyphicon-user  hidden-sm"></span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+
+
+            </div>
+        </nav>
+    {% endblock %}
+    {% block body %}{% endblock %}
+</div>
+</body>
+<script src="/static/js/jquery-3.2.1.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/jquery.md5.js"></script>
+<script src="/static/js/index.js"></script>
+<script src="/static/js/search.js"></script>
+<script src="/static/js/aui/api.js"></script>
+<script src="/static/js/aui/aui-tab.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GeoLBAU1t7TRpqXhtw8VIth4r6PGAU3U"></script>
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point(116.331398, 39.897445);
+    map.centerAndZoom(point, 12);
+
+    function myFun(result) {
+        var cityName = result.name;
+        map.setCenter(cityName);
+        $("#city-position,.city-position").html("<i class=\"fa fa-location-arrow\"></i>&nbsp;" + cityName);
+    }
+    var myCity = new BMap.LocalCity();
+    myCity.get(myFun);
+</script>
+{% block scripts %}{% endblock %}
+
+</html>

@@ -111,7 +111,7 @@ class User(models.Model):
     nickname = models.CharField(unique=True, max_length=32)
     phonenum = models.CharField(db_column='phoneNum', unique=True, max_length=11, blank=True, null=True)  # Field name made lowercase.
     gender = models.CharField(max_length=1)
-    avatar = models.CharField(max_length=128, blank=True, null=True)
+    avatar = models.ImageField(upload_to='images', blank=True, null=True)
     password = models.CharField(max_length=32)
     email = models.CharField(unique=True, max_length=32, blank=True, null=True)
     ucoin = models.IntegerField(db_column='UCoin')  # Field name made lowercase.
@@ -121,3 +121,4 @@ class User(models.Model):
     class Meta:
         managed = True
         db_table = 'user'
+
