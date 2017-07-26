@@ -1,4 +1,89 @@
-{% extends "__base__.html" %} {% block title %}用户中心 {% endblock %} {% block src %} {% endblock %} {% block body %}
+{% extends "__base__.html" %}{% block title %}用户中心 {% endblock %} {% block src %} {% endblock %} {% block phone_header %}{% endblock %}{% block phone_body %}
+<div class="aui-row">
+    <div class="phone-max-user-background">
+        <div class="aui-col-xs-5" style="">
+            <img src="/static/images/dva_4.jpg" class="phone-max-user-img" />
+        </div>
+        <div class="aui-col-xs-7">
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">
+                        我的钱包
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">
+                        我的优惠券
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">
+                        我卖出的
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">
+                        我买入的
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">
+                        我关注的
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">
+                        我的信息
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">
+                        应用设置
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">
+                        帮助与反馈
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <footer class="aui-bar aui-bar-tab" id="footer">
+        <div class="aui-bar-tab-item aui-active" tapmode>
+            <i class="aui-iconfont aui-icon-home"></i>
+            <div class="aui-bar-tab-label">首页</div>
+        </div>
+        <div class="aui-bar-tab-item" tapmode>
+            <i class="aui-iconfont aui-icon-star"></i>
+            <div class="aui-bar-tab-label">我的</div>
+        </div>
+    </footer>
+</div>
+{% endblock %}{% block phone_footer %} {% endblock %} {% block body %}
 <div class="container">
     <div class="row">
 

@@ -1,26 +1,64 @@
 {% extends "__base__.html" %} {% block title %}搜索结果 {% endblock %} {% block src %} {% endblock %} {% block body %}
+
 <div class="container">
+
     <div class="row">
-        <div class="button-center">
-            <div class="btn-group">
+        <div class="col-md-5 col-md-offset-1">
+            <div class="btn-group select-div">
                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                按位置排序<span class = "caret"></span>
-            </button>
+                按优惠券售价排序<span class = "caret"></span>
+                </button>
                 <ul class="dropdown-menu">
-                    <li>离我最近</li>
-                    <li>热门商圈</li>
+                    <li>从高到低</li>
+                    <li>从低到高</li>
                 </ul>
-            </div>&nbsp;
-            <div class="btn-group">
+
+                &nbsp;&nbsp;&nbsp;
+            </div>
+
+            <div class="select-div">
+                <input type="text" class="select-box"> &nbsp;&nbsp;&nbsp;
+            </div>
+
+            <p class="select-div">~ &nbsp;&nbsp;</p>
+
+            <div class="select-div">
+                <input type="text" class="select-box">&nbsp;&nbsp;&nbsp;
+            </div>
+
+            <div class="select-div">
+                <button type="button" class="btn btn-info">
+                查询
+            </button> &nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+
+        <div class="col-md-5 col-md-offset-1">
+            <div class="btn-group select-div">
+
                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 按优惠额度排序<span class = "caret"></span>
             </button>
                 <ul class="dropdown-menu">
-                    <li>小于10元</li>
-                    <li>10~50元</li>
-                    <li>大于50元</li>
-                    <li>自定义额度</li>
+                    <li>从高到低</li>
+                    <li>从低到高</li>
                 </ul>
+                &nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="select-div">
+                <input type="text" class="select-box"> &nbsp;&nbsp;&nbsp;
+            </div>
+
+            <p class="select-div">~ &nbsp;&nbsp;</p>
+
+            <div class="select-div">
+                <input type="text" class="select-box">&nbsp;&nbsp;&nbsp;
+            </div>
+
+            <div class="select-div">
+                <button type="button" class="btn btn-info">
+                查询
+            </button>
             </div>
         </div>
     </div>

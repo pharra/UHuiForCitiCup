@@ -714,3 +714,40 @@ p {
     display: block;
     line-height: 20px;
 }
+<<<<<<< HEAD
+=======
+
+.button-fix {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.page-fix {
+    position: fixed;
+    left: 40%;
+    top: 85%;
+}
+
+.select-div {
+    float: left;
+}
+
+.select-box {
+    width: 47px;
+    height: 24px;
+    float: left;
+}
+
+.phone-max-user-background {
+    background-color: #ff5a00;
+    color: white;
+}
+
+.phone-max-user-img {
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    margin: 25px 15px 25px 15px;
+}
+>>>>>>> M
