@@ -714,8 +714,6 @@ p {
     display: block;
     line-height: 20px;
 }
-<<<<<<< HEAD
-=======
 
 .button-fix {
     text-align: center;
@@ -750,4 +748,12 @@ p {
     height: 75px;
     margin: 25px 15px 25px 15px;
 }
->>>>>>> M
+
+.phone-max-user-icon {
+    font-size:1.3rem;
+    margin:15px;
+}
+
+.phone-max-user-font{
+    color:black;
+}
