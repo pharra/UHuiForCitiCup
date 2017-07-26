@@ -632,7 +632,10 @@ def userPage(request):
     return render(request, 'user.html', post_getUserCoupon(request))
 
 def search(request):
-    return render(request, 'search.html', post_getUserCoupon(request))
+    return render(request, 'search.html')
+
+def commodity(request):
+    return render(request, 'commodity.html')
 
 
 # post方法加上前缀post_
