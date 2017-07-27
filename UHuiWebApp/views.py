@@ -339,6 +339,19 @@ def post_getCouponByCat(request):
     return response
 
 
+def post_getCouponByCatAll(request):
+    category = models.Category.objects.all()
+    catName = []
+    couponByCat = {}
+    for cat in category:
+        catName.append(cat.name)
+        coupons = models.Coupon.objects.filter(catid=cat.catid)
+        values = coupons.values().reverse()
+        couponByCat[cat.name] = values[0:4]
+    result = {'catName': catName, 'coupons': couponByCat}
+    return render(request, 'index.html', result)
+
+
 def post_couponInfo(couponID):
     try:
         coupon = models.Coupon.objects.get(couponid=couponID)
