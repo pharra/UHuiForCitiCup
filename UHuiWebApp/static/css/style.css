@@ -4,7 +4,6 @@ body {
     font-size: 16px;
     line-height: 1.7;
     color: black;
-    background: #fff;
 }
 
 a {
@@ -729,7 +728,7 @@ p {
     line-height:45px;
 }
 .phone-user-coupons .font-class {
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     font-weight: bold;
     font-family: Century Gothic;
     color: #ff5a00;
@@ -783,8 +782,10 @@ p {
     color: white;
 }
 
-
-
+.phone-max-user-value{
+    background-color:white;
+    color:#ff5a00;
+}
 
 .phone-user-avator {
     border-radius: 50%;
@@ -799,7 +800,13 @@ p {
 
 .phone-max-user-font{
     color:black;
+}
 
+.phone-max-user-photo{
+    border-radius:50%;
+    width:50px;
+    height:50px;
+    margin:5px 25px 0px 0px;
 }
 .phone-content {
     text-align: center;
@@ -821,4 +828,40 @@ p {
 .phone-mycoupons-header-content-active{
     color:#ff5a00;
     border-bottom: 2px solid #ff5a00;
+}
+.phone-coupons-message{
+    background: white;
+    border-bottom: 1px solid rgb(231,231,231);
+}
+.modal-wrapper{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10000;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: opacity .3s ease-out;
+}
+
+.modal-backdrop{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    background-color: white;
+    transition: background-color .3s ease-out;
 }

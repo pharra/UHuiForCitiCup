@@ -20,16 +20,19 @@
                     <img src="static/images/dva_1.jpg"/>
                 </div>
             </div>
-
+            <div class="clear"></div>
             <div class="aui-slide-page-wrap"><!--分页容器--></div>
+            <div class="clear"></div>
         </div>
     </div>
     <script src="/static/js/aui/aui-slide.js"></script>
+    <script src="/static/js/jquery-3.2.1.js"></script>
     <script type="text/javascript">
+        var img_height = ($("body").width() / 16) * 9;
         var slide = new auiSlide({
             container: document.getElementById("aui-slide"),
             // "width":300,
-            "height": 200,
+            "height": img_height,
             "speed": 500,
             "autoPlay": 3000, //自动播放
             "loop": true,
@@ -120,116 +123,116 @@
 {% endblock %}
 {% block body %}
     <div class="container">
-    <div class="col-lg-2 col-md-2  category-left being-hidden" id="homepage_navigation">
-        <ul class="category-menu">
-            <!--#homepage_top-->
-            <a href="#index_nav">
-                <li><img src="/static/images/置顶箭头.png">回到顶部</li>
-            </a>
-            <a href="#index_life">
-                <li><i class="fa fa-commenting-o"></i>生活百货</li>
-            </a>
-            <a href="#index_elec">
-                <li><i class="fa fa-commenting-o"></i>电子产品</li>
-            </a>
-            <a href="#index_clot">
-                <li><i class="fa fa-commenting-o"></i>服装装饰</li>
-            </a>
-            <a href="#index_eadr">
-                <li><i class="fa fa-commenting-o"></i>饮食保健</li>
-            </a>
-            <a href="#index_bili">
-                <li><i class="fa fa-commenting-o"></i>文娱体育</li>
-            </a>
-            <a href="#index_home">
-                <li><i class="fa fa-commenting-o"></i>家具家居</li>
-            </a>
-            <a href="#index_trip">
-                <li><i class="fa fa-commenting-o"></i>旅行住宿</li>
-            </a>
-            <a href="#index_dres">
-                <li><i class="fa fa-commenting-o"></i>美妆妆饰</li>
-            </a>
-        </ul>
+        <div class="col-lg-2 col-md-2  category-left being-hidden" id="homepage_navigation">
+            <ul class="category-menu">
+                <!--#homepage_top-->
+                <a href="#index_nav">
+                    <li><img src="/static/images/置顶箭头.png">回到顶部</li>
+                </a>
+                <a href="#index_life">
+                    <li><i class="fa fa-commenting-o"></i>生活百货</li>
+                </a>
+                <a href="#index_elec">
+                    <li><i class="fa fa-commenting-o"></i>电子产品</li>
+                </a>
+                <a href="#index_clot">
+                    <li><i class="fa fa-commenting-o"></i>服装装饰</li>
+                </a>
+                <a href="#index_eadr">
+                    <li><i class="fa fa-commenting-o"></i>饮食保健</li>
+                </a>
+                <a href="#index_bili">
+                    <li><i class="fa fa-commenting-o"></i>文娱体育</li>
+                </a>
+                <a href="#index_home">
+                    <li><i class="fa fa-commenting-o"></i>家具家居</li>
+                </a>
+                <a href="#index_trip">
+                    <li><i class="fa fa-commenting-o"></i>旅行住宿</li>
+                </a>
+                <a href="#index_dres">
+                    <li><i class="fa fa-commenting-o"></i>美妆妆饰</li>
+                </a>
+            </ul>
+        </div>
+
+        <div class="category-right col-lg-12 col-md-12 ">
+            <div id="myCarousel" class="carousel slide">
+                <!-- 轮播（Carousel）指标 -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                </ol>
+                <!-- 轮播（Carousel）项目 -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img src="/static/images/dva_1.jpg" alt="First slide">
+                    </div>
+                    <div class="item">
+                        <img src="/static/images/dva_2.jpg" alt="Second slide">
+                    </div>
+                    <div class="item">
+                        <img src="/static/images/dva_3.jpg" alt="Third slide">
+                    </div>
+                </div>
+                <!-- 轮播（Carousel）导航 -->
+                <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+            </div>
+
+
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+            <hr id="index_home"/>
+
+            <div class="row">
+                <p class="text-fix-center">家具家居</p>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/images/dva_1.jpg" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
-
-    <div class="category-right col-lg-12 col-md-12 ">
-        <div id="myCarousel" class="carousel slide">
-            <!-- 轮播（Carousel）指标 -->
-            <ol class="carousel-indicators">
-                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#myCarousel" data-slide-to="1"></li>
-                <li data-target="#myCarousel" data-slide-to="2"></li>
-            </ol>
-            <!-- 轮播（Carousel）项目 -->
-            <div class="carousel-inner">
-                <div class="item active">
-                    <img src="/static/images/dva_1.jpg" alt="First slide">
-                </div>
-                <div class="item">
-                    <img src="/static/images/dva_2.jpg" alt="Second slide">
-                </div>
-                <div class="item">
-                    <img src="/static/images/dva_3.jpg" alt="Third slide">
-                </div>
-            </div>
-            <!-- 轮播（Carousel）导航 -->
-            <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-        </div>
-
-
-        <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
-            </div>
-        </div>
-        <hr id="index_home"/>
-
-        <div class="row">
-            <p class="text-fix-center">家具家居</p>
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <a href="#" class="thumbnail">
-                    <img src="/static/images/dva_1.jpg" alt="">
-                </a>
-            </div>
-        </div>
-    </div>
-
-</div>
 
 
 {% endblock %}

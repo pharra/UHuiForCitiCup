@@ -658,7 +658,7 @@ def userPage(request):
 
 
 def myCouponsPage(request):
-    return render(request, 'mycoupons.html', post_getUserCoupon(request))
+    return render(request, 'mobile_mycoupons.html', post_getUserCoupon(request))
 
 
 def search(request):
@@ -667,6 +667,18 @@ def search(request):
 
 def commodity(request):
     return render(request, 'commodity.html')
+
+
+def mobile_user_setting(request):
+    return render(request, 'mobile_user_setting.html')
+
+
+def mobile_user_wallet(request):
+    return render(request, 'mobile_user_wallet.html')
+
+
+def mobile_couponsmessage(request):
+    return render(request, 'mobile_couponsmessage.html')
 
 
 # post方法加上前缀post_
