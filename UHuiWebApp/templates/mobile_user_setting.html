@@ -1,0 +1,62 @@
+{% extends "__base__.html" %}
+{% block title %}U惠网 {% endblock %}
+{% block src %} {% endblock %}
+{% block phone_header %}
+<header class = "aui-bar aui-bar-nav">
+    <a class = "aui-pull-left aui-btn">
+        <span class = "aui-iconfont aui-icon-left"></span>
+    </a>
+    <div class = "aui-title">个人资料</div>
+</header>
+{% endblock %}
+{% block phone_body %}
+<div class = "aui-content aui-margin-b-15">
+    <ul class = "aui-list aui-list-in">
+        <li class = "aui-list-item">
+            <div class = "aui-media-list-item-inner">
+                <div class = "aui-list-item-inner">
+                    <div class = "aui-list-item-title">头像</div>
+                </div>
+                <div class = "aui-list-item-arrow"></div>
+            </div>
+            <div>
+                <img src="/static/images/dva_4.jpg" class = "phone-max-user-photo">
+            </div>
+        </li>
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-inner aui-list-item-arrow">
+                <div class = "aui-list-item-title">用户名</div>
+                <div class = "aui-list-item-right">有趣的名字</div>
+            </div>
+        </li>
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-inner aui-list-item-arrow">
+                <div class = "aui-list-item-title">年龄</div>
+                <div class = "aui-list-item-right">10</div>
+            </div>
+        </li>
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-inner aui-list-item-arrow">
+                <div class = "aui-list-item-title">性别</div>
+                <div class = "aui-list-item-right">男</div>
+            </div>
+        </li>
+    </ul>
+    <ul class = "aui-list aui-list-in">
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-inner aui-list-item-arrow">
+                <div class = "aui-list-item-title">绑定手机号</div>
+                <div class = "aui-list-item-right">187********</div>
+            </div>
+        </li>
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-inner aui-list-item-arrow">
+                <div class = "aui-list-item-title">修改密码</div>
+            </div>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+{% block phone_footer %} {% endblock %}
+{% block body %} {% endblock %}
+{% block scripts %} {% endblock %}
