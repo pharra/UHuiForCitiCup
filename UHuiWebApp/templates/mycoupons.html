@@ -26,7 +26,11 @@
             未上架的优惠券
         </div>
     </div>
-    <div class="aui-flex-row">
+
+{% endblock %}
+
+{% block phone_body %}
+      <div class="aui-flex-row">
         {% for i in couponsOwn %}
             <div class="phone-user-coupons aui-flex-col">
                 <div class="aui-flex-item-3 user-coupons-left">
@@ -60,9 +64,6 @@
             </div>
         {% endfor %}
     </div>
-{% endblock %}
-
-{% block phone_body %}
 {% endblock %}
 {% block phone_footer %}
 {% endblock %}

@@ -4,7 +4,6 @@ body {
     font-size: 16px;
     line-height: 1.7;
     color: black;
-    background: #fff;
 }
 
 a {
@@ -729,7 +728,7 @@ p {
     line-height:45px;
 }
 .phone-user-coupons .font-class {
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     font-weight: bold;
     font-family: Century Gothic;
     color: #ff5a00;
