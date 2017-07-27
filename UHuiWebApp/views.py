@@ -653,7 +653,11 @@ def search(request):
 def commodity(request):
     return render(request, 'commodity.html')
 
+def mobile_user_setting(request):
+    return render(request, 'mobile_user_setting.html')
 
+def mobile_user_wallet(request):
+    return render(request, 'mobile_user_wallet.html')
 
 # post方法加上前缀post_
 def post_login(request):

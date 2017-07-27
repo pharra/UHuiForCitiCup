@@ -4,7 +4,6 @@ body {
     font-size: 16px;
     line-height: 1.7;
     color: black;
-    background: #fff;
 }
 
 a {
@@ -740,8 +739,10 @@ p {
     color: white;
 }
 
-
-
+.phone-max-user-value{
+    background-color:white;
+    color:#ff5a00;
+}
 
 .phone-user-avator {
     border-radius: 50%;
@@ -756,5 +757,11 @@ p {
 
 .phone-max-user-font{
     color:black;
+}
 
+.phone-max-user-photo{
+    border-radius:50%;
+    width:50px;
+    height:50px;
+    margin:5px 25px 0px 0px;
 }
