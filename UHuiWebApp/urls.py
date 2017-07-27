@@ -21,4 +21,17 @@ urlpatterns = [
     url(r'^post_searchForAndroid$', androidViews.post_searchForAndroid, name='post_searchForAndroid'),
     url(r'^post_couponDetailForAndroid$', androidViews.post_couponDetailForAndroid, name='post_couponDetailForAndroid'),
     url(r'^post_ownerDetailForAndroid$', androidViews.post_ownerDetailForAndroid, name='post_ownerDetailForAndroid'),
+    url(r'^post_returnInformation', androidViews.post_returnInformation, name='post_returnInformation'),
+    url(r'^post_getBoughtList$',androidViews.post_getBoughtList,name='post_getBoughtList'),
+    url(r'^post_getOwnList$', androidViews.post_getOwnList, name='post_getOwnList'),
+    url(r'^post_getLikeList$',androidViews.post_getLikeList,name='post_getLikeList'),
+    url(r'^post_getSoldList$', androidViews.post_getSoldList, name='post_getSoldList'),
+    url(r'^post_likeCoupon$',androidViews.post_likeCoupon,name='post_likeCoupon'),
+    url(r'^post_addCoupon$', androidViews.post_addCoupon, name='post_addCoupon'),
+    url(r'^post_updatePassword$', androidViews.post_updatePassword, name='post_updatePassword'),
+    url(r'^post_buyCoupon$', androidViews.post_buyCoupon, name='post_buyCoupon'),
+    url(r'^post_getUsedCoupon$',androidViews.post_getUsedCoupon,name='post_getUsedCoupon'),
+    url(r'^post_updateAvatar$',androidViews.post_updateAvatar,name='post_updateAvatar'),
+    url(r'^post_preSearch$',androidViews.post_preSearch,name='post_preSearch'),
+
 ]

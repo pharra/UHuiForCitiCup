@@ -41,7 +41,7 @@ class Coupon(models.Model):
     product = models.CharField(max_length=16, blank=True, null=True)
     discount = models.CharField(max_length=16, blank=True, null=True)
     stat = models.CharField(max_length=7, blank=True, null=True)
-    pic = models.CharField(max_length=128, blank=True, null=True)
+    pic = models.ImageField(upload_to='images/pic', blank=True, null=True)
     expiredtime = models.DateField(db_column='expiredTime', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -111,7 +111,7 @@ class User(models.Model):
     nickname = models.CharField(unique=True, max_length=32)
     phonenum = models.CharField(db_column='phoneNum', unique=True, max_length=11, blank=True, null=True)  # Field name made lowercase.
     gender = models.CharField(max_length=1)
-    avatar = models.ImageField(upload_to='images', blank=True, null=True)
+    avatar = models.ImageField(upload_to='images/avatar', blank=True, null=True)
     password = models.CharField(max_length=32)
     email = models.CharField(unique=True, max_length=32, blank=True, null=True)
     ucoin = models.IntegerField(db_column='UCoin')  # Field name made lowercase.
