@@ -659,6 +659,12 @@ def mobile_user_setting(request):
 def mobile_user_wallet(request):
     return render(request, 'mobile_user_wallet.html')
 
+def mobile_user_focus(request):
+    return render(request, 'mobile_user_focus.html')
+
+def mobile_sell_main(request):
+    return render(request, 'mobile_sell_main.html')
+
 # post方法加上前缀post_
 def post_login(request):
     # cookie_content = request.COOKIES.get('uhui')

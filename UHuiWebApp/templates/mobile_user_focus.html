@@ -1,0 +1,50 @@
+{% extends "__base__.html" %}
+{% block title %}U惠网 {% endblock %}
+{% block src %} {% endblock %}
+{% block phone_header %}
+<header class = "aui-bar aui-bar-nav">
+    <a class = "aui-pull-left aui-btn">
+        <span class = "aui-iconfont aui-icon-left"></span>
+    </a>
+    <div class = "aui-title">我关注的</div>
+</header>
+{% endblock %}
+{% block phone_body %}
+<div class="aui-flex-row">
+        {% for i in couponsOwn %}
+            <div class="phone-user-coupons aui-flex-col">
+                <div class="aui-flex-item-3 user-coupons-left">
+                    <p class="user-coupons-left-value font-class">
+                        ￥{{ i.listPrice }}
+                    </p>
+                    <p class="user-coupons-left-value">
+                        估值:￥{{ i.value }}
+                    </p>
+
+                </div>
+                <div class="aui-flex-item-9 user-coupons-middle">
+                    <div class="user-coupons-middle-value">
+                        <p class="font-class">
+                            {{ i.brand }}
+                        </p>
+                    </div>
+                    <div class="aui-flex-item-9 user-coupons-middle-value">
+                        <p>
+                            {{ i.discount }}
+                        </p>
+                    </div>
+
+
+                </div>
+
+                <div class="aui-flex-item-12 user-coupons-bottom">
+                    <p>截止时间:{{ i.expiredTime }}</p>
+                </div>
+
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block phone_footer %} {% endblock %}
+{% block body %} {% endblock %}
+{% block scripts %} {% endblock %}
