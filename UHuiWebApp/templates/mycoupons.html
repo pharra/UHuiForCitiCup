@@ -4,14 +4,61 @@
 {% endblock %}
 
 {% block src %}
-<link href="/static/css/aui/aui-flex.css" rel="stylesheet">
+    <link href="/static/css/aui/aui-flex.css" rel="stylesheet">
 {% endblock %}
 
 {% block phone_header %}
-    <div class="aui-flex-col aui-flex-center aui-padded-15">
-    <div class="aui-flex-item-4">
-        <img src="/static/images/dva_1.jpg" class="phone-user-avator">
+    <div class="aui-flex-col aui-padded-10 phone-max-user-background">
+        <div class="aui-flex-item-4">
+            <i class="aui-iconfont aui-icon-left"></i>
+        </div>
+        <div class="aui-flex-item-4 content">我的优惠券
+        </div>
     </div>
+    <div class="aui-flex-col aui-padded-t-10 aui-padded-l-5 aui-padded-r-5" style="background: white;">
+        <div class="aui-flex-item-4 phone-content phone-mycoupons-header-content-active">
+            未使用的优惠券
+        </div>
+        <div class="aui-flex-item-4 phone-content">
+            已上架的优惠券
+        </div>
+        <div class="aui-flex-item-4 phone-content ">
+            未上架的优惠券
+        </div>
+    </div>
+    <div class="aui-flex-row">
+        {% for i in couponsOwn %}
+            <div class="phone-user-coupons aui-flex-col">
+                <div class="aui-flex-item-3 user-coupons-left">
+                    <p class="user-coupons-left-value font-class">
+                        ￥{{ i.listPrice }}
+                    </p>
+                    <p class="user-coupons-left-value">
+                        估值:￥{{ i.value }}
+                    </p>
+
+                </div>
+                <div class="aui-flex-item-9 user-coupons-middle">
+                    <div class="user-coupons-middle-value">
+                        <p class="font-class">
+                            {{ i.brand }}
+                        </p>
+                    </div>
+                    <div class="aui-flex-item-9 user-coupons-middle-value">
+                        <p>
+                            {{ i.discount }}
+                        </p>
+                    </div>
+
+
+                </div>
+
+                <div class="aui-flex-item-12 user-coupons-bottom">
+                    <p>截止时间:{{ i.expiredTime }}</p>
+                </div>
+
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
 

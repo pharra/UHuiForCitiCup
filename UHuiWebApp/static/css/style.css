@@ -634,6 +634,8 @@ button[type=button]:disabled {
     background-size: 100% 100%;
 }
 
+
+
 .user-coupons .user-coupons-left,
 .user-coupons-middle {
     height: 120px;
@@ -687,19 +689,15 @@ p {
     color: #ff5a00;
 }
 
-.user-coupons-middle span {
-    position: relative;
-    padding: 0;
-    bottom: 0;
-}
 
-.user-coupons-bottom {
+
+.user-coupons .user-coupons-bottom {
     height: 40px;
     padding: 5px;
     text-align: center;
 }
 
-.user-coupons-bottom p {
+ .user-coupons .user-coupons-bottom p {
     height: 30px;
     line-height: 30px;
 }
@@ -712,7 +710,52 @@ p {
     line-height: 20px;
 }
 
+.phone-user-coupons {
+    border-left: 1px solid #e7e7e7;
+    border-top: 1px solid #e7e7e7;
+    border-right: 1px solid #e7e7e7;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    height: 120px;
+    margin: 15px;
+    background-image: url("/static/images/coupons.png");
+    background-position: 0 0;
+    background-size: 100% 100%;
+}
 
+.phone-user-coupons .user-coupons-left-value {
+    height: 45px;
+    line-height:45px;
+}
+.phone-user-coupons .font-class {
+    font-size: 1.7rem;
+    font-weight: bold;
+    font-family: Century Gothic;
+    color: #ff5a00;
+}
+
+.phone-user-coupons .user-coupons-middle-value  {
+    line-height: 45px;
+    padding: 0;
+    bottom: 0;
+    height: 45px;
+}
+
+.phone-user-coupons .user-coupons-middle{
+    height: 90px;
+}
+
+.phone-user-coupons .user-coupons-bottom{
+    height: 30px;
+    text-align: center;
+    padding: 0;
+}
+
+.phone-user-coupons .user-coupons-bottom p{
+    height: 30px;
+   line-height: 30px;
+}
 .button-fix {
     text-align: center;
     margin-left: auto;
@@ -757,4 +800,25 @@ p {
 .phone-max-user-font{
     color:black;
 
+}
+.phone-content {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #616161;
+    padding: 5px;
+}
+@media (max-width: 400px) {
+    .phone-content{
+        font-size: 0.7rem;
+    }
+}
+@media (max-width: 340px) {
+    .phone-content{
+        font-size: 0.6rem;
+    }
+}
+
+.phone-mycoupons-header-content-active{
+    color:#ff5a00;
+    border-bottom: 2px solid #ff5a00;
 }
