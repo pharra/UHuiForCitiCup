@@ -1,6 +1,5 @@
 import json
 
-
 from UHuiProject.settings import DEBUG
 from django.core.exceptions import ObjectDoesNotExist
 from UHuiWebApp import models
@@ -267,7 +266,9 @@ def post_search(request):
 
 
 def post_getUserCoupon(request):
-    count = request.POST.get('couponsNumbers', 'all')
+    count = request.POST.get('couponsNumbers', '10')
+    if DEBUG is True:
+        print(time.localtime())
     if count != 'all':
         count = int(count)
     if not request.uid:
@@ -317,8 +318,7 @@ def post_getUserCoupon(request):
     couponDict = {'couponsOwn': own, 'couponsLike': like, 'couponsOnSale': onSale,
                   'couponMessages': messages['couponMessages'], 'systemMessages': messages['systemMessages']}
     if DEBUG is True:
-        jso1n = json.dumps(couponDict)
-        print(jso1n)
+        print(time.localtime())
 
     return couponDict
 
@@ -660,12 +660,13 @@ def userPage(request):
 def myCouponsPage(request):
     return render(request, 'mycoupons.html', post_getUserCoupon(request))
 
+
 def search(request):
     return render(request, 'search.html')
 
+
 def commodity(request):
     return render(request, 'commodity.html')
-
 
 
 # post方法加上前缀post_
