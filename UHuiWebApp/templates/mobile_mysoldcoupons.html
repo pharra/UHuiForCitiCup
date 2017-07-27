@@ -1,6 +1,6 @@
 {% extends "__base__.html" %}
 {% block title %}
-    我的优惠券
+    我卖出的优惠券
 {% endblock %}
 
 {% block src %}
@@ -12,18 +12,7 @@
         <div class="aui-flex-item-4">
             <i class="aui-iconfont aui-icon-left"></i>
         </div>
-        <div class="aui-flex-item-4 content">我的优惠券
-        </div>
-    </div>
-    <div class="aui-flex-col aui-padded-t-10 aui-padded-l-5 aui-padded-r-5" style="background: white;">
-        <div class="aui-flex-item-4 phone-content phone-mycoupons-header-content-active">
-            未使用的优惠券
-        </div>
-        <div class="aui-flex-item-4 phone-content">
-            已上架的优惠券
-        </div>
-        <div class="aui-flex-item-4 phone-content ">
-            未上架的优惠券
+        <div class="aui-flex-item-4 content">我卖出的
         </div>
     </div>
 
@@ -61,6 +50,11 @@
                     <p>截止时间:{{ i.expiredTime }}</p>
                 </div>
 
+            </div>
+            {% empty %}
+            <div class="aui-padded-15 aui-margin-15">
+            <img src="/static/images/coupons_empty.png">
+            <p class="phone-content">什么！？这里居然是空的！</p>
             </div>
         {% endfor %}
     </div>

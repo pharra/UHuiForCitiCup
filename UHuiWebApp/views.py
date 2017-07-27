@@ -658,7 +658,7 @@ def userPage(request):
 
 
 def myCouponsPage(request):
-    return render(request, 'mycoupons.html', post_getUserCoupon(request))
+    return render(request, 'mobile_mycoupons.html', post_getUserCoupon(request))
 
 def search(request):
     return render(request, 'search.html')
@@ -671,7 +671,8 @@ def mobile_user_setting(request):
 
 def mobile_user_wallet(request):
     return render(request, 'mobile_user_wallet.html')
-
+def mobile_couponsmessage(request):
+    return render(request, 'mobile_couponsmessage.html')
 # post方法加上前缀post_
 def post_login(request):
     # cookie_content = request.COOKIES.get('uhui')
