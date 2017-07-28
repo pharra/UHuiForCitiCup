@@ -208,8 +208,9 @@
             <hr id="index_home"/>
 
             <div class="row">
-                <p class="text-fix-center">家具家居</p>
+
                {% for catname in catName %}
+                   <p class="text-fix-center">{{ catname }}</p>
                    {% for i in coupons.catname %}
                         <div class="col-md-6 col-lg-6 col-sm-6">
                             <div class="user-coupons row">
