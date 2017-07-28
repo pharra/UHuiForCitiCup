@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
 from rest_framework.renderers import JSONRenderer
+from django import forms
 from rest_framework.parsers import JSONParser
 from UHuiWebApp.models import *
 from apiForAndroid.serializers import *
@@ -16,11 +17,15 @@ class JSONResponse(HttpResponse):
         kwargs['content_type']='application/json'
         super(JSONResponse,self).__init__(content,**kwargs)
 # Create your views here.
-
+class userForm(forms.Form):
+    userID = forms.CharField()
+    avatar = forms.FileField()
 
 #注册
 def post_signUpForAndroid(request):
     return post_signUp(request)
+
+
 #登录
 def post_loginForAndroid(request):
     u_name = request.POST.get('username')
@@ -54,6 +59,8 @@ def post_loginForAndroid(request):
         return response
     else:
         return JsonResponse({'error': '密码错误'})
+
+
 #预搜索
 def post_preSearch(request):
     keyword = request.POST.get('keyword')
@@ -64,6 +71,8 @@ def post_preSearch(request):
     for coupon in productResult:
         result.append(coupon)
     return JsonResponse({'result':result})
+
+
 #搜索
 def post_searchForAndroid(request):
     key = request.POST.get('keyWord',0)
@@ -88,12 +97,20 @@ def post_searchForAndroid(request):
     if result == None:
         return JsonResponse({'result':'result no exist'})
     return JsonResponse({'coupon':result})
+
+
 #点击种类进行查询
-def post_selectCategoryForAndroid(request):
-    selectCategory = request.POST.get('categoryID',0)
-    result = Coupon.objects.filter(catID=selectCategory).filter(stat='onSale')
-    resultdata = serializers.serialize('json',result)
-    return HttpResponse(resultdata,content_type="application/json")
+def post_searchByCategory(request):
+    catID = request.POST.get('categoryID',0)
+    if Category.objects.filter(catid=catID).exists():
+        return JsonResponse({'error':'不存在该种类'})
+    result = []
+    couponList = Coupon.objects.filter(catid=catID,stat='onSale').values('couponid','listprice','value','product','discount','pic','expiredtime')
+    for each in couponList:
+        result.append(each)
+    return JsonResponse({'result':result})
+
+
 #查询优惠券详细信息
 def post_couponDetailForAndroid(request):
     cpID = request.POST.get('couponID',0)
@@ -125,6 +142,8 @@ def post_couponDetailForAndroid(request):
     for i in brandResult:
         BResult.append(i)
     return JsonResponse({'coupon':CResult,'limit':LResult,'seller':SResult,'brand':BResult})
+
+
 #返回使用限制、商家名以及出售者信息
 def post_returnInformation(request):
     cpID = request.POST.get('couponID',0)
@@ -159,6 +178,8 @@ def post_returnInformation(request):
     for b in brandResult:
         BResult.append(b)
     return JsonResponse({'brand': BResult, 'limit': LResult, 'seller': SResult,'isLike':isLike})
+
+
 #返回出售者卖过的、正在卖的优惠券
 def post_sellerInformation(request):
     sellerID = request.POST.get('sellerID')
@@ -179,6 +200,8 @@ def post_sellerInformation(request):
             for i in soldCoupon:
                 soldList.append(i)
     return JsonResponse({'onSale':onSaleList,'sold':soldList})
+
+
 #通过优惠券ID查询所有者
 def post_ownerDetailForAndroid(request):
     cpID = request.POST.get('couponID',0)
@@ -192,6 +215,8 @@ def post_ownerDetailForAndroid(request):
         return JsonResponse({'error':'用户不存在'})
     resultdata = serializers.serialize('json',result)
     return HttpResponse(resultdata,content_type='application/json')
+
+
 #购买
 def post_buyCoupon(request):
     cpID = request.POST.get('couponID',0)
@@ -241,6 +266,8 @@ def post_buyCoupon(request):
         if temp.stat == 'like':
             lists.delete()
     return JsonResponse({'errno': 0, 'message': '购买成功'})
+
+
 #关注优惠券接口
 def post_likeCoupon(request):
     cpID = request.POST.get('couponID',0)
@@ -251,12 +278,16 @@ def post_likeCoupon(request):
         return JsonResponse({'result':'already like'})
     Listitem.objects.create(couponid = CouponObj,listid = userLikeList)
     return JsonResponse({'result':'success'})
+
+
 #消息发送接口
 def post_sendMessage(request):
     userID = request.POST.get('userID',0)
     msg = Message.objects.filter(userid=userID)
     msgdata = serializers.serialize("json",msg,fields = ('messageid','content','time','messagecat','couponid'))
     return HttpResponse(msgdata,content_type="application/json")
+
+
 #修改密码接口
 def post_updatePassword(request):
     newPassword = request.POST.get('password',0)
@@ -266,6 +297,8 @@ def post_updatePassword(request):
         return JsonResponse({'result':'New Password is the same as old'})
     User.objects.filter(phonenum=phone).update(password = newPassword)
     return JsonResponse({'result':'success'})
+
+
 #判断手机/邮箱是否存在
 def post_checkUsername(request):
     username = request.POST.get('username')
@@ -277,12 +310,16 @@ def post_checkUsername(request):
         if User.objects.filter(phonenum=username).exists():
             return JsonResponse({'result': '0'})
         return JsonResponse({'result': '1'})
+
+
 #获取个人信息
 def post_getUserInformation(request):
     u_id = request.POST.get('userID')
     result = User.objects.filter(pk = u_id)
     resultdata = serializers.serialize('json',result)
     return HttpResponse(resultdata,content_type='application/json')
+
+
 #修改个人信息
 def post_updateUserInformation(request):
     u_id = request.POST.get('userID')
@@ -292,14 +329,22 @@ def post_updateUserInformation(request):
     User.objects.filter(pk = u_id).update(gender = newGender)
     return JsonResponse({'result':'success'})
     pass
+
+
 #修改头像
 def post_updateAvatar(request):
-    uid = request.POST.get('userID')
-    user = models.User.objects.get(id=uid)
-    user.avatar = request.FILES['avatar']
-    user.save()
+    #uf = userForm(request.POST,request.FILES)
+    #u_id = uf.cleaned_data['userID']
+    #headImg = uf.cleaned_data['avatar']
+    u_id = request.POST.get('userID',0)
+    headImg = request.FILES.get('imgFile',None)
+    user = User.objects.get(id = u_id)
+    if User.objects.filter(id = u_id).exists():
+        user.avatar = headImg
+        user.save()
     return JsonResponse({'errno': '0', 'message': '成功'})
-    pass
+
+
 #修改手机/邮箱
 def post_updatePhonenumOrEmail(request):
     u_id = request.POST.get('userID')
@@ -319,6 +364,8 @@ def post_updatePhonenumOrEmail(request):
             return JsonResponse({'result':'success'})
         else:
             return JsonResponse({'result':'该账户使用邮箱注册'})
+
+
 #添加优惠券
 def post_addCoupon(request):
     u_id = request.POST.get('userID')
@@ -358,6 +405,8 @@ def post_addCoupon(request):
 
     models.Listitem.objects.create(listid=list, couponid=coupon)
     return JsonResponse({'errno': 0, 'message': 'store success'})
+
+
 #获取"我买过的"优惠券
 def post_getBoughtList(request):
     u_id = request.POST.get('userID')
@@ -372,6 +421,8 @@ def post_getBoughtList(request):
         return JsonResponse({'boughtList':boughtList})
     else:
         return JsonResponse({'result':'user not exist'})
+
+
 #获取我拥有的优惠券
 def post_getOwnList(request):
     u_id = request.POST.get('userID')
@@ -394,6 +445,8 @@ def post_getOwnList(request):
         return JsonResponse({'onSaleList':onSaleList,'storeList':storeList,'usedList':usedList})
     else:
         return JsonResponse({'result':'user not exist'})
+
+
 #获取我卖出的优惠券
 def post_getSoldList(request):
     u_id = request.POST.get('userID')
@@ -408,6 +461,8 @@ def post_getSoldList(request):
         return JsonResponse({'soldList':soldList})
     else:
         return JsonResponse({'result':'user not exist'})
+
+
 #获取我用过的优惠券
 def post_getUsedCoupon(request):
     u_id = request.POST.get('userID')
@@ -422,9 +477,13 @@ def post_getUsedCoupon(request):
         return JsonResponse({'usedList':usedList})
     else:
         return JsonResponse({'result':'user not exist'})
+
+
 #充值
 def post_buyUcoin(request):
     pass
+
+
 #獲取關注列表
 def post_getLikeList(request):
     u_id = request.POST.get('userID')
@@ -439,12 +498,43 @@ def post_getLikeList(request):
         return JsonResponse({'likeList':likeList})
     else:
         return JsonResponse({'result':'user not exist'})
+
+
 #上架下架已拥有的优惠券
 def post_changeCouponStat(request):
     cpID = request.POST.get('couponID')
-    newStat = request.POST.get('')
-#主页的推荐
-#搜索栏的推荐
+    newStat = request.POST.get('stat')
+    cp = Coupon.objects.get(couponid=cpID)
+    if newStat=='onSale':
+        if cp.stat == 'onSale':
+            return JsonResponse({'errno':'1','message':'优惠券已上架'})
+        elif cp.stat == 'store':
+            cp.stat = 'onSale'
+            cp.save()
+            return JsonResponse({'errno':'0','message':'优惠券上架成功'})
+        else:
+            return JsonResponse({'errno':'2','message':'优惠券状态错误'})
+    elif newStat == 'store':
+        if cp.stat == 'store':
+            return JsonResponse({'errno':'1','message':'优惠券已下架'})
+        elif cp.stat == 'onSale':
+            cp.stat = 'store'
+            cp.save()
+            return JsonResponse({'errno':'0','message':'优惠券下架成功'})
+        else:
+            return JsonResponse({'errno':'2','message':'优惠券状态错误'})
+    else:
+        return JsonResponse({'errno':'3','message':'提交的状态错误'})
+
+
+#主页的推荐 未完成
+def post_homepageCoupon(request):
+    pass
+
+
+#搜索栏的推荐 未完成
+def post_searchCoupon(request):
+    pass
 
 
 
