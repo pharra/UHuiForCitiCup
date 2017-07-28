@@ -859,4 +859,37 @@ p {
 .phone-searchbar-active.aui-bar-nav{
     background: white;
     color: #616161;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.phone-searchbar-active .aui-searchbar-input{
+    background: rgb(243,243,243);
+    color: #616161;
+}
+
+.phone-searchbar-active .aui-searchbar{
+    color: #616161;
+}
+
+.phone_search_history{
+    padding: 15px;
+    color: #616161;
+    border-bottom: 1px solid #e8e8e8;
+}
+.phone-search-history-clear{
+    text-align: center;
+    color: #ff5a00;
+    font-size: 0.7rem;
+}
+
+.phone-recommend-search div {
+    text-align: center;
+    color: #ff5a00;
+    padding-bottom: 10px;
+}
+
+.phone-recommend-search .phone-recommend-search-title{
+    font-size: 0.9rem;
+    text-align: center;
+    color: #8c8c8c;
 }
