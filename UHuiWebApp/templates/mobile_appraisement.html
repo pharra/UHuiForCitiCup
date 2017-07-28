@@ -1,0 +1,112 @@
+{% extends "__base__.html" %}
+{% block title %}优惠券估值{% endblock %}
+{% block src %} {% endblock %}
+{% block phone_header %}
+<header class = "aui-bar aui-bar-nav">
+    <a class = "aui-pull-left aui-btn">
+        <span class = "aui-iconfont aui-icon-left"></span>
+    </a>
+    <div class = "aui-title">估值展示</div>
+    <div class = "aui-pull-right">帮助</div>
+</header>
+{% endblock %}
+{% block phone_body %}
+<div class = "aui-flex-row" style="background-color:white;color:#ff5a00">
+    <div style="padding:25px 0px 0px 20px;">
+        此优惠券估值为
+    </div>
+    <div style="font-size:60px;padding:0px 0px 0px 25px;margin:0px 0px 5px 0px;">
+        100.00
+    </div>
+</div>
+<div style="height:100px;padding:10px;background-color:white;margin:0px 0px 5px 0px;">
+    <div style="width:80px;height:80px;float:left;">
+        <img src = "/static/images/dva_4.jpg" class = "img_suit">
+    </div>
+    <div style="float:left;height:80px;padding:20px 0px 0px 10px;">
+        今天米粒儿变可爱了吗
+    </div>
+    <div style="float:right;padding:20px 0px 0px 5px;color:#ff5a00">
+        修改
+    </div>
+</div>
+<div class = "aui-content aui-margin-b-15">
+    <ul class = "aui-list aui-form-list">
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-label phone-max-line">
+                价格：
+            </div>
+            <div class = "aui-list-item-input phone-max-line">
+                <input type="text" placeholder="请输入优惠券价格">
+            </div>
+            <div class = "aui-list-item-label phone-max-line" style="color:#ff5a00">
+                采用估值
+            </div>
+        </li>
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-label phone-max-line">
+                优惠额度：
+            </div>
+            <div class = "aui-list-item-input phone-max-line">
+                <input type = "text" placeholder="九折">
+            </div>
+        </li>
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-label phone-max-line">
+                商家名：
+            </div>
+            <div class = "aui-list-item-input phone-max-line">
+                <input type = "text" placeholder="就是这个名儿">
+            </div>
+        </li>
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-label phone-max-line">
+                品种：
+            </div>
+            <div class = "aui-list-item-input phone-max-line">
+                <input type = "text" placeholder="家居家具">
+            </div>
+        </li>
+    </ul>
+</div>
+<div class = "aui-card-list">
+    <div class = "aui-card-list">
+        <div class = "aui-card-list-header">
+            使用门槛：
+        </div>
+        <div class = "aui-card-list-content-padded">
+            1.可爱又迷人的反派角色<br/>
+            2.年轻帅气又有钱的共产党员<br/>
+            3.小U这样的
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block phone_footer %}
+<footer class="aui-bar aui-bar-tab" id="footer">
+    <div class="aui-bar-tab-item" style="background-color:#ff5a00;color:white;"tapmode>
+        <div class="aui-bar-tab-label">
+                添加到"我的"
+        </div>
+    </div>
+    <div class="aui-bar-tab-item" style="background-color:white;color:#ff5a00;"tapmode>
+        <div class="aui-bar-tab-label">上架优惠券</div>
+    </div>
+</footer>
+{% endblock %}
+{% block body %} {% endblock %}
+{% block scripts %} {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

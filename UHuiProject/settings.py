@@ -62,7 +62,7 @@ ROOT_URLCONF = 'UHuiProject.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'DIRS': [BASE_DIR + "/UHuiWebApp/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
