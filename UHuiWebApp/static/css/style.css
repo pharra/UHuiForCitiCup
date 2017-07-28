@@ -829,6 +829,7 @@ p {
     color:#ff5a00;
     border-bottom: 2px solid #ff5a00;
 }
+
 .phone-coupons-message{
     background: white;
     border-bottom: 1px solid rgb(231,231,231);
@@ -888,8 +889,13 @@ p {
     padding-bottom: 10px;
 }
 
-.phone-recommend-search .phone-recommend-search-title{
+.phone-recommend-search .phone-recommend-search-title {
     font-size: 0.9rem;
     text-align: center;
     color: #8c8c8c;
+}
+
+.phone-max-line{
+    border-bottom:1px solid rgb(231,231,231)
+
 }

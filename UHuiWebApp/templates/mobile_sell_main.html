@@ -1,0 +1,67 @@
+{% extends "__base__.html" %}
+{% block title %}U惠网 {% endblock %}
+{% block src %} {% endblock %}
+{% block phone_header %}
+<header class = "aui-bar aui-bar-nav">
+    <a class = "aui-pull-left aui-btn">
+        <span class = "aui-iconfont aui-icon-left"></span>
+    </a>
+    <div class = "aui-title">填写信息</div>
+    <div class = "aui-pull-right">帮助</div>
+</header>
+{% endblock %}
+{% block phone_body %}
+<div class = "aui-content aui-margin-b-15">
+    <ul class = "aui-list aui-form-list">
+        <li class = "aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
+            <div class = "aui-list-item-inner">
+                <div class = "aui-list-item-input">
+                    <input type = "text" placeholder="商品名">
+                </div>
+            </div>
+            <span class = "aui-pull-right aui-iconfont aui-icon-close" style="padding:2px 7px 0px 0px;"></span>
+        </li>
+        <li class = "aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
+            <div class = "aui-list-item-inner">
+                <div class = "aui-list-item-input">
+                    <input type = "text" placeholder="商家名">
+                </div>
+            </div>
+            <span class = "aui-pull-right aui-iconfont aui-icon-close" style="padding:2px 7px 0px 0px;"></span>
+        </li>
+        <li class = "aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
+            <div class = "aui-list-item-inner">
+                <div class = "aui-list-item-input">
+                    <input type = "text" placeholder="优惠额度">
+                </div>
+            </div>
+            <span class = "aui-pull-right aui-iconfont aui-icon-close" style="padding:2px 7px 0px 0px;"></span>
+        </li>
+        <li class = "aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
+            <div class = "aui-list-item-inner">
+                <div class = "aui-list-item-title" style="color:#424242">品种</div>
+            </div>
+            <span class = "aui-pull-right aui-iconfont aui-icon-right" style="padding:2px 7px 0px 0px;"></span>
+        </li>
+        <li class = "aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
+            <div class = "aui-list-item-inner">
+                <div class = "aui-list-item-title" style="color:#424242">使用限制</div>
+            </div>
+            <span class = "aui-pull-right aui-iconfont aui-icon-plus" style="padding:2px 7px 0px 0px;"></span>
+        </li>
+    </ul>
+</div>
+<footer class = "aui-bar aui-bar-tab">
+    <div class = "aui-bar-tab-item aui-active" tapmode>
+    <div style="background-color:#ff5a00;color:white;">
+        <div class = "aui-btn aui-btn-block aui-btn-outlined">
+            确认
+        </div>
+    </div>
+    </div>
+</footer>
+
+{% endblock %}
+{% block phone_footer %} {% endblock %}
+{% block body %} {% endblock %}
+{% block scripts %} {% endblock %}
