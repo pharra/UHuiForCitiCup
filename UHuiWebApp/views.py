@@ -350,13 +350,14 @@ def post_getCouponByCatIndex(request):
         catName.append(cat.name)
         coupons = models.Coupon.objects.filter(catid=cat.catid)
         coupons.reverse()
+        couponByCat[cat.name] = []
         for i in range(0, 8):
-            couponByCat[cat.name] = post_couponInfo(coupons[i].couponid)
+            couponByCat[cat.name].append(post_couponInfo(coupons[i].couponid))
     # values = coupons.values()
     # values.reverse()
     # couponByCat[cat.name] = values[0:8]
     result = {'catName': catName, 'coupons': couponByCat}
-    return render(request, 'index.html', result)
+    return result
 
 
 def post_getCouponForMobileIndex(request):
@@ -666,7 +667,7 @@ def createLists(user):
 
 # get方法函数
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'index.html', post_getCouponByCatIndex(request))
 
 
 def login(request):
