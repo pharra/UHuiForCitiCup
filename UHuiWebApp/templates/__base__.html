@@ -9,6 +9,7 @@
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" media="screen and (min-width:767px)" href="/static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" media="screen and (min-width:767px)" href="/static/css/forcomputer.css"/>
     <link rel="stylesheet" media="screen and (max-width:768px)" href="/static/css/aui/aui.css"/>
 
     <link href="/static/css/style.css" rel="stylesheet">
@@ -109,20 +110,16 @@
                 </div>
                 <div class="aui-bar-tab-item" tapmode>
                     <i class="aui-iconfont aui-icon-star"></i>
-                    <div class="aui-bar-tab-label">收藏</div>
+                    <div class="aui-bar-tab-label">U</div>
                 </div>
-                <div class="aui-bar-tab-item" tapmode>
-                    <div class="aui-badge">99</div>
-                    <i class="aui-iconfont aui-icon-cart"></i>
-                    <div class="aui-bar-tab-label">购物车</div>
-                </div>
-                <div class="aui-bar-tab-item" tapmode>
-                    <div class="aui-dot"></div>
+
+               <div class="aui-bar-tab-item" tapmode>
                     <i class="aui-iconfont aui-icon-my"></i>
                     <div class="aui-bar-tab-label">我的</div>
                 </div>
+
             </footer>
-            <script type="text/javascript" src="../../script/2.0/aui-tab.js" ></script>
+            <!--<script type="text/javascript" src="/static/js/aui/aui-tab.js" ></script>
 <script type="text/javascript">
     var tab = new auiTab({
         element:document.getElementById("footer"),
@@ -131,7 +128,8 @@
     },function(ret){
         console.log(ret);
     });
-</script>
+</script>-->
+
         {% endblock %}
     </div>
 </div>
