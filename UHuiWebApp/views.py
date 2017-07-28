@@ -344,10 +344,8 @@ def post_getCouponByCat(request):
 
 def post_getCouponByCatIndex(request):
     category = models.Category.objects.all()
-    catName = []
     couponByCat = {}
     for cat in category:
-        catName.append(cat.name)
         coupons = models.Coupon.objects.filter(catid=cat.catid)
         coupons.reverse()
         couponByCat[cat.name] = []
@@ -356,7 +354,7 @@ def post_getCouponByCatIndex(request):
     # values = coupons.values()
     # values.reverse()
     # couponByCat[cat.name] = values[0:8]
-    result = {'catName': catName, 'coupons': couponByCat}
+    result = {'coupons': couponByCat}
     return result
 
 
