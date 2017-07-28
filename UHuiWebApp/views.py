@@ -339,6 +339,19 @@ def post_getCouponByCat(request):
     return response
 
 
+def post_getCouponByCatAll(request):
+    category = models.Category.objects.all()
+    catName = []
+    couponByCat = {}
+    for cat in category:
+        catName.append(cat.name)
+        coupons = models.Coupon.objects.filter(catid=cat.catid)
+        values = coupons.values().reverse()
+        couponByCat[cat.name] = values[0:4]
+    result = {'catName': catName, 'coupons': couponByCat}
+    return render(request, 'index.html', result)
+
+
 def post_couponInfo(couponID):
     try:
         coupon = models.Coupon.objects.get(couponid=couponID)
@@ -645,7 +658,7 @@ def userPage(request):
 
 
 def myCouponsPage(request):
-    return render(request, 'mycoupons.html', post_getUserCoupon(request))
+    return render(request, 'mobile_mycoupons.html', post_getUserCoupon(request))
 
 def search(request):
     return render(request, 'search.html')
@@ -673,6 +686,9 @@ def mobile_sell_classify(request):
 
 def mobile_sell_add(request):
     return render(request, 'mobile_sell_add.html')
+
+def mobile_couponsmessage(request):
+    return render(request, 'mobile_couponsmessage.html')
 
 # post方法加上前缀post_
 def post_login(request):

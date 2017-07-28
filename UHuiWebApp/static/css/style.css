@@ -832,4 +832,36 @@ p {
 
 .phone-max-line{
     border-bottom:1px solid rgb(231,231,231)
+
+.phone-coupons-message{
+    background: white;
+    border-bottom: 1px solid rgb(231,231,231);
+}
+.modal-wrapper{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10000;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: opacity .3s ease-out;
+}
+
+.modal-backdrop{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    background-color: white;
+    transition: background-color .3s ease-out;
+}
+
+.phone-searchbar-active.aui-bar-nav{
+    background: white;
+    color: #616161;
+>>>>>>> wf
 }
