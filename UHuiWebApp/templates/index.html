@@ -209,9 +209,9 @@
 
             <div class="row">
 
-               {% for catname in catName %}
-                   <p class="text-fix-center">{{ catname }}</p>
-                   {% for i in coupons.catname %}
+               {% for key,value in coupons.iteritems() %}
+                   <p class="text-fix-center">{{ key }}</p>
+                   {% for i in value %}
                         <div class="col-md-6 col-lg-6 col-sm-6">
                             <div class="user-coupons row">
                                 <div class="col-md-3 col-lg-3 col-sm-3 user-coupons-left">
