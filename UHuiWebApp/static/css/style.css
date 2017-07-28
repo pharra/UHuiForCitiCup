@@ -840,16 +840,6 @@ p {
     bottom: 0;
     left: 0;
     z-index: 10000;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
     overflow-x: hidden;
     overflow-y: auto;
     transition: opacity .3s ease-out;
@@ -864,4 +854,9 @@ p {
     z-index: 0;
     background-color: white;
     transition: background-color .3s ease-out;
+}
+
+.phone-searchbar-active.aui-bar-nav{
+    background: white;
+    color: #616161;
 }

@@ -26,12 +26,12 @@
         {% block phone_header %}
             <div id="modal-wrapper">
     <div id="modal-backdrop">
-    <header class="aui-bar aui-bar-nav">
+    <header class="aui-bar aui-bar-nav phone-searchbar-active">
                 <div class=" aui-col-xs-2 city-position aui-ellipsis-1 aui-font-size-14">
                     <i class="fa fa-location-arrow"></i>
                 </div>
 
-                <div class=" aui-col-xs-10">
+                <div class=" aui-col-xs-10" id="">
                     <div class="aui-searchbar" id="search">
                         <div class="aui-searchbar-input aui-border-radius" tapmode onclick="phone_doSearch()">
                             <i class="aui-iconfont aui-icon-search"></i>
@@ -40,6 +40,13 @@
                             </form>
                         </div>
                         <div class="aui-searchbar-cancel" tapmod>取消&nbsp;</div>
+
+
+                        <div class="phone_search_history"></div>
+                    </div>
+                </div>
+            </header>
+<script src="/static/js/jquery-3.2.1.js"></script>
                         <script type="text/javascript">
                             apiready = function () {
                                 api.parseTapmode();
@@ -49,16 +56,18 @@
                             if (searchBar) {
                                 searchBar.onclick = function () {
                                     document.querySelector(".aui-searchbar-cancel").style.marginRight = 0;
+                                    $("#modal-wrapper").addClass("modal-wrapper");
+                                    $("#modal-backdrop").addClass("modal-backdrop");
+                                    $(".aui-col-xs-2.city-position").hide();
                                 }
                             }
                             document.querySelector(".aui-searchbar-cancel").onclick = function () {
                                 this.style.marginRight = "-" + this.offsetWidth + "px";
                                 $("#search-input").val("");
+                                $("#modal-wrapper").removeClass("modal-wrapper");
+                                $("#modal-backdrop").removeClass("modal-backdrop");
                             }
                         </script>
-                    </div>
-                </div>
-            </header>
     </div>
     </div>
 
