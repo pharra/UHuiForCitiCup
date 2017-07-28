@@ -80,7 +80,7 @@
         </div>
     </section>
     <div class="aui-row">
-        {% for i in coupons %}
+        {% for i in mobilecoupons %}
             <div class="aui-col-xs-12">
                 <div class="user-coupons aui-row">
                     <div class="aui-col-xs-3 user-coupons-left">
@@ -209,7 +209,7 @@
 
             <div class="row">
 
-               {% for key,value in coupons.iteritems() %}
+               {% for key,value in coupons.items() %}
                    <p class="text-fix-center">{{ key }}</p>
                    {% for i in value %}
                         <div class="col-md-6 col-lg-6 col-sm-6">
