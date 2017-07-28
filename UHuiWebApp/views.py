@@ -324,9 +324,12 @@ def post_getUserCoupon(request):
 
 
 def post_getCouponByCat(request):
-    catid = request.POST['catID']
+    catName = request.POST['catName']
     page = int(request.POST['page']) - 1
-
+    try:
+        catid = models.Category.objects.get(name=catName)
+    except ObjectDoesNotExist:
+        return JsonResponse({'error': '类别不存在'})
     coupons = models.Coupon.objects.filter(catid=catid, stat='onSale')
 
     result = []
@@ -339,17 +342,34 @@ def post_getCouponByCat(request):
     return response
 
 
-def post_getCouponByCatAll(request):
+def post_getCouponByCatIndex(request):
     category = models.Category.objects.all()
     catName = []
     couponByCat = {}
     for cat in category:
         catName.append(cat.name)
         coupons = models.Coupon.objects.filter(catid=cat.catid)
-        values = coupons.values().reverse()
-        couponByCat[cat.name] = values[0:4]
+        coupons.reverse()
+        for i in range(0, 8):
+            couponByCat[cat.name] = post_couponInfo(coupons[i].couponid)
+    # values = coupons.values()
+    # values.reverse()
+    # couponByCat[cat.name] = values[0:8]
     result = {'catName': catName, 'coupons': couponByCat}
     return render(request, 'index.html', result)
+
+
+def post_getCouponForMobileIndex(request):
+    page = int(request.COOKIES.get('indexM', '0'))
+    couponsAll = models.Coupon.objects.all()
+    couponsAll.reverse()
+    resultSet = []
+    for i in range(page, page + 10):
+        resultSet.append(post_couponInfo(couponsAll[i].couponid))
+    result = {'coupons': resultSet}
+    response = JsonResponse(result)
+    response.set_cookie('indexM', page + 10)
+    return response
 
 
 def post_couponInfo(couponID):

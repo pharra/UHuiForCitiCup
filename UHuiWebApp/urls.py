@@ -20,6 +20,8 @@ urlpatterns = [
     url(r'^post_modifyUserInfo$', views.post_modifyUserInfo, name='post_modifyUserInfo'),
     url(r'^post_search$', views.post_search, name='post_search'),
     url(r'^post_getUserCoupon$', views.post_getUserCoupon, name='post_getUserCoupon'),
+    url(r'^post_getCouponForMobileIndex$', views.post_getCouponForMobileIndex, name='post_getCouponForMobileIndex'),
+    url(r'^post_getCouponByCatIndex$',views.post_getCouponByCatIndex, name='post_getCouponByCatIndex'),
 
     url(r'^post_loginForAndroid$', androidViews.post_loginForAndroid, name='post_loginForAndroid'),
     url(r'^post_signUpForAndroid$', androidViews.post_signUpForAndroid, name='post_signUpForAndroid'),
