@@ -25,6 +25,8 @@
             <div class="clear"></div>
         </div>
     </div>
+
+    <script src="/static/js/aui/aui-scroll.js"></script>
     <script src="/static/js/aui/aui-slide.js"></script>
     <script src="/static/js/jquery-3.2.1.js"></script>
     <script type="text/javascript">
@@ -40,6 +42,60 @@
             "pageStyle": 'dot',
             'dotPosition': 'center',
         });
+        $.ajax({
+        url: '/post_getCouponForMobileIndex',
+        type: 'POST',
+        dataType: 'json',
+        data: {"username": $("#login-username").val(), "password": $("#login-md5-password").val()},
+        timeout: 3000,
+        cache: false,
+        success: succFunction
+    });
+           function succFunction(data) {
+               alert($("#mobile_index_coupons").children()[0]);
+               var $couponsdom = $("#mobile_index_coupons").children()[0].remove();
+               $.each(data.coupons,function(i,item){
+                    $couponsdom.find("p")[0] = item.listPrice;
+                    $couponsdom.find("p")[1] = item.value;
+                    $couponsdom.find("p")[2] = item.brand;
+                    $couponsdom.find("p")[3] = item.discount;
+                    $couponsdom.find("p")[4] = '截止时间:' + item.expiredTime;
+                    $("#mobile_index_coupons").append($couponsdom);
+        });
+           }
+    </script>
+    <script type="text/javascript">
+
+    var scroll = new auiScroll({
+        listen:true,
+        distance:200 //判断到达底部的距离，isToBottom为true
+    },function(ret){
+        if(ret.isToBottom){
+           $.ajax({
+        url: '/post_getCouponForMobileIndex',
+        type: 'POST',
+        dataType: 'json',
+        data: {"username": $("#login-username").val(), "password": $("#login-md5-password").val()},
+        timeout: 3000,
+        cache: false,
+        success: succFunction
+    });
+           function succFunction(data) {
+               var $couponsdom = $("#mobile_index_coupons").children()[0];
+               $.each(data.coupons,function(i,item){
+                    $couponsdom.find("p")[0] = item.listPrice;
+                    $couponsdom.find("p")[1] = item.value;
+                    $couponsdom.find("p")[2] = item.brand;
+                    $couponsdom.find("p")[3] = item.discount;
+                    $couponsdom.find("p")[4] = '截止时间:' + item.expiredTime;
+                    $("#mobile_index_coupons").append($couponsdom);
+        });
+           }
+        }else{
+
+        }
+
+    });
     </script>
     <section class="aui-grid">
         <div class="aui-row">
@@ -79,46 +135,40 @@
             </div>
         </div>
     </section>
-    <div class="aui-row">
-        {% for i in mobilecoupons %}
-            <div class="aui-col-xs-12">
-                <div class="user-coupons aui-row">
-                    <div class="aui-col-xs-3 user-coupons-left">
-                        <p class="user-coupons-left-value">
-                            ￥{{ i.listPrice }}
-                        </p>
-                        <p>
-                            估值:￥{{ i.value }}
-                        </p>
 
-                    </div>
-                    <div class="aui-col-xs-6 user-coupons-middle">
-                        <div class="user-coupons-middle-value aui-col-xs-6">
-                            <p class="font-class">
-                                {{ i.brand }}
-                            </p>
-                        </div>
-                        <div class="aui-col-xs-6 user-coupons-middle-value">
-                            <p>
-                                {{ i.discount }}
-                            </p>
-                        </div>
-                        <div class="aui-col-xs-12  user-coupons-middle-value">
-                            {% for k in i.limits %}
-                                <p class="user-coupons-middle-value-limits-p">{{ k }}</p>
-                            {% endfor %}
-                        </div>
+      <div class="aui-flex-row" id="mobile_index_coupons">
 
+            <div class="mobile-user-coupons aui-flex-col">
+                <div class="aui-flex-item-3 user-coupons-left">
+                    <p class="user-coupons-left-value font-class">
 
-                    </div>
+                    </p>
+                    <p class="user-coupons-left-value">
 
-                    <div class="aui-col-xs-12 user-coupons-bottom">
-                        <p>截止时间:{{ i.expiredTime }}</p>
-                    </div>
+                    </p>
 
                 </div>
+                <div class="aui-flex-item-9 user-coupons-middle">
+                    <div class="user-coupons-middle-value">
+                        <p class="font-class">
+
+                        </p>
+                    </div>
+                    <div class="aui-flex-item-9 user-coupons-middle-value">
+                        <p>
+
+                        </p>
+                    </div>
+
+
+                </div>
+
+                <div class="aui-flex-item-12 user-coupons-bottom">
+                    <p></p>
+                </div>
+
             </div>
-        {% endfor %}
+
     </div>
 {% endblock %}
 {% block body %}
