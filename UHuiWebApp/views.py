@@ -1,5 +1,6 @@
 import json
 
+from django.http import HttpResponseRedirect
 
 from UHuiProject.settings import DEBUG
 from django.core.exceptions import ObjectDoesNotExist
@@ -83,13 +84,42 @@ def sendMail(to_addr, msg):
         server.quit()
 
 
-def sendConfirmMail(to_addr, address):
-    msg = MIMEText('请点击下方链接确认注册\n %s' % address, 'plain', 'utf-8')
+def sendConfirmMail(to_addr, nickname, uid):
+    address = generateAddress(nickname, uid)
+    msg = MIMEText('请点击下方链接确认注册\n http://www.uhuiforciti.cn/emailVerification/%s' % address, 'plain', 'utf-8')
     msg['From'] = _format_addr('No-Reply <No-Reply@uhuiforciti.cn>')
     msg['To'] = _format_addr('管理员 <%s>' % to_addr)
-    msg['Subject'] = Header('U惠网注册确认', 'utf-8').encode()
-    sendConfirmMail(to_addr, msg)
+    msg['Subject'] = Header('U惠网注册确认 ', 'utf-8').encode()
+    sendMail(to_addr, msg)
 
+
+def generateAddress(nickname, uid):
+    md5 = encryption(nickname)
+    extra = '9s0d'
+    key = uid + extra
+    address = ''
+    for (i, k) in zip(md5, key):
+        address = address + i + k
+
+    return address
+
+
+def emailVerification(request):
+    path = request.path
+    code = path.split('/')[2]
+    uid = ''
+    for i in range(1, 28, 2):
+        uid = uid + code[i]
+    try:
+        user = models.User.objects.get(id=uid)
+    except ObjectDoesNotExist:
+        pass
+    user.hasconfirm = True
+    user.save()
+    value = uid + "_" + encryption(uid + user.password)
+    response = HttpResponseRedirect('/')
+    response.set_cookie(key="uhui", value=value, httponly=True)
+    return response
 
 # 定时任务
 def timer():
@@ -267,7 +297,9 @@ def post_search(request):
 
 
 def post_getUserCoupon(request):
-    count = request.POST.get('couponsNumbers', 'all')
+    count = request.POST.get('couponsNumbers', '10')
+    if DEBUG is True:
+        print(time.localtime())
     if count != 'all':
         count = int(count)
     if not request.uid:
@@ -317,16 +349,18 @@ def post_getUserCoupon(request):
     couponDict = {'couponsOwn': own, 'couponsLike': like, 'couponsOnSale': onSale,
                   'couponMessages': messages['couponMessages'], 'systemMessages': messages['systemMessages']}
     if DEBUG is True:
-        jso1n = json.dumps(couponDict)
-        print(jso1n)
+        print(time.localtime())
 
     return couponDict
 
 
 def post_getCouponByCat(request):
-    catid = request.POST['catID']
+    catName = request.POST['catName']
     page = int(request.POST['page']) - 1
-
+    try:
+        catid = models.Category.objects.get(name=catName)
+    except ObjectDoesNotExist:
+        return JsonResponse({'error': '类别不存在'})
     coupons = models.Coupon.objects.filter(catid=catid, stat='onSale')
 
     result = []
@@ -339,17 +373,33 @@ def post_getCouponByCat(request):
     return response
 
 
-def post_getCouponByCatAll(request):
+def post_getCouponByCatIndex(request):
     category = models.Category.objects.all()
-    catName = []
     couponByCat = {}
     for cat in category:
-        catName.append(cat.name)
         coupons = models.Coupon.objects.filter(catid=cat.catid)
-        values = coupons.values().reverse()
-        couponByCat[cat.name] = values[0:4]
-    result = {'catName': catName, 'coupons': couponByCat}
-    return render(request, 'index.html', result)
+        coupons.reverse()
+        couponByCat[cat.name] = []
+        for i in range(0, min(8, coupons.count())):
+            couponByCat[cat.name].append(post_couponInfo(coupons[i].couponid))
+    # values = coupons.values()
+    # values.reverse()
+    # couponByCat[cat.name] = values[0:8]
+    result = {'coupons': couponByCat}
+    return result
+
+
+def post_getCouponForMobileIndex(request):
+    index = int(request.COOKIES.get('indexM', '0'))
+    couponsAll = models.Coupon.objects.all()
+    couponsAll.reverse()
+    resultSet = []
+    for i in range(index, min(couponsAll.count(), index + 10)):
+        resultSet.append(post_couponInfo(couponsAll[i].couponid))
+    result = {'coupons': resultSet}
+    response = JsonResponse(result)
+    response.set_cookie('indexM', index + 10)
+    return response
 
 
 def post_couponInfo(couponID):
@@ -533,9 +583,9 @@ def post_buy(request):
     # 优惠券存入卖家的sold列表
     soldList = models.Couponlist.objects.get(stat='sold', userid=sellerID)
     models.Listitem.objects.create(listid=soldList, couponid=coupon)
-    # 优惠券存入买家的brought列表
-    broughtList = models.Couponlist.objects.get(stat='brought', userid=buyerID)
-    models.Listitem.objects.create(listid=broughtList, couponID=coupon)
+    # 优惠券存入买家的bought列表
+    boughtList = models.Couponlist.objects.get(stat='bought', userid=buyerID)
+    models.Listitem.objects.create(listid=boughtList, couponID=coupon)
     # 优惠券存入买家的own列表
     ownList = models.Couponlist.objects.get(stat='own', userid=buyerID)
     models.Listitem.objects.create(listid=ownList, couponID=coupon)
@@ -546,7 +596,7 @@ def post_buy(request):
         temp = models.Couponlist.objects.get(listid=lists.listid.listid)
         if temp.stat == 'like':
             lists.delete()
-    return JsonResponse({'errno': '0', 'message': 'successfully brought'})
+    return JsonResponse({'errno': '0', 'message': 'successfully bought'})
 
 
 def post_putOnSale(request):
@@ -639,14 +689,14 @@ def createMessage(messageType, couponID, content=None):
 # 为用户添加各种表
 def createLists(user):
     # models.User.objects.create
-    stat = ['own', 'sold', 'brought', 'onSale', 'like']
+    stat = ['own', 'sold', 'bought', 'onSale', 'like']
     for content in stat:
         models.Couponlist.objects.create(userid=user, stat=content, listid=None)
 
 
 # get方法函数
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'index.html', post_getCouponByCatIndex(request))
 
 
 def login(request):
@@ -660,20 +710,28 @@ def userPage(request):
 def myCouponsPage(request):
     return render(request, 'mobile_mycoupons.html', post_getUserCoupon(request))
 
+
 def search(request):
     return render(request, 'search.html')
+
 
 def commodity(request):
     return render(request, 'commodity.html')
 
+
 def mobile_appraisement(request):
     return render(request, 'mobile_appraisement.html')
+
 
 def mobile_user_setting(request):
     return render(request, 'mobile_user_setting.html')
 
+
 def mobile_user_wallet(request):
     return render(request, 'mobile_user_wallet.html')
+
+def mobile_couponsmessage(request):
+    return render(request, 'mobile_couponsmessage.html')
 
 def mobile_user_focus(request):
     return render(request, 'mobile_user_focus.html')
@@ -743,10 +801,10 @@ def post_signUp(request):
         # 查询数据库中昵称是否存在
         if models.User.objects.filter(nickname=nickname):
             return JsonResponse({'errno': '1', 'message': '昵称已存在'})
-        # 邮箱验证
-        sendConfirmMail(username, 'http.....................')
         # 将邮箱作为用户名存入数据库中
         uid = randomID()
+        # 邮箱验证
+        sendConfirmMail(username, nickname, uid)
 
         user = models.User(id=uid, nickname=nickname, password=password, gender=gender, email=username, ucoin=0,
                            hasconfirm=False)

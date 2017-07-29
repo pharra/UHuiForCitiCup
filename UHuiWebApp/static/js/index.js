@@ -21,7 +21,7 @@
 
  */
 
-$(".login-li").click(function() {
+$(".login-li").click(function () {
     removechecked("#re-password");
     removechecked("#user_id");
     $(this).addClass("login-active");
@@ -67,42 +67,53 @@ function getchecked(id) {
 }
 
 
-$('#user_id').bind('input propertychange', function() {
-    if (isPhoneNo($('#user_id').val()) && $('#user_id').val()) {
-        $('#verification_code_div').show();
-        $('#user_id_content').hide();
-        CheckedCss("#user_id");
-    } else if (isEmail($('#user_id').val()) && $('#user_id').val()) {
-        $('#verification_code_div').hide();
-        $('#user_id_content').hide();
-        CheckedCss("#user_id");
+$('#user_id,#mobile_user_id').bind('input propertychange', function () {
+    var thisid = '#' + $(this).attr('id');
+    var verification_code_div = '#' + $(this).attr('id').replace('user_id', 'verification_code_div');
+    var user_id_content = '#' + $(this).attr('id') + '_content';
+    if (isPhoneNo($(this).val()) && $(this).val()) {
+
+        $(verification_code_div).show();
+        $(user_id_content).hide();
+        removechecked(thisid);
+        CheckedCss(thisid);
+    } else if (isEmail($(this).val()) && $(this).val()) {
+        $(verification_code_div).hide();
+        $(user_id_content).hide();
+        removechecked(thisid);
+        CheckedCss(thisid);
     } else {
-        $('#verification_code_div').hide();
-        $('#user_id_content').hide();
-        removechecked("#user_id");
+        $(verification_code_div).hide();
+        $(user_id_content).hide();
+        removechecked(thisid);
 
     }
 });
 
-$('#user_id').blur('input propertychange', function() {
-    if (isPhoneNo($('#user_id').val())) {
-        $('#verification_code_div').show();
-    } else if (isEmail($('#user_id').val())) {
-        $('#verification_code_div').hide();
-    } else if (!($('#user_id').val())) {
-        $('#verification_code_div').hide();
-        $('#user_id_content').hide();
+
+$('#user_id,#mobile_user_id').blur('input propertychange', function () {
+    var thisid = '#' + $(this).attr('id');
+    var verification_code_div = '#' + $(this).attr('id').replace('user_id', 'verification_code_div');
+    var user_id_content = '#' + $(this).attr('id') + '_content';
+    if (isPhoneNo($(this).val())) {
+        $(verification_code_div).show();
+    } else if (isEmail($(this).val())) {
+        $(verification_code_div).hide();
+    } else if (!($(this).val())) {
+        $(verification_code_div).hide();
+        $(user_id_content).hide();
 
     } else {
-        $('#verification_code_div').hide();
-        $('#user_id_content').show();
+        $(verification_code_div).hide();
+        $(user_id_content).show();
     }
 });
 
 
-$('#re-password,#password').blur('input propertychange', function() {
+$('#re-password,#password').blur('input propertychange', function () {
     if (($('#re-password').val() == $("#password").val()) && ($('#re-password').val() != "") && $('#password').val() != "") {
         $('#password_content').hide();
+        removechecked("#re-password");
         CheckedCss("#re-password");
         $("#signup-md5-password").val($.md5($("#re-password").val() + "UHui"));
     } else if (($('#re-password').val() == "") || ($('#password').val() == "")) {
@@ -114,20 +125,35 @@ $('#re-password,#password').blur('input propertychange', function() {
     }
 });
 
+$('#mobile_re-password,#mobile_password').blur('input propertychange', function () {
+    if (($('#mobile_re-password').val() == $("#mobile_password").val()) && ($('#mobile_re-password').val() != "") && $('#mobile_password').val() != "") {
+        $('#mobile_password_content').hide();
+        removechecked("#mobile_re-password");
+        CheckedCss("#mobile_re-password");
+        $("#signup-md5-password").val($.md5($("#mobile_re-password").val() + "UHui"));
+    } else if (($('#mobile_re-password').val() == "") || ($('#mobile_password').val() == "")) {
+        $('#mobile_password_content').hide();
+        removechecked("#mobile_re-password");
+    } else {
+        $('#mobile_password_content').show();
+        removechecked("#mobile_re-password");
+    }
+});
 
-$("#login-password").blur('input propertychange', function() {
+
+$("#login-password").blur('input propertychange', function () {
     $("#login-md5-password").val($.md5($("#login-password").val() + "UHui"));
 });
 
 
-$('#user_id,#re-password,#password,#nickname').bind('input propertychange', function() {
+$('#user_id,#re-password,#password,#nickname').bind('input propertychange', function () {
     if ((isPhoneNo($('#user_id').val()) || isEmail($('#user_id').val())) && (($('#re-password').val() == $("#password").val()) && ($('#re-password').val() != "") && $('#password').val() != "") && ($('#nickname').val().length > 0)) {
         $("#login-button").attr("disabled", false);
     } else {
         $("#login-button").attr("disabled", "disabled");
     }
 });
-$(window).resize(function() {
+$(window).resize(function () {
     if (getchecked("#user_id")) {
         removechecked("#user_id");
         CheckedCss("#user_id");
@@ -144,7 +170,7 @@ function login_handler() {
         url: '/post_login',
         type: 'POST',
         dataType: 'json',
-        data: { "username": $("#login-username").val(), "password": $("#login-md5-password").val() },
+        data: {"username": $("#login-username").val(), "password": $("#login-md5-password").val()},
         timeout: 3000,
         cache: false,
         beforeSend: LoadFunction,
@@ -152,9 +178,11 @@ function login_handler() {
         success: succFunction
     });
 
-    function LoadFunction() {}
+    function LoadFunction() {
+    }
 
-    function erryFunction() {}
+    function erryFunction() {
+    }
 
     function succFunction(data) {
         if (data.error == "") {
@@ -186,9 +214,11 @@ function sign_up() {
         success: succFunction
     });
 
-    function LoadFunction() {}
+    function LoadFunction() {
+    }
 
-    function erryFunction() {}
+    function erryFunction() {
+    }
 
     function succFunction(data) {
         if (data.errno == "1") {
@@ -226,8 +256,8 @@ function sign_up() {
 
 };
 
-$(document).ready(function() {
-    $(window).scroll(function(event) {
+$(document).ready(function () {
+    $(window).scroll(function (event) {
         $("#index_navigation").css("top", $(window).scrollTop() + 'px');
 
 
@@ -235,7 +265,7 @@ $(document).ready(function() {
 });
 
 
-$("#singlemessage, #userinfo").click(function() {
+$("#singlemessage, #userinfo").click(function () {
     var being_hidden_message = '#for' + $(this).attr("id");
     $(being_hidden_message).toggleClass("being-hidden");
     var offsetleft = '-' + ($(being_hidden_message).width() / 2 - $(this).parent().width() / 2) + "px";
@@ -247,14 +277,13 @@ $("#singlemessage, #userinfo").click(function() {
 });
 
 
-
-$(".edituserinfo").click(function() {
+$(".edituserinfo").click(function () {
     $(this).parent().hide();
     $(this).parent().nextAll().show();
     $("#edit-userinfo-commit-div").show();
 });
 
-$('#newemail').blur('input propertychange', function() {
+$('#newemail').blur('input propertychange', function () {
     if (isEmail($("#newemail").val())) {
         $("#newemail_button").attr("disabled", false);
         $("#newemail_content").hide();
@@ -267,7 +296,7 @@ $('#newemail').blur('input propertychange', function() {
 });
 
 
-$('#newtelno').blur('input propertychange', function() {
+$('#newtelno').blur('input propertychange', function () {
     if (isPhoneNo($("#newtelno").val())) {
         $("#newtelno_button").attr("disabled", false);
         $("#newtelno_content").hide();
@@ -279,7 +308,7 @@ $('#newtelno').blur('input propertychange', function() {
 
 });
 
-$('#newemail').bind('input propertychange', function() {
+$('#newemail').bind('input propertychange', function () {
     if (isEmail($("#newemail").val())) {
         $("#newemail_button").attr("disabled", false);
 
@@ -292,7 +321,7 @@ $('#newemail').bind('input propertychange', function() {
 });
 
 
-$('#newtelno').blur('input propertychange', function() {
+$('#newtelno').blur('input propertychange', function () {
     if (isPhoneNo($("#newtelno").val())) {
         $("#newtelno_button").attr("disabled", false);
 
@@ -305,7 +334,7 @@ $('#newtelno').blur('input propertychange', function() {
 });
 
 
-$('#edit_userinfo_submit').blur('input propertychange', function() {
+$('#edit_userinfo_submit').blur('input propertychange', function () {
     if ($("#newname").val() || ($("#newpassword").val() && $("#oldpassword").val()) || ($("#newemail").val() && $("#email_verification_code").val()) || ($("#newtelno").val() && $("#newphone_verification_code").val())) {
         $("#edit_userinfo_submit").attr("disabled", false);
     } else {
@@ -347,7 +376,7 @@ function get_email_verificationcode() {
         url: '/post_sendEmailVerifyCode',
         type: 'POST',
         dataType: 'json',
-        data: { "email": email },
+        data: {"email": email},
         timeout: 3000,
         cache: false,
     });
@@ -360,14 +389,14 @@ function get_phone_verificationcode() {
         url: '/post_sendMobileVerifyCode',
         type: 'POST',
         dataType: 'json',
-        data: { "phonenum": phonenum },
+        data: {"phonenum": phonenum},
         timeout: 3000,
         cache: false,
     });
 
 };
 
-$(".max").click(function() {
+$(".max").click(function () {
     var str = $(this).attr("id").split("_")[0];
     var hidden_str = '#' + str + '_menu';
     $(hidden_str).removeClass(" being-hidden");

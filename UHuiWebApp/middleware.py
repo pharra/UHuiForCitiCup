@@ -29,7 +29,9 @@ class SimpleMiddleware(object):
         response = self.process_request(request)
         if not response:
             response = self.get_response(request)
-            if request.uid is not None and response.type == "JsonResponse":
+            if isinstance(response, dict):
+                response = JsonResponse(response)
+            elif request.uid is not None and response.type == "JsonResponse":
                 print(response.content)
                 content = json.loads(bytes.decode(response.content))
                 userinfo = views.post_userInfo(request.uid)
