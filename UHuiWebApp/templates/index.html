@@ -45,17 +45,18 @@
         $.getJSON("/post_getCouponForMobileIndex", function (result) {
 
                $.each(result,function(key,value){
-                  $.each(value,function(key,value) {
-                      var $couponsdom = $("#mobile_index_coupons").clone();
-                      $couponsdom.attr('id','').removeClass("aui-hide");
-                      $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
-                      $couponsdom.find("p")[1].innerText = "估值:" + value.value;
-                      $couponsdom.find("p")[2].innerText = value.brand;
-                      $couponsdom.find("p")[3].innerText = value.discount;
-                      $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
-                      $("#mobile_index_coupons").parent().append($couponsdom);
-                  });
-        });
+                   if(key === "coupons") {
+                       $.each(value, function (key, value) {
+                           var $couponsdom = $("#mobile_index_coupons").clone();
+                           $couponsdom.attr('id', '').removeClass("aui-hide");
+                           $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
+                           $couponsdom.find("p")[1].innerText = "估值:" + value.value;
+                           $couponsdom.find("p")[2].innerText = value.brand;
+                           $couponsdom.find("p")[3].innerText = value.discount;
+                           $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
+                           $("#mobile_index_coupons").parent().append($couponsdom);
+                       });
+                   } });
            });
     </script>
     <script type="text/javascript">
@@ -68,18 +69,19 @@
           $.getJSON("/post_getCouponForMobileIndex", function (result) {
 
                $.each(result,function(key,value){
-                  $.each(value,function(key,value) {
-                      var $couponsdom = $("#mobile_index_coupons").clone();
-                      $couponsdom.attr('id','').removeClass("aui-hide");
-                      $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
-                      $couponsdom.find("p")[1].innerText = "估值:" + value.value;
-                      $couponsdom.find("p")[2].innerText = value.brand;
-                      $couponsdom.find("p")[3].innerText = value.discount;
-                      $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
-                      $("#mobile_index_coupons").parent().append($couponsdom);
-                  });
-        });
-           });
+                   if(key === "coupons") {
+                       $.each(value, function (key, value) {
+                           var $couponsdom = $("#mobile_index_coupons").clone();
+                           $couponsdom.attr('id', '').removeClass("aui-hide");
+                           $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
+                           $couponsdom.find("p")[1].innerText = "估值:" + value.value;
+                           $couponsdom.find("p")[2].innerText = value.brand;
+                           $couponsdom.find("p")[3].innerText = value.discount;
+                           $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
+                           $("#mobile_index_coupons").parent().append($couponsdom);
+                       });
+                   } });
+          });
           }else{
 
         }
