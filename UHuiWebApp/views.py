@@ -372,10 +372,10 @@ def post_getCouponByCat(request):
 
 
 def post_getCouponByCatIndex(request):
-    category = models.Category.objects.filter(stat='onSale')
+    category = models.Category.objects.all()
     couponByCat = {}
     for cat in category:
-        coupons = models.Coupon.objects.filter(catid=cat.catid)
+        coupons = models.Coupon.objects.filter(catid=cat.catid, stat='onSale')
         coupons.reverse()
         couponByCat[cat.name] = []
         for i in range(0, min(8, coupons.count())):
@@ -394,6 +394,9 @@ def post_getCouponForMobileIndex(request):
     resultSet = []
     for i in range(index, min(couponsAll.count(), index + 10)):
         resultSet.append(post_couponInfo(couponsAll[i].couponid))
+
+    if len(resultSet) == 0:
+        resultSet = 'end of coupons'
     result = {'coupons': resultSet}
     # result = json.dumps(result)
     response = JsonResponse(result)
