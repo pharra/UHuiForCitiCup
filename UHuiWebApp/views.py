@@ -121,6 +121,7 @@ def emailVerification(request):
     response.set_cookie(key="uhui", value=value, httponly=True)
     return response
 
+
 # 定时任务
 def timer():
     coupons = models.Coupon.objects.all()
@@ -226,7 +227,7 @@ def changeCouponStat(couponID, sellerID, stat):
             models.Listitem.objects.filter(listid=onSaleList, couponid=coupon).delete()
     elif stat == 'onSale':
         models.Listitem.objects.create(listid=onSaleList, couponid=coupon)
-
+        createMessage('关注的优惠券已下架', couponID)
     return JsonResponse({'errno': '0', 'message': '成功'})
 
 
@@ -364,12 +365,9 @@ def post_getCouponByCat(request):
     coupons = models.Coupon.objects.filter(catid=catid, stat='onSale')
 
     result = []
-    for i in range(0, 32):
-        result.append(coupons[32 * page + i])
-    resultSet = {}
-    for coupon in result:
-        resultSet[coupon.couponid] = post_couponInfo(coupon.couponid)
-    response = JsonResponse(resultSet)
+    for i in range(32 * page, min(32 * (page + 1), coupons.count())):
+        result.append(post_couponInfo(coupons[i].couponid))
+    response = JsonResponse({'coupons': result})
     return response
 
 
@@ -735,19 +733,20 @@ def mobile_couponsmessage(request):
     return render(request, 'mobile_couponsmessage.html')
 
 
-
 def mobile_user_focus(request):
     return render(request, 'mobile_user_focus.html')
+
 
 def mobile_sell_main(request):
     return render(request, 'mobile_sell_main.html')
 
+
 def mobile_sell_classify(request):
     return render(request, 'mobile_sell_classify.html')
 
+
 def mobile_sell_add(request):
     return render(request, 'mobile_sell_add.html')
-
 
 
 # post方法加上前缀post_
