@@ -500,7 +500,7 @@ def post_getLikeList(request):
         return JsonResponse({'result':'user not exist'})
 
 
-#上架下架已拥有的优惠券
+#上架下架已拥有的优惠券  还需要创建message
 def post_changeCouponStat(request):
     cpID = request.POST.get('couponID')
     newStat = request.POST.get('stat')
@@ -529,7 +529,11 @@ def post_changeCouponStat(request):
 
 #主页的推荐 未完成
 def post_homepageCoupon(request):
-    pass
+    u_id = request.POST.get('userID')
+    #根据用户最近购买的优惠券种类中关注度最高的进行推荐
+    couponCat_1 = Coupon.objects.filter(catid=1).order_by()[0:5]#生活百货
+
+
 
 
 #搜索栏的推荐 未完成
