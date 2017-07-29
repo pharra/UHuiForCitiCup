@@ -372,7 +372,7 @@ def post_getCouponByCat(request):
 
 
 def post_getCouponByCatIndex(request):
-    category = models.Category.objects.all()
+    category = models.Category.objects.filter(stat='onSale')
     couponByCat = {}
     for cat in category:
         coupons = models.Coupon.objects.filter(catid=cat.catid)
