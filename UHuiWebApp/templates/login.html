@@ -2,13 +2,13 @@
 {% block src %}
     <link media="screen and (max-width:768px)" href="/static/css/aui/aui-flex.css" rel="stylesheet">
 {% endblock %}
-{% block phone_header %}
+{% block mobile_header %}
 {% endblock %}
 
 
 
-{% block phone_body %}
-    <div class="aui-flex-col aui-padded-10 phone-max-user-background">
+{% block mobile_body %}
+    <div class="aui-flex-col aui-padded-10 mobile-max-user-background">
         <div class="aui-flex-item-2">
             <i class="aui-iconfont aui-icon-left"></i>
         </div>
@@ -16,18 +16,67 @@
 
         </div>
     </div>
-    <div class="aui-tab" id="tab">
-        <div class="aui-tab-item aui-active">注册</div>
-        <div class="aui-tab-item">
-            <div></div>
-            登陆
+    <div class="aui-padded-15 mobile-login" id="mobile-login">
+          <div class="content aui-margin-15">
+                <h1>U惠</h1>
+                <h3>FBI WARNING</h3>
+          </div>
+        <input type="text" placeholder="电话号码/邮箱" id="mobile-login-username"/>
+
+
+        <input type="password" placeholder="密码" id="mobile-login-password"/>
+        <div class="aui-padded-t-15"><a href="" class=" float-left">我还没有账号</a>
+
+            <a href="" class=" float-right">无法登录？</a>
+            <div class="clear"></div>
         </div>
+        <div class="aui-padded-t-15">
+            <div class="user_id_content float-left being-hidden" id="mobile-login_failed_content"
+                 style="width:150px;">
+                <i class="fa fa-times" aria-hidden="true" style="color:red;"></i>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+        <p>
+        <div class="aui-btn mobile-button-color aui-btn-block aui-btn-sm">登陆</div>
+        </p>
     </div>
-    <div class="aui-padded-15">
-        <input type="text" placeholder="电话号码/邮箱" id="phone-login-username"/>
+<div class="aui-padded-15 mobile-login aui-flex-col aui-flex-center" id="mobile-rigister">
+          <div class="content aui-margin-15">
+                <h1>U惠</h1>
+                <h3>FBI WARNING</h3>
+          </div>
+        <input type="text" placeholder="电话号码/邮箱" name="username" id="mobile_user_id"/>
+                                <div class="user_id_content being-hidden" id="mobile_user_id_content">
+                                    <i class="fa fa-times" aria-hidden="true" style="color:red;">您输入的手机号或邮箱有误</i>
+                                </div>
+                                <input type="text" placeholder="昵称" id="mobile_nickname"/>
 
 
-        <input type="password" placeholder="密码" id="phone-login-password"/>
+                                <input type="password" placeholder="密码" id="mobile_password"/>
+
+
+                                <input type="password" placeholder="请确认您的密码" id="mobile_re-password"/>
+                                <div class="user_id_content being-hidden" id="mobile_password_content">
+                                    <i class="fa fa-times" aria-hidden="true" style="color:red;">两次密码不一致</i>
+                                </div>
+                                <div class="aui-list-item-inner aui-padded-15">
+                <label><input class="aui-radio" type="radio" name="radio2" checked> 男 &nbsp;&nbsp;</label>
+                <label><input class="aui-radio" type="radio" name="radio2"> 女</label>
+            </div>
+                                <div class="verification_code being-hidden" id="mobile_verification_code_div">
+                                    <input type="text" placeholder="手机验证码" name="verification_code"/>
+                                    <a href="" class="button float-right">点击获取</a>
+                                </div>
+                                <div class="user_id_content being-hidden" id="mobile_login-failed">
+                                    <i class="fa fa-times" aria-hidden="true" style="color:red;"></i>
+                                </div>
+
+
+        <p>
+        <div class="aui-btn mobile-button-color aui-btn-block aui-btn-sm">注册</div>
+        </p>
     </div>
     <script src="/static/js/jquery-3.2.1.js"></script>
     <script type="text/javascript" src="/static/js/aui/aui-tab.js"></script>
@@ -41,7 +90,7 @@
         });
     </script>
 {% endblock %}
-{% block phone_footer %}
+{% block mobile_footer %}
 {% endblock %}
 
 

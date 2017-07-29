@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE = edge">
     <meta name="viewport"
           content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <meta name="format-detection" content="telemobile=no,email=no,date=no,address=no">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" media="screen and (min-width:767px)" href="/static/css/bootstrap.min.css"/>
     <link rel="stylesheet" media="screen and (min-width:767px)" href="/static/css/forcomputer.css"/>
@@ -22,9 +22,9 @@
 
 <body>
 <div id="allmap"></div>
-<div class="phone-body">
+<div class="mobile-body">
     <div class="aui-content">
-        {% block phone_header %}
+        {% block mobile_header %}
             <link href="/static/css/aui/aui-flex.css" rel="stylesheet">
             <div id="modal-wrapper">
                 <div id="modal-backdrop">
@@ -33,9 +33,9 @@
                             <i class="fa fa-location-arrow"></i>
                         </div>
 
-                        <div class=" aui-col-xs-10" id="phone-search-input">
+                        <div class=" aui-col-xs-10" id="mobile-search-input">
                             <div class="aui-searchbar" id="search">
-                                <div class="aui-searchbar-input aui-border-radius" tapmode onclick="phone_doSearch()">
+                                <div class="aui-searchbar-input aui-border-radius" tapmode onclick="mobile_doSearch()">
                                     <i class="aui-iconfont aui-icon-search"></i>
                                     <form action="/post_search" method="post">
                                         <input type="search" placeholder="请输入搜索内容" name="keyWord" id="search-input">
@@ -47,19 +47,19 @@
 
                         </div>
                     </header>
-                    <div class="being-hidden" id="phone-search-body">
-                        <div class="phone_search_history">
+                    <div class="being-hidden" id="mobile-search-body">
+                        <div class="mobile_search_history">
                         <div>
                             <i class="aui-iconfont aui-icon-date float-left"></i>
                             <div class="float-left aui-padded-l-5">搜索记录</div>
                             <i class="aui-iconfont aui-icon-close float-right"></i>
                             <div class="clear"></div>
                         </div>
-                            <div class="phone-search-history-clear">清除搜索记录</div>
+                            <div class="mobile-search-history-clear">清除搜索记录</div>
                         </div>
-<div class="phone-recommend-search aui-flex-col aui-padded-15">
+<div class="mobile-recommend-search aui-flex-col aui-padded-15">
 
-    <div class="phone-recommend-search-title aui-flex-item-12 aui-padded-b-10">搜索常用分类</div>
+    <div class="mobile-recommend-search-title aui-flex-item-12 aui-padded-b-10">搜索常用分类</div>
     <div class="aui-flex-item-4">家居家具</div>
     <div class="aui-flex-item-4">家居家具</div>
     <div class="aui-flex-item-4">家居家具</div>
@@ -83,9 +83,9 @@
                         $("#modal-wrapper").addClass("modal-wrapper");
                         $("#modal-backdrop").addClass("modal-backdrop");
                         $(".aui-col-xs-2.city-position").hide();
-                        $("#phone-search-input").removeClass("aui-col-xs-10").addClass("aui-col-xs-12");
-                        $("header.aui-bar.aui-bar-nav").addClass("phone-searchbar-active");
-                        $("#phone-search-body").show();
+                        $("#mobile-search-input").removeClass("aui-col-xs-10").addClass("aui-col-xs-12");
+                        $("header.aui-bar.aui-bar-nav").addClass("mobile-searchbar-active");
+                        $("#mobile-search-body").show();
                     }
                 }
                 document.querySelector(".aui-searchbar-cancel").onclick = function () {
@@ -94,15 +94,15 @@
                     $("#modal-wrapper").removeClass("modal-wrapper");
                     $("#modal-backdrop").removeClass("modal-backdrop");
                     $(".aui-col-xs-2.city-position").show();
-                    $("#phone-search-input").removeClass("aui-col-xs-12").addClass("aui-col-xs-10");
-                    $("header.aui-bar.aui-bar-nav").removeClass("phone-searchbar-active");
-                    $("#phone-search-body").hide();
+                    $("#mobile-search-input").removeClass("aui-col-xs-12").addClass("aui-col-xs-10");
+                    $("header.aui-bar.aui-bar-nav").removeClass("mobile-searchbar-active");
+                    $("#mobile-search-body").hide();
                 }
             </script>
         {% endblock %}
-        {% block phone_body %}
+        {% block mobile_body %}
         {% endblock %}
-        {% block phone_footer %}
+        {% block mobile_footer %}
             <footer class="aui-bar aui-bar-tab" id="footer">
                 <div class="aui-bar-tab-item aui-active" tapmode>
                     <i class="aui-iconfont aui-icon-home"></i>
