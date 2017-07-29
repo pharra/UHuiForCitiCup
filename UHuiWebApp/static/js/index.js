@@ -158,9 +158,17 @@ $(window).resize(function () {
         removechecked("#user_id");
         CheckedCss("#user_id");
     }
+    if (getchecked("#mobile_user_id")) {
+        removechecked("#mobile_user_id");
+        CheckedCss("#mobile_user_id");
+    }
     if (getchecked("#re-password")) {
         removechecked("#re-password");
         CheckedCss("#re-password");
+    }
+    if (getchecked("#mobile_re-password")) {
+        removechecked("#mobile_re-password");
+        CheckedCss("#mobile_re-password");
     }
 });
 
