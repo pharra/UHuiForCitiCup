@@ -389,7 +389,7 @@ def post_getCouponByCatIndex(request):
 
 def post_getCouponForMobileIndex(request):
     index = int(request.COOKIES.get('indexM', '0'))
-    couponsAll = models.Coupon.objects.all()
+    couponsAll = models.Coupon.objects.filter(stat='onSale')
     couponsAll.reverse()
     resultSet = []
     for i in range(index, min(couponsAll.count(), index + 10)):
