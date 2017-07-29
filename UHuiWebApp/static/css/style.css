@@ -709,7 +709,7 @@ p {
     line-height: 20px;
 }
 
-.phone-user-coupons {
+.mobile-user-coupons {
     border-left: 1px solid #e7e7e7;
     border-top: 1px solid #e7e7e7;
     border-right: 1px solid #e7e7e7;
@@ -723,35 +723,35 @@ p {
     background-size: 100% 100%;
 }
 
-.phone-user-coupons .user-coupons-left-value {
+.mobile-user-coupons .user-coupons-left-value {
     height: 45px;
     line-height:45px;
 }
-.phone-user-coupons .font-class {
+.mobile-user-coupons .font-class {
     font-size: 1.5rem;
     font-weight: bold;
     font-family: Century Gothic;
     color: #ff5a00;
 }
 
-.phone-user-coupons .user-coupons-middle-value  {
+.mobile-user-coupons .user-coupons-middle-value  {
     line-height: 45px;
     padding: 0;
     bottom: 0;
     height: 45px;
 }
 
-.phone-user-coupons .user-coupons-middle{
+.mobile-user-coupons .user-coupons-middle{
     height: 90px;
 }
 
-.phone-user-coupons .user-coupons-bottom{
+.mobile-user-coupons .user-coupons-bottom{
     height: 30px;
     text-align: center;
     padding: 0;
 }
 
-.phone-user-coupons .user-coupons-bottom p{
+.mobile-user-coupons .user-coupons-bottom p{
     height: 30px;
    line-height: 30px;
 }
@@ -777,60 +777,67 @@ p {
     float: left;
 }
 
-.phone-max-user-background {
+.mobile-max-user-background {
     background-color: #ff5a00;
     color: white;
 }
 
-.phone-max-user-value{
+.mobile-max-user-value{
     background-color:white;
     color:#ff5a00;
 }
 
-.phone-user-avator {
+.mobile-user-avator {
     border-radius: 50%;
     width: 75px;
     height: 75px;
     margin: 0 auto;
 }
-.phone-max-user-icon {
+.mobile-max-user-icon {
     font-size:1.3rem;
     width: 1.3rem;
 }
 
-.phone-max-user-font{
+.mobile-max-user-font{
     color:black;
 }
 
-.phone-max-user-photo{
+.mobile-max-user-photo{
     border-radius:50%;
     width:50px;
     height:50px;
     margin:5px 25px 0px 0px;
 }
-.phone-content {
+.mobile-content {
     text-align: center;
     font-size: 0.8rem;
     color: #616161;
     padding: 5px;
 }
 @media (max-width: 400px) {
-    .phone-content{
+    .mobile-content{
         font-size: 0.7rem;
     }
 }
 @media (max-width: 340px) {
-    .phone-content{
+    .mobile-content{
         font-size: 0.6rem;
     }
 }
 
-.phone-mycoupons-header-content-active{
+.mobile-mycoupons-header-content-active{
     color:#ff5a00;
     border-bottom: 2px solid #ff5a00;
 }
 
+.phone-max-line{
+    border-bottom:1px solid rgb(231,231,231);
+    }
+
 .phone-coupons-message{
+
+.mobile-coupons-message{
+>>>>>>> wf
     background: white;
     border-bottom: 1px solid rgb(231,231,231);
 }
@@ -857,45 +864,56 @@ p {
     transition: background-color .3s ease-out;
 }
 
-.phone-searchbar-active.aui-bar-nav{
+.mobile-searchbar-active.aui-bar-nav{
     background: white;
     color: #616161;
     border-bottom: 1px solid #e8e8e8;
 }
 
-.phone-searchbar-active .aui-searchbar-input{
+.mobile-searchbar-active .aui-searchbar-input{
     background: rgb(243,243,243);
     color: #616161;
 }
 
-.phone-searchbar-active .aui-searchbar{
+.mobile-searchbar-active .aui-searchbar{
     color: #616161;
 }
 
-.phone_search_history{
+.mobile_search_history{
     padding: 15px;
     color: #616161;
     border-bottom: 1px solid #e8e8e8;
 }
-.phone-search-history-clear{
+.mobile-search-history-clear{
     text-align: center;
     color: #ff5a00;
     font-size: 0.7rem;
 }
 
-.phone-recommend-search div {
+.mobile-recommend-search div {
     text-align: center;
     color: #ff5a00;
     padding-bottom: 10px;
 }
 
-.phone-recommend-search .phone-recommend-search-title {
+.mobile-recommend-search .mobile-recommend-search-title {
     font-size: 0.9rem;
     text-align: center;
     color: #8c8c8c;
 }
 
-.phone-max-line{
+.mobile-max-line{
     border-bottom:1px solid rgb(231,231,231)
 
+}
+
+.mobile-login input{
+    padding: 10px;
+    margin: 0 0 10px 0;
+    border-bottom: 1px solid #8c8c8c;
+}
+
+.mobile-login .mobile-button-color{
+    background: #ff5a00;
+    color: white;
 }

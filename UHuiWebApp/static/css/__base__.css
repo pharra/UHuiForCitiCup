@@ -11,13 +11,13 @@
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
-    .phone-body{
+    .mobile-body{
         display: none;
     }
 }
 
 @media (min-width: 1200px) {
-    .phone-body{
+    .mobile-body{
         display: none;
     }
 }

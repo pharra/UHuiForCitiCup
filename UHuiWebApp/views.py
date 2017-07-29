@@ -749,6 +749,10 @@ def mobile_sell_add(request):
     return render(request, 'mobile_sell_add.html')
 
 
+def mobile_couponsmessage(request):
+    return render(request, 'mobile_couponsmessage.html')
+
+
 # post方法加上前缀post_
 def post_login(request):
     # cookie_content = request.COOKIES.get('uhui')

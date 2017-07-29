@@ -1,62 +1,140 @@
 {% extends "__base__.html" %} {% block title %}U惠网 {% endblock %} {% block src %} {% endblock %}
-{% block phone_header %}
+{% block mobile_header %}
 {% endblock %}
-{% block phone_body %}
+{% block mobile_body %}
 <div class="aui-row">
     <header class = "aui-bar aui-bar-nav"style="background:rgba(0,0,0,0.3);color:white;position:absolute;">
-        <a class = "aui-pull-left aui-btn">
+        <a class = "aui-pull-left aui-btn" href = "/">
             <span class = "aui-iconfont aui-icon-left"></span>
         </a>
     </header>
     <img src="/static/images/dva_4.jpg" class="aui-col-xs-12">
 
-    <div class="aui-padded-15">
-        <div>
-            <h3 style="margin:0px;">商品名</h3>
-        </div>
-        <div>
-            <div>
-                <h2 style = "color:#ff5a00;margin:0px;">1000.0</h2>
-            </div>
-            <div>
-                <h4 style = "color:#ff5a00;">估值：998.0</h4>
-            </div>
-        </div>
-        <div>
-            商家名：
-        </div>
-        <div>
-            介绍：
-        </div>
-        &nbsp;
-        <div>
-            使用门槛：
-        </div>
-        <div>
-            优惠额度：
-        </div>
-        <div>
-            使用期限：
-        </div>
-        <div>
-            其他备注：
-        </div>
+    <div class = "aui-content aui-margin-b-15">
+        <ul class = "aui-list aui-list-in" style="line-height:30px;margin-bottom:20px;">
+            <li class = "aui-list-item">
+                <div class = "aui-media-list-item-inner">
+                    <div>
+                        <div>
+                            商品名
+                        </div>
+                        <div style = "color:#ff5a00;font-size:30px;line-height:30px;padding:0px 0px 0px 9px;">
+                            ￥1000.0
+                        </div>
+                        <div style = "color:#ff5a00;padding:0px 0px 0px 15px;margin:0px 0px 10px 0px;">
+                            估值：998.0
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul class = "aui-list aui-list-in" style="margin-bottom:20px;">
+            <li class = "aui-list-item">
+                <div class = "aui-media-list-item-inner">
+                    优惠额度：
+                </div>
+            </li>
+        </ul>
+        <ul class = "aui-list aui-list-in" style="margin-bottom:20px;">
+            <li class = "aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
+                <div class = "aui-media-list-item-inner">
+                    用户名：
+                </div>
+            </li>
+            <li class = "aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
+                <div class = "aui-media-list-item-inner">
+                    商家名：
+                </div>
+            </li>
+            <li class = "aui-list-item">
+                <div class = "aui-media-list-item-inner">
+                    使用期限：
+                </div>
+            </li>
+        </ul>
+        <ul class = "aui-list aui-list-in">
+            <li class = "aui-list-item">
+                <div class = "aui-media-item-inner">
+                    使用限制：
+                </div>
+            </li>
+        </ul>
     </div>
 
     <footer class="aui-bar aui-bar-tab phone-max-user-background" id="footer">
+        <div class="aui-bar-tab-item" href = "/user.html" tapmode>
+            <a href = "/" style = "color:white">
+    <footer class="aui-bar aui-bar-tab mobile-max-user-background" id="footer">
         <div class="aui-bar-tab-item" tapmode>
+
             <i class="aui-iconfont aui-icon-home"></i>
             <div class="aui-bar-tab-label">首页</div>
+            </a>
         </div>
-        <div class="aui-bar-tab-item" tapmode>
+        <div class="aui-bar-tab-item" tapmode onclick="openDialog('focus')" id = "commodity_focus">
             <i class="aui-iconfont aui-icon-star"></i>
             <div class="aui-bar-tab-label">关注</div>
         </div>
-        <div class="aui-bar-tab-item" tapmode>
+        <div class="aui-bar-tab-item" style="background-color:white;color:#ff5a00" tapmode onclick="openDialog('buy')">
             <i class="aui-iconfont aui-icon-cart"></i>
             <div class="aui-bar-tab-label">购买</div>
         </div>
     </footer>
 </div>
+{% endblock %}
+{% block phone_footer %} {% endblock %}
+{% block body %} {% endblock %}
+{% block scripts %}
+<script type = "text/javascript">
+var dialog = new auiDialog({})
+    function openDialog(type){
+        switch(type){
+            case "buy":
+                dialog.alert({
+                    title:"",
+                    msg:'是否购买该优惠券',
+                    buttons:['取消','确定']
+                    },function(ret){
+                        if(ret.buttonIndex == 2){
+                            console.log(ret)
+                        }
+                        })
+                        break;
+            case "focus":
+                dialog.alert({
+                    title:"",
+                    msg:'是否关注该优惠券',
+                    buttons:['取消','确认']
+                    },function(ret){
+                        if(ret.buttonIndex == 1){
+                            dialog.alert({
+                                title:"",
+                                msg:"取消关注",
+                                buttons:['确定']
+                                })
+                                }
+                        if(ret.buttonIndex == 2){
+                            dialog.alert({
+                                title:"",
+                                msg:"已关注",
+                                buttons:['确定']
+                                })
+                                }
+                                })
+                                break;
+            default:
+                break;
+                    }}
+</script>
+<script>
+function changetext(id)
+{
+id.innerHTML = "";
+}
+</script>
+{% endblock %}
 
-{% endblock %} {% block phone_footer %} {% endblock %} {% block body %} {% endblock %} {% block scripts %} {% endblock %}
+
+
+{% endblock %} {% block mobile_footer %} {% endblock %} {% block body %} {% endblock %} {% block scripts %} {% endblock %}
+

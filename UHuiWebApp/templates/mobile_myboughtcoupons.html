@@ -7,8 +7,8 @@
     <link href="/static/css/aui/aui-flex.css" rel="stylesheet">
 {% endblock %}
 
-{% block phone_header %}
-    <div class="aui-flex-col aui-padded-10 phone-max-user-background">
+{% block mobile_header %}
+    <div class="aui-flex-col aui-padded-10 mobile-max-user-background">
         <div class="aui-flex-item-4">
             <i class="aui-iconfont aui-icon-left"></i>
         </div>
@@ -16,10 +16,10 @@
         </div>
     </div>
     <div class="aui-flex-col aui-padded-t-10 aui-padded-l-5 aui-padded-r-5" style="background: white;">
-        <div class="aui-flex-item-6 phone-content phone-mycoupons-header-content-active">
+        <div class="aui-flex-item-6 mobile-content mobile-mycoupons-header-content-active">
             未使用的优惠券
         </div>
-        <div class="aui-flex-item-6 phone-content">
+        <div class="aui-flex-item-6 mobile-content">
             已使用的优惠券
         </div>
 
@@ -27,10 +27,10 @@
 
 {% endblock %}
 
-{% block phone_body %}
+{% block mobile_body %}
       <div class="aui-flex-row">
         {% for i in couponsOwn %}
-            <div class="phone-user-coupons aui-flex-col">
+            <div class="mobile-user-coupons aui-flex-col">
                 <div class="aui-flex-item-3 user-coupons-left">
                     <p class="user-coupons-left-value font-class">
                         ￥{{ i.listPrice }}
@@ -63,12 +63,12 @@
             {% empty %}
             <div class="aui-padded-15 aui-margin-15">
             <img src="/static/images/coupons_empty.png">
-            <p class="phone-content">什么！？这里居然是空的！</p>
+            <p class="mobile-content">什么！？这里居然是空的！</p>
             </div>
         {% endfor %}
     </div>
 {% endblock %}
-{% block phone_footer %}
+{% block mobile_footer %}
 {% endblock %}
 
 {% block computer_navbar %}

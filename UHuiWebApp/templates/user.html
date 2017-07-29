@@ -2,17 +2,17 @@
 {% block title %}用户中心 {% endblock %}
 {% block src %}
 {% endblock %}
-{% block phone_header %}
+{% block mobile_header %}
 <link rel="stylesheet" type="text/css" href="/static/css/aui/aui-flex.css">
 {% endblock %}
-{% block phone_body %}
+{% block mobile_body %}
 <div class="aui-row">
-    <div class = "aui-flex-row aui-flex-right phone-max-user-background">
-            <i class = "aui-iconfont aui-icon-mail phone-max-user-icon aui-flex-2  aui-margin-r-10"></i>
+    <div class = "aui-flex-row aui-flex-right mobile-max-user-background">
+            <i class = "aui-iconfont aui-icon-mail mobile-max-user-icon aui-flex-2  aui-margin-r-10"></i>
     </div>
-        <div class = "aui-flex-col  aui-padded-15 phone-max-user-background">
+        <div class = "aui-flex-col  aui-padded-15 mobile-max-user-background">
         <div class = "aui-flex-3">
-            <img src="/static/images/dva_4.jpg" class="phone-user-avator" />
+            <img src="/static/images/dva_4.jpg" class="mobile-user-avator" />
         </div>
             <div class = "aui-flex-row aui-flex-9 aui-flex-middle aui-padded-10">
                 <div style = "margin:5px;"><h3 style="color:white;">用户名</h3></div>
@@ -23,7 +23,7 @@
 
 
     <div class="aui-content aui-margin-b-15">
-        <ul class="aui-list aui-list-in phone-max-user-font">
+        <ul class="aui-list aui-list-in mobile-max-user-font">
             <li class="aui-list-item aui-list-item-middle">
                 <div class="aui-list-item-inner aui-list-item-arrow">
                     <div class="aui-list-item-title">
@@ -90,7 +90,7 @@
         </div>
     </footer>
 </div>
-{% endblock %}{% block phone_footer %} {% endblock %} {% block body %}
+{% endblock %}{% block mobile_footer %} {% endblock %} {% block body %}
 <div class="container">
     <div class="row">
 
@@ -416,7 +416,7 @@
                                 <label for="newtelno" class="col-md-2 col-lg-2 col-sm-2 control-label">手机号</label>
                                 <div class="col-md-5 col-lg-5 col-sm-5 control-label">
                                     <div>
-                                        <span>{{ phoneNum }}</span>
+                                        <span>{{ mobileNum }}</span>
                                         <i class="fa fa-pencil-square-o point edituserinfo" aria-hidden="true"></i>
                                     </div>
                                     <input type="text" class="form-control being-hidden" id="newtelno" placeholder="新手机将收到验证码">
@@ -426,9 +426,9 @@
                                         </div>
                                     </div>
                                     <div class="edit-verification_code being-hidden row">
-                                        <input type="text" placeholder="手机验证码" id="newphone_verification_code" class="form-control">
+                                        <input type="text" placeholder="手机验证码" id="newmobile_verification_code" class="form-control">
 
-                                        <button class="button float-right" type="button" id="newtelno_button" onclick="get_phone_verificationcode();" disabled="disabled">点击获取
+                                        <button class="button float-right" type="button" id="newtelno_button" onclick="get_mobile_verificationcode();" disabled="disabled">点击获取
                                         </button>
                                     </div>
 
