@@ -73,8 +73,8 @@
             <i class="aui-iconfont aui-icon-star"></i>
             <div class="aui-bar-tab-label" id = "commodity_focus">关注</div>
         </div>
-        <div class="aui-bar-tab-item" style="background-color:white;color:#ff5a00" tapmode onclick="openDialog('buy')">
-            <a href = "/mobile_sell_final" style="color:#ff5a00;">
+        <div class="aui-bar-tab-item" style="background-color:white;color:#ff5a00" tapmode>
+            <a href = "/mobile_sell_final?coupon={{ info.couponID }}" style="color:#ff5a00;">
             <i class="aui-iconfont aui-icon-cart"></i>
             <div class="aui-bar-tab-label">购买</div>
             </a>
@@ -85,64 +85,11 @@
 {% block scripts %}
 <script type = "text/javascript">
 var dialog = new auiDialog({})
- function post_buy(couponID,sellerID) {
-             $.ajax({
-        url: '/post_buy',
-        type: 'POST',
-        dataType: 'json',
-        data: {"couponID": couponID, "sellerID": sellerID},
-        timeout: 3000,
-        cache: false,
-        beforeSend: LoadFunction,
-        error: erryFunction,
-        success: succFunction
-    });
 
-    function LoadFunction() {
-    }
-
-    function erryFunction() {
-    }
-
-    function succFunction(Jsondata) {
-        if (data.errno === '0') {
-            dialog.alert({
-                    title:"",
-                    msg:Jsondata.message,
-                    buttons:['确定']
-                    },function(ret){
-                window.location.href = "/mobile_myboughtcoupons";
-                        })
-
-
-        } else {
-            dialog.alert({
-                    title:"",
-                    msg:Jsondata.message,
-                    buttons:['确定']
-                    },function(ret){
-                        })
-
-        }
-
-    }
-
-     }
 
 var flag = 0
     function openDialog(type){
         switch(type){
-            case "buy":
-                dialog.alert({
-                    title:"",
-                    msg:'是否购买该优惠券',
-                    buttons:['取消','确定']
-                    },function(ret){
-                        if(ret.buttonIndex == 2){
-                            post_buy({{ info.couponID }},{{ info.sellerInfo.userid }});
-                        }
-                        })
-                        break;
             case "focus":
                 var element = document.getElementById("commodity_focus")
                 if (flag == 0){
