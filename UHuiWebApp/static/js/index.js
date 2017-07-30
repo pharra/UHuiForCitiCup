@@ -20,7 +20,7 @@
  });
 
  */
-'use strict';
+
 
 $(".login-li").click(function () {
     removechecked("#re-password");

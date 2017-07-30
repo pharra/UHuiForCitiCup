@@ -2,6 +2,7 @@
 {% block title %}U惠网 {% endblock %}
 {% block src %}
     <link rel="stylesheet" type="text/css" href="/static/css/aui/aui-slide.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/dropload.css"/>
 {% endblock %}
 {% block mobile_body %}
     <div class="aui-row">
@@ -26,11 +27,13 @@
         </div>
     </div>
 
-    <script src="/static/js/bscroll.min.js"></script>
+
     <script src="/static/js/aui/aui-slide.js"></script>
     <script src="/static/js/jquery-3.2.1.js"></script>
+    <script src="/static/js/dropload.min.js"></script>
+    <script src="/static/js/jquery.cookie.js"></script>
     <script type="text/javascript">
-        'use strict';
+        $.cookie("indexM", "0", {path: "/"});
         var img_height = ($("body").width() / 16) * 9;
         var slide = new auiSlide({
             container: document.getElementById("aui-slide"),
@@ -43,49 +46,41 @@
             "pageStyle": 'dot',
             'dotPosition': 'center',
         });
-        $.getJSON("/post_getCouponForMobileIndex", function (result) {
-
-            $.each(result, function (key, value) {
-                if (key === "coupons") {
-                    $.each(value, function (key, value) {
-                        var $couponsdom = $("#mobile_index_coupons").clone();
-                        $couponsdom.attr('id', '').removeClass("aui-hide");
-                        $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
-                        $couponsdom.find("p")[1].innerText = "估值:" + value.value;
-                        $couponsdom.find("p")[2].innerText = value.brand;
-                        $couponsdom.find("p")[3].innerText = value.discount;
-                        $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
-                        $("#mobile_index_coupons").parent().append($couponsdom);
-                    });
-                }
-            });
-        });
     </script>
     <script type="text/javascript">
-        'use strict';
-        let scroll = new BScroll(document.getElementById('coupons_mobile_pullfresh'), {
-            startX: 0,
-            startY: 0
+        $('body').dropload({
+            scrollArea: window,
+            distance:50,
+            loadDownFn: function (me) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/post_getCouponForMobileIndex',
+                    dataType: 'json',
+                    success: function (data) {
+                       $.each(data, function (key, value) {
+                    if (key === "coupons") {
+                        $.each(value, function (key, value) {
+                            var $couponsdom = $("#mobile_index_coupons").clone();
+                            $couponsdom.attr('id', '').removeClass("aui-hide");
+                            $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
+                            $couponsdom.find("p")[1].innerText = "估值:" + value.value;
+                            $couponsdom.find("p")[2].innerText = value.brand;
+                            $couponsdom.find("p")[3].innerText = value.discount;
+                            $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
+                            $("#mobile_index_coupons").parent().append($couponsdom);
+                        });
+                    }
+                });
+                        // 每次数据加载完，必须重置
+                        me.resetload();
+                    },
+                    error: function (xhr, type) {
+                        // 即使加载出错，也得重置
+                        me.resetload();
+                    }
+                });
+            }
         });
-        scroll.on('scroll', (pos) => {
-            $.getJSON("/post_getCouponForMobileIndex", function (result) {
-
-            $.each(result, function (key, value) {
-                if (key === "coupons") {
-                    $.each(value, function (key, value) {
-                        var $couponsdom = $("#mobile_index_coupons").clone();
-                        $couponsdom.attr('id', '').removeClass("aui-hide");
-                        $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
-                        $couponsdom.find("p")[1].innerText = "估值:" + value.value;
-                        $couponsdom.find("p")[2].innerText = value.brand;
-                        $couponsdom.find("p")[3].innerText = value.discount;
-                        $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
-                        $("#mobile_index_coupons").parent().append($couponsdom);
-                    });
-                }
-            });
-        })
-        })
     </script>
     <section class="aui-grid">
         <div class="aui-row">
@@ -127,38 +122,38 @@
     </section>
 
     <div class="aui-flex-row" id="coupons_mobile_pullfresh">
-
-        <div class="mobile-user-coupons aui-flex-col aui-hide" id="mobile_index_coupons">
-            <div class="aui-flex-item-3 user-coupons-left">
-                <p class="user-coupons-left-value font-class">
-
-                </p>
-                <p class="user-coupons-left-value">
-
-                </p>
-
-            </div>
-            <div class="aui-flex-item-9 user-coupons-middle">
-                <div class="user-coupons-middle-value">
-                    <p class="font-class">
+        <div>
+            <div class="mobile-user-coupons aui-flex-col aui-hide" id="mobile_index_coupons">
+                <div class="aui-flex-item-3 user-coupons-left">
+                    <p class="user-coupons-left-value font-class">
 
                     </p>
-                </div>
-                <div class="aui-flex-item-9 user-coupons-middle-value">
-                    <p>
+                    <p class="user-coupons-left-value">
 
                     </p>
+
+                </div>
+                <div class="aui-flex-item-9 user-coupons-middle">
+                    <div class="user-coupons-middle-value">
+                        <p class="font-class">
+
+                        </p>
+                    </div>
+                    <div class="aui-flex-item-9 user-coupons-middle-value">
+                        <p>
+
+                        </p>
+                    </div>
+
+
                 </div>
 
+                <div class="aui-flex-item-12 user-coupons-bottom">
+                    <p></p>
+                </div>
 
             </div>
-
-            <div class="aui-flex-item-12 user-coupons-bottom">
-                <p></p>
-            </div>
-
         </div>
-
     </div>
 {% endblock %}
 {% block body %}
