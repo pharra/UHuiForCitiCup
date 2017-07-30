@@ -414,7 +414,7 @@ def post_getCouponForMobileIndex(request):
 
 
 def post_couponDetail(request):
-    couponID = request.GET.get['couponID']
+    couponID = request.GET.get('couponID')
     info = couponInfo(couponID)
     return {'info': info}
 
