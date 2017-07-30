@@ -426,7 +426,7 @@ def post_getBoughtList(request):
 #获取我拥有的优惠券
 def post_getOwnList(request):
     u_id = request.POST.get('userID')
-    onSaleList =[]
+    onSaleList = []
     storeList = []
     usedList = []
     if User.objects.filter(id=u_id).exists():
