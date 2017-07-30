@@ -698,7 +698,6 @@ def createMessage(messageType, couponID, content=None):
         for listItem in lists:
             if models.Couponlist.objects.filter(stat='like', listid=listItem.listid).exists():
                 userlist.append(models.Couponlist.objects.get(stat='like', listid=listItem.listid))
-
         pass
     else:
         # own列表
@@ -783,7 +782,7 @@ def mobile_sell_add(request):
 
 
 def mobile_sell_final(request):
-    return render(request, 'mobile_sell_final.html')
+    return render(request, 'mobile_sell_final.html', post_couponDetail(request))
 
 
 def mobile_couponsmessage(request):
