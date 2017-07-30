@@ -293,7 +293,7 @@ def post_search(request):
     for i in range(0, 16):
         if (16 * page + i) == productResult.count():
             break
-        result.append(post_couponInfo(productResult[16 * page + i].couponid))
+        result.append(couponInfo(productResult[16 * page + i].couponid))
     # 数量不够时的结果仍需补全
     for brand in brandIDResult:
         pc = int(16 / brandIDResult.count())
@@ -301,7 +301,7 @@ def post_search(request):
         for i in range(0, pc):
             if (pc * page + i) == brandItem.count():
                 break
-            result.append(post_couponInfo(brandItem[pc * page + i].couponid))
+            result.append(couponInfo(brandItem[pc * page + i].couponid))
 
     # if not productResult.exists() and not brandIDResult.exists():
     #     return render(request, 'search.html')
@@ -333,26 +333,26 @@ def post_getUserCoupon(request):
     if ownCoupons.exists():
         if (count != 'all' and ownCoupons.count() <= count) or count == 'all':
             for coupon in ownCoupons:
-                own.append(post_couponInfo(coupon.couponid.couponid))
+                own.append(couponInfo(coupon.couponid.couponid))
         else:
             for i in range(0, count):
-                own.append(post_couponInfo(ownCoupons[i].couponid.couponid))
+                own.append(couponInfo(ownCoupons[i].couponid.couponid))
 
     if likeCoupons.exists():
         if (count != 'all' and likeCoupons.count() <= count) or count == 'all':
             for coupon in likeCoupons:
-                like.append(post_couponInfo(coupon.couponid.couponid))
+                like.append(couponInfo(coupon.couponid.couponid))
         else:
             for i in range(0, count):
-                onSale.append(post_couponInfo(likeCoupons[i].couponid.couponid))
+                onSale.append(couponInfo(likeCoupons[i].couponid.couponid))
 
     if onSaleCoupons.exists():
         if (count != 'all' and onSaleCoupons.count() <= count) or count == 'all':
             for coupon in onSaleCoupons:
-                onSale.append(post_couponInfo(coupon.couponid.couponid))
+                onSale.append(couponInfo(coupon.couponid.couponid))
         else:
             for i in range(0, count):
-                onSale.append(post_couponInfo(onSaleCoupons[i].couponid.couponid))
+                onSale.append(couponInfo(onSaleCoupons[i].couponid.couponid))
 
     own.reverse()
     like.reverse()
@@ -377,7 +377,7 @@ def post_getCouponByCat(request):
 
     result = []
     for i in range(32 * page, min(32 * (page + 1), coupons.count())):
-        result.append(post_couponInfo(coupons[i].couponid))
+        result.append(couponInfo(coupons[i].couponid))
     response = JsonResponse({'coupons': result})
     return response
 
@@ -390,7 +390,7 @@ def post_getCouponByCatIndex(request):
         coupons.reverse()
         couponByCat[cat.name] = []
         for i in range(0, min(8, coupons.count())):
-            couponByCat[cat.name].append(post_couponInfo(coupons[i].couponid))
+            couponByCat[cat.name].append(couponInfo(coupons[i].couponid))
     # values = coupons.values()
     # values.reverse()
     # couponByCat[cat.name] = values[0:8]
@@ -404,7 +404,7 @@ def post_getCouponForMobileIndex(request):
     couponsAll.reverse()
     resultSet = []
     for i in range(index, min(couponsAll.count(), index + 10)):
-        resultSet.append(post_couponInfo(couponsAll[i].couponid))
+        resultSet.append(couponInfo(couponsAll[i].couponid))
 
     result = {'coupons': resultSet}
     # result = json.dumps(result)
@@ -413,7 +413,13 @@ def post_getCouponForMobileIndex(request):
     return response
 
 
-def post_couponInfo(couponID):
+def post_couponDetail(request):
+    couponID = request.GET.get['couponID']
+    info = couponInfo(couponID)
+    return {'info': info}
+
+
+def couponInfo(couponID):
     try:
         coupon = models.Coupon.objects.get(couponid=couponID)
     except ObjectDoesNotExist:
@@ -727,7 +733,7 @@ def search(request):
 
 
 def commodity(request):
-    return render(request, 'commodity.html')
+    return render(request, 'commodity.html', post_couponDetail(request))
 
 
 def mobile_appraisement(request):
