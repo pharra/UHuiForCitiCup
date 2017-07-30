@@ -26,11 +26,11 @@
         </div>
     </div>
 
-    <script src="/static/js/aui/aui-scroll.js"></script>
-    <script src="/static/js/aui/aui-pull-refresh.js"></script>
+    <script src="/static/js/bscroll.min.js"></script>
     <script src="/static/js/aui/aui-slide.js"></script>
     <script src="/static/js/jquery-3.2.1.js"></script>
     <script type="text/javascript">
+        'use strict';
         var img_height = ($("body").width() / 16) * 9;
         var slide = new auiSlide({
             container: document.getElementById("aui-slide"),
@@ -62,33 +62,30 @@
         });
     </script>
     <script type="text/javascript">
-
-        var scroll = new auiScroll({
-            listen: true,
-            distance: 0 //判断到达底部的距离，isToBottom为true
-        }, function (ret) {
-            if (ret.isToBottom) {
-$.getJSON("/post_getCouponForMobileIndex", function (result) {
-
-               $.each(result,function(key,value){
-                   if(key === "coupons") {
-                       $.each(value, function (key, value) {
-                           var $couponsdom = $("#mobile_index_coupons").clone();
-                           $couponsdom.attr('id', '').removeClass("aui-hide");
-                           $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
-                           $couponsdom.find("p")[1].innerText = "估值:" + value.value;
-                           $couponsdom.find("p")[2].innerText = value.brand;
-                           $couponsdom.find("p")[3].innerText = value.discount;
-                           $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
-                           $("#mobile_index_coupons").parent().append($couponsdom);
-                       });
-                   } });
-          });
-            } else {
-
-            }
-
+        'use strict';
+        let scroll = new BScroll(document.getElementById('coupons_mobile_pullfresh'), {
+            startX: 0,
+            startY: 0
         });
+        scroll.on('scroll', (pos) => {
+            $.getJSON("/post_getCouponForMobileIndex", function (result) {
+
+            $.each(result, function (key, value) {
+                if (key === "coupons") {
+                    $.each(value, function (key, value) {
+                        var $couponsdom = $("#mobile_index_coupons").clone();
+                        $couponsdom.attr('id', '').removeClass("aui-hide");
+                        $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
+                        $couponsdom.find("p")[1].innerText = "估值:" + value.value;
+                        $couponsdom.find("p")[2].innerText = value.brand;
+                        $couponsdom.find("p")[3].innerText = value.discount;
+                        $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
+                        $("#mobile_index_coupons").parent().append($couponsdom);
+                    });
+                }
+            });
+        })
+        })
     </script>
     <section class="aui-grid">
         <div class="aui-row">
@@ -129,7 +126,7 @@ $.getJSON("/post_getCouponForMobileIndex", function (result) {
         </div>
     </section>
 
-    <div class="aui-flex-row">
+    <div class="aui-flex-row" id="coupons_mobile_pullfresh">
 
         <div class="mobile-user-coupons aui-flex-col aui-hide" id="mobile_index_coupons">
             <div class="aui-flex-item-3 user-coupons-left">
