@@ -121,6 +121,7 @@ def emailVerification(request):
     response.set_cookie(key="uhui", value=value, httponly=True)
     return response
 
+
 # 定时任务
 def timer():
     coupons = models.Coupon.objects.all()
@@ -226,7 +227,7 @@ def changeCouponStat(couponID, sellerID, stat):
             models.Listitem.objects.filter(listid=onSaleList, couponid=coupon).delete()
     elif stat == 'onSale':
         models.Listitem.objects.create(listid=onSaleList, couponid=coupon)
-
+        createMessage('关注的优惠券已下架', couponID)
     return JsonResponse({'errno': '0', 'message': '成功'})
 
 
@@ -364,12 +365,9 @@ def post_getCouponByCat(request):
     coupons = models.Coupon.objects.filter(catid=catid, stat='onSale')
 
     result = []
-    for i in range(0, 32):
-        result.append(coupons[32 * page + i])
-    resultSet = {}
-    for coupon in result:
-        resultSet[coupon.couponid] = post_couponInfo(coupon.couponid)
-    response = JsonResponse(resultSet)
+    for i in range(32 * page, min(32 * (page + 1), coupons.count())):
+        result.append(post_couponInfo(coupons[i].couponid))
+    response = JsonResponse({'coupons': result})
     return response
 
 
@@ -377,7 +375,7 @@ def post_getCouponByCatIndex(request):
     category = models.Category.objects.all()
     couponByCat = {}
     for cat in category:
-        coupons = models.Coupon.objects.filter(catid=cat.catid)
+        coupons = models.Coupon.objects.filter(catid=cat.catid, stat='onSale')
         coupons.reverse()
         couponByCat[cat.name] = []
         for i in range(0, min(8, coupons.count())):
@@ -391,12 +389,14 @@ def post_getCouponByCatIndex(request):
 
 def post_getCouponForMobileIndex(request):
     index = int(request.COOKIES.get('indexM', '0'))
-    couponsAll = models.Coupon.objects.all()
+    couponsAll = models.Coupon.objects.filter(stat='onSale')
     couponsAll.reverse()
     resultSet = []
     for i in range(index, min(couponsAll.count(), index + 10)):
         resultSet.append(post_couponInfo(couponsAll[i].couponid))
+
     result = {'coupons': resultSet}
+    # result = json.dumps(result)
     response = JsonResponse(result)
     response.set_cookie('indexM', index + 10)
     return response
@@ -524,7 +524,7 @@ def post_storeCoupon(request):
     product = request.POST['product']
     discount = request.POST['discount']
     stat = request.POST.get('stat', 'store')
-    pic = request.POST.get('pic', DEFAULT_PIC)
+    pic = request.FILES.get('pic')
 
     # 判断brand是否存在
     if not models.Brand.objects.filter(name=brand).exists():
@@ -730,23 +730,30 @@ def mobile_user_setting(request):
 def mobile_user_wallet(request):
     return render(request, 'mobile_user_wallet.html')
 
+
 def mobile_couponsmessage(request):
     return render(request, 'mobile_couponsmessage.html')
+
 
 def mobile_user_focus(request):
     return render(request, 'mobile_user_focus.html')
 
+
 def mobile_sell_main(request):
     return render(request, 'mobile_sell_main.html')
+
 
 def mobile_sell_classify(request):
     return render(request, 'mobile_sell_classify.html')
 
+
 def mobile_sell_add(request):
     return render(request, 'mobile_sell_add.html')
 
+
 def mobile_couponsmessage(request):
     return render(request, 'mobile_couponsmessage.html')
+
 
 # post方法加上前缀post_
 def post_login(request):
