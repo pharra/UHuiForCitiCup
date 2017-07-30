@@ -61,7 +61,7 @@
                     if (key === "coupons") {
                         $.each(value, function (key, value) {
                             var $couponsdom = $("#mobile_index_coupons").clone();
-                            $couponsdom.attr('id', '').removeClass("aui-hide");
+                            $couponsdom.attr('id', '').removeClass("aui-hide").attr("id","couponsid_" + value.couponID);
                             $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
                             $couponsdom.find("p")[1].innerText = "估值:" + value.value;
                             $couponsdom.find("p")[2].innerText = value.brand;
