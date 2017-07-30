@@ -27,6 +27,7 @@
     </div>
 
     <script src="/static/js/aui/aui-scroll.js"></script>
+    <script src="/static/js/aui/aui-pull-refresh.js"></script>
     <script src="/static/js/aui/aui-slide.js"></script>
     <script src="/static/js/jquery-3.2.1.js"></script>
     <script type="text/javascript">
@@ -44,29 +45,30 @@
         });
         $.getJSON("/post_getCouponForMobileIndex", function (result) {
 
-               $.each(result,function(key,value){
-                   if(key === "coupons") {
-                       $.each(value, function (key, value) {
-                           var $couponsdom = $("#mobile_index_coupons").clone();
-                           $couponsdom.attr('id', '').removeClass("aui-hide");
-                           $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
-                           $couponsdom.find("p")[1].innerText = "估值:" + value.value;
-                           $couponsdom.find("p")[2].innerText = value.brand;
-                           $couponsdom.find("p")[3].innerText = value.discount;
-                           $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
-                           $("#mobile_index_coupons").parent().append($couponsdom);
-                       });
-                   } });
-           });
+            $.each(result, function (key, value) {
+                if (key === "coupons") {
+                    $.each(value, function (key, value) {
+                        var $couponsdom = $("#mobile_index_coupons").clone();
+                        $couponsdom.attr('id', '').removeClass("aui-hide");
+                        $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
+                        $couponsdom.find("p")[1].innerText = "估值:" + value.value;
+                        $couponsdom.find("p")[2].innerText = value.brand;
+                        $couponsdom.find("p")[3].innerText = value.discount;
+                        $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
+                        $("#mobile_index_coupons").parent().append($couponsdom);
+                    });
+                }
+            });
+        });
     </script>
     <script type="text/javascript">
 
-    var scroll = new auiScroll({
-        listen:true,
-        distance:0 //判断到达底部的距离，isToBottom为true
-    },function(ret){
-        if(ret.isToBottom){
-          $.getJSON("/post_getCouponForMobileIndex", function (result) {
+        var scroll = new auiScroll({
+            listen: true,
+            distance: 0 //判断到达底部的距离，isToBottom为true
+        }, function (ret) {
+            if (ret.isToBottom) {
+$.getJSON("/post_getCouponForMobileIndex", function (result) {
 
                $.each(result,function(key,value){
                    if(key === "coupons") {
@@ -82,11 +84,11 @@
                        });
                    } });
           });
-          }else{
+            } else {
 
-        }
+            }
 
-    });
+        });
     </script>
     <section class="aui-grid">
         <div class="aui-row">
@@ -127,38 +129,38 @@
         </div>
     </section>
 
-      <div class="aui-flex-row" >
+    <div class="aui-flex-row">
 
-            <div class="mobile-user-coupons aui-flex-col aui-hide" id="mobile_index_coupons">
-                <div class="aui-flex-item-3 user-coupons-left">
-                    <p class="user-coupons-left-value font-class">
+        <div class="mobile-user-coupons aui-flex-col aui-hide" id="mobile_index_coupons">
+            <div class="aui-flex-item-3 user-coupons-left">
+                <p class="user-coupons-left-value font-class">
 
-                    </p>
-                    <p class="user-coupons-left-value">
+                </p>
+                <p class="user-coupons-left-value">
 
-                    </p>
-
-                </div>
-                <div class="aui-flex-item-9 user-coupons-middle">
-                    <div class="user-coupons-middle-value">
-                        <p class="font-class">
-
-                        </p>
-                    </div>
-                    <div class="aui-flex-item-9 user-coupons-middle-value">
-                        <p>
-
-                        </p>
-                    </div>
-
-
-                </div>
-
-                <div class="aui-flex-item-12 user-coupons-bottom">
-                    <p></p>
-                </div>
+                </p>
 
             </div>
+            <div class="aui-flex-item-9 user-coupons-middle">
+                <div class="user-coupons-middle-value">
+                    <p class="font-class">
+
+                    </p>
+                </div>
+                <div class="aui-flex-item-9 user-coupons-middle-value">
+                    <p>
+
+                    </p>
+                </div>
+
+
+            </div>
+
+            <div class="aui-flex-item-12 user-coupons-bottom">
+                <p></p>
+            </div>
+
+        </div>
 
     </div>
 {% endblock %}
@@ -250,9 +252,9 @@
 
             <div class="row">
 
-               {% for key,value in coupons.items() %}
-                   <p class="text-fix-center">{{ key }}</p>
-                   {% for i in value %}
+                {% for key,value in coupons.items() %}
+                    <p class="text-fix-center">{{ key }}</p>
+                    {% for i in value %}
                         <div class="col-md-6 col-lg-6 col-sm-6">
                             <div class="user-coupons row">
                                 <div class="col-md-3 col-lg-3 col-sm-3 user-coupons-left">
@@ -277,7 +279,7 @@
                                     </div>
                                     <div class="col-md-12 col-lg-12 col-sm-12 user-coupons-middle-value">
                                         {% for k in i.limits %}
-                                        <p class="user-coupons-middle-value-limits-p">{{ k }}</p>
+                                            <p class="user-coupons-middle-value-limits-p">{{ k }}</p>
                                         {% endfor %}
                                     </div>
 
@@ -290,8 +292,8 @@
 
                             </div>
                         </div>
-                       {% endfor %}
-                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
             </div>
         </div>
 
