@@ -33,5 +33,11 @@ urlpatterns = [
     url(r'^post_getUsedCoupon$',androidViews.post_getUsedCoupon,name='post_getUsedCoupon'),
     url(r'^post_updateAvatar$',androidViews.post_updateAvatar,name='post_updateAvatar'),
     url(r'^post_preSearch$',androidViews.post_preSearch,name='post_preSearch'),
+    url(r'^post_updateUserInformation$',androidViews.post_updateUserInformation,name='post_updateUserInformation'),
+    url(r'^post_getBanner$', androidViews.post_getBanner, name='post_getBanner'),
+    url(r'^post_homepageCoupon$', androidViews.post_homepageCoupon, name='post_homepageCoupon'),
+    url(r'^post_searchInCertainCategory$', androidViews.post_searchInCertainCategory, name='post_searchInCertainCategory'),
+    url(r'^post_searchByCategory$', androidViews.post_searchByCategory, name='post_searchByCategory'),
+    url(r'^post_changeCouponStat$', androidViews.post_changeCouponStat, name='post_changeCouponStat'),
 
 ]
