@@ -31,6 +31,7 @@ $(".login-li").click(function () {
     $($(this).siblings().children().attr("href")).removeClass("active in");
 });
 
+
 function isPhoneNo(phone) {
     var pattern = /^1[34578]\d{9}$/;
     return pattern.test(phone);

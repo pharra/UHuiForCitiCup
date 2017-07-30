@@ -3,7 +3,7 @@
 {% block src %} {% endblock %}
 {% block mobile_header %}
 <header class = "aui-bar aui-bar-nav">
-    <a class = "aui-pull-left aui-btn" href = "/">
+    <a class = "aui-pull-left aui-btn" href = "/mobile_sell_add">
         <span class = "aui-iconfont aui-icon-left"></span>
     </a>
     <div class = "aui-title">估值展示</div>
@@ -19,14 +19,14 @@
         100.00
     </div>
 </div>
-<div style="height:100px;padding:10px;background-color:white;margin:0px 0px 5px 0px;">
+<div style="height:100px;padding:10px 0px 10px 10px;background-color:white;margin:0px 0px 5px 0px;">
     <div style="width:80px;height:80px;float:left;">
         <img src = "/static/images/dva_4.jpg" class = "img_suit">
     </div>
-    <div style="float:left;height:80px;padding:20px 0px 0px 10px;">
-        今天米粒儿变可爱了吗
+    <div style="float:left;height:80px;width:180px;padding:17px 0px 0px 10px;">
+        <input type="text" disabled="disabled" placeholder="今天米粒儿变可爱了吗" value = "" id = "change_name"/>
     </div>
-    <div style="float:right;padding:20px 0px 0px 5px;color:#ff5a00">
+    <div style="float:right;padding-right:5px;color:#ff5a00;height:80px;line-height:80px;" onclick="able()" id = "change_button">
         修改
     </div>
 </div>
@@ -36,10 +36,10 @@
             <div class = "aui-list-item-label mobile-max-line">
                 价格：
             </div>
-            <div class = "aui-list-item-input mobile-max-line">
-                <input type="text" placeholder="请输入优惠券价格">
+            <div class = "aui-list-item-input mobile-max-line" style="padding-right:0px;text-">
+                <input type="text" placeholder="请输入优惠券价格" value = "" id = "change_value">
             </div>
-            <div class = "aui-list-item-label mobile-max-line" style="color:#ff5a00">
+            <div class = "aui-list-item-label mobile-max-line" style="color:#ff5a00;">
                 采用估值
             </div>
         </li>
@@ -48,7 +48,7 @@
                 优惠额度：
             </div>
             <div class = "aui-list-item-input mobile-max-line">
-                <input type = "text" placeholder="九折">
+                <input type = "text" placeholder="九折" id = "change_discount">
             </div>
         </li>
         <li class = "aui-list-item">
@@ -56,7 +56,7 @@
                 商家名：
             </div>
             <div class = "aui-list-item-input mobile-max-line">
-                <input type = "text" placeholder="就是这个名儿">
+                <input type = "text" placeholder="就是这个名儿" id = "change_own">
             </div>
         </li>
         <li class = "aui-list-item">
@@ -64,7 +64,7 @@
                 品种：
             </div>
             <div class = "aui-list-item-input mobile-max-line">
-                <input type = "text" placeholder="家居家具">
+                <input type = "text" placeholder="家居家具" id = "change_type">
             </div>
         </li>
     </ul>
@@ -84,18 +84,35 @@
 {% endblock %}
 {% block mobile_footer %}
 <footer class="aui-bar aui-bar-tab" id="footer">
-    <div class="aui-bar-tab-item" style="background-color:#ff5a00;color:white;"tapmode>
+    <div class="aui-bar-tab-item" style="background-color:#ff5a00;color:white;"tapmode onclick="chooseDialog('own')">
         <div class="aui-bar-tab-label">
                 添加到"我的"
         </div>
     </div>
-    <div class="aui-bar-tab-item" style="background-color:white;color:#ff5a00;"tapmode>
+    <div class="aui-bar-tab-item" style="background-color:white;color:#ff5a00;"tapmode onclick="chooseDialog('up')">
         <div class="aui-bar-tab-label">上架优惠券</div>
     </div>
 </footer>
 {% endblock %}
 {% block body %} {% endblock %}
-{% block scripts %} {% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+function able(){
+var content = document.getElementById("change_button");
+var change = document.getElementById("change_name");
+if (content.innerHTML == "修改"){
+change.disabled="";
+content.innerHTML = "确定";
+}
+else{
+change.disabled="disabled";
+content.innerHTML = "修改";
+}
+}
+</script>
+<script type = "text/javascript">
+</script>
+{% endblock %}
 
 
 

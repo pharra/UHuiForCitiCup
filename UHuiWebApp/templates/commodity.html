@@ -1,10 +1,11 @@
-{% extends "__base__.html" %} {% block title %}U惠网 {% endblock %} {% block src %} {% endblock %}
-{% block mobile_header %}
-{% endblock %}
+{% extends "__base__.html" %}
+{% block title %}商品详情 {% endblock %}
+{% block src %} {% endblock %}
+{% block mobile_header %}{% endblock %}
 {% block mobile_body %}
 <div class="aui-row">
     <header class = "aui-bar aui-bar-nav"style="background:rgba(0,0,0,0.3);color:white;position:absolute;">
-        <a class = "aui-pull-left aui-btn" href = "/">
+        <a class = "aui-pull-left aui-btn" href="javascript:history.back(-1)">
             <span class = "aui-iconfont aui-icon-left"></span>
         </a>
     </header>
@@ -60,33 +61,31 @@
             </li>
         </ul>
     </div>
-
-    <footer class="aui-bar aui-bar-tab phone-max-user-background" id="footer">
-        <div class="aui-bar-tab-item" href = "/user.html" tapmode>
-            <a href = "/" style = "color:white">
-    <footer class="aui-bar aui-bar-tab mobile-max-user-background" id="footer">
+</div>
+<footer class="aui-bar aui-bar-tab mobile-max-user-background">
         <div class="aui-bar-tab-item" tapmode>
-
+            <a href = "/" style="color:white;">
             <i class="aui-iconfont aui-icon-home"></i>
             <div class="aui-bar-tab-label">首页</div>
             </a>
         </div>
-        <div class="aui-bar-tab-item" tapmode onclick="openDialog('focus')" id = "commodity_focus">
+        <div class="aui-bar-tab-item" tapmode onclick="openDialog('focus')">
             <i class="aui-iconfont aui-icon-star"></i>
-            <div class="aui-bar-tab-label">关注</div>
+            <div class="aui-bar-tab-label" id = "commodity_focus">关注</div>
         </div>
         <div class="aui-bar-tab-item" style="background-color:white;color:#ff5a00" tapmode onclick="openDialog('buy')">
+            <a href = "/mobile_sell_final" style="color:#ff5a00;">
             <i class="aui-iconfont aui-icon-cart"></i>
             <div class="aui-bar-tab-label">购买</div>
+            </a>
         </div>
-    </footer>
-</div>
+</footer>
 {% endblock %}
-{% block phone_footer %} {% endblock %}
-{% block body %} {% endblock %}
+{% block mobile_footer %}{% endblock %}
 {% block scripts %}
 <script type = "text/javascript">
 var dialog = new auiDialog({})
+var flag = 0
     function openDialog(type){
         switch(type){
             case "buy":
@@ -101,6 +100,8 @@ var dialog = new auiDialog({})
                         })
                         break;
             case "focus":
+                var element = document.getElementById("commodity_focus")
+                if (flag == 0){
                 dialog.alert({
                     title:"",
                     msg:'是否关注该优惠券',
@@ -109,32 +110,49 @@ var dialog = new auiDialog({})
                         if(ret.buttonIndex == 1){
                             dialog.alert({
                                 title:"",
-                                msg:"取消关注",
+                                msg:"已取消操作",
                                 buttons:['确定']
                                 })
                                 }
                         if(ret.buttonIndex == 2){
+                            flag = 1
                             dialog.alert({
                                 title:"",
                                 msg:"已关注",
                                 buttons:['确定']
                                 })
+                                element.innerHTML = "已关注"
                                 }
                                 })
+            }
+                if (flag == 1){
+                dialog.alert({
+                    title:"",
+                    msg:'是否取消关注该优惠券',
+                    buttons:['取消关注','继续关注']
+                    },function(ret){
+                        if(ret.buttonIndex == 1){
+                            flag = 0
+                            dialog.alert({
+                                title:"",
+                                msg:"已取消关注",
+                                buttons:['确定']
+                                })
+                                element.innerHTML = "关注"
+                                }
+                        if(ret.buttonIndex == 2){
+                            dialog.alert({
+                                title:"",
+                                msg:"已取消操作",
+                                buttons:['确定']
+                                })
+                                }
+                                })
+                                }
                                 break;
             default:
                 break;
                     }}
 </script>
-<script>
-function changetext(id)
-{
-id.innerHTML = "";
-}
-</script>
 {% endblock %}
-
-
-
-{% endblock %} {% block mobile_footer %} {% endblock %} {% block body %} {% endblock %} {% block scripts %} {% endblock %}
 

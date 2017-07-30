@@ -1,0 +1,87 @@
+{% extends "__base__.html" %}
+{% block title %}确认订单{% endblock %}
+{% block src %} {% endblock %}
+{% block mobile_header %}
+<header class = "aui-bar aui-bar-nav">
+    <a class = "aui-pull-left aui-btn" href="javascript:history.back(-1)">
+        <span class = "aui-iconfont aui-icon-left"></span>
+    </a>
+    <div class = "aui-title">确认订单</div>
+</header>
+{% endblock %}
+{% block mobile_body %}
+<div style="height:100px;padding:10px;background-color:white;margin:20px 0px 5px 0px;">
+    <div style="width:80px;height:80px;float:left;">
+        <img src = "/static/images/dva_4.jpg" class = "img_suit">
+    </div>
+    <div style="float:left;height:80px;padding:20px 0px 0px 10px;">
+        今天米粒儿变可爱了吗
+    </div>
+</div>
+<div class = "aui-content aui-margin-b-15">
+    <ul class = "aui-list aui-form-list" style="margin:5px 0px 0px 0px;">
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-label">
+                优惠额度：
+            </div>
+            <div style="padding-right:5px;">
+                九折
+            </div>
+        </li>
+    </ul>
+</div>
+<div class = "aui-card-list">
+    <div class = "aui-card-list">
+        <div class = "aui-card-list-header" style="padding-bottom:0px;">
+            使用门槛：
+        </div>
+        <div class = "aui-card-list-content-padded" style="padding-top:0px;">
+            1.可爱又迷人的反派角色<br/>
+            2.年轻帅气又有钱的共产党员<br/>
+            3.小U这样的
+        </div>
+    </div>
+</div>
+<div class = "aui-content aui-margin-b-15">
+    <ul class = "aui-list aui-form-list" style="margin:5px 0px 0px 0px;">
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-label">
+                价格
+            </div>
+            <div style="padding-right:5px;color:#ff5a00">
+                ￥100.00
+            </div>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+{% block mobile_footer %}
+<footer class="aui-bar aui-bar-tab">
+    <div class="aui-bar-tab-item" style="background-color:#ff5a00;color:white;"tapmode>
+        <div class="aui-bar-tab-label" tapmode onclick="openDialog('final')">
+                确认支付
+        </div>
+    </div>
+</footer>
+{% endblock %}
+{% block body %} {% endblock %}
+{% block scripts %}
+<script type = "text/javascript">
+var dialog = new auiDialog({})
+    function openDialog(type){
+        switch(type){
+            case "final":
+                dialog.alert({
+                    title:"",
+                    msg:'购买完成',
+                    buttons:['确定']
+                    },function(ret){
+                        if(ret.buttonIndex == 1){
+                            window.history.back(-2);
+                        }})
+                        break;
+            default:
+                break;
+                    }}
+</script>
+{% endblock %}
