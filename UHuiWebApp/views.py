@@ -608,18 +608,18 @@ def post_buy(request):
     # 优惠券由卖家的own列表移除
     sellerOwnList = models.Couponlist.objects.get(stat='own', userid=sellerID)
     models.Listitem.objects.get(listid=sellerOwnList.listid, couponid=couponID).delete()
-    # 优惠券由卖家的onSale列表移除
-    onSaleList = models.Couponlist.objects.get(stat='onSale', userid=sellerID)
-    models.Listitem.objects.get(listid=onSaleList.listid, couponid=couponID).delete()
+    # # 优惠券由卖家的onSale列表移除
+    # onSaleList = models.Couponlist.objects.get(stat='onSale', userid=sellerID)
+    # models.Listitem.objects.get(listid=onSaleList.listid, couponid=couponID).delete()
     # 优惠券存入卖家的sold列表
     soldList = models.Couponlist.objects.get(stat='sold', userid=sellerID)
     models.Listitem.objects.create(listid=soldList, couponid=coupon)
     # 优惠券存入买家的bought列表
     boughtList = models.Couponlist.objects.get(stat='bought', userid=buyerID)
-    models.Listitem.objects.create(listid=boughtList, couponID=coupon)
+    models.Listitem.objects.create(listid=boughtList, couponid=coupon)
     # 优惠券存入买家的own列表
     ownList = models.Couponlist.objects.get(stat='own', userid=buyerID)
-    models.Listitem.objects.create(listid=ownList, couponID=coupon)
+    models.Listitem.objects.create(listid=ownList, couponid=coupon)
     # 去掉所有like
     createMessage('关注的优惠券已被购买', couponID)
     likeList = models.Listitem.objects.filter(couponid=couponID)
