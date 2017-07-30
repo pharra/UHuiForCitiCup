@@ -366,6 +366,20 @@ def post_getUserCoupon(request):
     return couponDict
 
 
+def post_getBoughtCouponsMobile(request):
+    uid = request.uid
+    listID = models.Couponlist.objects.get(stat='bought', userid=uid)
+    couponIDs = models.Listitem.objects.filter(listid=listID.listid)
+    used = []
+    own = []
+    for couponid in couponIDs:
+        if couponid.couponid.stat == 'used':
+            used.append(couponInfo(couponid.couponid.couponid))
+        elif couponid.couponid.stat == 'store':
+            own.append(couponInfo(couponid.couponid.couponid))
+    return {'own': own, 'used': used}
+
+
 def post_getCouponByCat(request):
     catName = request.POST['catName']
     page = int(request.POST['page']) - 1
@@ -613,7 +627,7 @@ def post_buy(request):
         temp = models.Couponlist.objects.get(listid=lists.listid.listid)
         if temp.stat == 'like':
             lists.delete()
-    return JsonResponse({'errno': '0', 'message': 'successfully bought'})
+    return JsonResponse({'errno': '0', 'message': '购买成功'})
 
 
 def post_putOnSale(request):
@@ -774,6 +788,10 @@ def mobile_sell_final(request):
 
 def mobile_couponsmessage(request):
     return render(request, 'mobile_couponsmessage.html')
+
+
+def mobile_myboughtcoupons(request):
+    return render(request, 'mobile_myboughtcoupons.html', post_getBoughtCouponsMobile(request))
 
 
 # post方法加上前缀post_
