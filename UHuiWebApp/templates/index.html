@@ -68,6 +68,10 @@
                             $couponsdom.find("p")[3].innerText = value.discount;
                             $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
                             $("#mobile_index_coupons").parent().append($couponsdom);
+                            $("div[id^='couponsid_']").click(function () {
+                            var couponsid = $(this).attr("id").replace("couponsid_",'');
+                                window.location.href = "/commodity?couponsID="+couponsid;
+                                });
                         });
                     }
                 });
@@ -123,7 +127,7 @@
 
     <div class="aui-flex-row" id="coupons_mobile_pullfresh">
         <div>
-            <div class="mobile-user-coupons aui-flex-col aui-hide" id="mobile_index_coupons">
+            <div class="mobile-user-coupons aui-flex-col aui-hide point" id="mobile_index_coupons">
                 <div class="aui-flex-item-3 user-coupons-left">
                     <p class="user-coupons-left-value font-class">
 
