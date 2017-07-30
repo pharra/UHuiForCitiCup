@@ -119,7 +119,7 @@ var dialog = new auiDialog({})
                     buttons:['确定']
                     },function(ret){
                         if(ret.buttonIndex == 1){
-                           post_buy({{ info.couponID }},{{ info.sellerInfo.userid }});
+                           post_buy('{{ info.couponID }}','{{ info.sellerInfo.userid }}');
                         }})
                         break;
             default:
