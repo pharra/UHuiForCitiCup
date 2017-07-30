@@ -133,7 +133,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     "%s/UHuiWebApp/static/" % BASE_DIR,
 ]
-
+STATIC_PATH = os.path.join( os.path.dirname(__file__) , 'static' )
 if DEBUG == True:
     print(BASE_DIR)
     print(STATICFILES_DIRS)

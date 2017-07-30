@@ -21,5 +21,5 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^', include('UHuiWebApp.urls')),
-    url(r'^admin/', admin.site.urls),  
+    url(r'^admin/', admin.site.urls),
 ] 

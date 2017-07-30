@@ -524,7 +524,7 @@ def post_storeCoupon(request):
     product = request.POST['product']
     discount = request.POST['discount']
     stat = request.POST.get('stat', 'store')
-    pic = request.POST.get('pic', DEFAULT_PIC)
+    pic = request.FILES.get('pic')
 
     # 判断brand是否存在
     if not models.Brand.objects.filter(name=brand).exists():
