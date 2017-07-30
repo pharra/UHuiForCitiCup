@@ -48,7 +48,7 @@
                 优惠额度：
             </div>
             <div class = "aui-list-item-input mobile-max-line">
-                <input type = "text" placeholder="九折" id = "change_discount">
+                <input type = "text" placeholder="九折"  value = "" id = "change_discount">
             </div>
         </li>
         <li class = "aui-list-item">
@@ -56,7 +56,7 @@
                 商家名：
             </div>
             <div class = "aui-list-item-input mobile-max-line">
-                <input type = "text" placeholder="就是这个名儿" id = "change_own">
+                <input type = "text" placeholder="就是这个名儿"  value = "" id = "change_own">
             </div>
         </li>
         <li class = "aui-list-item">
@@ -64,7 +64,7 @@
                 品种：
             </div>
             <div class = "aui-list-item-input mobile-max-line">
-                <input type = "text" placeholder="家居家具" id = "change_type">
+                <input type = "text" placeholder="家居家具"  value = "" id = "change_type">
             </div>
         </li>
     </ul>
@@ -111,6 +111,56 @@ content.innerHTML = "修改";
 }
 </script>
 <script type = "text/javascript">
+
+    function chooseDialog(type){
+    var dialog = new auiDialog({})
+    var name = document.getElementById("change_name").value
+    var value = document.getElementById("change_value").value
+    var discount = document.getElementById("change_discount").value
+    var own = document.getElementById("change_own").value
+    var type2 = document.getElementById("change_type").value
+    var flag = 1
+    if (name && value && discount && own && type2)
+    {
+    flag = 1
+    }
+    else
+    {
+    flag = 0
+    }
+        switch (type) {
+            case "own":
+            if(flag == 1){
+                dialog.alert({
+                    title:"",
+                    msg:'添加成功',
+                    buttons:['确定']
+                })}
+            else{
+                dialog.alert({
+                    title:"",
+                    msg:'请将优惠券信息填写完整',
+                    buttons:['确定']
+                })}
+                break;
+            case "up":
+                if(flag == 1){
+                dialog.alert({
+                    title:"",
+                    msg:'已上架',
+                    buttons:['确定']
+                })}
+            else{
+                dialog.alert({
+                    title:"",
+                    msg:'请将优惠券信息填写完整',
+                    buttons:['确定']
+                })}
+                break;
+            default:
+                break;
+        }
+    }
 </script>
 {% endblock %}
 

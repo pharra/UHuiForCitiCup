@@ -19,7 +19,7 @@
                     <input type = "text" placeholder="商品名">
                 </div>
             </div>
-            <span class = "aui-pull-right aui-iconfont aui-icon-close" style="padding:2px 7px 0px 0px;"></span>
+
         </li>
         <li class = "aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
             <div class = "aui-list-item-inner">
@@ -27,7 +27,7 @@
                     <input type = "text" placeholder="商家名">
                 </div>
             </div>
-            <span class = "aui-pull-right aui-iconfont aui-icon-close" style="padding:2px 7px 0px 0px;"></span>
+
         </li>
         <li class = "aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
             <div class = "aui-list-item-inner">
@@ -35,26 +35,26 @@
                     <input type = "text" placeholder="优惠额度">
                 </div>
             </div>
-            <span class = "aui-pull-right aui-iconfont aui-icon-close" style="padding:2px 7px 0px 0px;"></span>
+
         </li>
         <li class = "aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
             <div class = "aui-list-item-inner">
                 <div class = "aui-list-item-title" style="color:#424242">品种</div>
             </div>
-            <span class = "aui-pull-right aui-iconfont aui-icon-right" style="padding:2px 7px 0px 0px;"></span>
+
         </li>
         <li class = "aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
             <div class = "aui-list-item-inner">
                 <div class = "aui-list-item-title" style="color:#424242">使用限制</div>
             </div>
-            <span class = "aui-pull-right aui-iconfont aui-icon-plus" style="padding:2px 7px 0px 0px;"></span>
+
         </li>
     </ul>
 </div>
 <footer class = "aui-bar aui-bar-tab">
     <div class = "aui-bar-tab-item aui-active" tapmode>
     <div style="background-color:#ff5a00;color:white;">
-        <div class = "aui-btn aui-btn-block aui-btn-outlined">
+        <div class = "aui-btn aui-btn-block aui-btn-outlined" tapmode onclick="sell('sell')">
             确认
         </div>
     </div>
@@ -64,4 +64,31 @@
 {% endblock %}
 {% block mobile_footer %} {% endblock %}
 {% block body %} {% endblock %}
-{% block scripts %} {% endblock %}
+{% block scripts %}
+<script type = "text/javascript">
+var dialog = new auiDialog({})
+    function sell(type){
+        switch(type){
+            case "sell":
+                dialog.alert({
+                    title:"",
+                    msg:'是否出售该优惠券',
+                    buttons:['取消','确定']
+                    },function(ret){
+                        if(ret.buttonIndex == 1){
+                        }
+                        else{
+                            dialog.alert({
+                                title:"",
+                                msg:'已售出',
+                                buttons:['确定']
+                        })
+                        window.history.back(-1);
+                        }}
+                        )
+                        break;
+            default:
+                break;
+                    }}
+</script>
+{% endblock %}

@@ -1,11 +1,11 @@
 {% extends "__base__.html" %}
-{% block title %}U惠网 {% endblock %}
+{% block title %}充值中心{% endblock %}
 {% block src %}
  <link rel="stylesheet" type="text/css" href="/static/css/aui/aui-slide.css"/>
 {% endblock %}
 {% block mobile_header %}
 <header class = "aui-bar aui-bar-nav">
-    <a class = "aui-pull-left aui-btn">
+    <a class = "aui-pull-left aui-btn" href="javascript:history.back(-1)">
         <span class = "aui-iconfont aui-icon-left"></span>
     </a>
     <div class = "aui-title">我的钱包</div>
@@ -22,11 +22,43 @@
     </div>
 </div>
 <div style="background-color:#ff5a00;color:white;width:60%;position:absolute;left:20%;top:35%;">
-        <div class = "aui-btn aui-btn-block aui-btn-outlined">
+        <div class = "aui-btn aui-btn-block aui-btn-outlined" tapmode onclick="addUbi('add')">
             充值U币
         </div>
 </div>
 {% endblock %}
 {% block mobile_footer %} {% endblock %}
 {% block body %} {% endblock %}
-{% block scripts %} {% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+    var dialog = new auiDialog({})
+    function addUbi(type){
+        switch (type) {
+        case "add":
+                dialog.prompt({
+                    title:"请输入充值金额",
+                    text:"",
+                    buttons:['取消','确定']
+                },function(ret){
+                    if(ret.buttonIndex == 2){
+                        dialog.alert({
+                            title:"",
+                            msg: "充值成功",
+                            buttons:['确定']
+                        })
+                        }
+                    else{
+                        dialog.alert({
+                            title:"",
+                            msg:"已取消充值操作",
+                            buttons:['确定']
+                        })
+                    }
+                })
+                break;
+        default:
+            break;
+        }
+    }
+</script>
+{% endblock %}
