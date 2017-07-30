@@ -745,6 +745,9 @@ def mobile_sell_classify(request):
 def mobile_sell_add(request):
     return render(request, 'mobile_sell_add.html')
 
+def mobile_sell_final(request):
+    return render(request, 'mobile_sell_final.html')
+
 def mobile_couponsmessage(request):
     return render(request, 'mobile_couponsmessage.html')
 

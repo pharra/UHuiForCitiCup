@@ -10,12 +10,7 @@ urlpatterns = [
     url(r'^mycoupons', views.myCouponsPage, name='mycoupons'),
     url(r'^search$', views.search, name='search'),
     url(r'^commodity$',views.commodity,name = 'commodity'),
-<<<<<<< HEAD
-=======
-    url(r'^user_setting$',views.mobile_user_setting,name = 'mobile_user_setting'),
-    url(r'^user_wallet$',views.mobile_user_wallet,name = 'mobile_user_wallet'),
-    url(r'^couponsmessage$',views.mobile_couponsmessage,name = 'mobile_couponsmessage'),
->>>>>>> wf
+
     url(r'^mobile_appraisement$',views.mobile_appraisement,name = 'mobile_appraisement'),
     url(r'^mobile_user_setting$',views.mobile_user_setting,name = 'mobile_user_setting'),
     url(r'^mobile_user_wallet$',views.mobile_user_wallet,name = 'mobile_user_wallet'),
@@ -23,12 +18,12 @@ urlpatterns = [
     url(r'^mobile_sell_main$',views.mobile_sell_main,name = 'mobile_sell_main'),
     url(r'^mobile_sell_classify$',views.mobile_sell_classify,name = 'mobile_sell_classify'),
     url(r'^mobile_sell_add$',views.mobile_sell_add,name = 'mobile_sell_add'),
-<<<<<<< HEAD
+    url(r'^mobile_sell_final$',views.mobile_sell_final,name = 'mobile_sell_final'),
+
     url(r'^user_setting$',views.mobile_user_setting,name = 'mobile_user_setting'),
     url(r'^user_wallet$',views.mobile_user_wallet,name = 'mobile_user_wallet'),
     url(r'^couponsmessage$',views.mobile_couponsmessage,name = 'mobile_couponsmessage'),
-=======
->>>>>>> wf
+
     url(r'^post_login$', views.post_login, name='post_login'),
     url(r'^post_signup$', views.post_signUp, name='post_signUp'),
     url(r'^post_sendEmailVerifyCode$', views.post_sendEmailVerifyCode, name='post_sendEmailVerifyCode'),

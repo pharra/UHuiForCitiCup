@@ -830,14 +830,7 @@ p {
     border-bottom: 2px solid #ff5a00;
 }
 
-.phone-max-line{
-    border-bottom:1px solid rgb(231,231,231);
-    }
-
-.phone-coupons-message{
-
 .mobile-coupons-message{
->>>>>>> wf
     background: white;
     border-bottom: 1px solid rgb(231,231,231);
 }
@@ -903,8 +896,11 @@ p {
 }
 
 .mobile-max-line{
-    border-bottom:1px solid rgb(231,231,231)
+    border-bottom:1px solid rgb(231,231,231);
+}
 
+.phone-max-line{
+    border-bottom:1px solid rgb(231,231,231);
 }
 
 .mobile-login input{
