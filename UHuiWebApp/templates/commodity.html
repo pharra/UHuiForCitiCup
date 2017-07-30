@@ -85,6 +85,50 @@
 {% block scripts %}
 <script type = "text/javascript">
 var dialog = new auiDialog({})
+ function post_buy(couponID,sellerID) {
+             $.ajax({
+        url: '/post_buy',
+        type: 'POST',
+        dataType: 'json',
+        data: {"couponID": couponID, "sellerID": sellerID},
+        timeout: 3000,
+        cache: false,
+        beforeSend: LoadFunction,
+        error: erryFunction,
+        success: succFunction
+    });
+
+    function LoadFunction() {
+    }
+
+    function erryFunction() {
+    }
+
+    function succFunction(Jsondata) {
+        if (data.errno === '0') {
+            dialog.alert({
+                    title:"",
+                    msg:Jsondata.message,
+                    buttons:['确定']
+                    },function(ret){
+                window.location.href = "/mobile_myboughtcoupons";
+                        })
+
+
+        } else {
+            dialog.alert({
+                    title:"",
+                    msg:Jsondata.message,
+                    buttons:['确定']
+                    },function(ret){
+                        })
+
+        }
+
+    }
+
+     }
+
 var flag = 0
     function openDialog(type){
         switch(type){
@@ -95,7 +139,7 @@ var flag = 0
                     buttons:['取消','确定']
                     },function(ret){
                         if(ret.buttonIndex == 2){
-                            console.log(ret)
+                            post_buy({{ info.couponID }},{{ info.sellerInfo.userid }});
                         }
                         })
                         break;
@@ -154,5 +198,8 @@ var flag = 0
                 break;
                     }}
 </script>
+    <script type="text/javascript">
+
+    </script>
 {% endblock %}
 
