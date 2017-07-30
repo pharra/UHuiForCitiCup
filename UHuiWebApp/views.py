@@ -424,7 +424,7 @@ def post_couponInfo(couponID):
     couponInfo['product'] = coupon.product
     couponInfo['discount'] = coupon.discount
     couponInfo['stat'] = coupon.stat
-    couponInfo['pic'] = coupon.pic
+    couponInfo['pic'] = str(coupon.pic)
     couponInfo['expiredTime'] = coupon.expiredtime.strftime("%Y-%m-%d")
     limitList = []
     if limits.exists():
