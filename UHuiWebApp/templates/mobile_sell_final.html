@@ -15,7 +15,7 @@
         <img src = "/static/images/dva_4.jpg" class = "img_suit">
     </div>
     <div style="float:left;height:80px;padding:20px 0px 0px 10px;">
-        今天米粒儿变可爱了吗
+       {{ info.product }}
     </div>
 </div>
 <div class = "aui-content aui-margin-b-15">
@@ -25,7 +25,7 @@
                 优惠额度：
             </div>
             <div style="padding-right:5px;">
-                九折
+                {{ info.discount }}
             </div>
         </li>
     </ul>
@@ -36,9 +36,7 @@
             使用门槛：
         </div>
         <div class = "aui-card-list-content-padded" style="padding-top:0px;">
-            1.可爱又迷人的反派角色<br/>
-            2.年轻帅气又有钱的共产党员<br/>
-            3.小U这样的
+            {% for i in info.limits %} i<br/>{% endfor %}
         </div>
     </div>
 </div>
@@ -49,7 +47,7 @@
                 价格
             </div>
             <div style="padding-right:5px;color:#ff5a00">
-                ￥100.00
+                ￥{{ info.listPrice }}
             </div>
         </li>
     </ul>
@@ -68,6 +66,50 @@
 {% block scripts %}
 <script type = "text/javascript">
 var dialog = new auiDialog({})
+ function post_buy(couponID,sellerID) {
+             $.ajax({
+        url: '/post_buy',
+        type: 'POST',
+        dataType: 'json',
+        data: {"couponID": couponID, "sellerID": sellerID},
+        timeout: 3000,
+        cache: false,
+        beforeSend: LoadFunction,
+        error: erryFunction,
+        success: succFunction
+    });
+
+    function LoadFunction() {
+    }
+
+    function erryFunction() {
+    }
+
+    function succFunction(Jsondata) {
+        if (data.errno === '0') {
+            dialog.alert({
+                    title:"",
+                    msg:Jsondata.message,
+                    buttons:['确定']
+                    },function(ret){
+                post_buy({{ info.couponID }},{{ info.sellerInfo.userid }})
+                window.location.href = "/mobile_myboughtcoupons";
+                        })
+
+
+        } else {
+            dialog.alert({
+                    title:"",
+                    msg:Jsondata.message,
+                    buttons:['确定']
+                    },function(ret){
+                        })
+
+        }
+
+    }
+
+     }
     function openDialog(type){
         switch(type){
             case "final":
