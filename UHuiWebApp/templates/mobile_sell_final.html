@@ -86,7 +86,7 @@ var dialog = new auiDialog({})
     }
 
     function succFunction(Jsondata) {
-        if (data.errno == '0') {
+        if (Jsondata.errno === '0') {
             dialog.alert({
                     title:"",
                     msg:Jsondata.message,
