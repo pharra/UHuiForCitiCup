@@ -395,8 +395,6 @@ def post_getCouponForMobileIndex(request):
     for i in range(index, min(couponsAll.count(), index + 10)):
         resultSet.append(post_couponInfo(couponsAll[i].couponid))
 
-    if len(resultSet) == 0:
-        resultSet = 'end of coupons'
     result = {'coupons': resultSet}
     # result = json.dumps(result)
     response = JsonResponse(result)
