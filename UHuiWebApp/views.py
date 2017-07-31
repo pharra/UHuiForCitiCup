@@ -428,9 +428,21 @@ def post_getCouponForMobileIndex(request):
 
 
 def post_couponDetail(request):
+    uid = request.uid
     couponID = request.GET.get('couponID')
+    if uid is None:
+        like = False
+    else:
+        likeList = models.Couponlist.objects.get(userid=uid, stat='like')
+        like = models.Listitem.objects.filter(listid=likeList.listid, couponid=couponID).exists()
+
+    if like:
+        like = '1'
+    else:
+        like = '0'
     info = couponInfo(couponID)
-    return {'info': info}
+
+    return {'info': info, 'like': like}
 
 
 def couponInfo(couponID):
