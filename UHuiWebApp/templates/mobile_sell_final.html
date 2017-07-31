@@ -92,8 +92,9 @@ var dialog = new auiDialog({});
                     msg:Jsondata.message,
                     buttons:['确定']
                     },function(ret){
-
-                window.location.href = "/mobile_myboughtcoupons";
+                    if(ret.buttonIndex === 1) {
+                            window.location.href = "/mobile_myboughtcoupons";
+                        }
                         })
 
 
