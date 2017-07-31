@@ -661,12 +661,12 @@ def post_like(request):
     try:
         coupon = models.Coupon.objects.get(couponid=couponID)
     except ObjectDoesNotExist:
-        return JsonResponse({'errno': '1', 'message': '优惠券不存在'})
+        return JsonResponse({'errno': '1', 'message': '优惠券不存在', 'like': '0'})
     likeList = models.Couponlist.objects.get(stat='like', userid=sellerID)
     if models.Listitem.objects.filter(listid=likeList.listid, couponid=couponID).exists():
-        return JsonResponse({'errno': 1, 'message': '该优惠券已被关注'})
+        return JsonResponse({'errno': '1', 'message': '该优惠券已被关注', 'like': '1'})
     models.Listitem.objects.create(listid=likeList, couponid=coupon)
-    return JsonResponse({'errno': '0', 'message': '关注成功'})
+    return JsonResponse({'errno': '0', 'message': '关注成功', 'like': '1'})
 
 
 def post_dislike(request):
@@ -676,9 +676,9 @@ def post_dislike(request):
     likeList = models.Couponlist.objects.get(stat='like', userid=sellerID)
     if models.Listitem.objects.filter(listid=likeList.listid, couponid=couponID).exists():
         models.Listitem.objects.get(listid=likeList.listid, couponid=couponID).delete()
-        return JsonResponse({'errno': '0', 'message': '取消关注成功'})
+        return JsonResponse({'errno': '0', 'message': '取消关注成功', 'like': '0'})
     else:
-        return JsonResponse({'errno': '1', 'message': '此优惠券不在关注列表中'})
+        return JsonResponse({'errno': '1', 'message': '此优惠券不在关注列表中', 'like': '0'})
 
 
 def post_buyCredit(request):

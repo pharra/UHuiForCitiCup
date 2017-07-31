@@ -1,0 +1,6 @@
+#!/bin/bash
+sudo add-apt-repository ppa:git-core/ppa << EOF
+uhuiforciti123
+EOF
+sudo apt-get update
+sudo apt-get install git
