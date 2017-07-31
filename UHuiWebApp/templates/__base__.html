@@ -93,8 +93,10 @@
                         success: succFunction
                     });
                     function succFunction(data) {
+                        $("#mobile_presearch_content").nextAll().remove();
                         $.each(data.result, function (key, value) {
-                            $("#mobile_presearch_content").nextAll().remove();
+                            alert(value);
+
                             var $presearch = $("#mobile_presearch_content").clone();
                             $presearch.removeClass("aui-hide").attr("id", 'mobile_presearch_' + value);
                             $presearch.find(".aui-padded-l-5")[0].innerText = value;
