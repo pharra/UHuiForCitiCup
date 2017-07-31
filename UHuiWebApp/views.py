@@ -267,6 +267,8 @@ def post_sendEmailVerifyCode(request):
 
 def post_presearch(request):
     keyword = request.POST.get('keyWord', '不存在的')
+    if keyword == '':
+        return JsonResponse({'result': []})
     # if not keyword:
     #    return JsonResponse({'error':'keyword not exist'})
     productResult = models.Coupon.objects.filter(product__istartswith=keyword, stat='onSale')
