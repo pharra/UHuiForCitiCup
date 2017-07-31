@@ -23,33 +23,33 @@
                 <img src="/static/images/dva_4.jpg" class = "mobile-max-user-photo">
             </div>
         </li>
-        <li class = "aui-list-item">
+        <li class = "aui-list-item" onclick="change('name')">
             <div class = "aui-list-item-inner aui-list-item-arrow">
                 <div class = "aui-list-item-title">用户名</div>
-                <div class = "aui-list-item-right">有趣的名字</div>
+                <div class = "aui-list-item-right" id = "old_name">有趣的名字</div>
             </div>
         </li>
-        <li class = "aui-list-item">
+        <li class = "aui-list-item" onclick="change('age')">
             <div class = "aui-list-item-inner aui-list-item-arrow">
                 <div class = "aui-list-item-title">年龄</div>
-                <div class = "aui-list-item-right">10</div>
+                <div class = "aui-list-item-right" id = "old_age">10</div>
             </div>
         </li>
-        <li class = "aui-list-item">
+        <li class = "aui-list-item" onclick="change('sex')">
             <div class = "aui-list-item-inner aui-list-item-arrow">
                 <div class = "aui-list-item-title">性别</div>
-                <div class = "aui-list-item-right">男</div>
+                <div class = "aui-list-item-right" id = "old_sex">男</div>
             </div>
         </li>
     </ul>
     <ul class = "aui-list aui-list-in">
-        <li class = "aui-list-item">
+        <li class = "aui-list-item" onclick="change('phonenum')">
             <div class = "aui-list-item-inner aui-list-item-arrow">
                 <div class = "aui-list-item-title">绑定手机号</div>
-                <div class = "aui-list-item-right">187********</div>
+                <div class = "aui-list-item-right" id = "old_phonenum">187********</div>
             </div>
         </li>
-        <li class = "aui-list-item">
+        <li class = "aui-list-item" onclick="change('password')">
             <div class = "aui-list-item-inner aui-list-item-arrow">
                 <div class = "aui-list-item-title">修改密码</div>
             </div>
@@ -59,4 +59,93 @@
 {% endblock %}
 {% block mobile_footer %} {% endblock %}
 {% block body %} {% endblock %}
-{% block scripts %} {% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+var dialog = new auiDialog({})
+function change(type){
+var old_name = document.getElementById("old_name").innerHTML;
+var old_age = document.getElementById("old_age").innerHTML;
+var old_sex = document.getElementById("old_sex").innerHTML;
+var old_phonenum = document.getElementById("old_phonenum").innerHTML;
+        switch (type) {
+        case "name":
+                dialog.prompt({
+                    title:"请输入新的用户名",
+                    text:old_name,
+                    buttons:['取消','确定']
+                },function(ret){
+                    if(ret.buttonIndex == 2){
+                        dialog.alert({
+                            title:"",
+                            msg: "修改完成,新用户名为" + ret.text,
+                            buttons:['确定']
+                        })
+                        old_name = ret.text;
+                    }
+                })
+                break;
+        case "age":
+                dialog.prompt({
+                    title:"请输入新的年龄",
+                    text:old_age,
+                    buttons:['取消','确定']
+                },function(ret){
+                    if(ret.buttonIndex == 2){
+                        dialog.alert({
+                            title:"",
+                            msg: "修改完成",
+                            buttons:['确定']
+                        });
+                    }
+                })
+                break;
+        case "sex":
+                dialog.prompt({
+                    title:"请输入新的性别",
+                    text:old_sex,
+                    buttons:['取消','确定']
+                },function(ret){
+                    if(ret.buttonIndex == 2){
+                        dialog.alert({
+                            title:"",
+                            msg: "修改完成",
+                            buttons:['确定']
+                        });
+                    }
+                })
+                break;
+        case "phonenum":
+                dialog.prompt({
+                    title:"请输入新绑定的手机号",
+                    text:old_phonenum,
+                    buttons:['取消','确定']
+                },function(ret){
+                    if(ret.buttonIndex == 2){
+                        dialog.alert({
+                            title:"",
+                            msg: "修改完成",
+                            buttons:['确定']
+                        });
+                    }
+                })
+                break;
+        case "password":
+                dialog.prompt({
+                    title:"请输入新的密码",
+                    text:"",
+                    buttons:['取消','确定']
+                },function(ret){
+                    if(ret.buttonIndex == 2){
+                        dialog.alert({
+                            title:"",
+                            msg: "修改完成",
+                            buttons:['确定']
+                        });
+                    }
+                })
+                break;
+            default:
+                break;
+                }}
+</script>
+{% endblock %}

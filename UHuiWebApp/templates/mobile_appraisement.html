@@ -3,7 +3,7 @@
 {% block src %} {% endblock %}
 {% block mobile_header %}
 <header class = "aui-bar aui-bar-nav">
-    <a class = "aui-pull-left aui-btn" href = "/mobile_sell_add">
+    <a class = "aui-pull-left aui-btn" href="javascript:history.back(-1)">
         <span class = "aui-iconfont aui-icon-left"></span>
     </a>
     <div class = "aui-title">估值展示</div>
@@ -15,7 +15,7 @@
     <div style="padding:25px 0px 0px 20px;">
         此优惠券估值为
     </div>
-    <div style="font-size:60px;padding:0px 0px 0px 25px;margin:0px 0px 5px 0px;">
+    <div style="font-size:60px;padding:0px 0px 0px 25px;margin:0px 0px 5px 0px;" id = "appraisement">
         100.00
     </div>
 </div>
@@ -24,7 +24,7 @@
         <img src = "/static/images/dva_4.jpg" class = "img_suit">
     </div>
     <div style="float:left;height:80px;width:180px;padding:17px 0px 0px 10px;">
-        <input type="text" disabled="disabled" placeholder="今天米粒儿变可爱了吗" value = "" id = "change_name"/>
+        <input type="text" disabled="disabled" placeholder="今天米粒儿变可爱了吗" value = placeholder id = "change_name"/>
     </div>
     <div style="float:right;padding-right:5px;color:#ff5a00;height:80px;line-height:80px;" onclick="able()" id = "change_button">
         修改
@@ -37,9 +37,9 @@
                 价格：
             </div>
             <div class = "aui-list-item-input mobile-max-line" style="padding-right:0px;text-">
-                <input type="text" placeholder="请输入优惠券价格" value = "" id = "change_value">
+                <input type="text" placeholder="请输入优惠券价格" id = "change_value">
             </div>
-            <div class = "aui-list-item-label mobile-max-line" style="color:#ff5a00;">
+            <div class = "aui-list-item-label mobile-max-line" style="color:#ff5a00;" onclick="appraisement()">
                 采用估值
             </div>
         </li>
@@ -48,7 +48,7 @@
                 优惠额度：
             </div>
             <div class = "aui-list-item-input mobile-max-line">
-                <input type = "text" placeholder="九折"  value = "" id = "change_discount">
+                <input type = "text" placeholder="九折"  id = "change_discount">
             </div>
         </li>
         <li class = "aui-list-item">
@@ -56,7 +56,7 @@
                 商家名：
             </div>
             <div class = "aui-list-item-input mobile-max-line">
-                <input type = "text" placeholder="就是这个名儿"  value = "" id = "change_own">
+                <input type = "text" placeholder="就是这个名儿" id = "change_own">
             </div>
         </li>
         <li class = "aui-list-item">
@@ -64,7 +64,7 @@
                 品种：
             </div>
             <div class = "aui-list-item-input mobile-max-line">
-                <input type = "text" placeholder="家居家具"  value = "" id = "change_type">
+                <input type = "text" placeholder="家居家具" id = "change_type">
             </div>
         </li>
     </ul>
@@ -111,7 +111,6 @@ content.innerHTML = "修改";
 }
 </script>
 <script type = "text/javascript">
-
     function chooseDialog(type){
     var dialog = new auiDialog({})
     var name = document.getElementById("change_name").value
@@ -161,6 +160,11 @@ content.innerHTML = "修改";
                 break;
         }
     }
+</script>
+<script type="text/javascript">
+    function appraisement(){
+        document.getElementById("change_value").value = document.getElementById("appraisement").innerHTML
+        }
 </script>
 {% endblock %}
 
