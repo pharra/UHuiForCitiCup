@@ -66,7 +66,7 @@ def post_preSearch(request):
     keyword = request.POST.get('keyword')
     #if not keyword:
     #    return JsonResponse({'error':'keyword not exist'})
-    productResult = Coupon.objects.filter(product__istartswith=keyword,stat='onSale').values('product')
+    productResult = Coupon.objects.filter(product__istartswith=keyword,stat='onSale').values('product').distinct()
     result = []
     for coupon in productResult:
         result.append(coupon)
@@ -404,6 +404,11 @@ def post_updatePhonenumOrEmail(request):
             return JsonResponse({'result':'该账户使用邮箱注册'})
 
 
+#估值
+def post_getValue(request):
+    return JsonResponse({'value':100.00})
+
+
 #添加优惠券
 def post_addCoupon(request):
     u_id = request.POST.get('userID')
@@ -415,7 +420,7 @@ def post_addCoupon(request):
     discount = request.POST.get('discount')
     stat = request.POST.get('stat', 'store')
     pic = request.POST.get('pic', DEFAULT_PIC)
-
+    limit = request.POST.get('limit')
     #估值
     value = 0
     # 判断brand是否存在
@@ -436,6 +441,9 @@ def post_addCoupon(request):
                            value=value, product=product, discount=discount, stat=stat, pic=pic,
                            expiredTime=expiredTime)
     coupon.save()
+    for each in limit:
+        limitItem = Limit(couponid=couponID,content=each)
+        limitItem.save()
     if stat == 'onSale':
         list = models.Couponlist.objects.get(stat='onSale', userid=user.id)
     else:

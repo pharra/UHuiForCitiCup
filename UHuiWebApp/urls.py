@@ -39,5 +39,9 @@ urlpatterns = [
     url(r'^post_searchInCertainCategory$', androidViews.post_searchInCertainCategory, name='post_searchInCertainCategory'),
     url(r'^post_searchByCategory$', androidViews.post_searchByCategory, name='post_searchByCategory'),
     url(r'^post_changeCouponStat$', androidViews.post_changeCouponStat, name='post_changeCouponStat'),
+    url(r'^post_checkUsername$', androidViews.post_checkUsername, name='post_checkUsername'),
+    url(r'^post_sellerInformation$', androidViews.post_sellerInformation, name='post_sellerInformation'),
+    url(r'^post_getValue$', androidViews.post_getValue, name='post_getValue'),
+
 
 ]
