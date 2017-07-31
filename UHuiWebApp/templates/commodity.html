@@ -130,6 +130,7 @@
                     function succFunction(Jsondata) {
                         var dialog = new auiDialog({});
                         if (Jsondata.errno === '5') {
+                            alert(1);
                             dialog.alert({
                                 title: "",
                                 msg: Jsondata.message,
