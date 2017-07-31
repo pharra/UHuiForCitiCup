@@ -99,6 +99,9 @@
                             var $presearch = $("#mobile_presearch_content").clone();
                             $presearch.removeClass("aui-hide").attr("id", 'mobile_presearch_' + value);
                             $presearch.find(".aui-padded-l-5")[0].innerText = value;
+                            $presearch.click(function () {
+                                $('#search-input').val($(this).find(".aui-padded-l-5")[0].innerText);
+                            });
                             $("#mobile_presearch").append($presearch);
                         })
                     }
