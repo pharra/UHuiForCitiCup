@@ -50,8 +50,8 @@
 
 
                     <div class="being-hidden" id="mobile-search-body">
-                        <div class="mobile_search_history" id="mobile_presearch">
-                            <div class="aui-hide" id="mobile_presearch_content">
+                        <div class="mobile_search_history aui-padded-0" id="mobile_presearch">
+                            <div class="aui-hide aui-padded-15" id="mobile_presearch_content">
                                 <i class="aui-iconfont aui-icon-date float-left"></i>
                                 <div class="float-left aui-padded-l-5"></div>
 
@@ -93,8 +93,9 @@
                         success: succFunction
                     });
                     function succFunction(data) {
+                        $("#mobile_presearch_content").nextAll().remove();
                         $.each(data.result, function (key, value) {
-                            $("#mobile_presearch_content").nextAll().remove();
+
                             var $presearch = $("#mobile_presearch_content").clone();
                             $presearch.removeClass("aui-hide").attr("id", 'mobile_presearch_' + value);
                             $presearch.find(".aui-padded-l-5")[0].innerText = value;
