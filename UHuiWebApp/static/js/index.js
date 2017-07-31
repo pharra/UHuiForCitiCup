@@ -143,9 +143,11 @@ $('#mobile_re-password,#mobile_password').blur('input propertychange', function 
 });
 
 
-$("#login-password").blur('input propertychange', function () {
+/*
+$("#login-password").change(function () {
     $("#login-md5-password").val($.md5($("#login-password").val() + "UHui"));
 });
+*/
 
 
 $('#user_id,#re-password,#password,#nickname').bind('input propertychange', function () {
@@ -180,7 +182,7 @@ function login_handler() {
         url: '/post_login',
         type: 'POST',
         dataType: 'json',
-        data: {"username": $("#login-username").val(), "password": $("#login-md5-password").val()},
+        data: {"username": $("#login-username").val(), "password": $.md5($("#login-password").val() + "UHui")},
         timeout: 3000,
         cache: false,
         beforeSend: LoadFunction,

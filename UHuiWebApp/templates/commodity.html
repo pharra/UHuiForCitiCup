@@ -70,12 +70,12 @@
             </a>
         </div>
         <div class="aui-bar-tab-item" tapmode
-             onclick="post_changelike('/post_like','您确定要关注吗','取消','确定')" id="dislike">
+             onclick="post_changelike('/post_like')" id="dislike">
             <i class="aui-iconfont aui-icon-star"></i>
             <div class="aui-bar-tab-label">关注</div>
         </div>
         <div class="aui-bar-tab-item aui-hide" tapmode
-             onclick="post_changelike('/post_dislike','您确定要取消关注吗','继续关注','取消关注')" id="like">
+             onclick="post_changelike('/post_dislike')" id="like">
             <i class="aui-iconfont aui-icon-star"></i>
             <div class="aui-bar-tab-label">已关注</div>
         </div>
@@ -89,6 +89,8 @@
 {% endblock %}
 {% block mobile_footer %}{% endblock %}
 {% block scripts %}
+
+    <script src="/static/js/dialog.js"></script>
     <script type="text/javascript">
 
         function getlikeordislike(like) {
@@ -102,84 +104,65 @@
             }
         }
         getlikeordislike({{ like }});
-        function post_changelike(url, message, buttonLeft, buttonRight) {
-            var dialog = new auiDialog({});
-            dialog.alert({
-                title: "",
-                msg: message,
-                buttons: [buttonLeft, buttonRight]
-            }, function (ret) {
-                if (ret.buttonIndex === 2) {
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {},
-                        timeout: 3000,
-                        cache: false,
-                        beforeSend: LoadFunction,
-                        error: erryFunction,
-                        success: succFunction
-                    });
 
-                    function LoadFunction() {
-                    }
-
-                    function erryFunction() {
-                    }
-
-                    function succFunction(Jsondata) {
-                        var dialog = new auiDialog();
-                        if (Jsondata.errno === '5') {
-                            dialog.alert({
-                                title: "",
-                                msg: Jsondata.message,
-                                buttons: ['确定']
-                            }, function (ret) {
-                                if (ret.buttonIndex === 1) {
-                                    window.location.href = "/login";
-                                }
-                            })
+        function post_changelike(url) {
 
 
-                        } else if (Jsondata.errno === '0') {
-                            dialog.alert({
-                                title: "",
-                                msg: Jsondata.message,
-                                buttons: ['确定']
-                            }, function (ret) {
-                                if (url === '/post_like') {
-                                    $("#like").addClass("aui-hide");
-                                    $("#dislike").removeClass("aui-hide");
-                                }
-                                else {
-                                    $("#dislike").addClass("aui-hide");
-                                    $("#like").removeClass("aui-hide");
-                                }
-                            })
-
-                        }
-                        else {
-                            dialog.alert({
-                                title: "",
-                                msg: Jsondata.message,
-                                buttons: ['确定']
-                            }, function (ret) {
-                            })
-                        }
-
-                    }
-
-                }
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: {'couponID': '{{ info.couponID }}'},
+                timeout: 3000,
+                cache: false,
+                success: succFunction
             });
 
 
+            function succFunction(Jsondata) {
+                var dialog = new auiDialog({});
+                var msg = Jsondata.message;
+                if (Jsondata.errno === '5') {
+                    dialog.alert({
+                        title: "",
+                        msg: msg,
+                        buttons: ['确定']
+                    }, function (ret) {
+                        if (ret.buttonIndex === 1) {
+                            window.location.href = "/login";
+                        }
+                    })
+
+
+                } else if (Jsondata.errno === '0') {
+                    dialog.alert({
+                        title: "",
+                        msg: msg,
+                        buttons: ['确定']
+                    }, function (ret) {
+                        if (Jsondata.like === '0') {
+                            $("#like").addClass("aui-hide");
+                            $("#dislike").removeClass("aui-hide");
+                        }
+                        else {
+                            $("#dislike").addClass("aui-hide");
+                            $("#like").removeClass("aui-hide");
+                        }
+                    })
+
+                }
+                else {
+                    dialog.alert({
+                        title: "",
+                        msg: msg,
+                        buttons: ['确定']
+                    }, function (ret) {
+                    })
+                }
+
+            }
+
         }
-
-
-    </script>
-    <script type="text/javascript">
-
     </script>
 {% endblock %}
 
