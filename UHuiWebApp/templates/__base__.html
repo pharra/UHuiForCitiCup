@@ -47,29 +47,7 @@
 
                         </div>
                     </header>
-                    <script type="text/javascript">
-                        $('#mobile-search-input').blur('input propertychange', function () {
-                          $.ajax({
-                url: '/post_presearch',
-                type: 'POST',
-                dataType: 'json',
-                data: {'keyWord': $('#mobile-search-input').val()},
-                timeout: 3000,
-                cache: false,
-                success: succFunction
-            });
-            function succFunction(data) {
-                    $.each(data.result,function (key, value) {
-var $presearch = $("#mobile_presearch").clone();
-$presearch.children().removeClass("aui-hide");
-$presearch.find("div[class='aui-padded-l-5']")[0].innerText = value;
-$("#mobile_presearch").append($presearch);
-                    })
-            }
 
-
-});
-                    </script>
 
                     <div class="being-hidden" id="mobile-search-body">
                           <div class="mobile_search_history" id="mobile_presearch">
@@ -103,6 +81,29 @@ $("#mobile_presearch").append($presearch);
                 </div>
             </div>
             <script src="/static/js/jquery-3.2.1.js"></script>
+            <script type="text/javascript">
+                        $('#mobile-search-input').blur('input propertychange', function () {
+                          $.ajax({
+                url: '/post_presearch',
+                type: 'POST',
+                dataType: 'json',
+                data: {'keyWord': $('#mobile-search-input').val()},
+                timeout: 3000,
+                cache: false,
+                success: succFunction
+            });
+            function succFunction(data) {
+                    $.each(data.result,function (key, value) {
+var $presearch = $("#mobile_presearch").clone();
+$presearch.children().removeClass("aui-hide");
+$presearch.find("div[class='aui-padded-l-5']")[0].innerText = value;
+$("#mobile_presearch").append($presearch);
+                    })
+            }
+
+
+});
+                    </script>
             <script type="text/javascript">
                 apiready = function () {
                     api.parseTapmode();
