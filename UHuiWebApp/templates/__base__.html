@@ -82,7 +82,7 @@
             </div>
             <script src="/static/js/jquery-3.2.1.js"></script>
             <script type="text/javascript">
-                        $('#mobile-search-input').blur('input propertychange', function () {
+                        $('#mobile-search-input').bind('input propertychange', function () {
                           $.ajax({
                 url: '/post_presearch',
                 type: 'POST',
