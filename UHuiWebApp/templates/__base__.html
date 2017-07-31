@@ -94,9 +94,10 @@
             });
             function succFunction(data) {
                     $.each(data.result,function (key, value) {
+                        $("#mobile_presearch").nextAll().remove();
 var $presearch = $("#mobile_presearch").clone();
 $presearch.children().removeClass("aui-hide");
-$presearch.find("div[class='aui-padded-l-5']")[0].innerText = value;
+$presearch.find(".aui-padded-l-5")[0].innerText = value;
 $("#mobile_presearch").append($presearch);
                     })
             }
