@@ -1,3 +1,4 @@
+#coding=utf-8
 from . import views
 from .shortcut import render, JsonResponse
 from django.http import HttpResponseRedirect
@@ -23,7 +24,7 @@ class SimpleMiddleware(object):
         elif url.startswith("/manage") or url.startswith('/user') or url.startswith('/mobile_sell_final'):
             return HttpResponseRedirect("/login")
         elif url.startswith('/post_dislike') or url.startswith('/post_like'):
-            return JsonResponse({'errno': '5', 'message': 'ÄúÎ´µÇÂ¼'})
+            return JsonResponse({'errno': '5', 'message': 'æ‚¨æœªç™»å½•'})
 
     def __call__(self, request):
         # Code to be executed for each request before
