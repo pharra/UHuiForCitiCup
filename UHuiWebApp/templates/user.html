@@ -6,6 +6,7 @@
 <link rel="stylesheet" type="text/css" href="/static/css/aui/aui-flex.css">
 {% endblock %}
 {% block mobile_body %}
+
 <div class="aui-row">
     <div class = "aui-flex-row aui-flex-right mobile-max-user-background">
             <i class = "aui-iconfont aui-icon-mail mobile-max-user-icon aui-flex-2  aui-margin-r-10"></i>
@@ -99,7 +100,7 @@
             <!--头像-->
             <div class="username-text-css">
                 <div class="profile-photo-div">
-                    <img src="/static/images/dva_1.jpg">
+                    <img src="{{ avatar }}">
                 </div>
                 <span>&nbsp;{{ nickname }}</span>
             </div>
