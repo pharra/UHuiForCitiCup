@@ -273,9 +273,15 @@ def post_presearch(request):
     brandResult = models.Brand.objects.filter(name__istartswith=keyword)
     result = []
     for coupon in productResult:
-        result.append(coupon.product)
-    for brand in brandResult:
-        result.append(brand.name)
+        if coupon.product not in result:
+            result.append(coupon.product)
+    result.reverse()
+    result = result[0: min(5, len(result))]
+    for brand in brandResult.reverse():
+        if brand.name not in result:
+            result.append(brand.name)
+    result = result[0:min(10, len(result))]
+            
     return JsonResponse({'result': result})
 
 
