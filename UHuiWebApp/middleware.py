@@ -20,8 +20,10 @@ class SimpleMiddleware(object):
         request.uid = None
         if uid:
             request.uid = uid
-        elif url.startswith("/manage") or url.startswith('/user'):
+        elif url.startswith("/manage") or url.startswith('/user') or url.startswith('/mobile_sell_final'):
             return HttpResponseRedirect("/login")
+        elif url.startswith('/post_dislike') or url.startswith('/post_like'):
+            return JsonResponse({'errno': '5', 'message': 'ÄúÎ´µÇÂ¼'})
 
     def __call__(self, request):
         # Code to be executed for each request before

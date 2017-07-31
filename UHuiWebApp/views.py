@@ -657,6 +657,18 @@ def post_like(request):
     return JsonResponse({'errno': '0', 'message': '关注成功'})
 
 
+def post_dislike(request):
+    # 优惠券加入like列表
+    couponID = request.POST['couponID']
+    sellerID = request.uid
+    likeList = models.Couponlist.objects.get(stat='like', userid=sellerID)
+    if models.Listitem.objects.filter(listid=likeList.listid, couponid=couponID).exists():
+        models.Listitem.objects.get(listid=likeList.listid, couponid=couponID).delete()
+        return JsonResponse({'errno': '0', 'message': '取消关注成功'})
+    else:
+        return JsonResponse({'errno': '1', 'message': '此优惠券不在关注列表中'})
+
+
 def post_buyCredit(request):
     uid = request.uid
     amount = request.POST['amount']
