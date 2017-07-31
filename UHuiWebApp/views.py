@@ -121,6 +121,7 @@ def emailVerification(request):
     response.set_cookie(key="uhui", value=value, httponly=True)
     return response
 
+
 # 定时任务
 def timer():
     coupons = models.Coupon.objects.all()
@@ -226,7 +227,7 @@ def changeCouponStat(couponID, sellerID, stat):
             models.Listitem.objects.filter(listid=onSaleList, couponid=coupon).delete()
     elif stat == 'onSale':
         models.Listitem.objects.create(listid=onSaleList, couponid=coupon)
-
+        createMessage('关注的优惠券已下架', couponID)
     return JsonResponse({'errno': '0', 'message': '成功'})
 
 
@@ -264,6 +265,17 @@ def post_sendEmailVerifyCode(request):
     return response
 
 
+def post_preSearch(request):
+    keyword = request.POST.get('keyword', '不存在的')
+    # if not keyword:
+    #    return JsonResponse({'error':'keyword not exist'})
+    productResult = models.Coupon.objects.filter(product__istartswith=keyword, stat='onSale').values('product')
+    result = []
+    for coupon in productResult:
+        result.append(coupon)
+    return JsonResponse({'result': result})
+
+
 def post_search(request):
     key = request.POST.get('keyWord', False)
 
@@ -281,7 +293,7 @@ def post_search(request):
     for i in range(0, 16):
         if (16 * page + i) == productResult.count():
             break
-        result.append(post_couponInfo(productResult[16 * page + i].couponid))
+        result.append(couponInfo(productResult[16 * page + i].couponid))
     # 数量不够时的结果仍需补全
     for brand in brandIDResult:
         pc = int(16 / brandIDResult.count())
@@ -289,7 +301,7 @@ def post_search(request):
         for i in range(0, pc):
             if (pc * page + i) == brandItem.count():
                 break
-            result.append(post_couponInfo(brandItem[pc * page + i].couponid))
+            result.append(couponInfo(brandItem[pc * page + i].couponid))
 
     # if not productResult.exists() and not brandIDResult.exists():
     #     return render(request, 'search.html')
@@ -321,26 +333,26 @@ def post_getUserCoupon(request):
     if ownCoupons.exists():
         if (count != 'all' and ownCoupons.count() <= count) or count == 'all':
             for coupon in ownCoupons:
-                own.append(post_couponInfo(coupon.couponid.couponid))
+                own.append(couponInfo(coupon.couponid.couponid))
         else:
             for i in range(0, count):
-                own.append(post_couponInfo(ownCoupons[i].couponid.couponid))
+                own.append(couponInfo(ownCoupons[i].couponid.couponid))
 
     if likeCoupons.exists():
         if (count != 'all' and likeCoupons.count() <= count) or count == 'all':
             for coupon in likeCoupons:
-                like.append(post_couponInfo(coupon.couponid.couponid))
+                like.append(couponInfo(coupon.couponid.couponid))
         else:
             for i in range(0, count):
-                onSale.append(post_couponInfo(likeCoupons[i].couponid.couponid))
+                onSale.append(couponInfo(likeCoupons[i].couponid.couponid))
 
     if onSaleCoupons.exists():
         if (count != 'all' and onSaleCoupons.count() <= count) or count == 'all':
             for coupon in onSaleCoupons:
-                onSale.append(post_couponInfo(coupon.couponid.couponid))
+                onSale.append(couponInfo(coupon.couponid.couponid))
         else:
             for i in range(0, count):
-                onSale.append(post_couponInfo(onSaleCoupons[i].couponid.couponid))
+                onSale.append(couponInfo(onSaleCoupons[i].couponid.couponid))
 
     own.reverse()
     like.reverse()
@@ -354,6 +366,20 @@ def post_getUserCoupon(request):
     return couponDict
 
 
+def post_getBoughtCouponsMobile(request):
+    uid = request.uid
+    listID = models.Couponlist.objects.get(stat='bought', userid=uid)
+    couponIDs = models.Listitem.objects.filter(listid=listID.listid)
+    used = []
+    own = []
+    for couponid in couponIDs:
+        if couponid.couponid.stat == 'used':
+            used.append(couponInfo(couponid.couponid.couponid))
+        elif couponid.couponid.stat == 'store':
+            own.append(couponInfo(couponid.couponid.couponid))
+    return {'own': own, 'used': used}
+
+
 def post_getCouponByCat(request):
     catName = request.POST['catName']
     page = int(request.POST['page']) - 1
@@ -364,12 +390,9 @@ def post_getCouponByCat(request):
     coupons = models.Coupon.objects.filter(catid=catid, stat='onSale')
 
     result = []
-    for i in range(0, 32):
-        result.append(coupons[32 * page + i])
-    resultSet = {}
-    for coupon in result:
-        resultSet[coupon.couponid] = post_couponInfo(coupon.couponid)
-    response = JsonResponse(resultSet)
+    for i in range(32 * page, min(32 * (page + 1), coupons.count())):
+        result.append(couponInfo(coupons[i].couponid))
+    response = JsonResponse({'coupons': result})
     return response
 
 
@@ -377,11 +400,11 @@ def post_getCouponByCatIndex(request):
     category = models.Category.objects.all()
     couponByCat = {}
     for cat in category:
-        coupons = models.Coupon.objects.filter(catid=cat.catid)
+        coupons = models.Coupon.objects.filter(catid=cat.catid, stat='onSale')
         coupons.reverse()
         couponByCat[cat.name] = []
         for i in range(0, min(8, coupons.count())):
-            couponByCat[cat.name].append(post_couponInfo(coupons[i].couponid))
+            couponByCat[cat.name].append(couponInfo(coupons[i].couponid))
     # values = coupons.values()
     # values.reverse()
     # couponByCat[cat.name] = values[0:8]
@@ -391,18 +414,26 @@ def post_getCouponByCatIndex(request):
 
 def post_getCouponForMobileIndex(request):
     index = int(request.COOKIES.get('indexM', '0'))
-    couponsAll = models.Coupon.objects.all()
+    couponsAll = models.Coupon.objects.filter(stat='onSale')
     couponsAll.reverse()
     resultSet = []
     for i in range(index, min(couponsAll.count(), index + 10)):
-        resultSet.append(post_couponInfo(couponsAll[i].couponid))
+        resultSet.append(couponInfo(couponsAll[i].couponid))
+
     result = {'coupons': resultSet}
+    # result = json.dumps(result)
     response = JsonResponse(result)
     response.set_cookie('indexM', index + 10)
     return response
 
 
-def post_couponInfo(couponID):
+def post_couponDetail(request):
+    couponID = request.GET.get('couponID')
+    info = couponInfo(couponID)
+    return {'info': info}
+
+
+def couponInfo(couponID):
     try:
         coupon = models.Coupon.objects.get(couponid=couponID)
     except ObjectDoesNotExist:
@@ -424,7 +455,7 @@ def post_couponInfo(couponID):
     couponInfo['product'] = coupon.product
     couponInfo['discount'] = coupon.discount
     couponInfo['stat'] = coupon.stat
-    couponInfo['pic'] = coupon.pic
+    couponInfo['pic'] = str(coupon.pic)
     couponInfo['expiredTime'] = coupon.expiredtime.strftime("%Y-%m-%d")
     limitList = []
     if limits.exists():
@@ -524,7 +555,7 @@ def post_storeCoupon(request):
     product = request.POST['product']
     discount = request.POST['discount']
     stat = request.POST.get('stat', 'store')
-    pic = request.POST.get('pic', DEFAULT_PIC)
+    pic = request.FILES.get('pic')
 
     # 判断brand是否存在
     if not models.Brand.objects.filter(name=brand).exists():
@@ -577,18 +608,18 @@ def post_buy(request):
     # 优惠券由卖家的own列表移除
     sellerOwnList = models.Couponlist.objects.get(stat='own', userid=sellerID)
     models.Listitem.objects.get(listid=sellerOwnList.listid, couponid=couponID).delete()
-    # 优惠券由卖家的onSale列表移除
-    onSaleList = models.Couponlist.objects.get(stat='onSale', userid=sellerID)
-    models.Listitem.objects.get(listid=onSaleList.listid, couponid=couponID).delete()
+    # # 优惠券由卖家的onSale列表移除
+    # onSaleList = models.Couponlist.objects.get(stat='onSale', userid=sellerID)
+    # models.Listitem.objects.get(listid=onSaleList.listid, couponid=couponID).delete()
     # 优惠券存入卖家的sold列表
     soldList = models.Couponlist.objects.get(stat='sold', userid=sellerID)
     models.Listitem.objects.create(listid=soldList, couponid=coupon)
     # 优惠券存入买家的bought列表
     boughtList = models.Couponlist.objects.get(stat='bought', userid=buyerID)
-    models.Listitem.objects.create(listid=boughtList, couponID=coupon)
+    models.Listitem.objects.create(listid=boughtList, couponid=coupon)
     # 优惠券存入买家的own列表
     ownList = models.Couponlist.objects.get(stat='own', userid=buyerID)
-    models.Listitem.objects.create(listid=ownList, couponID=coupon)
+    models.Listitem.objects.create(listid=ownList, couponid=coupon)
     # 去掉所有like
     createMessage('关注的优惠券已被购买', couponID)
     likeList = models.Listitem.objects.filter(couponid=couponID)
@@ -596,7 +627,7 @@ def post_buy(request):
         temp = models.Couponlist.objects.get(listid=lists.listid.listid)
         if temp.stat == 'like':
             lists.delete()
-    return JsonResponse({'errno': '0', 'message': 'successfully bought'})
+    return JsonResponse({'errno': '0', 'message': '购买成功'})
 
 
 def post_putOnSale(request):
@@ -624,6 +655,18 @@ def post_like(request):
         return JsonResponse({'errno': 1, 'message': '该优惠券已被关注'})
     models.Listitem.objects.create(listid=likeList, couponid=coupon)
     return JsonResponse({'errno': '0', 'message': '关注成功'})
+
+
+def post_dislike(request):
+    # 优惠券加入like列表
+    couponID = request.POST['couponID']
+    sellerID = request.uid
+    likeList = models.Couponlist.objects.get(stat='like', userid=sellerID)
+    if models.Listitem.objects.filter(listid=likeList.listid, couponid=couponID).exists():
+        models.Listitem.objects.get(listid=likeList.listid, couponid=couponID).delete()
+        return JsonResponse({'errno': '0', 'message': '取消关注成功'})
+    else:
+        return JsonResponse({'errno': '1', 'message': '此优惠券不在关注列表中'})
 
 
 def post_buyCredit(request):
@@ -667,7 +710,6 @@ def createMessage(messageType, couponID, content=None):
         for listItem in lists:
             if models.Couponlist.objects.filter(stat='like', listid=listItem.listid).exists():
                 userlist.append(models.Couponlist.objects.get(stat='like', listid=listItem.listid))
-
         pass
     else:
         # own列表
@@ -716,7 +758,7 @@ def search(request):
 
 
 def commodity(request):
-    return render(request, 'commodity.html')
+    return render(request, 'commodity.html', post_couponDetail(request))
 
 
 def mobile_appraisement(request):
@@ -730,26 +772,38 @@ def mobile_user_setting(request):
 def mobile_user_wallet(request):
     return render(request, 'mobile_user_wallet.html')
 
+
 def mobile_couponsmessage(request):
     return render(request, 'mobile_couponsmessage.html')
+
 
 def mobile_user_focus(request):
     return render(request, 'mobile_user_focus.html')
 
+
 def mobile_sell_main(request):
     return render(request, 'mobile_sell_main.html')
+
 
 def mobile_sell_classify(request):
     return render(request, 'mobile_sell_classify.html')
 
+
 def mobile_sell_add(request):
     return render(request, 'mobile_sell_add.html')
 
+
 def mobile_sell_final(request):
-    return render(request, 'mobile_sell_final.html')
+    return render(request, 'mobile_sell_final.html', post_couponDetail(request))
+
 
 def mobile_couponsmessage(request):
     return render(request, 'mobile_couponsmessage.html')
+
+
+def mobile_myboughtcoupons(request):
+    return render(request, 'mobile_myboughtcoupons.html', post_getBoughtCouponsMobile(request))
+
 
 # post方法加上前缀post_
 def post_login(request):

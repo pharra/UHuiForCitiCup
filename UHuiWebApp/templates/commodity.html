@@ -3,156 +3,181 @@
 {% block src %} {% endblock %}
 {% block mobile_header %}{% endblock %}
 {% block mobile_body %}
-<div class="aui-row">
-    <header class = "aui-bar aui-bar-nav"style="background:rgba(0,0,0,0.3);color:white;position:absolute;">
-        <a class = "aui-pull-left aui-btn" href="javascript:history.back(-1)">
-            <span class = "aui-iconfont aui-icon-left"></span>
-        </a>
-    </header>
-    <img src="/static/images/dva_4.jpg" class="aui-col-xs-12">
+    <div class="aui-row">
+        <header class="aui-bar aui-bar-nav" style="background:rgba(0,0,0,0.3);color:white;position:absolute;">
+            <a class="aui-pull-left aui-btn" href="javascript:history.back(-1)">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+        </header>
+        <img src="/static/images/dva_4.jpg" class="aui-col-xs-12">
 
-    <div class = "aui-content aui-margin-b-15">
-        <ul class = "aui-list aui-list-in" style="line-height:30px;margin-bottom:20px;">
-            <li class = "aui-list-item">
-                <div class = "aui-media-list-item-inner">
-                    <div>
+        <div class="aui-content aui-margin-b-15">
+            <ul class="aui-list aui-list-in" style="line-height:30px;margin-bottom:20px;">
+                <li class="aui-list-item">
+                    <div class="aui-media-list-item-inner">
                         <div>
-                            商品名
-                        </div>
-                        <div style = "color:#ff5a00;font-size:30px;line-height:30px;padding:0px 0px 0px 9px;">
-                            ￥1000.0
-                        </div>
-                        <div style = "color:#ff5a00;padding:0px 0px 0px 15px;margin:0px 0px 10px 0px;">
-                            估值：998.0
+                            <div>
+                                {{ info.product }}
+                            </div>
+                            <div style="color:#ff5a00;font-size:30px;line-height:30px;padding:0px 0px 0px 9px;">
+                                ￥{{ info.listPrice }}
+                            </div>
+                            <div style="color:#ff5a00;padding:0px 0px 0px 15px;margin:0px 0px 10px 0px;">
+                                估值：{{ info.value }}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </li>
-        </ul>
-        <ul class = "aui-list aui-list-in" style="margin-bottom:20px;">
-            <li class = "aui-list-item">
-                <div class = "aui-media-list-item-inner">
-                    优惠额度：
-                </div>
-            </li>
-        </ul>
-        <ul class = "aui-list aui-list-in" style="margin-bottom:20px;">
-            <li class = "aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
-                <div class = "aui-media-list-item-inner">
-                    用户名：
-                </div>
-            </li>
-            <li class = "aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
-                <div class = "aui-media-list-item-inner">
-                    商家名：
-                </div>
-            </li>
-            <li class = "aui-list-item">
-                <div class = "aui-media-list-item-inner">
-                    使用期限：
-                </div>
-            </li>
-        </ul>
-        <ul class = "aui-list aui-list-in">
-            <li class = "aui-list-item">
-                <div class = "aui-media-item-inner">
-                    使用限制：
-                </div>
-            </li>
-        </ul>
+                </li>
+            </ul>
+            <ul class="aui-list aui-list-in" style="margin-bottom:20px;">
+                <li class="aui-list-item">
+                    <div class="aui-media-list-item-inner">
+                        优惠额度：{{ info.discount }}
+                    </div>
+                </li>
+            </ul>
+            <ul class="aui-list aui-list-in" style="margin-bottom:20px;">
+                <li class="aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
+                    <div class="aui-media-list-item-inner">
+                        用户名：{{ info.sellerInfo.nickname }}
+                    </div>
+                </li>
+                <li class="aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
+                    <div class="aui-media-list-item-inner">
+                        商家名：{{ info.brand }}
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-media-list-item-inner">
+                        使用期限：{{ info.expiredTime }}
+                    </div>
+                </li>
+            </ul>
+            <ul class="aui-list aui-list-in">
+                <li class="aui-list-item">
+                    <div class="aui-media-item-inner">
+                        使用限制：{% for i in info.limits %} <span>i</span>{% endfor %}
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
-<footer class="aui-bar aui-bar-tab mobile-max-user-background">
+    <footer class="aui-bar aui-bar-tab mobile-max-user-background">
         <div class="aui-bar-tab-item" tapmode>
-            <a href = "/" style="color:white;">
-            <i class="aui-iconfont aui-icon-home"></i>
-            <div class="aui-bar-tab-label">首页</div>
+            <a href="/" style="color:white;">
+                <i class="aui-iconfont aui-icon-home"></i>
+                <div class="aui-bar-tab-label">首页</div>
             </a>
         </div>
-        <div class="aui-bar-tab-item" tapmode onclick="openDialog('focus')">
+        <div class="aui-bar-tab-item" tapmode
+             onclick="post_changelike('/post_like','您确定要关注吗','取消','确定')" id="dislike">
             <i class="aui-iconfont aui-icon-star"></i>
-            <div class="aui-bar-tab-label" id = "commodity_focus">关注</div>
+            <div class="aui-bar-tab-label">关注</div>
         </div>
-        <div class="aui-bar-tab-item" style="background-color:white;color:#ff5a00" tapmode onclick="openDialog('buy')">
-            <a href = "/mobile_sell_final" style="color:#ff5a00;">
-            <i class="aui-iconfont aui-icon-cart"></i>
-            <div class="aui-bar-tab-label">购买</div>
+        <div class="aui-bar-tab-item aui-hide" tapmode
+             onclick="post_changelike('/post_dislike','您确定要取消关注吗','继续关注','取消关注')" id="like">
+            <i class="aui-iconfont aui-icon-star"></i>
+            <div class="aui-bar-tab-label">已关注</div>
+        </div>
+        <div class="aui-bar-tab-item" style="background-color:white;color:#ff5a00" tapmode>
+            <a href="/mobile_sell_final?couponID={{ info.couponID }}" style="color:#ff5a00;">
+                <i class="aui-iconfont aui-icon-cart"></i>
+                <div class="aui-bar-tab-label">购买</div>
             </a>
         </div>
-</footer>
+    </footer>
 {% endblock %}
 {% block mobile_footer %}{% endblock %}
 {% block scripts %}
-<script type = "text/javascript">
-var dialog = new auiDialog({})
-var flag = 0
-    function openDialog(type){
-        switch(type){
-            case "buy":
-                dialog.alert({
-                    title:"",
-                    msg:'是否购买该优惠券',
-                    buttons:['取消','确定']
-                    },function(ret){
-                        if(ret.buttonIndex == 2){
-                            console.log(ret)
-                        }
-                        })
-                        break;
-            case "focus":
-                var element = document.getElementById("commodity_focus")
-                if (flag == 0){
-                dialog.alert({
-                    title:"",
-                    msg:'是否关注该优惠券',
-                    buttons:['取消','确认']
-                    },function(ret){
-                        if(ret.buttonIndex == 1){
-                            dialog.alert({
-                                title:"",
-                                msg:"已取消操作",
-                                buttons:['确定']
-                                })
-                                }
-                        if(ret.buttonIndex == 2){
-                            flag = 1
-                            dialog.alert({
-                                title:"",
-                                msg:"已关注",
-                                buttons:['确定']
-                                })
-                                element.innerHTML = "已关注"
-                                }
-                                })
+    <script type="text/javascript">
+        function getlikeordislike(like) {
+            if (like === '1') {
+                $("#dislike").addClass("aui-hide");
+                $("#like").removeClass("aui-hide");
             }
-                if (flag == 1){
-                dialog.alert({
-                    title:"",
-                    msg:'是否取消关注该优惠券',
-                    buttons:['取消关注','继续关注']
-                    },function(ret){
-                        if(ret.buttonIndex == 1){
-                            flag = 0
+            else {
+                $("#like").addClass("aui-hide");
+                $("#dislike").removeClass("aui-hide");
+            }
+        }
+        getlikeordislike({{ like }});
+        function post_changelike(url, message, buttonLeft, buttonRight) {
+            var dialog = new auiDialog({});
+            dialog.alert({
+                title: "",
+                msg: message,
+                buttons: [buttonLeft, buttonRight]
+            }, function (ret) {
+                if (ret.buttonIndex === 2) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {},
+                        timeout: 3000,
+                        cache: false,
+                        beforeSend: LoadFunction,
+                        error: erryFunction,
+                        success: succFunction
+                    });
+
+                    function LoadFunction() {
+                    }
+
+                    function erryFunction() {
+                    }
+
+                    function succFunction(Jsondata) {
+                        var dialog = new auiDialog({});
+                        if (Jsondata.errno === '5') {
                             dialog.alert({
-                                title:"",
-                                msg:"已取消关注",
-                                buttons:['确定']
-                                })
-                                element.innerHTML = "关注"
+                                title: "",
+                                msg: Jsondata.message,
+                                buttons: ['确定']
+                            }, function (ret) {
+                                if (ret.buttonIndex === 1) {
+                                    window.location.href = "/login";
                                 }
-                        if(ret.buttonIndex == 2){
+                            })
+
+
+                        } else if (Jsondata.errno === '0') {
                             dialog.alert({
-                                title:"",
-                                msg:"已取消操作",
-                                buttons:['确定']
-                                })
+                                title: "",
+                                msg: Jsondata.message,
+                                buttons: ['确定']
+                            }, function (ret) {
+                                if (url === '/post_like') {
+                                    $("#like").addClass("aui-hide");
+                                    $("#dislike").removeClass("aui-hide");
                                 }
-                                })
+                                else {
+                                    $("#dislike").addClass("aui-hide");
+                                    $("#like").removeClass("aui-hide");
                                 }
-                                break;
-            default:
-                break;
-                    }}
-</script>
+                            })
+
+                        }
+                        else {
+                            dialog.alert({
+                                title: "",
+                                msg: Jsondata.message,
+                                buttons: ['确定']
+                            }, function (ret) {
+                            })
+                        }
+
+                    }
+
+                }
+            });
+
+
+        }
+
+    </script>
+    <script type="text/javascript">
+
+    </script>
 {% endblock %}
 

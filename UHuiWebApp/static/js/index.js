@@ -21,6 +21,7 @@
 
  */
 
+
 $(".login-li").click(function () {
     removechecked("#re-password");
     removechecked("#user_id");
@@ -46,7 +47,7 @@ function CheckedCss(id) {
     var top1 = $(id).offset().top + ($(id).height() / 2) + 'px';
     id = id.split('#')[1]
     var thisid = "for" + id;
-    newdom = $("<i></i>").addClass("fa fa-check").css("position", "absolute").attr("aria-hidden", "true").attr("id", thisid);
+    var newdom = $("<i></i>").addClass("fa fa-check").css("position", "absolute").attr("aria-hidden", "true").attr("id", thisid);
     newdom.css("left", left1);
     newdom.css("top", top1);
     newdom.css("color", "green");
@@ -159,9 +160,17 @@ $(window).resize(function () {
         removechecked("#user_id");
         CheckedCss("#user_id");
     }
+    if (getchecked("#mobile_user_id")) {
+        removechecked("#mobile_user_id");
+        CheckedCss("#mobile_user_id");
+    }
     if (getchecked("#re-password")) {
         removechecked("#re-password");
         CheckedCss("#re-password");
+    }
+    if (getchecked("#mobile_re-password")) {
+        removechecked("#mobile_re-password");
+        CheckedCss("#mobile_re-password");
     }
 });
 
@@ -238,11 +247,9 @@ function sign_up() {
                 },
                 timeout: 3000,
                 cache: false,
-                success: succFunction
-            })
-
-
-            function succFunction(data) {
+                success: succinnerFunction
+            });
+            function succinnerFunction (data) {
                 if (data.error == "") {
                     window.location.href = "/";
                 }

@@ -23,8 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'ylf276l+_vgkj0pzran@17+pg@%r_=g3xwdd%&)^55=_i#wr(n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+try:
+    from . import config
+    DEBUG = config.DEBUG
+except ImportError:
+    DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 # upload image
@@ -133,7 +136,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     "%s/UHuiWebApp/static/" % BASE_DIR,
 ]
-
+STATIC_PATH = os.path.join( os.path.dirname(__file__) , 'static' )
 if DEBUG == True:
     print(BASE_DIR)
     print(STATICFILES_DIRS)

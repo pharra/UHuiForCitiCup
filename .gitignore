@@ -105,3 +105,9 @@ ENV/
 
 # vscode
 .vscode
+
+# nginx log
+log/
+
+# config DEBUG
+UHuiProject/config.py
