@@ -100,7 +100,7 @@
                 $("#dislike").removeClass("aui-hide");
             }
         }
-        getlikeordislike({{ like.like }});
+        getlikeordislike({{ like }});
         function post_changelike(url, message, buttonLeft, buttonRight) {
             var dialog = new auiDialog({});
             dialog.alert({
@@ -128,6 +128,7 @@
                     }
 
                     function succFunction(Jsondata) {
+                        var dialog = new auiDialog({});
                         if (Jsondata.errno === '5') {
                             dialog.alert({
                                 title: "",
