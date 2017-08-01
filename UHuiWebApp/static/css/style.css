@@ -859,7 +859,7 @@ p {
     transition: background-color .3s ease-out;
 }
 
-.modal-backdrop-grey{
+.modal-backdrop.modal-backdrop-grey{
     background: rgba(0,0,0,0.3);
 }
 
