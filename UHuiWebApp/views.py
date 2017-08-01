@@ -230,7 +230,7 @@ def changeCouponStat(couponID, sellerID, stat, listPrice='-1'):
     elif stat == 'onSale':
         models.Listitem.objects.create(listid=onSaleList, couponid=coupon)
         if listPrice != '-1':
-            coupon.listprice = int(listPrice)
+            coupon.listprice = float(listPrice)
             coupon.save()
     return JsonResponse({'errno': '0', 'message': '操作成功', 'stat': coupon.stat, 'listPrice': coupon.listprice})
 
@@ -498,7 +498,7 @@ def couponInfo(couponID):
     for listItem in lists:
         listID = listItem.listid.listid
         listStat = models.Couponlist.objects.get(listid=listID)
-        if listStat.stat == 'onSale':
+        if listStat.stat == 'own':
             sellerInfo = post_userInfo(listStat.userid.id)
     couponInfo = {}
     couponInfo['couponID'] = coupon.couponid
@@ -692,7 +692,7 @@ def post_putOnSale(request):
 def post_putOffSale(request):
     couponID = request.POST['couponID']
     sellerID = request.uid
-    return changeCouponStat(couponID, sellerID, 'own')
+    return changeCouponStat(couponID, sellerID, 'store')
 
 
 def post_like(request):
