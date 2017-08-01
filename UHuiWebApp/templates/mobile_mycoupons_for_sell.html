@@ -19,7 +19,7 @@
                             <div>
                                 {{ info.product }}
                             </div>
-                            <div style="color:#ff5a00;font-size:30px;line-height:30px;padding:0px 0px 0px 9px;">
+                            <div style="color:#ff5a00;font-size:30px;line-height:30px;padding:0px 0px 0px 9px;" id="listprice">
                                 ￥{{ info.listPrice }}
                             </div>
                             <div style="color:#ff5a00;padding:0px 0px 0px 15px;margin:0px 0px 10px 0px;">
@@ -70,12 +70,12 @@
             </a>
         </div>
         <div class="aui-bar-tab-item" tapmode
-             onclick="post_changelike('/post_putOnSale')" id="Offsale">
+             onclick="post_changesalestat('/post_putOnSale','您确定要上架吗？','取消','确定上架')" id="Offsale">
             <i class="aui-iconfont aui-icon-star"></i>
             <div class="aui-bar-tab-label">上架</div>
         </div>
         <div class="aui-bar-tab-item aui-hide" tapmode
-             onclick="post_changelike('/post_putOffSale')" id="Onsale">
+             onclick="post_changesalestat('/post_putOffSale','您确定要下架吗？','取消','确定下架')" id="Onsale">
             <i class="aui-iconfont aui-icon-star"></i>
             <div class="aui-bar-tab-label">下架</div>
         </div>
@@ -88,7 +88,7 @@
     <script src="/static/js/dialog.js"></script>
     <script type="text/javascript">
 
-        function getlikeordislike(stat) {
+        function getonsaleoroffsale(stat) {
             if (stat === 'onSale') {
                 $("#Offsale").addClass("aui-hide");
                 $("#Onsale").removeClass("aui-hide");
@@ -98,17 +98,38 @@
                 $("#Offsale").removeClass("aui-hide");
             }
         }
-        getlikeordislike({{ info.stat }});
+        getonsaleoroffsale({{ info.stat }});
 
-        function post_changelike(url,message,button_left,button_right) {
+        function post_changesalestat(url,message,button_left,button_right) {
             var dialog = new auiDialog({});
- dialog.alert({
+            if(url === '/post_putOnSale') {
+                dialog.alert({
                         title: "",
                         msg: message,
-                        buttons: [button_left,button_right]
-                    }, function (ret) {}
-                    if(ret.))
-                    $.ajax({
+                        buttons: [button_left, button_right],
+                        input: text
+                    }, function (ret) {
+                        if (ret.buttonIndex === 2) {
+                                 $.ajax({
+                        async : false,
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: {'couponID': '{{ info.couponID }}','value':text},
+                timeout: 3000,
+                cache: false,
+                success: succFunction
+            });
+                        }
+                        else {
+                              dialog.alert({
+                        title: "",
+                        msg: message,
+                        buttons: [button_left, button_right],
+                        input: false
+                    }, function (ret) {
+                        if (ret.buttonIndex === 2) {
+                                 $.ajax({
                         async : false,
                 url: url,
                 type: 'POST',
@@ -118,6 +139,11 @@
                 cache: false,
                 success: succFunction
             });
+                        }
+                    }
+                );
+            }
+
 
 
             function succFunction(Jsondata) {
@@ -129,14 +155,15 @@
                         msg: msg,
                         buttons: ['确定']
                     }, function (ret) {
-                        if (Jsondata.like === '0') {
-                            $("#like").addClass("aui-hide");
-                            $("#dislike").removeClass("aui-hide");
+                        if (Jsondatastat === 'onSale') {
+                            $("#Offsale").addClass("aui-hide");
+                            $("#Onsale").removeClass("aui-hide");
                         }
                         else {
-                            $("#dislike").addClass("aui-hide");
-                            $("#like").removeClass("aui-hide");
+                           $("#Onsale").addClass("aui-hide");
+                            $("#Offsale").removeClass("aui-hide");
                         }
+                        $("#listprice").innerText = Jsondata.listPrice;
                     })
 
                 }
