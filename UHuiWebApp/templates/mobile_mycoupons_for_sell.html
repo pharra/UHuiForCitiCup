@@ -85,14 +85,15 @@
 {% endblock %}
 {% block mobile_footer %}{% endblock %}
 {% block scripts %}
-    <script src="/static/js/aui/api.js"></script>
-<script src="/static/js/aui/aui-dialog.js"></script>
+    <script type='text/javascript' src='/static/js/aui/aui-dialog.js' ></script>
+    <script type='text/javascript' src='/static/js/light7.min.js' charset='utf-8'></script>
     <script type="text/javascript">
-    apiready = function () {
-        api.parseTapmode();
-    };
+        apiready = function () {
+            api.parseTapmode();
+        };
+
         function isUnsignedInteger(a) {
-            var reg = /^d+(.d+)?$/;
+            var reg = /^[1-9]\d*$/;
             return reg.test(a);
         }
 
@@ -118,42 +119,37 @@
                     buttons: [button_left, button_right]
                 }, function (ret) {
                     if (ret.buttonIndex === 2) {
-                        dialog.prompt({
-                        title:'',
-                    text:'输入价格',
-                    type:'number',
-                    buttons:['取消','确定']
-                },function(ret){
-                    if(ret.buttonIndex == 2){
-                         if (isUnsignedInteger(ret.text)) {
-                            $.ajax({
-                                async: false,
-                                url: url,
-                                type: 'POST',
-                                dataType: 'json',
-                                data: {'couponID': '{{ info.couponID }}', 'listPrice': ret.text},
-                                timeout: 3000,
-                                cache: false,
-                                success: succFunction
-                            });
-                        }
-                        else {
-                            dialog.alert({
-                                title: "",
-                                msg: "请输入正确价格",
-                                buttons: ['确定'],
-                            }, function (ret) {
+                        $.prompt('输入价格', function (value) {
+                            alert(value);
+                            if (isUnsignedInteger(value)) {
+                                $.ajax({
+                                    async: false,
+                                    url: url,
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    data: {'couponID': '{{ info.couponID }}', 'listPrice': value},
+                                    timeout: 3000,
+                                    cache: false,
+                                    success: succFunction
+                                });
+                            }
+                            else {
+                                dialog.alert({
+                                    title: "",
+                                    msg: "请输入正确价格",
+                                    buttons: ['确定'],
+                                }, function (ret) {
 
-                            });
-                        }
+                                });
+                            }
+                        });
+
                     }
                 })
 
-                    }
-
-
-                })
             }
+
+
             else {
                 dialog.alert({
                     title: "",
