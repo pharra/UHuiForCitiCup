@@ -1,0 +1,116 @@
+{% extends "__base__.html" %}
+{% block title %}确认订单{% endblock %}
+{% block src %} {% endblock %}
+{% block mobile_header %}
+<header class = "aui-bar aui-bar-nav">
+    <a class = "aui-pull-left aui-btn" href="javascript:history.back(-1)">
+        <span class = "aui-iconfont aui-icon-left"></span>
+    </a>
+    <div class = "aui-title">确认订单</div>
+</header>
+{% endblock %}
+{% block mobile_body %}
+<div style="height:100px;padding:10px;background-color:white;margin:20px 0px 5px 0px;">
+    <div style="width:80px;height:80px;float:left;">
+        <img src = "/static/images/dva_4.jpg" class = "img_suit">
+    </div>
+    <div style="float:left;height:80px;padding:20px 0px 0px 10px;">
+       {{ info.product }}
+    </div>
+</div>
+<div class = "aui-content aui-margin-b-15">
+    <ul class = "aui-list aui-form-list" style="margin:5px 0px 0px 0px;">
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-label">
+                优惠额度：
+            </div>
+            <div style="padding-right:5px;">
+                {{ info.discount }}
+            </div>
+        </li>
+    </ul>
+</div>
+<div class = "aui-card-list">
+    <div class = "aui-card-list">
+        <div class = "aui-card-list-header" style="padding-bottom:0px;">
+            使用门槛：
+        </div>
+        <div class = "aui-card-list-content-padded" style="padding-top:0px;">
+            {% for i in info.limits %} i<br/>{% endfor %}
+        </div>
+    </div>
+</div>
+<div class = "aui-content aui-margin-b-15">
+    <ul class = "aui-list aui-form-list" style="margin:5px 0px 0px 0px;">
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-label">
+                价格
+            </div>
+            <div style="padding-right:5px;color:#ff5a00">
+                ￥{{ info.listPrice }}
+            </div>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+{% block mobile_footer %}
+<footer class="aui-bar aui-bar-tab">
+    <div class="aui-bar-tab-item" style="background-color:#ff5a00;color:white;"tapmode>
+        <div class="aui-bar-tab-label" tapmode onclick=" post_buy('{{ info.couponID }}','{{ info.sellerInfo.userid }}');">
+                确认支付
+        </div>
+    </div>
+</footer>
+{% endblock %}
+{% block body %} {% endblock %}
+{% block scripts %}
+<script type = "text/javascript">
+var dialog = new auiDialog({});
+ function post_buy(couponID,sellerID) {
+             $.ajax({
+        url: '/post_buy',
+        type: 'POST',
+        dataType: 'json',
+        data: {"couponID": couponID, "sellerID": sellerID},
+        timeout: 3000,
+        cache: false,
+        beforeSend: LoadFunction,
+        error: erryFunction,
+        success: succFunction
+    });
+
+    function LoadFunction() {
+    }
+
+    function erryFunction() {
+    }
+
+    function succFunction(Jsondata) {
+        if (Jsondata.errno === '0') {
+            dialog.alert({
+                    title:"",
+                    msg:Jsondata.message,
+                    buttons:['确定']
+                    },function(ret){
+                    if(ret.buttonIndex === 1) {
+                            window.location.href = "/mobile_myboughtcoupons";
+                        }
+                        })
+
+
+        } else {
+            dialog.alert({
+                    title:"",
+                    msg:Jsondata.message,
+                    buttons:['确定']
+                    },function(ret){
+                        })
+
+        }
+
+    }
+
+     }
+
+</script>
+{% endblock %}
