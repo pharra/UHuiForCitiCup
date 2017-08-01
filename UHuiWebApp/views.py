@@ -807,7 +807,7 @@ def search(request):
 def commodity(request):
     detail = post_couponDetail(request)
     if detail['isOwner'] == '1':
-        return render(request, 'mycoupons_for_sell.html', detail)
+        return render(request, 'mobile_mycoupons_for_sell.html', detail)
     return render(request, 'commodity.html', detail)
 
 
