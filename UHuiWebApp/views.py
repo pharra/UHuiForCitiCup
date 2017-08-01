@@ -2,7 +2,7 @@ import json
 
 from django.http import HttpResponseRedirect
 
-from UHuiProject.settings import DEBUG, MEDIA_URL
+from UHuiProject.settings import DEBUG
 from django.core.exceptions import ObjectDoesNotExist
 from UHuiWebApp import models
 from .shortcut import JsonResponse, render
@@ -17,7 +17,7 @@ import time
 import random
 import datetime
 
-DEFAULT_PIC = '/static/images/1.jpg'
+DEFAULT_PIC = ''/static/'images/1.jpg'
 
 
 # Create your views here.
@@ -478,7 +478,7 @@ def couponInfo(couponID):
     couponInfo['product'] = coupon.product
     couponInfo['discount'] = coupon.discount
     couponInfo['stat'] = coupon.stat
-    couponInfo['pic'] = str(coupon.pic)
+    couponInfo['pic'] = '/static/' + str(coupon.pic)
     couponInfo['expiredTime'] = coupon.expiredtime.strftime("%Y-%m-%d")
     limitList = []
     if limits.exists():
@@ -498,7 +498,7 @@ def post_userInfo(u_id):
     nickname = user.nickname
     gender = user.gender
     UCoin = user.ucoin
-    avatar = MEDIA_URL + str(user.avatar)
+    avatar = '/static/' + str(user.avatar)
     phoneNum = user.phonenum
     if phoneNum is None:
         phoneNum = '未绑定手机号'
