@@ -19,7 +19,8 @@
                             <div>
                                 {{ info.product }}
                             </div>
-                            <div style="color:#ff5a00;font-size:30px;line-height:30px;padding:0px 0px 0px 9px;" id="listprice">
+                            <div style="color:#ff5a00;font-size:30px;line-height:30px;padding:0px 0px 0px 9px;"
+                                 id="listprice">
                                 ￥{{ info.listPrice }}
                             </div>
                             <div style="color:#ff5a00;padding:0px 0px 0px 15px;margin:0px 0px 10px 0px;">
@@ -87,6 +88,10 @@
 
     <script src="/static/js/dialog.js"></script>
     <script type="text/javascript">
+        function isUnsignedInteger(a) {
+            var reg = /^d+$/
+            return reg.test(a);
+        }
 
         function getonsaleoroffsale(stat) {
             if (stat === 'onSale') {
@@ -98,90 +103,146 @@
                 $("#Offsale").removeClass("aui-hide");
             }
         }
-        getonsaleoroffsale({{ info.stat }});
 
-        function post_changesalestat(url,message,button_left,button_right) {
+        getonsaleoroffsale('{{ info.stat }}');
+
+        function post_changesalestat(url, message, button_left, button_right) {
             var dialog = new auiDialog({});
-            if(url === '/post_putOnSale') {
-                dialog.alert({
-                        title: "",
-                        msg: message,
-                        buttons: [button_left, button_right],
-                        input: text
-                    }, function (ret) {
-                        if (ret.buttonIndex === 2) {
-                                 $.ajax({
-                        async : false,
-                url: url,
-                type: 'POST',
-                dataType: 'json',
-                data: {'couponID': '{{ info.couponID }}','listPrice':text},
-                timeout: 3000,
-                cache: false,
-                success: succFunction
-            });
+            if (url === '/post_putOnSale') {
+                dialog.prompt({
+                    title: "",
+                    msg: message,
+                    buttons: [button_left, button_right],
+                    text: '上架价格',
+                    type: 'number'
+                }, function (ret) {
+                    if (ret.buttonIndex === 2) {
+                        if (isUnsignedInteger(ret.text)) {
+                            $.ajax({
+                                async: false,
+                                url: url,
+                                type: 'POST',
+                                dataType: 'json',
+                                data: {'couponID': '{{ info.couponID }}', 'listPrice': ret.text},
+                                timeout: 3000,
+                                cache: false,
+                                success: succFunction
+                            });
                         }
                         else {
-                              dialog.alert({
-                        title: "",
-                        msg: message,
-                        buttons: [button_left, button_right],
-                        input: false
-                    }, function (ret) {
-                        if (ret.buttonIndex === 2) {
-                                 $.ajax({
-                        async : false,
-                url: url,
-                type: 'POST',
-                dataType: 'json',
-                data: {'couponID': '{{ info.couponID }}'},
-                timeout: 3000,
-                cache: false,
-                success: succFunction
-            });
+                            dialog.alert({
+                                title: "",
+                                msg: "请输入正确价格",
+                                buttons: ['确定'],
+                            }, function (ret) {
+
+                            });
                         }
                     }
-                );
+                    else {
+                        dialog.alert({
+                                title: "",
+                                msg: message,
+                                buttons: [button_left, button_right],
+                                input: false
+                            }, function (ret) {
+                                if (ret.buttonIndex === 2) {
+                                    $.ajax({
+                                        async: false,
+                                        url: url,
+                                        type: 'POST',
+                                        dataType: 'json',
+                                        data: {'couponID': '{{ info.couponID }}'},
+                                        timeout: 3000,
+                                        cache: false,
+                                        success: succFunction
+                                    });
+                                }
+                            }
+                        );
+                    }
+
+
+                })
             }
+            else {
+                dialog.alert({
+                    title: "",
+                    msg: message,
+                    buttons: [button_left, button_right],
+                }, function (ret) {
+                    if (ret.buttonIndex === 2) {
+                        $.ajax({
+                            async: false,
+                            url: url,
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {'couponID': '{{ info.couponID }}'},
+                            timeout: 3000,
+                            cache: false,
+                            success: succFunction
+                        });
+                    }
+                    else {
+                        dialog.alert({
+                                title: "",
+                                msg: message,
+                                buttons: [button_left, button_right],
+                                input: false
+                            }, function (ret) {
+                                if (ret.buttonIndex === 2) {
+                                    $.ajax({
+                                        async: false,
+                                        url: url,
+                                        type: 'POST',
+                                        dataType: 'json',
+                                        data: {'couponID': '{{ info.couponID }}'},
+                                        timeout: 3000,
+                                        cache: false,
+                                        success: succFunction
+                                    });
+                                }
+                            }
+                        );
+                    }
 
 
-
-            function succFunction(Jsondata) {
-                var dialog = new auiDialog({});
-                var msg = Jsondata.message;
-                if (Jsondata.errno === '0') {
-                    dialog.alert({
-                        title: "",
-                        msg: msg,
-                        buttons: ['确定']
-                    }, function (ret) {
-                        if (Jsondatastat === 'onSale') {
-                            $("#Offsale").addClass("aui-hide");
-                            $("#Onsale").removeClass("aui-hide");
-                        }
-                        else {
-                           $("#Onsale").addClass("aui-hide");
-                            $("#Offsale").removeClass("aui-hide");
-                        }
-                        $("#listprice").innerText = Jsondata.listPrice;
-                    })
-
-                }
-                else {
-                    dialog.alert({
-                        title: "",
-                        msg: msg,
-                        buttons: ['确定']
-                    }, function (ret) {
-                    })
-                }
-
+                })
             }
-
-
-
+            ;
         }
 
+        function succFunction(Jsondata) {
+            var dialog = new auiDialog({});
+            var msg = Jsondata.message;
+            if (Jsondata.errno === '0') {
+                dialog.alert({
+                    title: "",
+                    msg: msg,
+                    buttons: ['确定']
+                }, function (ret) {
+                    if (Jsondatastat === 'onSale') {
+                        $("#Offsale").addClass("aui-hide");
+                        $("#Onsale").removeClass("aui-hide");
+                    }
+                    else {
+                        $("#Onsale").addClass("aui-hide");
+                        $("#Offsale").removeClass("aui-hide");
+                    }
+                    $("#listprice").innerText = Jsondata.listPrice;
+                })
+
+            }
+            else {
+                dialog.alert({
+                    title: "",
+                    msg: msg,
+                    buttons: ['确定']
+                }, function (ret) {
+                })
+            }
+
+        }
     </script>
 {% endblock %}
 
