@@ -208,17 +208,17 @@ def post_changeAvatar(request):
     return JsonResponse({'errno': '0', 'message': '成功'})
 
 
-def changeCouponStat(couponID, sellerID, stat):
+def changeCouponStat(couponID, sellerID, stat, listPrice='-1'):
     # 只用于上架下架与过期
     try:
         coupon = models.Coupon.objects.get(couponid=couponID)
     except ObjectDoesNotExist:
-        return JsonResponse({'errno': '1', 'message': '优惠券不存在'})
+        return JsonResponse({'errno': '1', 'message': '优惠券不存在', 'stat': '', 'listPrice': ''})
 
     if stat == 'onSale' and coupon.stat != 'store':
-        return JsonResponse({'errno': 1, 'message': '上架失败'})
+        return JsonResponse({'errno': '1', 'message': '上架失败', 'stat': coupon.stat, 'listPrice': coupon.listprice})
     elif stat == 'store' and coupon.stat != 'onSale':
-        return JsonResponse({'errno': 1, 'message': '下架失败'})
+        return JsonResponse({'errno': '1', 'message': '下架失败', 'stat': coupon.stat, 'listPrice': coupon.listprice})
 
     coupon.stat = stat
     coupon.save()
@@ -226,10 +226,13 @@ def changeCouponStat(couponID, sellerID, stat):
     if stat == 'store' or stat == 'expired':
         if models.Listitem.objects.filter(listid=onSaleList, couponid=coupon).exists():
             models.Listitem.objects.filter(listid=onSaleList, couponid=coupon).delete()
+            createMessage('关注的优惠券已下架', couponID)
     elif stat == 'onSale':
         models.Listitem.objects.create(listid=onSaleList, couponid=coupon)
-        createMessage('关注的优惠券已下架', couponID)
-    return JsonResponse({'errno': '0', 'message': '成功'})
+        if listPrice != '-1':
+            coupon.listprice = int(listPrice)
+            coupon.save()
+    return JsonResponse({'errno': '0', 'message': '操作成功', 'stat': coupon.stat, 'listPrice': coupon.listprice})
 
 
 # 获取数据
@@ -680,7 +683,8 @@ def post_buy(request):
 def post_putOnSale(request):
     couponID = request.POST['couponID']
     sellerID = request.uid
-    return changeCouponStat(couponID, sellerID, 'onSale')
+    listPrice = request.POST.get('listPrice', '-1')
+    return changeCouponStat(couponID, sellerID, 'onSale', listPrice)
 
 
 def post_putOffSale(request):
