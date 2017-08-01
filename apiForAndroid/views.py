@@ -66,7 +66,7 @@ def post_preSearch(request):
     keyword = request.POST.get('keyword')
     #if not keyword:
     #    return JsonResponse({'error':'keyword not exist'})
-    productResult = Coupon.objects.filter(product__startswith=keyword,stat='onSale').values('product')
+    productResult = Coupon.objects.filter(product__istartswith=keyword,stat='onSale').values('product').distinct()
     result = []
     for coupon in productResult:
         result.append(coupon)
@@ -83,11 +83,11 @@ def post_searchForAndroid(request):
         orderBy = 'expiredtime'
     else:
         pass
-    productResult = models.Coupon.objects.filter(product__contains=key, stat='onSale').values('couponid','listprice','value','product','discount','pic','expiredtime').order_by(orderBy)
+    productResult = models.Coupon.objects.filter(product__icontains=key, stat='onSale').values('couponid','listprice','value','product','discount','pic','expiredtime').order_by(orderBy)
     result = []
     for coupon in productResult:
         result.append(coupon)
-    brandIDResult = models.Brand.objects.filter(name__contains=key)
+    brandIDResult = models.Brand.objects.filter(name__icontains=key)
     for brand in brandIDResult:
         temp = models.Coupon.objects.filter(brandid=brand.brandid,stat = 'onSale').values('couponid','listprice','value','product','discount','pic','expiredtime')
         if temp.exists():
@@ -99,16 +99,54 @@ def post_searchForAndroid(request):
     return JsonResponse({'coupon':result})
 
 
+#在分类下搜索
+def post_searchInCertainCategory(request):
+    key = request.POST.get('keyWord', 0)
+    cat = request.POST.get('category',0)
+    orderBy = request.POST.get('order', None)
+    if not cat:
+        return JsonResponse({'result': "种类不存在"})
+    if not key:
+        return JsonResponse({'result': "请输入关键词"})
+    if not orderBy:
+        orderBy = 'expiredtime'
+    else:
+        pass
+    productResult = models.Coupon.objects.filter(product__contains=key, stat='onSale',catid=cat).values('couponid', 'listprice',
+                                                                                              'value', 'product',
+                                                                                              'discount', 'pic',
+                                                                                              'expiredtime').order_by(
+        orderBy)
+    result = []
+    for coupon in productResult:
+        result.append(coupon)
+    brandIDResult = models.Brand.objects.filter(name__contains=key)
+    for brand in brandIDResult:
+        temp = models.Coupon.objects.filter(brandid=brand.brandid, stat='onSale',catid=cat).values('couponid', 'listprice',
+                                                                                         'value', 'product', 'discount',
+                                                                                         'pic', 'expiredtime')
+        if temp.exists():
+            for info in temp:
+                result.append(info)
+        return JsonResponse({'coupons': result})
+    if result == None:
+        return JsonResponse({'result': 'result no exist'})
+    return JsonResponse({'coupon': result})
+
+
 #点击种类进行查询
 def post_searchByCategory(request):
     catID = request.POST.get('categoryID',0)
     if Category.objects.filter(catid=catID).exists():
-        return JsonResponse({'error':'不存在该种类'})
-    result = []
-    couponList = Coupon.objects.filter(catid=catID,stat='onSale').values('couponid','listprice','value','product','discount','pic','expiredtime')
-    for each in couponList:
-        result.append(each)
-    return JsonResponse({'result':result})
+        result = []
+        couponList = Coupon.objects.filter(catid=catID, stat='onSale').values('couponid', 'listprice', 'value',
+                                                                              'product', 'discount', 'pic',
+                                                                              'expiredtime')
+        for each in couponList:
+            result.append(each)
+        return JsonResponse({'result': result})
+    return JsonResponse({'error':'不存在该种类'})
+
 
 
 #查询优惠券详细信息
@@ -323,12 +361,12 @@ def post_getUserInformation(request):
 #修改个人信息
 def post_updateUserInformation(request):
     u_id = request.POST.get('userID')
-    newNickname = request.POST.get('nickname')
-    newGender = request.POST.get('gender')
+    user = User.objects.get(id=u_id)
+    newNickname = request.POST.get('nickname',user.nickname)
+    newGender = request.POST.get('gender',user.gender)
     User.objects.filter(pk = u_id).update(nickname = newNickname)
     User.objects.filter(pk = u_id).update(gender = newGender)
     return JsonResponse({'result':'success'})
-    pass
 
 
 #修改头像
@@ -366,6 +404,11 @@ def post_updatePhonenumOrEmail(request):
             return JsonResponse({'result':'该账户使用邮箱注册'})
 
 
+#估值
+def post_getValue(request):
+    return JsonResponse({'value':100.00})
+
+
 #添加优惠券
 def post_addCoupon(request):
     u_id = request.POST.get('userID')
@@ -377,7 +420,7 @@ def post_addCoupon(request):
     discount = request.POST.get('discount')
     stat = request.POST.get('stat', 'store')
     pic = request.POST.get('pic', DEFAULT_PIC)
-
+    limit = request.POST.get('limit')
     #估值
     value = 0
     # 判断brand是否存在
@@ -398,6 +441,9 @@ def post_addCoupon(request):
                            value=value, product=product, discount=discount, stat=stat, pic=pic,
                            expiredTime=expiredTime)
     coupon.save()
+    for each in limit:
+        limitItem = Limit(couponid=couponID,content=each)
+        limitItem.save()
     if stat == 'onSale':
         list = models.Couponlist.objects.get(stat='onSale', userid=user.id)
     else:
@@ -527,19 +573,61 @@ def post_changeCouponStat(request):
         return JsonResponse({'errno':'3','message':'提交的状态错误'})
 
 
-#主页的推荐 未完成
+#主页的推荐
 def post_homepageCoupon(request):
-    u_id = request.POST.get('userID')
-    #根据用户最近购买的优惠券种类中关注度最高的进行推荐
-    couponCat_1 = Coupon.objects.filter(catid=1).order_by()[0:5]#生活百货
-
-
-
-
+    couponCat_1 = Coupon.objects.filter(catid = 1)
+    tmp1 = couponCat_1.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_1.count(),5)].reverse()#生活百货
+    couponCat_2 = Coupon.objects.filter(catid = 2)
+    tmp2 = couponCat_2.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_2.count(),5)].reverse()#美妆装饰
+    couponCat_3 = Coupon.objects.filter(catid = 3)
+    tmp3 = couponCat_3.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_3.count(),5)].reverse()#文娱体育
+    couponCat_4 = Coupon.objects.filter(catid = 4)
+    tmp4 = couponCat_4.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_4.count(),5)].reverse()#家具家居
+    couponCat_5 = Coupon.objects.filter(catid = 5)
+    tmp5 = couponCat_5.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_5.count(),5)].reverse()#电子产品
+    couponCat_6 = Coupon.objects.filter(catid = 6)
+    tmp6 = couponCat_6.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_6.count(),5)].reverse()#服装服饰
+    couponCat_7 = Coupon.objects.filter(catid = 7)
+    tmp7 = couponCat_7.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_7.count(),5)].reverse()#旅行住宿
+    couponCat_8 = Coupon.objects.filter(catid = 8)
+    tmp8 = couponCat_8.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_8.count(),5)].reverse()#饮食保健
+    result=[]
+    for each in tmp1:
+        result.append(each)
+    for each in tmp2:
+        result.append(each)
+    for each in tmp3:
+        result.append(each)
+    for each in tmp4:
+        result.append(each)
+    for each in tmp5:
+        result.append(each)
+    for each in tmp6:
+        result.append(each)
+    for each in tmp7:
+        result.append(each)
+    for each in tmp8:
+        result.append(each)
+    return JsonResponse({'result':result})
 #搜索栏的推荐 未完成
 def post_searchCoupon(request):
     pass
 
+
+#主页轮播图
+def post_getBanner(request):
+    url1 = 'images/banner/banner_1.jpg'
+    url2 = 'images/banner/banner_2.jpg'
+    url3 = 'images/banner/banner_3.jpg'
+    url4 = 'images/banner/banner_4.jpg'
+    url5 = 'images/banner/banner_5.jpg'
+    result = []
+    result.append(url1)
+    result.append(url2)
+    result.append(url3)
+    result.append(url4)
+    result.append(url5)
+    return JsonResponse({'result':result})
 
 
 

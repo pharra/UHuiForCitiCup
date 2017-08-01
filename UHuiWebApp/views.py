@@ -17,7 +17,7 @@ import time
 import random
 import datetime
 
-DEFAULT_PIC = '/static/images/1.jpg'
+DEFAULT_PIC = ''/static/'images/1.jpg'
 
 
 # Create your views here.
@@ -199,7 +199,7 @@ def post_modifyUserInfo(request):
     return response
 
 
-def post_changeAvatar(request):
+def post_updateAvatar(request):
     uid = request.uid
     user = models.User.objects.get(id=uid)
     user.avatar = request.FILES['avatar']
@@ -478,7 +478,7 @@ def couponInfo(couponID):
     couponInfo['product'] = coupon.product
     couponInfo['discount'] = coupon.discount
     couponInfo['stat'] = coupon.stat
-    couponInfo['pic'] = str(coupon.pic)
+    couponInfo['pic'] = '/static/' + str(coupon.pic)
     couponInfo['expiredTime'] = coupon.expiredtime.strftime("%Y-%m-%d")
     limitList = []
     if limits.exists():
@@ -498,7 +498,7 @@ def post_userInfo(u_id):
     nickname = user.nickname
     gender = user.gender
     UCoin = user.ucoin
-    avatar = str(user.avatar)
+    avatar = '/static/' + str(user.avatar)
     phoneNum = user.phonenum
     if phoneNum is None:
         phoneNum = '未绑定手机号'
@@ -527,9 +527,7 @@ def getBrandInfo(bid):
         brand = models.Brand.objects.get(brandid=bid)
     except ObjectDoesNotExist:
         return {'brand': 'no brand info'}
-    info = {}
-    info['name'] = brand.name
-    info['address'] = brand.address
+    info = {'name': brand.name, 'address': brand.address}
     return info
 
 
