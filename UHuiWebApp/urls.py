@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^post_dislike$', views.post_dislike, name='post_dislike'),
     url(r'^post_buy$', views.post_buy, name='post_buy'),
     url(r'^post_presearch$', views.post_presearch, name='post_presearch'),
+    url(r'^post_changeAvatar$', views.post_changeAvatar, name='post_changeAvatar'),
 
     url(r'^post_loginForAndroid$', androidViews.post_loginForAndroid, name='post_loginForAndroid'),
     url(r'^post_signUpForAndroid$', androidViews.post_signUpForAndroid, name='post_signUpForAndroid'),

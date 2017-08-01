@@ -199,10 +199,11 @@ def post_modifyUserInfo(request):
     return response
 
 
-def post_updateAvatar(request):
+def post_changeAvatar(request):
     uid = request.uid
     user = models.User.objects.get(id=uid)
-    user.avatar = request.FILES['avatar']
+    list = request.FILES.getlist('avatar')
+    user.avatar = list[0]
     user.save()
     return JsonResponse({'errno': '0', 'message': '成功'})
 
