@@ -1,4 +1,4 @@
-/**
+﻿/**
  * aui-dialog.js
  * @author 流浪男
  * @todo more things to abstract, e.g. Loading css etc.

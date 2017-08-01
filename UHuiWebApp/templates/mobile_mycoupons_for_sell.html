@@ -85,9 +85,12 @@
 {% endblock %}
 {% block mobile_footer %}{% endblock %}
 {% block scripts %}
-
-    <script src="/static/js/dialog.js"></script>
+    <script src="/static/js/aui/api.js"></script>
+<script src="/static/js/aui/aui-dialog.js"></script>
     <script type="text/javascript">
+    apiready = function () {
+        api.parseTapmode();
+    };
         function isUnsignedInteger(a) {
             var reg = /^d+(.d+)?$/;
             return reg.test(a);
@@ -109,15 +112,20 @@
         function post_changesalestat(url, message, button_left, button_right) {
             var dialog = new auiDialog({});
             if (url === '/post_putOnSale') {
-                dialog.prompt({
+                dialog.alert({
                     title: "",
                     msg: message,
-                    buttons: [button_left, button_right],
-                    text: '上架价格',
-                    type: 'number'
+                    buttons: [button_left, button_right]
                 }, function (ret) {
                     if (ret.buttonIndex === 2) {
-                        if (isUnsignedInteger(ret.text)) {
+                        dialog.prompt({
+                        title:'',
+                    text:'输入价格',
+                    type:'number',
+                    buttons:['取消','确定']
+                },function(ret){
+                    if(ret.buttonIndex == 2){
+                         if (isUnsignedInteger(ret.text)) {
                             $.ajax({
                                 async: false,
                                 url: url,
@@ -139,27 +147,8 @@
                             });
                         }
                     }
-                    else {
-                        dialog.alert({
-                                title: "",
-                                msg: message,
-                                buttons: [button_left, button_right],
-                                input: false
-                            }, function (ret) {
-                                if (ret.buttonIndex === 2) {
-                                    $.ajax({
-                                        async: false,
-                                        url: url,
-                                        type: 'POST',
-                                        dataType: 'json',
-                                        data: {'couponID': '{{ info.couponID }}'},
-                                        timeout: 3000,
-                                        cache: false,
-                                        success: succFunction
-                                    });
-                                }
-                            }
-                        );
+                })
+
                     }
 
 
@@ -183,33 +172,10 @@
                             success: succFunction
                         });
                     }
-                    else {
-                        dialog.alert({
-                                title: "",
-                                msg: message,
-                                buttons: [button_left, button_right],
-                                input: false
-                            }, function (ret) {
-                                if (ret.buttonIndex === 2) {
-                                    $.ajax({
-                                        async: false,
-                                        url: url,
-                                        type: 'POST',
-                                        dataType: 'json',
-                                        data: {'couponID': '{{ info.couponID }}'},
-                                        timeout: 3000,
-                                        cache: false,
-                                        success: succFunction
-                                    });
-                                }
-                            }
-                        );
-                    }
 
 
                 })
             }
-            ;
         }
 
         function succFunction(Jsondata) {
