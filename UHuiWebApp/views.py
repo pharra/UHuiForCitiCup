@@ -17,7 +17,7 @@ import time
 import random
 import datetime
 
-DEFAULT_PIC = 'images/1.jpg'
+DEFAULT_PIC = 'images/avatar/default.jpg'
 
 
 # Create your views here.
@@ -202,7 +202,7 @@ def post_modifyUserInfo(request):
 def post_changeAvatar(request):
     uid = request.uid
     user = models.User.objects.get(id=uid)
-    list = request.FILES.getlist('avatar')
+    list = request.FILES.getlist('file')
     user.avatar = list[0]
     user.save()
     return JsonResponse({'errno': '0', 'message': '成功'})
@@ -878,7 +878,7 @@ def post_signUp(request):
         sendConfirmMail(username, nickname, uid)
 
         user = models.User(id=uid, nickname=nickname, password=password, gender=gender, email=username, ucoin=0,
-                           hasconfirm=False)
+                           hasconfirm=False, avatar=DEFAULT_PIC)
 
         # 创建列表
         user.save()
@@ -897,7 +897,7 @@ def post_signUp(request):
         # 将手机号作为用户名存入数据库中
         uid = randomID()
         user = models.User(id=uid, nickname=nickname, password=password, gender=gender,
-                           phonenum=username, ucoin=0, hasconfirm=True)
+                           phonenum=username, ucoin=0, hasconfirm=True, avatar=DEFAULT_PIC)
         user.save()
         # 创建列表
 
