@@ -6,13 +6,14 @@
 <link rel="stylesheet" type="text/css" href="/static/css/aui/aui-flex.css">
 {% endblock %}
 {% block mobile_body %}
+
 <div class="aui-row">
     <div class = "aui-flex-row aui-flex-right mobile-max-user-background">
             <i class = "aui-iconfont aui-icon-mail mobile-max-user-icon aui-flex-2  aui-margin-r-10"></i>
     </div>
         <div class = "aui-flex-col  aui-padded-15 mobile-max-user-background">
         <div class = "aui-flex-3">
-            <img src="/static/images/dva_4.jpg" class="mobile-user-avator" />
+            <img src="{{ avatar }}" class="mobile-user-avator" />
         </div>
             <div class = "aui-flex-row aui-flex-9 aui-flex-middle aui-padded-10">
                 <div style = "margin:5px;"><h3 style="color:white;">用户名</h3></div>
@@ -99,7 +100,7 @@
             <!--头像-->
             <div class="username-text-css">
                 <div class="profile-photo-div">
-                    <img src="/static/images/dva_1.jpg">
+                    <img src="{{ avatar }}">
                 </div>
                 <span>&nbsp;{{ nickname }}</span>
             </div>

@@ -123,6 +123,7 @@
                         $("#mobile-search-input").removeClass("aui-col-xs-10").addClass("aui-col-xs-12");
                         $("header.aui-bar.aui-bar-nav").addClass("mobile-searchbar-active");
                         $("#mobile-search-body").show();
+                        $("body").css("overflow-y","hidden");
                     }
                 }
                 document.querySelector(".aui-searchbar-cancel").onclick = function () {
@@ -134,6 +135,7 @@
                     $("#mobile-search-input").removeClass("aui-col-xs-12").addClass("aui-col-xs-10");
                     $("header.aui-bar.aui-bar-nav").removeClass("mobile-searchbar-active");
                     $("#mobile-search-body").hide();
+                     $("body").css("overflow-y","auto");
                 }
             </script>
         {% endblock %}
@@ -142,19 +144,25 @@
         {% block mobile_footer %}
             <footer class="aui-bar aui-bar-tab" id="footer">
                 <div class="aui-bar-tab-item aui-active" tapmode>
+                    <a href = "/" style="color:#757575;">
                     <i class="aui-iconfont aui-icon-home"></i>
                     <div class="aui-bar-tab-label">首页</div>
+                    </a>
                 </div>
                 <div class="aui-bar-tab-item" tapmode>
+                    <a href = "/mobile_sell_add" style="color:#757575;">
                     <i class="aui-iconfont aui-icon-star"></i>
                     <div class="aui-bar-tab-label">U</div>
+                    </a>
                 </div>
 
-                <div class="aui-bar-tab-item" tapmode>
-                    <i class="aui-iconfont aui-icon-my"></i>
+
+               <div class="aui-bar-tab-item" tapmode>
+                    <a href = "/user" style="color:#757575;">
+        <i class="aui-iconfont aui-icon-my"></i>
                     <div class="aui-bar-tab-label">我的</div>
+                    </a>
                 </div>
-
             </footer>
             <!--<script type="text/javascript" src="/static/js/aui/aui-tab.js" ></script>
 <script type="text/javascript">

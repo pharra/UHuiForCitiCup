@@ -802,14 +802,6 @@ def mobile_user_focus(request):
     return render(request, 'mobile_user_focus.html')
 
 
-def mobile_sell_main(request):
-    return render(request, 'mobile_sell_main.html')
-
-
-def mobile_sell_classify(request):
-    return render(request, 'mobile_sell_classify.html')
-
-
 def mobile_sell_add(request):
     return render(request, 'mobile_sell_add.html')
 
