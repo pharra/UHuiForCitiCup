@@ -860,7 +860,7 @@ p {
 }
 
 .modal-backdrop.modal-backdrop-grey{
-    background: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.5);
 }
 
 .mobile-searchbar-active.aui-bar-nav{
@@ -916,6 +916,11 @@ p {
 }
 
 .mobile-login .mobile-button-color{
+    background: #ff5a00;
+    color: white;
+}
+
+.aui-btn.mobile-button-color{
     background: #ff5a00;
     color: white;
 }
