@@ -34,7 +34,7 @@
       <div id="forcouponsStore">
       {% if couponsStore %}
         {% for i in couponsStore %}
-            <div class="mobile-user-coupons aui-flex-col" id="">
+            <div class="mobile-user-coupons aui-flex-col" id="{{ i.couponID }}">
                 <div class="aui-flex-item-3 user-coupons-left">
                     <p class="user-coupons-left-value font-class">
                         ￥{{ i.listPrice }}
@@ -78,7 +78,7 @@
       <div id="forcouponsOnSale" class="aui-hide">
       {% if couponsOnSale %}
         {% for i in couponsOnSale %}
-            <div class="mobile-user-coupons aui-flex-col">
+            <div class="mobile-user-coupons aui-flex-col"  id="{{ i.couponID }}">
                 <div class="aui-flex-item-3 user-coupons-left">
                     <p class="user-coupons-left-value font-class">
                         ￥{{ i.listPrice }}
@@ -122,7 +122,7 @@
       <div id="forcouponsExpired" class="aui-hide">
       {% if couponsExpired %}
         {% for i in couponsExpired %}
-            <div class="mobile-user-coupons aui-flex-col">
+            <div class="mobile-user-coupons aui-flex-col"  id="{{ i.couponID }}">
                 <div class="aui-flex-item-3 user-coupons-left">
                     <p class="user-coupons-left-value font-class">
                         ￥{{ i.listPrice }}
@@ -181,6 +181,10 @@
         $(this).siblings().removeClass("mobile-mycoupons-header-content-active");
         $(couponshow).removeClass("aui-hide");
         $(couponshow).siblings().addClass("aui-hide");
+    })
+    $(".mobile-user-coupons").click(function () {
+        window.location.href = "/commodity?conponID"+$(this).attr("id");
+
     })
     </script>
 {% endblock %}

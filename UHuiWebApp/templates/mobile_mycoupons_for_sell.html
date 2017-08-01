@@ -1,116 +1,187 @@
 {% extends "__base__.html" %}
-{% block title %}确认订单{% endblock %}
+{% block title %}优惠券详情{% endblock %}
 {% block src %} {% endblock %}
-{% block mobile_header %}
-<header class = "aui-bar aui-bar-nav">
-    <a class = "aui-pull-left aui-btn" href="javascript:history.back(-1)">
-        <span class = "aui-iconfont aui-icon-left"></span>
-    </a>
-    <div class = "aui-title">确认订单</div>
-</header>
-{% endblock %}
+{% block mobile_header %}{% endblock %}
 {% block mobile_body %}
-<div style="height:100px;padding:10px;background-color:white;margin:20px 0px 5px 0px;">
-    <div style="width:80px;height:80px;float:left;">
-        <img src = "/static/images/dva_4.jpg" class = "img_suit">
-    </div>
-    <div style="float:left;height:80px;padding:20px 0px 0px 10px;">
-       {{ info.product }}
-    </div>
-</div>
-<div class = "aui-content aui-margin-b-15">
-    <ul class = "aui-list aui-form-list" style="margin:5px 0px 0px 0px;">
-        <li class = "aui-list-item">
-            <div class = "aui-list-item-label">
-                优惠额度：
-            </div>
-            <div style="padding-right:5px;">
-                {{ info.discount }}
-            </div>
-        </li>
-    </ul>
-</div>
-<div class = "aui-card-list">
-    <div class = "aui-card-list">
-        <div class = "aui-card-list-header" style="padding-bottom:0px;">
-            使用门槛：
+    <div class="aui-row">
+        <header class="aui-bar aui-bar-nav" style="background:rgba(0,0,0,0.3);color:white;position:absolute;">
+            <a class="aui-pull-left aui-btn" href="javascript:history.back(-1)">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+        </header>
+        <img src="/static/images/dva_4.jpg" class="aui-col-xs-12">
+
+        <div class="aui-content aui-margin-b-15">
+            <ul class="aui-list aui-list-in" style="line-height:30px;margin-bottom:20px;">
+                <li class="aui-list-item">
+                    <div class="aui-media-list-item-inner">
+                        <div>
+                            <div>
+                                {{ info.product }}
+                            </div>
+                            <div style="color:#ff5a00;font-size:30px;line-height:30px;padding:0px 0px 0px 9px;" id="listprice">
+                                ￥{{ info.listPrice }}
+                            </div>
+                            <div style="color:#ff5a00;padding:0px 0px 0px 15px;margin:0px 0px 10px 0px;">
+                                估值：{{ info.value }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="aui-list aui-list-in" style="margin-bottom:20px;">
+                <li class="aui-list-item">
+                    <div class="aui-media-list-item-inner">
+                        优惠额度：{{ info.discount }}
+                    </div>
+                </li>
+            </ul>
+            <ul class="aui-list aui-list-in" style="margin-bottom:20px;">
+                <li class="aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
+                    <div class="aui-media-list-item-inner">
+                        用户名：{{ info.sellerInfo.nickname }}
+                    </div>
+                </li>
+                <li class="aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
+                    <div class="aui-media-list-item-inner">
+                        商家名：{{ info.brand }}
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-media-list-item-inner">
+                        使用期限：{{ info.expiredTime }}
+                    </div>
+                </li>
+            </ul>
+            <ul class="aui-list aui-list-in">
+                <li class="aui-list-item">
+                    <div class="aui-media-item-inner">
+                        使用限制：{% for i in info.limits %} <span>i</span>{% endfor %}
+                    </div>
+                </li>
+            </ul>
         </div>
-        <div class = "aui-card-list-content-padded" style="padding-top:0px;">
-            {% for i in info.limits %} i<br/>{% endfor %}
-        </div>
     </div>
-</div>
-<div class = "aui-content aui-margin-b-15">
-    <ul class = "aui-list aui-form-list" style="margin:5px 0px 0px 0px;">
-        <li class = "aui-list-item">
-            <div class = "aui-list-item-label">
-                价格
-            </div>
-            <div style="padding-right:5px;color:#ff5a00">
-                ￥{{ info.listPrice }}
-            </div>
-        </li>
-    </ul>
-</div>
+    <footer class="aui-bar aui-bar-tab mobile-max-user-background">
+        <div class="aui-bar-tab-item" tapmode>
+            <a href="/" style="color:white;">
+                <i class="aui-iconfont aui-icon-home"></i>
+                <div class="aui-bar-tab-label">首页</div>
+            </a>
+        </div>
+        <div class="aui-bar-tab-item" tapmode
+             onclick="post_changesalestat('/post_putOnSale','您确定要上架吗？','取消','确定上架')" id="Offsale">
+            <i class="aui-iconfont aui-icon-star"></i>
+            <div class="aui-bar-tab-label">上架</div>
+        </div>
+        <div class="aui-bar-tab-item aui-hide" tapmode
+             onclick="post_changesalestat('/post_putOffSale','您确定要下架吗？','取消','确定下架')" id="Onsale">
+            <i class="aui-iconfont aui-icon-star"></i>
+            <div class="aui-bar-tab-label">下架</div>
+        </div>
+
+    </footer>
 {% endblock %}
-{% block mobile_footer %}
-<footer class="aui-bar aui-bar-tab">
-    <div class="aui-bar-tab-item" style="background-color:#ff5a00;color:white;"tapmode>
-        <div class="aui-bar-tab-label" tapmode onclick=" post_buy('{{ info.couponID }}','{{ info.sellerInfo.userid }}');">
-                确认支付
-        </div>
-    </div>
-</footer>
-{% endblock %}
-{% block body %} {% endblock %}
+{% block mobile_footer %}{% endblock %}
 {% block scripts %}
-<script type = "text/javascript">
-var dialog = new auiDialog({});
- function post_buy(couponID,sellerID) {
-             $.ajax({
-        url: '/post_buy',
-        type: 'POST',
-        dataType: 'json',
-        data: {"couponID": couponID, "sellerID": sellerID},
-        timeout: 3000,
-        cache: false,
-        beforeSend: LoadFunction,
-        error: erryFunction,
-        success: succFunction
-    });
 
-    function LoadFunction() {
-    }
+    <script src="/static/js/dialog.js"></script>
+    <script type="text/javascript">
 
-    function erryFunction() {
-    }
+        function getonsaleoroffsale(stat) {
+            if (stat === 'onSale') {
+                $("#Offsale").addClass("aui-hide");
+                $("#Onsale").removeClass("aui-hide");
+            }
+            else {
+                $("#Onsale").addClass("aui-hide");
+                $("#Offsale").removeClass("aui-hide");
+            }
+        }
+        getonsaleoroffsale({{ info.stat }});
 
-    function succFunction(Jsondata) {
-        if (Jsondata.errno === '0') {
-            dialog.alert({
-                    title:"",
-                    msg:Jsondata.message,
-                    buttons:['确定']
-                    },function(ret){
-                    if(ret.buttonIndex === 1) {
-                            window.location.href = "/mobile_myboughtcoupons";
+        function post_changesalestat(url,message,button_left,button_right) {
+            var dialog = new auiDialog({});
+            if(url === '/post_putOnSale') {
+                dialog.alert({
+                        title: "",
+                        msg: message,
+                        buttons: [button_left, button_right],
+                        input: text
+                    }, function (ret) {
+                        if (ret.buttonIndex === 2) {
+                                 $.ajax({
+                        async : false,
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: {'couponID': '{{ info.couponID }}','listPrice':text},
+                timeout: 3000,
+                cache: false,
+                success: succFunction
+            });
                         }
-                        })
+                        else {
+                              dialog.alert({
+                        title: "",
+                        msg: message,
+                        buttons: [button_left, button_right],
+                        input: false
+                    }, function (ret) {
+                        if (ret.buttonIndex === 2) {
+                                 $.ajax({
+                        async : false,
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: {'couponID': '{{ info.couponID }}'},
+                timeout: 3000,
+                cache: false,
+                success: succFunction
+            });
+                        }
+                    }
+                );
+            }
 
 
-        } else {
-            dialog.alert({
-                    title:"",
-                    msg:Jsondata.message,
-                    buttons:['确定']
-                    },function(ret){
-                        })
+
+            function succFunction(Jsondata) {
+                var dialog = new auiDialog({});
+                var msg = Jsondata.message;
+                if (Jsondata.errno === '0') {
+                    dialog.alert({
+                        title: "",
+                        msg: msg,
+                        buttons: ['确定']
+                    }, function (ret) {
+                        if (Jsondatastat === 'onSale') {
+                            $("#Offsale").addClass("aui-hide");
+                            $("#Onsale").removeClass("aui-hide");
+                        }
+                        else {
+                           $("#Onsale").addClass("aui-hide");
+                            $("#Offsale").removeClass("aui-hide");
+                        }
+                        $("#listprice").innerText = Jsondata.listPrice;
+                    })
+
+                }
+                else {
+                    dialog.alert({
+                        title: "",
+                        msg: msg,
+                        buttons: ['确定']
+                    }, function (ret) {
+                    })
+                }
+
+            }
+
+
 
         }
 
-    }
-
-     }
-
-</script>
+    </script>
 {% endblock %}
+
