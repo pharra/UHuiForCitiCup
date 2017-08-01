@@ -14,7 +14,6 @@ urlpatterns = [
     url(r'^mobile_user_setting$',views.mobile_user_setting,name = 'mobile_user_setting'),
     url(r'^mobile_user_wallet$',views.mobile_user_wallet,name = 'mobile_user_wallet'),
     url(r'^mobile_user_focus$',views.mobile_user_focus,name = 'mobile_user_focus'),
-    url(r'^mobile_sell_add$',views.mobile_sell_add,name = 'mobile_sell_add'),
     url(r'^mobile_sell_final$',views.mobile_sell_final,name = 'mobile_sell_final'),
     url(r'^couponsmessage$',views.mobile_couponsmessage,name = 'mobile_couponsmessage'),
     url(r'^mobile_myboughtcoupons$', views.mobile_myboughtcoupons, name='mobile_myboughtcoupons'),
