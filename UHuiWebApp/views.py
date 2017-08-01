@@ -477,10 +477,10 @@ def post_couponDetail(request):
     else:
         like = '0'
     info = couponInfo(couponID)
-    if info['error']:
+    if info.get('error', False) is not False:
         return {'info': info, 'like': like, 'isOwner': '0'}
     sellerInfo = info['sellerInfo']
-    if sellerInfo and sellerInfo['userid'] == uid:
+    if not sellerInfo or sellerInfo['userid'] == uid:
         isOwner = '1'
     else:
         isOwner = '0'
