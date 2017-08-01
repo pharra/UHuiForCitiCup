@@ -215,15 +215,15 @@ def changeCouponStat(couponID, sellerID, stat):
     except ObjectDoesNotExist:
         return JsonResponse({'errno': '1', 'message': '优惠券不存在'})
 
-    if stat == 'onSale' and coupon.stat != 'own':
+    if stat == 'onSale' and coupon.stat != 'store':
         return JsonResponse({'errno': 1, 'message': '上架失败'})
-    elif stat == 'own' and coupon.stat != 'onSale':
+    elif stat == 'store' and coupon.stat != 'onSale':
         return JsonResponse({'errno': 1, 'message': '下架失败'})
 
     coupon.stat = stat
     coupon.save()
     onSaleList = models.Couponlist.objects.get(stat='onSale', userid=sellerID)
-    if stat == 'own' or stat == 'expired':
+    if stat == 'store' or stat == 'expired':
         if models.Listitem.objects.filter(listid=onSaleList, couponid=coupon).exists():
             models.Listitem.objects.filter(listid=onSaleList, couponid=coupon).delete()
     elif stat == 'onSale':
@@ -322,8 +322,6 @@ def post_search(request):
 
 def post_getUserCoupon(request):
     count = request.POST.get('couponsNumbers', '10')
-    if DEBUG is True:
-        print(time.localtime())
     if count != 'all':
         count = int(count)
     if not request.uid:
@@ -372,10 +370,33 @@ def post_getUserCoupon(request):
 
     couponDict = {'couponsOwn': own, 'couponsLike': like, 'couponsOnSale': onSale,
                   'couponMessages': messages['couponMessages'], 'systemMessages': messages['systemMessages']}
-    if DEBUG is True:
-        print(time.localtime())
 
     return couponDict
+
+
+def post_getMobileUserCoupon(request):
+    uid = request.uid
+    ownList = models.Couponlist.objects.get(userid=uid, stat='own')
+    objects = models.Listitem.objects.filter(listid=ownList.listid)
+    objects.reverse()
+    couponsStore = []
+    couponsOnSale = []
+    couponsExpired = []
+    for id in objects:
+        info = couponInfo(id.couponid.couponid)
+        if info['stat'] == 'store':
+            couponsStore.append(info)
+        elif info['stat'] == 'onSale':
+            couponsOnSale.append(info)
+        elif info['stat'] == 'expired':
+            info['expiredReason'] = '于' + info['expiredTime'] + '过期'
+            couponsExpired.append(info)
+        elif info['stat'] == 'used':
+            info['expiredReason'] = '已使用'
+            couponsExpired.append(info)
+
+    return {'couponsStore': couponsStore, 'couponsOnSale': couponsOnSale,
+            'couponsExpired': couponsExpired}
 
 
 def post_getBoughtCouponsMobile(request):
@@ -453,8 +474,12 @@ def post_couponDetail(request):
     else:
         like = '0'
     info = couponInfo(couponID)
-
-    return {'info': info, 'like': like}
+    sellerInfo = info['sellerInfo']
+    if sellerInfo['userid'] == uid:
+        isOwner = '1'
+    else:
+        isOwner = '0'
+    return {'info': info, 'like': like, 'isOwner': isOwner}
 
 
 def couponInfo(couponID):
@@ -772,7 +797,7 @@ def userPage(request):
 
 
 def myCouponsPage(request):
-    return render(request, 'mobile_mycoupons.html', post_getUserCoupon(request))
+    return render(request, 'mobile_mycoupons.html', post_getMobileUserCoupon(request))
 
 
 def search(request):
@@ -780,7 +805,10 @@ def search(request):
 
 
 def commodity(request):
-    return render(request, 'commodity.html', post_couponDetail(request))
+    detail = post_couponDetail(request)
+    if detail['isOwner'] == '1':
+        return render(request, 'mycoupons_for_sell.html', detail)
+    return render(request, 'commodity.html', detail)
 
 
 def mobile_appraisement(request):
