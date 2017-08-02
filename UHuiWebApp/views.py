@@ -406,6 +406,7 @@ def post_getBoughtCouponsMobile(request):
     uid = request.uid
     listID = models.Couponlist.objects.get(stat='bought', userid=uid)
     couponIDs = models.Listitem.objects.filter(listid=listID.listid)
+    couponIDs.reverse()
     used = []
     own = []
     for couponid in couponIDs:
@@ -414,6 +415,18 @@ def post_getBoughtCouponsMobile(request):
         elif couponid.couponid.stat == 'store':
             own.append(couponInfo(couponid.couponid.couponid))
     return {'own': own, 'used': used}
+
+
+def post_getSoldOrLikeCouponsMobile(request, stat):
+    uid = request.uid
+    listID = models.Couponlist.objects.get(stat=stat, userid=uid)
+    couponIDs = models.Listitem.objects.filter(listid=listID.listid)
+    couponIDs.reverse()
+    result = []
+    for couponid in couponIDs:
+        result.append(couponInfo(couponid.couponid.couponid))
+
+    return {stat: result}
 
 
 def post_getCouponByCat(request):
@@ -847,6 +860,14 @@ def mobile_couponsmessage(request):
 
 def mobile_myboughtcoupons(request):
     return render(request, 'mobile_myboughtcoupons.html', post_getBoughtCouponsMobile(request))
+
+
+def mobile_mysoldcoupons(request):
+    return render(request, 'mobile_mysoldcoupons.html', post_getSoldOrLikeCouponsMobile(request, 'sold'))
+
+
+def mobile_mylikecoupons(request):
+    return render(request, 'mobile_mylikecoupons.html', post_getSoldOrLikeCouponsMobile(request, 'like'))
 
 
 # post方法加上前缀post_
