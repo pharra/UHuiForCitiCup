@@ -1,4 +1,4 @@
-{% extends "__base__.html" %}
+{% extends "__mobilebase__.html" %}
 {% block title %}优惠券详情{% endblock %}
 {% block src %} {% endblock %}
 {% block mobile_header %}{% endblock %}
@@ -85,18 +85,11 @@
 {% endblock %}
 {% block mobile_footer %}{% endblock %}
 {% block scripts %}
-    <script type='text/javascript' src='/static/js/aui/aui-dialog.js' ></script>
-    <script type='text/javascript' src='/static/js/light7.min.js' charset='utf-8'></script>
     <script type="text/javascript">
-        apiready = function () {
-            api.parseTapmode();
-        };
-
         function isUnsignedInteger(a) {
             var reg = /^[1-9]\d*$/;
             return reg.test(a);
         }
-
         function getonsaleoroffsale(stat) {
             if (stat === 'onSale') {
                 $("#Offsale").addClass("aui-hide");
@@ -111,16 +104,10 @@
         getonsaleoroffsale('{{ info.stat }}');
 
         function post_changesalestat(url, message, button_left, button_right) {
-            var dialog = new auiDialog({});
             if (url === '/post_putOnSale') {
-                dialog.alert({
-                    title: "",
-                    msg: message,
-                    buttons: [button_left, button_right]
-                }, function (ret) {
+                $.alert(message, '', function (ret) {
                     if (ret.buttonIndex === 2) {
                         $.prompt('输入价格', function (value) {
-                            alert(value);
                             if (isUnsignedInteger(value)) {
                                 $.ajax({
                                     async: false,
@@ -134,13 +121,7 @@
                                 });
                             }
                             else {
-                                dialog.alert({
-                                    title: "",
-                                    msg: "请输入正确价格",
-                                    buttons: ['确定'],
-                                }, function (ret) {
-
-                                });
+                                $.alert("请输入正确价格",'');
                             }
                         });
 
@@ -151,12 +132,8 @@
 
 
             else {
-                dialog.alert({
-                    title: "",
-                    msg: message,
-                    buttons: [button_left, button_right],
-                }, function (ret) {
-                    if (ret.buttonIndex === 2) {
+                $.confirm(message,'', function () {
+
                         $.ajax({
                             async: false,
                             url: url,
@@ -167,7 +144,7 @@
                             cache: false,
                             success: succFunction
                         });
-                    }
+
 
 
                 })
@@ -175,14 +152,9 @@
         }
 
         function succFunction(Jsondata) {
-            var dialog = new auiDialog({});
             var msg = Jsondata.message;
             if (Jsondata.errno === '0') {
-                dialog.alert({
-                    title: "",
-                    msg: msg,
-                    buttons: ['确定']
-                }, function (ret) {
+                $.alert(msg,'', function () {
                     if (Jsondata.stat === 'onSale') {
                         $("#Offsale").addClass("aui-hide");
                         $("#Onsale").removeClass("aui-hide");
@@ -196,12 +168,7 @@
 
             }
             else {
-                dialog.alert({
-                    title: "",
-                    msg: msg,
-                    buttons: ['确定']
-                }, function (ret) {
-                })
+                $.alert(msg,'');
             }
 
         }

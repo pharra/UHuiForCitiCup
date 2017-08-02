@@ -1,4 +1,4 @@
-{% extends "__base__.html" %}
+{% extends "__mobilebase__.html" %}
 {% block title %}商品详情 {% endblock %}
 {% block src %} {% endblock %}
 {% block mobile_header %}{% endblock %}
@@ -90,7 +90,6 @@
 {% block mobile_footer %}{% endblock %}
 {% block scripts %}
 
-    <script src="/static/js/dialog.js"></script>
     <script type="text/javascript">
 
         function getlikeordislike(like) {
@@ -103,6 +102,7 @@
                 $("#dislike").removeClass("aui-hide");
             }
         }
+
         getlikeordislike({{ like }});
 
         function post_changelike(url) {
@@ -120,26 +120,15 @@
 
 
             function succFunction(Jsondata) {
-                var dialog = new auiDialog({});
                 var msg = Jsondata.message;
                 if (Jsondata.errno === '5') {
-                    dialog.alert({
-                        title: "",
-                        msg: msg,
-                        buttons: ['确定']
-                    }, function (ret) {
-                        if (ret.buttonIndex === 1) {
-                            window.location.href = "/login";
-                        }
-                    })
+                    $.alert(msg, '', function () {
+                        window.location.href = "/login";
+                    });
 
 
                 } else if (Jsondata.errno === '0') {
-                    dialog.alert({
-                        title: "",
-                        msg: msg,
-                        buttons: ['确定']
-                    }, function (ret) {
+                    $.alert(msg, '', function () {
                         if (Jsondata.like === '0') {
                             $("#like").addClass("aui-hide");
                             $("#dislike").removeClass("aui-hide");
@@ -152,12 +141,7 @@
 
                 }
                 else {
-                    dialog.alert({
-                        title: "",
-                        msg: msg,
-                        buttons: ['确定']
-                    }, function (ret) {
-                    })
+                    $.alert(msg, '',)
                 }
 
             }
