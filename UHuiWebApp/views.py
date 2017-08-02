@@ -471,7 +471,6 @@ def post_getCouponForMobileIndex(request):
     resultSet = []
     for i in range(index, min(couponsAll.count(), index + 10)):
         resultSet.append(couponInfo(couponsAll[i].couponid))
-
     result = {'coupons': resultSet}
     # result = json.dumps(result)
     response = JsonResponse(result)
@@ -812,6 +811,14 @@ def index(request):
 
 def login(request):
     return render(request, 'login.html')
+
+
+def mobile_login(request):
+    return render(request, 'mobile_login.html')
+
+
+def mobile_index(request):
+    return render(request, 'mobile_index.html')
 
 
 def userPage(request):
