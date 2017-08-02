@@ -292,8 +292,9 @@ def post_presearch(request):
 
 
 def post_search(request):
+    history = request.COOKIES.get('history', '')
     key = request.POST.get('keyWord', False)
-
+    history = history + ',' + key
     orderBy = request.POST.get('order', None)
     page = int(request.POST.get('page', 1)) - 1
     if not key:
@@ -320,7 +321,9 @@ def post_search(request):
 
     # if not productResult.exists() and not brandIDResult.exists():
     #     return render(request, 'search.html')
-    return render(request, 'search.html', {'coupons': result, 'keyWord': key})
+    response = render(request, 'search.html', {'coupons': result, 'keyWord': key})
+    response.set_cookie('history', history)
+    return response
 
 
 def post_getUserCoupon(request):
