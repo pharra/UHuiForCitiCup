@@ -12,9 +12,3 @@ pymysql.install_as_MySQLdb()
 HttpResponse.type = 'HttpResponse'
 if DEBUG is True:
     print('http')
-
-<<<<<<< HEAD
-
-
-=======
->>>>>>> zww

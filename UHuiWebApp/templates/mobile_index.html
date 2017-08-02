@@ -120,11 +120,11 @@
                     type: 'POST',
                     url: '/post_getCouponForMobileIndex',
                     dataType: 'json',
-                    asyc:false,
                     success: function (data) {
                        $.each(data, function (key, value) {
                     if (key === "coupons") {
-                        if(value===''){
+
+                        if(value === ''){
                                 loading = true;
                                 return;
                             }
