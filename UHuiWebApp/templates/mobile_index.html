@@ -113,7 +113,8 @@
     var loading = false;
         $('#coupons_mobile_pullfresh').dropload({
             scrollArea: window,
-            distance:0,
+            threshold:50,
+            autoLoad:true,
             loadDownFn: function (me) {
                 if(loading) return;
                 $.ajax({
@@ -123,10 +124,10 @@
                     success: function (data) {
                        $.each(data, function (key, value) {
                     if (key === "coupons") {
-
-                        if(value === ''){
+                        if(value === 'null'){
                                 loading = true;
                                 return;
+
                             }
                         $.each(value, function (key, value) {
                             var $couponsdom = $("#mobile_index_coupons").clone();
@@ -143,10 +144,11 @@
                                 });
 
                         });
+                        loading = false;
                     }
                 });
                         // 每次数据加载完，必须重置
-                        loading = false;
+
                         me.resetload();
                     },
                     error: function (xhr, type) {
@@ -157,6 +159,7 @@
                 });
             }
         });
+        getcoupons_moblie();
         function getcoupons_moblie() {
             $.ajax({
                 type: 'POST',
