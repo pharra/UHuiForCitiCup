@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from UHuiProject.settings import DEBUG
 from django.core.exceptions import ObjectDoesNotExist
 from UHuiWebApp import models
-from .shortcut import JsonResponse, render
+from .shortcut import JsonResponse, render, render_to_response
 
 import smtplib
 from email.mime.text import MIMEText
@@ -142,6 +142,17 @@ def timer():
                 createMessage('关注的优惠券即将过期', coupon.couponid)
             changeCouponStat(coupon.couponid, userID, 'expired')
             createMessage('我的优惠券即将过期', coupon.couponid)
+
+
+def addSearchHistory(key, history):
+    historyList = history.split('__')
+    if len(historyList) == 10:
+        historyList.pop()
+    newHistory = key
+    for value in historyList:
+        newHistory = '%s__%s' % (newHistory, value)
+
+    return newHistory
 
 
 # 修改用户信息
@@ -292,9 +303,8 @@ def post_presearch(request):
 
 
 def post_search(request):
-    history = request.COOKIES.get('history', '')
+    # history = request.COOKIES.get('history', '')
     key = request.POST.get('keyWord', False)
-    history = history + ',' + key
     orderBy = request.POST.get('order', None)
     page = int(request.POST.get('page', 1)) - 1
     if not key:
@@ -321,8 +331,8 @@ def post_search(request):
 
     # if not productResult.exists() and not brandIDResult.exists():
     #     return render(request, 'search.html')
-    response = render(request, 'search.html', {'coupons': result, 'keyWord': key})
-    response.set_cookie('history', history)
+    response = render_to_response('search.html', {'coupons': result, 'keyWord': key})
+    # response.set_cookie('history', addSearchHistory(key, history))
     return response
 
 
@@ -471,6 +481,8 @@ def post_getCouponForMobileIndex(request):
     resultSet = []
     for i in range(index, min(couponsAll.count(), index + 10)):
         resultSet.append(couponInfo(couponsAll[i].couponid))
+    if len(resultSet) == 0:
+        resultSet = ''
     result = {'coupons': resultSet}
     # result = json.dumps(result)
     response = JsonResponse(result)
@@ -854,10 +866,6 @@ def mobile_user_wallet(request):
 
 def mobile_couponsmessage(request):
     return render(request, 'mobile_couponsmessage.html')
-
-
-def mobile_user_focus(request):
-    return render(request, 'mobile_user_focus.html')
 
 
 def mobile_sell_final(request):

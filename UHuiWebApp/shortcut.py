@@ -2,6 +2,19 @@ from django.template import loader
 import django.http
 
 
+class render_to_response(django.http.HttpResponse):
+    def __init__(self, template_name, context={}, content_type=None, status=None, using=None):
+        content = loader.render_to_string(template_name, context, using=using)
+        self.contentlist = [template_name, context, using]
+        super(render_to_response, self).__init__(content, content_type, status)
+        self.type = "render"
+
+    def addContent(self, context):
+        for key in context:
+            self.contentlist[1][key] = context[key]
+        self.content = loader.render_to_string(self.contentlist[0], self.contentlist[1], using=self.contentlist[2])
+
+
 class render(django.http.HttpResponse):
     def __init__(self, request, template_name, context={}, content_type=None, status=None, using=None):
         content = loader.render_to_string(template_name, context, request, using=using)
@@ -14,6 +27,8 @@ class render(django.http.HttpResponse):
             self.contentlist[1][key] = context[key]
         self.content = loader.render_to_string(self.contentlist[0], self.contentlist[1], self.contentlist[2],
                                                using=self.contentlist[3])
+
+
 
 
         # def __call__(self, request, template_name, content_type=None, context=None, status=None, using=None):
