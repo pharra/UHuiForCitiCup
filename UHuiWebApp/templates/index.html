@@ -147,8 +147,9 @@
             <div class="index_coupons_detail">
                 <div class="row">
                     <div class="col-xs-12 col-lg-12 col-md-12 col-sm-12 content-text ">
-                        <div class="coupons_detail_title" id="couponDetail_ID">
+                        <div class="coupons_detail_title" >
                             优惠券详情
+                            <div class="being-hidden" id="couponDetail_ID"></div>
                         </div>
                     </div>
                     <div class="clear"></div>
@@ -248,6 +249,7 @@
                 dataType: 'json',
                 sync: false,
                 success: function (data) {
+                    $("#couponDetail_limits").siblings().remove();
                     $("#couponDetail_name")[0].innerText = data.info.product;
                     $("#couponDetail_listPrice")[0].innerText = '￥' + data.info.listPrice;
                     $("#couponDetail_value")[0].innerText = '(￥' + data.info.value + ')';
@@ -255,7 +257,7 @@
                     $("#couponDetail_brand")[0].innerText = data.info.brand;
                     $("#couponDetail_sellername")[0].innerText = data.info.sellerInfo.nickname;
                     $("#couponDetail_expiredTime")[0].innerText = data.info.expiredTime;
-
+                    $("#couponDetail_ID")[0].innerText = data.info.couponID;
                     $.each(data.info.limits,function (key,value) {
                         var $limits = $("#couponDetail_limits").clone();
                     $limits.attr("id","");
@@ -299,7 +301,7 @@
                 url: url,
                 type: 'POST',
                 dataType: 'json',
-                data: {'couponID': $("#couponDetail_ID").attr("id")},
+                data: {'couponID': $("#couponDetail_ID")[0].innerText},
                 timeout: 3000,
                 cache: false,
                 success: succFunction
