@@ -305,7 +305,7 @@ def post_presearch(request):
     return JsonResponse({'result': result})
 
 
-def post_search(request):
+def searchResult(request):
     # history = request.COOKIES.get('history', '')
     key = request.GET.get('keyWord', False)
     orderBy = request.POST.get('order', None)
@@ -341,9 +341,17 @@ def post_search(request):
         maxPage = int(maxPage) + 1
     # if not productResult.exists() and not brandIDResult.exists():
     #     return render(request, 'search.html')
-    response = render(request, 'search.html', {'coupons': result, 'keyWord': key, 'maxPage': maxPage, 'currentPage': page + 1})
+    response = render(request, 'search.html', )
     # response.set_cookie('history', addSearchHistory(key, history))
-    return response
+    return {'coupons': result, 'keyWord': key, 'maxPage': maxPage, 'currentPage': page + 1}
+
+
+def post_search(request):
+    return render(request, 'search.html', searchResult(request))
+
+
+def post_search(request):
+    return render(request, 'mobile_search.html', searchResult(request))
 
 
 def post_getUserCoupon(request):
@@ -572,7 +580,7 @@ def post_userInfo(u_id):
         couponList.append({'type': item.stat, 'listid': item.listid})
     nickname = user.nickname
     gender = user.gender
-    UCoin = user.ucoin
+    UCoin = str(user.ucoin).rstrip('0').rstrip('.')
     avatar = '/static/' + str(user.avatar)
     phoneNum = user.phonenum
     if phoneNum is None:
