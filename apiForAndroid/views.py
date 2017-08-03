@@ -1,4 +1,4 @@
-from django.shortcuts import render
+
 
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -198,6 +198,9 @@ def post_couponDetailForAndroid(request):
 def post_returnInformation(request):
     cpID = request.POST.get('couponID',0)
     u_id = request.POST.get('userID')
+    msgID = request.POST.get('messageID', 0)
+    if msgID != 0:
+        Message.objects.filter(messageid=msgID).update(hasread=1)
     if u_id=='':
         return JsonResponse({'errno':'user no exist'})
     isLike = 0
@@ -340,7 +343,7 @@ def post_sendMessage(request):
     for each in msg:
         messageResult.append(each)
     for i in tmp:
-        cp = Coupon.objects.filter(couponid=i.couponid.couponid).values('product')
+        cp = Coupon.objects.filter(couponid=i.couponid.couponid).values('product','listprice','pic')
         for coupon in cp:
             couponResult.append(coupon)
     return JsonResponse({'messageResult':messageResult,'couponResult':couponResult})
@@ -435,34 +438,35 @@ def post_addCoupon(request):
     brandName = request.POST.get('brand')
     cat = request.POST.get('category')
     expiredTime = datetime.datetime.strptime(request.POST.get('expiredTime'), '%Y-%m-%d')
-    listPrice = request.POST.get('listPrice')
+    listPrice = float(request.POST.get('listPrice'))
     product = request.POST.get('product')
     discount = request.POST.get('discount')
     stat = request.POST.get('stat', 'store')
-    pic = request.POST.get('pic', DEFAULT_PIC)
-    limit = request.POST.get('limit')
+    pic = request.FILES.get('pic', DEFAULT_PIC)
+    limit = request.POST.get('limit[]')
     #估值
     value = 0
     # 判断brand是否存在
     if not models.Brand.objects.filter(name=brandName).exists():
         brandID = models.Brand(brandid=None, name=brandName)
+        brandID.save()
     else:
         brandID = models.Brand.objects.get(name=brandName)
 
     # 获取catID
-    if not models.Category.objects.filter(name=cat).exists():
-        return JsonResponse({'errno': 1, 'message': 'category not found'})
-    else:
-        catID = models.Category.objects.get(name=cat)
+    #if not models.Category.objects.filter(name=cat).exists():
+    #    return JsonResponse({'errno': 1, 'message': 'category not found'})
+    #else:
+    catID = models.Category.objects.get(catid=cat)
 
     user = models.User.objects.get(id=u_id)
     couponID = randomID()
-    coupon = models.Coupon(couponid=couponID, brandid=brandID, catid=catID, listPrice=listPrice,
+    coupon = models.Coupon(couponid=couponID, brandid=brandID, catid=catID, listprice=listPrice,
                            value=value, product=product, discount=discount, stat=stat, pic=pic,
-                           expiredTime=expiredTime)
+                           expiredtime=expiredTime)
     coupon.save()
     for each in limit:
-        limitItem = Limit(couponid=couponID,content=each)
+        limitItem = Limit(couponid=coupon,content=each)
         limitItem.save()
     if stat == 'onSale':
         list = models.Couponlist.objects.get(stat='onSale', userid=user.id)
