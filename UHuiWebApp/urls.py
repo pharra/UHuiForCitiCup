@@ -42,6 +42,7 @@ urlpatterns = [
     url(r'^post_putOnSale$', views.post_putOnSale, name='post_putOnSale'),
     url(r'^post_putOffSale$', views.post_putOffSale, name='post_putOffSale'),
     url(r'^post_buyCredit$', views.post_buyCredit, name='post_buyCredit'),
+    url(r'^post_couponDetail$', views.post_couponDetail, name='post_couponDetail'),
 
     url(r'^post_loginForAndroid$', androidViews.post_loginForAndroid, name='post_loginForAndroid'),
     url(r'^post_signUpForAndroid$', androidViews.post_signUpForAndroid, name='post_signUpForAndroid'),
