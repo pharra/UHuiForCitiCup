@@ -942,6 +942,12 @@ def post_login(request):
         return JsonResponse({'error': '密码错误'})
 
 
+def post_logout(request):
+    response = HttpResponseRedirect('/')
+    response.delete_cookie('uhui')
+    return response
+
+
 def post_signUp(request):
     username = request.POST.get('username')
     if username == '':
@@ -995,8 +1001,6 @@ def post_signUp(request):
 # 根据request的COOKIES判断登录uid
 def get_uid(request):
     cookie_content = request.COOKIES.get('uhui', False)
-    if cookie_content == 0:
-        return False
     if cookie_content:
         content = cookie_content.split('_')
     else:
