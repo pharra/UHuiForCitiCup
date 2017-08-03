@@ -319,7 +319,7 @@ def post_search(request):
     productCount = productResult.count()
     brandCount = 0
     for i in range(0, 8):
-        if (8 * page + i) == productResult.count():
+        if (8 * page + i) >= productResult.count():
             break
         result.append(couponInfo(productResult[8 * page + i].couponid))
     # 数量不够时的结果仍需补全
@@ -330,7 +330,7 @@ def post_search(request):
         brandItem = models.Coupon.objects.filter(brandid=brand.brandid, stat='onSale')
         brandCount = brandCount + brandItem.count()
         for i in range(0, pc):
-            if (pc * page + i) == brandItem.count():
+            if (pc * page + i) >= brandItem.count():
                 break
             result.append(couponInfo(brandItem[pc * page + i].couponid))
     maxPage = max(productCount/8, brandCount/8)
