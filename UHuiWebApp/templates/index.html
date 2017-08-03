@@ -98,8 +98,8 @@
                     <h3 class="content-text" style="color: #ff5a00;font-weight: bolder;"
                         id="catid_{{ key }}">{{ key }}</h3>
                     {% for i in value %}
-                        <div class="point coupon_detail col-xs-6 col-md-6 col-lg-6 col-sm-6 " id="{{ i.couponID }}">
-                            <div class="user-coupons row">
+                        <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6 " >
+                            <div class="point coupon_detail  user-coupons row" id="{{ i.couponID }}">
                                 <div class="col-xs-3 col-md-3 col-lg-3 col-sm-3 user-coupons-left">
                                     <p class="user-coupons-left-value">
                                         ￥{{ i.listPrice }}
