@@ -74,6 +74,7 @@
                 data: {"couponID": couponID, "sellerID": sellerID},
                 timeout: 3000,
                 cache: false,
+                async:false,
                 beforeSend: LoadFunction,
                 error: erryFunction,
                 success: succFunction
@@ -88,7 +89,7 @@
             function succFunction(Jsondata) {
                 if (Jsondata.errno === '0') {
                     $.confirm(Jsondata.message, '', function () {
-                        location.href = "/mobile_myboughtcoupons";
+                        window.location.href = "/mobile_myboughtcoupons";
                     })
 
 
