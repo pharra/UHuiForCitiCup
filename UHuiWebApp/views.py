@@ -806,8 +806,11 @@ def createMessage(messageType, couponID, content=None):
     types = ['上架的优惠券被购买', '上架的优惠券即将过期', '上架的优惠券已过期', '关注的优惠券即将过期', '关注的优惠券已被购买',
              '我的优惠券即将过期', '我的优惠券已过期', '系统通知']
     #               5                   6           7
-    if messageType not in lists:
+    if messageType not in types:
         return {'errno': '1', 'message': '消息类型不存在'}
+
+
+
     userlist = []
     if messageType == types[3] or messageType == types[4]:
         # like列表
