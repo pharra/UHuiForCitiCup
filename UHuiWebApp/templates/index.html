@@ -264,7 +264,7 @@
                     $limits[0].innerText = value;
                     $("#couponDetail_limits").after($limits);
 
-                    })
+                    });
                     getstat(data.stat);
 
                 }
@@ -314,12 +314,12 @@
                 else if (Jsondata.errno === '0') {
 
                         if (Jsondata.like === '0') {
-                            $("#couponDetail_like").hide();
-                            $("#couponDetail_dislike").show();
+                            $("#couponDetail_like").show();
+                            $("#couponDetail_dislike").hide();
                         }
                         else {
-                           $("#couponDetail_like").show();
-                            $("#couponDetail_dislike").hide();
+                           $("#couponDetail_like").hide();
+                            $("#couponDetail_dislike").show();
                         }
 
                 }
