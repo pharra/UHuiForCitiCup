@@ -387,8 +387,11 @@ def post_updateUserInformation(request):
     user = User.objects.get(id=u_id)
     newNickname = request.POST.get('nickname',user.nickname)
     newGender = request.POST.get('gender',user.gender)
-    User.objects.filter(pk = u_id).update(nickname = newNickname)
-    User.objects.filter(pk = u_id).update(gender = newGender)
+    if User.objects.filter(nickname=newNickname).exists():
+        return JsonResponse({'error':'nickname exist'})
+    user.nickname = newNickname
+    user.gender = newGender
+    user.save()
     return JsonResponse({'result':'success'})
 
 
@@ -443,7 +446,9 @@ def post_addCoupon(request):
     discount = request.POST.get('discount')
     stat = request.POST.get('stat', 'store')
     pic = request.FILES.get('pic', DEFAULT_PIC)
-    limit = request.POST.get('limit[]')
+    limit = request.POST.getlist('limit[]')
+
+
     #估值
     value = 0
     # 判断brand是否存在
@@ -466,13 +471,11 @@ def post_addCoupon(request):
                            expiredtime=expiredTime)
     coupon.save()
     for each in limit:
-        limitItem = Limit(couponid=coupon,content=each)
-        limitItem.save()
+        Limit.objects.create(couponid=coupon,content=each)
     if stat == 'onSale':
         list = models.Couponlist.objects.get(stat='onSale', userid=user.id)
     else:
         list = models.Couponlist.objects.get(stat='own', userid=user.id)
-
     models.Listitem.objects.create(listid=list, couponid=coupon)
     return JsonResponse({'errno': 0, 'message': 'store success'})
 
@@ -562,7 +565,7 @@ def post_getLikeList(request):
         likeListID = Couponlist.objects.get(userid=u_id,stat='like').listid
         likeListitem = Listitem.objects.filter(listid = likeListID)
         for each in likeListitem:
-            couponList = Coupon.objects.filter(couponid=each.couponid.couponid).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount')
+            couponList = Coupon.objects.filter(couponid=each.couponid.couponid).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount','pic')
             for i in couponList:
                 likeList.append(i)
         return JsonResponse({'likeList':likeList})

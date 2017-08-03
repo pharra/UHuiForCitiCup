@@ -25,6 +25,7 @@ urlpatterns = [
 
     url(r'^post_login$', views.post_login, name='post_login'),
     url(r'^post_signup$', views.post_signUp, name='post_signUp'),
+    url(r'^post_logout$', views.post_logout, name='logout'),
     url(r'^post_sendEmailVerifyCode$', views.post_sendEmailVerifyCode, name='post_sendEmailVerifyCode'),
     url(r'^post_sendMobileVerifyCode$', views.post_sendMobileVerifyCode, name='post_sendMobileVerifyCode'),
     url(r'^post_modifyUserInfo$', views.post_modifyUserInfo, name='post_modifyUserInfo'),
@@ -41,6 +42,7 @@ urlpatterns = [
     url(r'^post_putOnSale$', views.post_putOnSale, name='post_putOnSale'),
     url(r'^post_putOffSale$', views.post_putOffSale, name='post_putOffSale'),
     url(r'^post_buyCredit$', views.post_buyCredit, name='post_buyCredit'),
+    url(r'^post_couponDetail$', views.post_couponDetail, name='post_couponDetail'),
 
     url(r'^post_loginForAndroid$', androidViews.post_loginForAndroid, name='post_loginForAndroid'),
     url(r'^post_signUpForAndroid$', androidViews.post_signUpForAndroid, name='post_signUpForAndroid'),
