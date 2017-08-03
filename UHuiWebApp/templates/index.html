@@ -247,18 +247,18 @@
                 dataType: 'json',
                 sync: false,
                 success: function (data) {
-                    $("#couponDetail_name").innerText = data.info.product;
-                    $("#couponDetail_listPrice").innerText = '￥' + data.info.listPrice;
-                    $("#couponDetail_value").innerText = '(￥' + data.info.value + ')';
-                    $("#couponDetail_discount").innerText = data.info.discount;
-                    $("#couponDetail_brand").innerText = data.info.brand;
-                    $("#couponDetail_sellername").innerText = data.info.sellerInfo.nickname;
-                    $("#couponDetail_expiredTime").innerText = data.info.expiredTime;
+                    $("#couponDetail_name")[0].innerText = data.info.product;
+                    $("#couponDetail_listPrice")[0].innerText = '￥' + data.info.listPrice;
+                    $("#couponDetail_value")[0].innerText = '(￥' + data.info.value + ')';
+                    $("#couponDetail_discount")[0].innerText = data.info.discount;
+                    $("#couponDetail_brand")[0].innerText = data.info.brand;
+                    $("#couponDetail_sellername")[0].innerText = data.info.sellerInfo.nickname;
+                    $("#couponDetail_expiredTime")[0].innerText = data.info.expiredTime;
 
                     $.each(data.info.limits,function (key,value) {
                         var $limits = $("#couponDetail_limits").clone();
                     $limits.attr("id","");
-                    $limits.innerText = value;
+                    $limits[0].innerText = value;
                     $("#couponDetail_limits").after($limits);
 
                     })
