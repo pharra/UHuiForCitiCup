@@ -300,27 +300,17 @@
                 cache: false,
                 success: succFunction
             });
-
-
             function succFunction(Jsondata) {
                 var dialog = new auiDialog();
                 var msg = Jsondata.message;
                 if (Jsondata.errno === '5') {
-                    dialog.alert({
-                        title:"",
-                        msg:msg,
-                        button:['确定']
-                    }, function (ret) {
+                    $.alert(msg,"", function () {
                         window.location.href = "/login";
                     });
 
 
                 } else if (Jsondata.errno === '0') {
-                    dialog.alert({
-                        title:"",
-                        msg:msg,
-                        button:['确定']
-                    }, function (ret) {
+                    $.alert(msg,"", function () {
                         if (Jsondata.like === '0') {
                             $("#couponDetail_like").hide();
                             $("#couponDetail_dislike").show();
@@ -333,11 +323,7 @@
 
                 }
                 else {
-                    dialog.alert({
-                        title:"",
-                        msg:msg,
-                        button:['确定']
-                    })
+                    $.alert(msg,"")
                 }
 
             }
