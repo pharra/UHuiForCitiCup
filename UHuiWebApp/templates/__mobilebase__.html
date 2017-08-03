@@ -21,7 +21,7 @@
 <body>
 
 
-
+<div class="page">
 <div class="aui-content">
     {% block mobile_header %}
         <link href="/static/css/aui/aui-flex.css" rel="stylesheet">
@@ -40,7 +40,7 @@
                                     <input type="search" placeholder="请输入搜索内容" name="keyWord" id="search-input">
                                 </form>
                             </div>
-                            <div class="aui-searchbar-cancel" tapmod>取消&nbsp;</div>
+                            <div class="aui-searchbar-cancel aui-hide" tapmod>取消&nbsp;</div>
 
                         </div>
 
@@ -81,6 +81,7 @@
         </div>
         <script src="/static/js/jquery-3.2.1.js"></script>
         <script type="text/javascript">
+        $("body").css("overflow-y", "auto");
             $('#search-input').bind('input propertychange', function () {
                 $.ajax({
                     url: '/post_presearch',
@@ -124,6 +125,7 @@
                     $("header.aui-bar.aui-bar-nav").addClass("mobile-searchbar-active");
                     $("#mobile-search-body").show();
                     $("body").css("overflow-y", "hidden");
+                    $(".aui-searchbar-cancel").removeClass("aui-hide");
                 }
             }
             document.querySelector(".aui-searchbar-cancel").onclick = function () {
@@ -177,16 +179,15 @@ var tab = new auiTab({
 
     {% endblock %}
 </div>
+</div>
 </body>
 <script src="/static/js/jquery-3.2.1.js"></script>
 <script type="text/javascript">
-  $.config = {
-    autoInit: true //no recommend
-  }
 </script>
 <script type='text/javascript' src='/static/js/light7.min.js' charset='utf-8'></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/jquery.md5.js"></script>
+<script src="/static/js/jquery.cookie.js"></script>
 <script src="/static/js/index.js"></script>
 <script src="/static/js/search.js"></script>
 <script src="/static/js/coupons.js"></script>

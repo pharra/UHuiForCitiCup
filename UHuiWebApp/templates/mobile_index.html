@@ -27,65 +27,6 @@
         </div>
     </div>
 
-
-    <script src="/static/js/aui/aui-slide.js"></script>
-    <script src="/static/js/jquery-3.2.1.js"></script>
-    <script src="/static/js/dropload.min.js"></script>
-    <script src="/static/js/jquery.cookie.js"></script>
-    <script type="text/javascript">
-        $.cookie("indexM", "0", {path: "/"});
-        var img_height = ($("body").width() / 16) * 9;
-        var slide = new auiSlide({
-            container: document.getElementById("aui-slide"),
-            // "width":300,
-            "height": img_height,
-            "speed": 500,
-            "autoPlay": 3000, //自动播放
-            "loop": true,
-            "pageShow": true,
-            "pageStyle": 'dot',
-            'dotPosition': 'center',
-        });
-    </script>
-    <script type="text/javascript">
-        $('body').dropload({
-            scrollArea: window,
-            distance:50,
-            loadDownFn: function (me) {
-                $.ajax({
-                    type: 'POST',
-                    url: '/post_getCouponForMobileIndex',
-                    dataType: 'json',
-                    success: function (data) {
-                       $.each(data, function (key, value) {
-                    if (key === "coupons") {
-                        $.each(value, function (key, value) {
-                            var $couponsdom = $("#mobile_index_coupons").clone();
-                            $couponsdom.attr('id', '').removeClass("aui-hide").attr("id","couponsid_" + value.couponID);
-                            $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
-                            $couponsdom.find("p")[1].innerText = "估值:" + value.value;
-                            $couponsdom.find("p")[2].innerText = value.brand;
-                            $couponsdom.find("p")[3].innerText = value.discount;
-                            $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
-                            $("#mobile_index_coupons").parent().append($couponsdom);
-                            $("div[id^='couponsid_']").click(function () {
-                            var couponsid = $(this).attr("id").replace("couponsid_",'');
-                                window.location.href = "/commodity?couponID="+couponsid;
-                                });
-                        });
-                    }
-                });
-                        // 每次数据加载完，必须重置
-                        me.resetload();
-                    },
-                    error: function (xhr, type) {
-                        // 即使加载出错，也得重置
-                        me.resetload();
-                    }
-                });
-            }
-        });
-    </script>
     <section class="aui-grid">
         <div class="aui-row">
             <div class="aui-col-xs-3">
@@ -125,7 +66,7 @@
         </div>
     </section>
 
-    <div class="aui-flex-row" id="coupons_mobile_pullfresh">
+    <div class="aui-flex-row infinite-scroll" id="coupons_mobile_pullfresh" data-distance="100">
         <div>
             <div class="mobile-user-coupons aui-flex-col aui-hide point" id="mobile_index_coupons">
                 <div class="aui-flex-item-3 user-coupons-left">
@@ -159,10 +100,98 @@
             </div>
         </div>
     </div>
+    <div></div>
 {% endblock %}
 
 {% block scripts %}
+    <script src="/static/css/dropload.css"></script>
+    <script src="/static/js/dropload.js"></script>
+    <script type="text/javascript">
+        $.cookie("indexM", "0", {path: "/"});
+    </script>
+    <script type="text/javascript">
+    var loading = false;
+        $('#coupons_mobile_pullfresh').dropload({
+            scrollArea: window,
+            threshold:50,
+            autoLoad:true,
+            loadDownFn: function (me) {
+                if(loading) return;
+                $.ajax({
+                    type: 'POST',
+                    url: '/post_getCouponForMobileIndex',
+                    dataType: 'json',
+                    success: function (data) {
+                       $.each(data, function (key, value) {
+                    if (key === "coupons") {
+                        if(value === 'null'){
+                                loading = true;
+                                return;
 
+                            }
+                        $.each(value, function (key, value) {
+                            var $couponsdom = $("#mobile_index_coupons").clone();
+                            $couponsdom.attr('id', '').removeClass("aui-hide").attr("id","couponsid_" + value.couponID);
+                            $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
+                            $couponsdom.find("p")[1].innerText = "估值:" + value.value;
+                            $couponsdom.find("p")[2].innerText = value.brand;
+                            $couponsdom.find("p")[3].innerText = value.discount;
+                            $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
+                            $("#mobile_index_coupons").parent().append($couponsdom);
+                            $("div[id^='couponsid_']").click(function () {
+                            var couponsid = $(this).attr("id").replace("couponsid_",'');
+                                window.location.href = "/commodity?couponID="+couponsid;
+                                });
+
+                        });
+                        loading = false;
+                    }
+                });
+                        // 每次数据加载完，必须重置
+
+                        me.resetload();
+                    },
+                    error: function (xhr, type) {
+                        // 即使加载出错，也得重置
+                        loading = false;
+                        me.resetload();
+                    }
+                });
+            }
+        });
+        getcoupons_moblie();
+        function getcoupons_moblie() {
+            $.ajax({
+                type: 'POST',
+                url: '/post_getCouponForMobileIndex',
+                dataType: 'json',
+                sync:false,
+                success: function (data) {
+                    $.each(data, function (key, value) {
+                        if (key === "coupons") {
+                            $.each(value, function (key, value) {
+                                var $couponsdom = $("#mobile_index_coupons").clone();
+                                $couponsdom.attr('id', '').removeClass("aui-hide").attr("id", "couponsid_" + value.couponID);
+                                $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
+                                $couponsdom.find("p")[1].innerText = "估值:" + value.value;
+                                $couponsdom.find("p")[2].innerText = value.brand;
+                                $couponsdom.find("p")[3].innerText = value.discount;
+                                $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
+                                $("#mobile_index_coupons").parent().append($couponsdom);
+                                $("div[id^='couponsid_']").click(function () {
+                                    var couponsid = $(this).attr("id").replace("couponsid_", '');
+                                    window.location.href = "/commodity?couponID=" + couponsid;
+                                });
+                            });
+                        }
+                    });
+                    // 每次数据加载完，必须重置
+
+                },
+            });
+        }
+        $.init();
+    </script>
 {% endblock %}
 
 
