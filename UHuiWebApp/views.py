@@ -461,19 +461,21 @@ def post_getSoldOrLikeCouponsMobile(request, stat):
 
 
 def post_getCouponByCat(request):
-    catName = request.POST['catName']
-    page = int(request.POST['page']) - 1
+    catName = request.GET['catName']
+    page = int(request.GET['page']) - 1
     try:
         catid = models.Category.objects.get(name=catName)
     except ObjectDoesNotExist:
         return JsonResponse({'error': '类别不存在'})
     coupons = models.Coupon.objects.filter(catid=catid, stat='onSale')
-
+    maxPage = coupons.count()/16
+    if maxPage > int(maxPage):
+        maxPage = int(maxPage) + 1
     result = []
-    for i in range(32 * page, min(32 * (page + 1), coupons.count())):
+    for i in range(16 * page, min(16 * (page + 1), coupons.count())):
         result.append(couponInfo(coupons[i].couponid))
-    response = JsonResponse({'coupons': result})
-    return response
+
+    return render(request, 'mobile_search.html', {'coupons': result, 'keyWord': catName, 'maxPage': maxPage, 'currentPage': page + 1})
 
 
 def post_getCouponByCatIndex(request):
