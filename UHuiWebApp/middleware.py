@@ -36,7 +36,7 @@ class SimpleMiddleware(object):
             request.uid = uid
         elif url.startswith("/manage") or url.startswith('/user'):
             return HttpResponseRedirect("/login?method=login")
-        elif url.startswith('/mobile_my') or url.startswith('/mobile_user_') or url.startswith('/mobile_sell_final'):
+        elif url.startswith('/mobile_my') or url.startswith('/mobile_user') or url.startswith('/mobile_sell_final'):
             return HttpResponseRedirect("/mobile_login?method=login")
         elif url.startswith('/post_dislike') or url.startswith('/post_like'):
             return JsonResponse({'errno': '5', 'message': '您未登录'})
@@ -50,14 +50,18 @@ class SimpleMiddleware(object):
             if isinstance(response, dict):
                 response = JsonResponse(response)
             elif request.uid is not None and response.type == "JsonResponse":
-                print(response.content)
+                # print(response.content)
                 content = json.loads(bytes.decode(response.content))
                 userinfo = views.post_userInfo(request.uid)
+                message = views.post_getMessage(request)
                 for key in userinfo:
                     content[key] = userinfo[key]
+                for key in message:
+                    content[key] = message[key]
                 response.content = json.dumps(content)
             elif request.uid is not None and response.type == "render":
                 response.addContent(views.post_userInfo(request.uid))
+                response.addContent(views.post_getMessage(request))
 
         # Code to be executed for each request/response after
         # the view is called.

@@ -87,7 +87,7 @@
 {% block scripts %}
     <script type="text/javascript">
         function isUnsignedInteger(a) {
-            var reg = /^[1-9]\d*$/;
+            var reg = /^[1-9]\d*(.\d{1,2})?$/;
             return reg.test(a);
         }
         function getonsaleoroffsale(stat) {
