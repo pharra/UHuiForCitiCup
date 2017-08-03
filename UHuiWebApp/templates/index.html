@@ -169,7 +169,6 @@
     $.ajax({
         type: 'GET',
         url: '/commodity?couponID='+ $(this).attr("id"),
-        dataType: 'html',
         success: function (data) {
             alert(data);
             $("#iframe").innerHTML = (data);
