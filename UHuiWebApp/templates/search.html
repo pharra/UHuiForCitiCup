@@ -112,12 +112,8 @@
     </div>
 
     <nav aria-label="Page navigation" class="page-fix">
-        <ul class="pagination">
-            <li>
-                <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
+        <ul class="pagination" id="pagination">
+            <li><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
             <li><a href="#">1</a></li>
             <li><a href="#">2</a></li>
             <li><a href="#">3</a></li>
@@ -131,4 +127,18 @@
         </ul>
     </nav>
 </div>
-{% endblock %} {% block scripts %} {% endblock %}
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+    function getmaxandindexpage(max,current) {
+        $("#pagination").children().remove();
+        $("#pagination").append($("<li><a href=\""+  "post_search?keyWord={{ keyWord }}&page={{ currentPage - 1 }}"   +"\" aria-label=\"Previous\"><span aria-hidden=\"true\">&laquo;</span></a></li>"));
+        for(var i=1;i<=int;i++){
+            var $dom = $("<li><a href=\""+  "post_search?keyWord={{ keyWord }}&page=" + i +"\">"+ i + "</a></li>");
+            $("#pagination").append($dom);
+        }
+        $("#pagination").append($("<li><a href=\""+  "post_search?keyWord={{ keyWord }}&page={{ currentPage + 1 }}"   +"\" aria-label=\"Previous\"><span aria-hidden=\"true\">&raquo;</span></a></li>"));
+    }
+    getmaxandindexpage({{ maxPage }},{{ currentPage }});
+    </script>
+{% endblock %}
