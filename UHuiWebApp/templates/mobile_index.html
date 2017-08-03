@@ -5,16 +5,16 @@
     <link rel="stylesheet" type="text/css" href="/static/css/dropload.css"/>
 {% endblock %}
 {% block mobile_body %}
-    <div class="aui-row">
-    <div class="swiper-container" data-space-between='10' data-pagination='.swiper-pagination' data-autoplay="1000">
+
+    <div class="swiper-container" data-space-between='0' data-pagination='.swiper-pagination' data-autoplay="1000">
   <div class="swiper-wrapper">
     <div class="swiper-slide"><img src="static/images/dva_1.jpg" alt=""></div>
     <div class="swiper-slide"><img src="static/images/dva_1.jpg" alt=""></div>
     <div class="swiper-slide"><img src="static/images/dva_1.jpg" alt=""></div>
   </div>
-        <div class="swiper-pagination"></div>
+
 </div>
-    </div>
+
 
     <section class="aui-grid">
         <div class="aui-row">
@@ -89,13 +89,11 @@
             </div>
         </div>
     </div>
-    <div></div>
 {% endblock %}
 
 {% block scripts %}
     <script src="/static/css/dropload.css"></script>
         <script src="/static/js/dropload.js"></script>
-    <link rel="stylesheet" href="/static/js/light7-swiper.min.js">
 
 
     <script type="text/javascript">
@@ -182,7 +180,7 @@
                 },
             });
         }
-        $.init;
+        $.init();
 
     </script>
 {% endblock %}
