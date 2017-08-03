@@ -163,7 +163,7 @@
                         $("#Onsale").addClass("aui-hide");
                         $("#Offsale").removeClass("aui-hide");
                     }
-                    $("#listprice").innerText = Jsondata.listPrice;
+                    $("#listprice")[0].innerText ='￥' +  Jsondata.listPrice;
                 })
 
             }

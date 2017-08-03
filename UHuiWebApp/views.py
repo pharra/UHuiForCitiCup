@@ -304,9 +304,9 @@ def post_presearch(request):
 
 def post_search(request):
     # history = request.COOKIES.get('history', '')
-    key = request.POST.get('keyWord', False)
+    key = request.GET.get('keyWord', False)
     orderBy = request.POST.get('order', None)
-    page = int(request.POST.get('page', 1)) - 1
+    page = int(request.GET.get('page', 1)) - 1
     if not key:
         return render(request, 'search.html', {'keyWord': key})
     if not orderBy:
@@ -318,13 +318,13 @@ def post_search(request):
     brandIDResult = models.Brand.objects.filter(name__icontains=key)
     productCount = productResult.count()
     brandCount = 0
-    for i in range(0, 16):
-        if (16 * page + i) == productResult.count():
+    for i in range(0, 8):
+        if (8 * page + i) == productResult.count():
             break
-        result.append(couponInfo(productResult[16 * page + i].couponid))
+        result.append(couponInfo(productResult[8 * page + i].couponid))
     # 数量不够时的结果仍需补全
     for brand in brandIDResult:
-        pc = int(16 / brandIDResult.count())
+        pc = int(8 / brandIDResult.count())
         if pc == 0:
             pc = 1
         brandItem = models.Coupon.objects.filter(brandid=brand.brandid, stat='onSale')
@@ -333,12 +333,12 @@ def post_search(request):
             if (pc * page + i) == brandItem.count():
                 break
             result.append(couponInfo(brandItem[pc * page + i].couponid))
-    maxPage = max(productCount/16, brandCount/16)
+    maxPage = max(productCount/8, brandCount/8)
     if maxPage > int(maxPage):
         maxPage = int(maxPage) + 1
     # if not productResult.exists() and not brandIDResult.exists():
     #     return render(request, 'search.html')
-    response = render('search.html', {'coupons': result, 'keyWord': key, 'maxPage': maxPage})
+    response = render(request, 'search.html', {'coupons': result, 'keyWord': key, 'maxPage': maxPage, 'currentPage': page + 1})
     # response.set_cookie('history', addSearchHistory(key, history))
     return response
 
