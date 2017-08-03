@@ -684,7 +684,8 @@ def post_dislike(request):
     sellerID = request.uid
     likeList = models.Couponlist.objects.get(stat='like', userid=sellerID)
     if models.Listitem.objects.filter(listid=likeList.listid, couponid=couponID).exists():
-        models.Listitem.objects.get(listid=likeList.listid, couponid=couponID).delete()
+        coupon = models.Listitem.objects.get(listid=likeList.listid, couponid=couponID)
+        coupon.delete()
         return JsonResponse({'errno': '0', 'message': '取消关注成功', 'like': '0'})
     else:
         return JsonResponse({'errno': '1', 'message': '此优惠券不在关注列表中', 'like': '0'})
