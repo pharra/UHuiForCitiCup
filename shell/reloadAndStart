@@ -1,0 +1,7 @@
+#!/bin/bash
+cd /home/ubuntu/UHuiForCitiCup
+git pull
+./loadNginx
+sudo supervisorctl reload << EOF
+uhuiforciti123
+EOF

@@ -1,4 +1,4 @@
-{% extends "__base__.html" %}
+{% extends "__mobilebase__.html" %}
 {% block title %}充值中心{% endblock %}
 {% block src %}
  <link rel="stylesheet" type="text/css" href="/static/css/aui/aui-slide.css"/>
@@ -31,30 +31,12 @@
 {% block body %} {% endblock %}
 {% block scripts %}
 <script type="text/javascript">
-    var dialog = new auiDialog({})
     function addUbi(type){
         switch (type) {
         case "add":
-                dialog.prompt({
-                    title:"请输入充值金额",
-                    text:"",
-                    buttons:['取消','确定']
-                },function(ret){
-                    if(ret.buttonIndex == 2){
-                        dialog.alert({
-                            title:"",
-                            msg: "充值成功",
-                            buttons:['确定']
-                        })
-                        }
-                    else{
-                        dialog.alert({
-                            title:"",
-                            msg:"已取消充值操作",
-                            buttons:['确定']
-                        })
-                    }
-                })
+                $.prompt("请输入充值金额",function(value){
+                        $.alert("充值成功",'')
+                });
                 break;
         default:
             break;

@@ -1,0 +1,7 @@
+#!/bin/bash
+sudo /etc/init.d/nginx start << EOF
+uhuiforciti123
+EOF
+sudo /etc/init.d/nginx reload << EOF
+uhuiforciti123
+EOF

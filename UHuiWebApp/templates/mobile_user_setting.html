@@ -1,116 +1,273 @@
-{% extends "__base__.html" %}
-{% block title %}U惠网 {% endblock %}
-{% block src %} {% endblock %}
+{% extends "__mobilebase__.html" %}
+{% block title %}用户设置 {% endblock %}
+{% block src %}
+    <link href="/static/css/aui/aui-flex.css" rel="stylesheet">
+{% endblock %}
 {% block mobile_header %}
-<header class = "aui-bar aui-bar-nav">
-    <a class = "aui-pull-left aui-btn" href="javascript:history.back(-1)">
-        <span class = "aui-iconfont aui-icon-left"></span>
-    </a>
-    <div class = "aui-title">个人资料</div>
-</header>
+    <header class="aui-bar aui-bar-nav">
+        <a class="aui-pull-left aui-btn" href="javascript:history.back(-1)">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">个人资料</div>
+    </header>
 {% endblock %}
 {% block mobile_body %}
-<div class = "aui-content aui-margin-b-15">
-    <ul class = "aui-list aui-list-in">
-        <li class = "aui-list-item">
-            <div class = "aui-media-list-item-inner">
-                <div class = "aui-list-item-inner">
-                    <div class = "aui-list-item-title">头像</div>
+
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item aui-padded-15" id="changeavatar">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-title">头像</div>
+                    </div>
+                    <div class="aui-list-item-arrow"></div>
                 </div>
-                <div class = "aui-list-item-arrow"></div>
-            </div>
-            <div>
-                <img src="/static/images/dva_4.jpg" class = "mobile-max-user-photo">
-            </div>
-        </li>
-        <li class = "aui-list-item" onclick="change('name')">
-            <div class = "aui-list-item-inner aui-list-item-arrow">
-                <div class = "aui-list-item-title">用户名</div>
-                <div class = "aui-list-item-right" id = "old_name">有趣的名字</div>
-            </div>
-        </li>
-        <li class = "aui-list-item">
-            <div class="aui-list-item-inner">
-                <div class = "aui-list-item-title">性别</div>
-                <div style="float:right;">
-                <label style="padding:0 20px 0 0;"><input class="aui-radio" type="radio" name="radio" style="background-color:#dddddd;border-color:#dddddd;vertical-align:middle;" checked>男</label>
-                <label><input class="aui-radio" type="radio" name="radio" style="background-color:#dddddd;border-color:#dddddd;vertical-align:middle;">女</label>
+                <div>
+                    <img src="{{ avatar }}" class="mobile-max-user-photo">
                 </div>
+            </li>
+            <li class="aui-list-item" onclick="change('name')">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">用户名</div>
+                    <div class="aui-list-item-right" id="old_name">有趣的名字</div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">性别</div>
+                    <div style="float:right;">
+                        <label style="padding:0 20px 0 0;"><input class="aui-radio" type="radio" name="radio"
+                                                                  style="background-color:#dddddd;border-color:#dddddd;vertical-align:middle;"
+                                                                  checked>男</label>
+                        <label><input class="aui-radio" type="radio" name="radio"
+                                      style="background-color:#dddddd;border-color:#dddddd;vertical-align:middle;">女</label>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item" onclick="change('phonenum')">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">绑定手机号</div>
+                    <div class="aui-list-item-right" id="old_phonenum">187********</div>
+                </div>
+            </li>
+            <li class="aui-list-item" onclick="change('password')">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">修改密码</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div id="modal-wrapper" class="modal-wrapper  aui-hide">
+        <div id="modal-backdrop" class="modal-backdrop modal-backdrop-grey">
+            <div id="uploader" class="aui-flex-col aui-flex-middle aui-padded-15"
+                 style="margin-top: 200px;background: grey;color: white;">
+                <!--用来存放文件信息-->
+                <div id="imglist" class="aui-flex-item-12">
+                    <img id="fileList" src="{{ avatar }}" class="aui-padded-15 aui-flex-item-12">
+                </div>
+                <div id="thelist" class="aui-flex-item-12"></div>
+                <div class="progress progress-bar"></div>
+                <p class="state"></p>
+                <div id="picker" class="aui-btn mobile-button-color aui-btn-sm aui-flex-item-4">选择文件</div>
+                <div id="ctlBtn" class="aui-btn mobile-button-color aui-btn-sm aui-flex-item-4 aui-flex-offset-4">开始上传
+                </div>
+
             </div>
-        </li>
-    </ul>
-    <ul class = "aui-list aui-list-in">
-        <li class = "aui-list-item" onclick="change('phonenum')">
-            <div class = "aui-list-item-inner aui-list-item-arrow">
-                <div class = "aui-list-item-title">绑定手机号</div>
-                <div class = "aui-list-item-right" id = "old_phonenum">187********</div>
-            </div>
-        </li>
-        <li class = "aui-list-item" onclick="change('password')">
-            <div class = "aui-list-item-inner aui-list-item-arrow">
-                <div class = "aui-list-item-title">修改密码</div>
-            </div>
-        </li>
-    </ul>
-</div>
+
+
+        </div>
+    </div>
+    <script src="/static/js/jquery-3.2.1.js"></script>
+    <script src="http://cdn.staticfile.org/webuploader/0.1.0/webuploader.html5only.min.js"></script>
+
+    <script type="text/javascript">
+        apiready = function () {
+            api.parseTapmode();
+        };
+        $("#changeavatar").click(function () {
+            $("#modal-wrapper").removeClass("aui-hide");
+            $("body").css("overflow-y", "hidden");
+             var $list = $('#thelist'),
+                $btn = $('#ctlBtn'),
+                state = 'pending';
+            var uploader = WebUploader.create({
+
+                // 选完文件后，是否自动上传。
+                auto: false,
+
+
+                // 文件接收服务端。
+                server: '/post_changeAvatar',
+
+                // 选择文件的按钮。可选。
+                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                pick: '#picker',
+    compress: null,
+                // 只允许选择图片文件。
+                accept: {
+                    title: 'Images',
+                    extensions: 'gif,jpg,jpeg,bmp,png',
+                    mimeTypes: 'image/*'
+                }
+            });
+            uploader.option( 'compress', {
+    width: 600,
+    height: 600
+});
+            uploader.on('fileQueued', function (file) {
+                $list.children().remove();
+                $list.append('<div id="' + file.id + '" class="item">' +
+                    '<h4 style="color:white;text-align:center">' + file.name + '</h4>' +
+                    '<p style="color:white;text-align:center">等待上传...</p>' +
+                    '</div>');
+            });
+            uploader.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+
+                $li.find('p.state').text('上传中');
+
+                $percent.css('width', percentage * 100 + '%');
+            });
+            uploader.on('uploadSuccess', function (file) {
+                $('#' + file.id).find('p.state').text('已上传');
+            });
+
+            uploader.on('uploadError', function (file) {
+                $('#' + file.id).find('p.state').text('上传出错');
+            });
+
+            uploader.on('uploadComplete', function (file) {
+                $('#' + file.id).find('.progress').fadeOut();
+            });
+            uploader.on('fileQueued', function (file) {
+                var $li = $(
+                        '<div id="' + file.id + '" class="file-item thumbnail">' +
+                        '<img style="margin:auto;">' +
+                        '</div>'
+                    ),
+                    $img = $li.find('img');
+
+                var $imglist = $("#imglist");
+                $imglist.children().remove();
+                // $list为容器jQuery实例
+                $imglist.append($li);
+
+                // 创建缩略图
+                // 如果为非图片文件，可以不用调用此方法。
+                // thumbnailWidth x thumbnailHeight 为 100 x 100
+                uploader.makeThumb(file, function (error, src) {
+                    if (error) {
+                        $img.replaceWith('<span>不能预览</span>');
+                        return;
+                    }
+
+                    $img.attr('src', src);
+                });
+            });
+            uploader.on('all', function (type) {
+
+                if (type === 'startUpload') {
+                    state = 'uploading';
+                } else if (type === 'stopUpload') {
+                    state = 'paused';
+                } else if (type === 'uploadFinished') {
+                    state = 'done';
+                }
+
+                if (state === 'uploading') {
+                    $btn.text('暂停上传');
+                } else {
+                    $btn.text('开始上传');
+                }
+            });
+
+            $btn.on('click', function () {
+                if (state === 'uploading') {
+                    uploader.stop();
+                } else {
+                    uploader.upload();
+                }
+            });
+        });
+        // 初始化Web Uploader
+
+    </script>
 {% endblock %}
 {% block mobile_footer %} {% endblock %}
 {% block body %} {% endblock %}
 {% block scripts %}
-<script type="text/javascript">
-var dialog = new auiDialog({})
-function change(type){
-var old_name = document.getElementById("old_name").innerHTML;
-var old_phonenum = document.getElementById("old_phonenum").innerHTML;
-        switch (type) {
-        case "name":
-                dialog.prompt({
-                    title:"请输入新的用户名",
-                    text:old_name,
-                    buttons:['取消','确定']
-                },function(ret){
-                    if(ret.buttonIndex == 2){
-                        dialog.alert({
-                            title:"",
-                            msg: "修改完成,新用户名为" + ret.text,
-                            buttons:['确定']
-                        })
-                        old_name = ret.text;
-                    }
-                })
-                break;
-        case "phonenum":
-                dialog.prompt({
-                    title:"请输入新绑定的手机号",
-                    text:"",
-                    buttons:['取消','确定']
-                },function(ret){
-                    if(ret.buttonIndex == 2){
-                        dialog.alert({
-                            title:"",
-                            msg: "修改完成",
-                            buttons:['确定']
-                        });
-                    }
-                })
-                break;
-        case "password":
-                dialog.prompt({
-                    title:"请输入新的密码",
-                    text:"",
-                    buttons:['取消','确定']
-                },function(ret){
-                    if(ret.buttonIndex == 2){
-                        dialog.alert({
-                            title:"",
-                            msg: "修改完成",
-                            buttons:['确定']
-                        });
-                    }
-                })
-                break;
-            default:
-                break;
-                }}
-</script>
+
+
+    <script type="text/javascript">
+        var dialog = new auiDialog({})
+        function change(type) {
+            var old_name = document.getElementById("old_name").innerHTML;
+            var old_phonenum = document.getElementById("old_phonenum").innerHTML;
+            switch (type) {
+                case "name":
+                    dialog.prompt({
+                        title: "请输入新的用户名",
+                        text: old_name,
+                        buttons: ['取消', '确定']
+                    }, function (ret) {
+                        if (ret.buttonIndex == 2) {
+                            dialog.alert({
+                                title: "",
+                                msg: "修改完成,新用户名为" + ret.text,
+                                buttons: ['确定']
+                            })
+                            old_name = ret.text;
+                        }
+                    })
+                    break;
+                case "phonenum":
+                    dialog.prompt({
+                        title: "请输入新绑定的手机号",
+                        text: "",
+                        buttons: ['取消', '确定']
+                    }, function (ret) {
+                        if (ret.buttonIndex == 2) {
+                            dialog.alert({
+                                title: "",
+                                msg: "修改完成",
+                                buttons: ['确定']
+                            });
+                        }
+                    })
+                    break;
+                case "password":
+                    dialog.prompt({
+                        title: "请输入新的密码",
+                        text: "",
+                        buttons: ['取消', '确定']
+                    }, function (ret) {
+                        if (ret.buttonIndex == 2) {
+                            dialog.alert({
+                                title: "",
+                                msg: "修改完成",
+                                buttons: ['确定']
+                            });
+                        }
+                    })
+                    break;
+                default:
+                    break;
+            }
+        }
+        function changeavatar() {
+
+        }
+    </script>
 {% endblock %}

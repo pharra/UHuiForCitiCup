@@ -1,5 +1,5 @@
 {% extends "__mobilebase__.html" %}
-{% block title %}商品详情 {% endblock %}
+{% block title %}优惠券详情{% endblock %}
 {% block src %} {% endblock %}
 {% block mobile_header %}{% endblock %}
 {% block mobile_body %}
@@ -19,7 +19,8 @@
                             <div>
                                 {{ info.product }}
                             </div>
-                            <div style="color:#ff5a00;font-size:30px;line-height:30px;padding:0px 0px 0px 9px;">
+                            <div style="color:#ff5a00;font-size:30px;line-height:30px;padding:0px 0px 0px 9px;"
+                                 id="listprice">
                                 ￥{{ info.listPrice }}
                             </div>
                             <div style="color:#ff5a00;padding:0px 0px 0px 15px;margin:0px 0px 10px 0px;">
@@ -70,84 +71,107 @@
             </a>
         </div>
         <div class="aui-bar-tab-item" tapmode
-             onclick="post_changelike('/post_like')" id="dislike">
+             onclick="post_changesalestat('/post_putOnSale','您确定要上架吗？','取消','确定上架')" id="Offsale">
             <i class="aui-iconfont aui-icon-star"></i>
-            <div class="aui-bar-tab-label">关注</div>
+            <div class="aui-bar-tab-label">上架</div>
         </div>
         <div class="aui-bar-tab-item aui-hide" tapmode
-             onclick="post_changelike('/post_dislike')" id="like">
+             onclick="post_changesalestat('/post_putOffSale','您确定要下架吗？','取消','确定下架')" id="Onsale">
             <i class="aui-iconfont aui-icon-star"></i>
-            <div class="aui-bar-tab-label">已关注</div>
+            <div class="aui-bar-tab-label">下架</div>
         </div>
-        <div class="aui-bar-tab-item" style="background-color:white;color:#ff5a00" tapmode>
-            <a href="/mobile_sell_final?couponID={{ info.couponID }}" style="color:#ff5a00;">
-                <i class="aui-iconfont aui-icon-cart"></i>
-                <div class="aui-bar-tab-label">购买</div>
-            </a>
-        </div>
+
     </footer>
 {% endblock %}
 {% block mobile_footer %}{% endblock %}
 {% block scripts %}
-
     <script type="text/javascript">
-
-        function getlikeordislike(like) {
-            if (like === '1') {
-                $("#dislike").addClass("aui-hide");
-                $("#like").removeClass("aui-hide");
+        function isUnsignedInteger(a) {
+            var reg = /^[1-9]\d*$/;
+            return reg.test(a);
+        }
+        function getonsaleoroffsale(stat) {
+            if (stat === 'onSale') {
+                $("#Offsale").addClass("aui-hide");
+                $("#Onsale").removeClass("aui-hide");
             }
             else {
-                $("#like").addClass("aui-hide");
-                $("#dislike").removeClass("aui-hide");
+                $("#Onsale").addClass("aui-hide");
+                $("#Offsale").removeClass("aui-hide");
             }
         }
 
-        getlikeordislike('{{ like }}');
+        getonsaleoroffsale('{{ info.stat }}');
 
-        function post_changelike(url) {
+        function post_changesalestat(url, message, button_left, button_right) {
+            if (url === '/post_putOnSale') {
+                $.alert(message, '', function () {
+
+                        $.prompt('输入价格', function (value) {
+                            if (isUnsignedInteger(value)) {
+                                $.ajax({
+                                    async: false,
+                                    url: url,
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    data: {'couponID': '{{ info.couponID }}', 'listPrice': value},
+                                    timeout: 3000,
+                                    cache: false,
+                                    success: succFunction
+                                });
+                            }
+                            else {
+                                $.alert("请输入正确价格",'');
+                            }
+                        });
 
 
-            $.ajax({
-                url: url,
-                type: 'POST',
-                dataType: 'json',
-                data: {'couponID': '{{ info.couponID }}'},
-                timeout: 3000,
-                cache: false,
-                success: succFunction
-            });
-
-
-            function succFunction(Jsondata) {
-                var msg = Jsondata.message;
-                if (Jsondata.errno === '5') {
-                    $.alert(msg, '', function () {
-                        window.location.href = "/login";
-                    });
-
-
-                } else if (Jsondata.errno === '0') {
-                    $.alert(msg, '', function () {
-                        if (Jsondata.like === '0') {
-                            $("#like").addClass("aui-hide");
-                            $("#dislike").removeClass("aui-hide");
-                        }
-                        else {
-                            $("#dislike").addClass("aui-hide");
-                            $("#like").removeClass("aui-hide");
-                        }
-                    })
-
-                }
-                else {
-                    $.alert(msg, '',)
-                }
+                })
 
             }
 
+
+            else {
+                $.confirm(message,'', function () {
+
+                        $.ajax({
+                            async: false,
+                            url: url,
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {'couponID': '{{ info.couponID }}'},
+                            timeout: 3000,
+                            cache: false,
+                            success: succFunction
+                        });
+
+
+
+                })
+            }
         }
 
+        function succFunction(Jsondata) {
+            var msg = Jsondata.message;
+            if (Jsondata.errno === '0') {
+                $.alert(msg,'', function () {
+                    if (Jsondata.stat === 'onSale') {
+                        $("#Offsale").addClass("aui-hide");
+                        $("#Onsale").removeClass("aui-hide");
+                    }
+                    else {
+                        $("#Onsale").addClass("aui-hide");
+                        $("#Offsale").removeClass("aui-hide");
+                    }
+                    $("#listprice").innerText = Jsondata.listPrice;
+                })
+
+            }
+            else {
+                $.alert(msg,'');
+            }
+
+        }
     </script>
 {% endblock %}
 

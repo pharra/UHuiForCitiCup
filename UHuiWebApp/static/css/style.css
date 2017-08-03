@@ -293,7 +293,7 @@ li {
     width: 300px;
 }
 
-.content {
+.content-text {
     text-align: center;
 }
 
@@ -806,7 +806,7 @@ p {
     border-radius:50%;
     width:50px;
     height:50px;
-    margin:5px 25px 0px 0px;
+    margin:0px 25px 0px 0px;
 }
 .mobile-content {
     text-align: center;
@@ -857,6 +857,10 @@ p {
     z-index: 0;
     background-color: white;
     transition: background-color .3s ease-out;
+}
+
+.modal-backdrop.modal-backdrop-grey{
+    background: rgba(0,0,0,0.5);
 }
 
 .mobile-searchbar-active.aui-bar-nav{
@@ -912,6 +916,11 @@ p {
 }
 
 .mobile-login .mobile-button-color{
+    background: #ff5a00;
+    color: white;
+}
+
+.aui-btn.mobile-button-color{
     background: #ff5a00;
     color: white;
 }

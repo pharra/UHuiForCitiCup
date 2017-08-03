@@ -1,12 +1,13 @@
-{% extends "__base__.html" %} {% block title %}用户登录 {% endblock %}
+{% extends "__mobilebase__.html" %} {% block title %}用户登录 {% endblock %}
 {% block src %}
-
+    <link media="screen and (max-width:768px)" href="/static/css/aui/aui-flex.css" rel="stylesheet">
+{% endblock %}
+{% block mobile_header %}
 {% endblock %}
 
 
 
-
-<div class="being-hidden">
+{% block mobile_body %}
     <div style="background: white;">
     <div class="aui-flex-col aui-padded-10 mobile-max-user-background">
         <div class="aui-flex-item-2">
@@ -84,16 +85,10 @@
     </div>
 
 </div>
-</div>
-
-
-
-  {% block computer_navbar %}
-{% endblock %}
-{% block body %}
+    <div class="aui-hide">
     <div class="container">
         <div class="form-container">
-            <div class="content-text " style="padding-top: 100px;">
+            <div class="content-text">
                 <h1>U惠</h1>
                 <h3>FBI WARNING</h3>
             </div>
@@ -216,7 +211,15 @@
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
+{% block mobile_footer %}
+{% endblock %}
+
+
+
+
+
 {% block scripts %}
     <script type="text/javascript">
     (function ($) {
