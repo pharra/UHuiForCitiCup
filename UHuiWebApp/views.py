@@ -701,7 +701,7 @@ def post_buy(request):
     # 优惠券由卖家的own列表移除
     sellerOwnList = models.Couponlist.objects.get(stat='own', userid=sellerID)
     models.Listitem.objects.get(listid=sellerOwnList.listid, couponid=couponID).delete()
-    # # 优惠券由卖家的onSale列表移除
+    # 优惠券由卖家的onSale列表移除
     # onSaleList = models.Couponlist.objects.get(stat='onSale', userid=sellerID)
     # models.Listitem.objects.get(listid=onSaleList.listid, couponid=couponID).delete()
     # 优惠券存入卖家的sold列表
