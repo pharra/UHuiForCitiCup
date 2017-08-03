@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^mobile_mylikecoupons$', views.mobile_mylikecoupons, name='mobile_mylikecoupons'),
     url(r'^mobile_login$', views.mobile_login, name='mobile_login'),
     url(r'^mobile_index$', views.mobile_index, name='mobile_index'),
+    url(r'^mobile_user$', views.mobile_user, name='mobile_user'),
 
     url(r'^post_login$', views.post_login, name='post_login'),
     url(r'^post_signup$', views.post_signUp, name='post_signUp'),

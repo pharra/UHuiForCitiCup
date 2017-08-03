@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from UHuiProject.settings import DEBUG
 from django.core.exceptions import ObjectDoesNotExist
 from UHuiWebApp import models
-from .shortcut import JsonResponse, render, render_to_response
+from .shortcut import JsonResponse, render
 
 import smtplib
 from email.mime.text import MIMEText
@@ -338,7 +338,7 @@ def post_search(request):
         maxPage = int(maxPage) + 1
     # if not productResult.exists() and not brandIDResult.exists():
     #     return render(request, 'search.html')
-    response = render_to_response('search.html', {'coupons': result, 'keyWord': key, 'maxPage': maxPage})
+    response = render('search.html', {'coupons': result, 'keyWord': key, 'maxPage': maxPage})
     # response.set_cookie('history', addSearchHistory(key, history))
     return response
 
@@ -875,6 +875,10 @@ def mobile_user_setting(request):
 
 def mobile_user_wallet(request):
     return render(request, 'mobile_user_wallet.html')
+
+
+def mobile_user(request):
+    return render(request, 'mobile_user.html', post_getUserCoupon(request))
 
 
 def mobile_couponsmessage(request):
