@@ -1,4 +1,4 @@
-{% extends "__base__.html" %}
+{% extends "__mobilebase__.html" %}
 {% block title %}
     消息
 {% endblock %}
@@ -10,7 +10,9 @@
 {% block mobile_header %}
     <div class="aui-flex-col aui-padded-10 mobile-max-user-background">
         <div class="aui-flex-item-4">
+            <a href="javascript:history.back(-1)" class = "external" style="color:white;">
             <i class="aui-iconfont aui-icon-left"></i>
+            </a>
         </div>
         <div class="aui-flex-item-4 content-text">消息
         </div>
