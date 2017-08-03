@@ -11,7 +11,7 @@
             <ul class="category-menu">
                 <!--#homepage_top-->
                 <a href="#">
-                    <li><img src="/static/images/置顶箭头.png">推荐</li>
+                    <li><img src="/static/images/推荐-橙.png">推荐</li>
                 </a>
                 <a href="#catid_生活百货">
                     <li><img src="/static/images/生活百货-1.png">百货</li>
@@ -98,7 +98,7 @@
                     <h3 class="content-text" style="color: #ff5a00;font-weight: bolder;"
                         id="catid_{{ key }}">{{ key }}</h3>
                     {% for i in value %}
-                        <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6 coupon_detail" id="{{ i.couponID }}">
+                        <div class="point coupon_detail col-xs-6 col-md-6 col-lg-6 col-sm-6 " id="{{ i.couponID }}">
                             <div class="user-coupons row">
                                 <div class="col-xs-3 col-md-3 col-lg-3 col-sm-3 user-coupons-left">
                                     <p class="user-coupons-left-value">
@@ -142,88 +142,6 @@
         </div>
 
     </div>
-    <div class="modal-wrapper being-hidden">
-        <div class="modal-backdrop modal-backdrop-white">
-            <div class="index_coupons_detail">
-                <div class="row">
-                    <div class="col-xs-12 col-lg-12 col-md-12 col-sm-12 content-text ">
-                        <div class="coupons_detail_title" >
-                            优惠券详情
-                            <div class="being-hidden" id="couponDetail_ID"></div>
-                        </div>
-                    </div>
-                    <div class="clear"></div>
-                    <div style="padding: 15px;">
-                        <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4">
-                            <img src="/static/images/dva_1.jpg" style="width: 100%;">
-                            <div style="padding: 15px;" class="row">
-                                <div class="point button col-xs-6 col-lg-6 col-md-6 col-sm-6 col-xs-offset-3 col-lg-offset-3 col-md-offset-3 col-sm-offset-3"
-                             id="couponDetail_like" onclick="post_changelike('post_like')">
-                            关注
-                        </div>
-                        <div class="point being-hidden button col-xs-6 col-lg-6 col-md-6 col-sm-6 col-xs-offset-3 col-lg-offset-3 col-md-offset-3 col-sm-offset-3"
-                             id="couponDetail_dislike" onclick="post_changelike('post_dislike')">
-                            已关注
-                        </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8 row">
-                            <div class="col-xs-12 col-lg-12 col-md-12 col-sm-12">
-                                <span style="font-size: 20px;color: #ff5a00;" id="couponDetail_name">暑期超值优惠券</span>
-                            </div>
-                            <div class="col-xs-12 col-lg-12 col-md-12 col-sm-12">
-                                <span style="font-size: 18px;color: #ff5a00;" id="couponDetail_listPrice"></span><span
-                                    id="couponDetail_value"></span>
-                            </div>
-                            <div class="col-xs-12 col-lg-12 col-md-12 col-sm-12">
-                                <span class="float-left">优惠券额度</span> <span class="float-right"
-                                                                            id="couponDetail_discount"></span>
-                            </div>
-                            <div class="col-xs-12 col-lg-12 col-md-12 col-sm-12">
-                                <span class="float-left">商家名</span> <span class="float-right"
-                                                                          id="couponDetail_brand"></span>
-                            </div>
-                            <div class="col-xs-12 col-lg-12 col-md-12 col-sm-12">
-                                <span class="float-left">卖家</span> <span class="float-right"
-                                                                         id="couponDetail_sellername"></span>
-                            </div>
-                            <div class="col-xs-12 col-lg-12 col-md-12 col-sm-12">
-                                <span class="float-left">到期时间</span> <span class="float-right"
-                                                                           id="couponDetail_expiredTime"></span>
-                            </div>
-                            <div class="col-xs-12 col-lg-12 col-md-12 col-sm-12">
-                                <p style="margin: 0;">使用限制:</p>
-                                <p style="margin: 0;height: 14px;line-height:14px;font-size: 14px;"
-                                   id="couponDetail_limits"></p>
-                            </div>
-
-                        </div>
-                        <div class="clear"></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div style="padding: 15px;">
-                        <div class="point button col-xs-4 col-lg-4 col-md-4 col-sm-4 col-xs-offset-2 col-lg-offset-2 col-md-offset-2 col-sm-offset-2" onclick="returnindex()">
-                            返回
-                        </div>
-                        <div class="point button col-xs-4 col-lg-4 col-md-4 col-sm-4 col-xs-offset-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-4"
-                             id="couponDetail_putonsale">
-                            上架
-                        </div>
-                        <div class="point being-hidden button col-xs-4 col-lg-4 col-md-4 col-sm-4 col-xs-offset-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-4 "
-                             id="couponDetail_putoffsale">
-                            下架
-                        </div>
-                        <div class="point being-hidden button col-xs-4 col-lg-4 col-md-4 col-sm-4 col-xs-offset-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-4"
-                             id="couponDetail_buy">
-                            购买
-                        </div>
-                        <div class="clear"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 {% endblock %}
 {% block scripts %}
@@ -239,98 +157,9 @@
 
             });
         });
-        $(".coupon_detail").click(function () {
-            $(".modal-wrapper").show();
-            $("body").css("overflow","hidden");
-            $.ajax({
-                type: 'POST',
-                url: '/post_couponDetail',
-                data: {"couponID": $(this).attr("id")},
-                dataType: 'json',
-                sync: false,
-                success: function (data) {
-                    $("#couponDetail_limits").siblings().remove();
-                    $("#couponDetail_name")[0].innerText = data.info.product;
-                    $("#couponDetail_listPrice")[0].innerText = '￥' + data.info.listPrice;
-                    $("#couponDetail_value")[0].innerText = '(￥' + data.info.value + ')';
-                    $("#couponDetail_discount")[0].innerText = data.info.discount;
-                    $("#couponDetail_brand")[0].innerText = data.info.brand;
-                    $("#couponDetail_sellername")[0].innerText = data.info.sellerInfo.nickname;
-                    $("#couponDetail_expiredTime")[0].innerText = data.info.expiredTime;
-                    $("#couponDetail_ID")[0].innerText = data.info.couponID;
-                    $.each(data.info.limits,function (key,value) {
-                        var $limits = $("#couponDetail_limits").clone();
-                    $limits.attr("id","");
-                    $limits[0].innerText = value;
-                    $("#couponDetail_limits").after($limits);
+        </script>
 
-                    });
-                    getstat(data.stat);
 
-                }
-            })
-
-        })
-    function getstat(stat) {
-            $("#couponDetail_putonsale").hide();
-            $("#couponDetail_putoffsale").hide();
-            $("#couponDetail_buy").hide();
-            $("#couponDetail_like").hide();
-            $("#couponDetail_dislike").hide();
-        if(stat == "0"){
-            $("#couponDetail_buy").show();
-            $("#couponDetail_like").show();
-        }
-        else if(stat == "1"){
-            $("#couponDetail_dislike").show();
-            $("#couponDetail_buy").show();
-        }
-        else if(stat == "2"){
-            $("#couponDetail_putoffsale").show();
-        }
-        else if(stat == "3"){
-            $("#couponDetail_putonsale").show();
-        }
-    }
-    function returnindex() {
-        $(".modal-wrapper").hide();
-            $("body").css("overflow","auto");
-    }
-    function post_changelike(url) {
-            $.ajax({
-                url: url,
-                type: 'POST',
-                dataType: 'json',
-                data: {'couponID': $("#couponDetail_ID")[0].innerText},
-                timeout: 3000,
-                cache: false,
-                success: succFunction
-            });
-            function succFunction(Jsondata) {
-                var msg = Jsondata.message;
-                if (Jsondata.errno === '5') {
-                    window.location.href = "/login";
-                }
-                else if (Jsondata.errno === '0') {
-
-                        if (Jsondata.like === '0') {
-                            $("#couponDetail_like").show();
-                            $("#couponDetail_dislike").hide();
-                        }
-                        else {
-                           $("#couponDetail_like").hide();
-                            $("#couponDetail_dislike").show();
-                        }
-
-                }
-                else {
-                    alert(msg)
-                }
-
-            }
-
-        }
-    </script>
 {% endblock %}
 
 
