@@ -1,4 +1,5 @@
 import json
+from decimal import Decimal
 
 from django.http import HttpResponseRedirect
 
@@ -6,6 +7,7 @@ from UHuiProject.settings import DEBUG
 from django.core.exceptions import ObjectDoesNotExist
 from UHuiWebApp import models
 from .shortcut import JsonResponse, render
+
 
 import smtplib
 from email.mime.text import MIMEText
@@ -227,9 +229,9 @@ def changeCouponStat(couponID, sellerID, stat, listPrice='-1'):
         return JsonResponse({'errno': '1', 'message': '优惠券不存在', 'stat': '', 'listPrice': ''})
 
     if stat == 'onSale' and coupon.stat != 'store':
-        return JsonResponse({'errno': '1', 'message': '上架失败', 'stat': coupon.stat, 'listPrice': coupon.listprice})
+        return JsonResponse({'errno': '1', 'message': '上架失败', 'stat': coupon.stat, 'listPrice': str(coupon.listprice).rstrip('0').rstrip('.')})
     elif stat == 'store' and coupon.stat != 'onSale':
-        return JsonResponse({'errno': '1', 'message': '下架失败', 'stat': coupon.stat, 'listPrice': coupon.listprice})
+        return JsonResponse({'errno': '1', 'message': '下架失败', 'stat': coupon.stat, 'listPrice': str(coupon.listprice).rstrip('0').rstrip('.')})
 
     coupon.stat = stat
     coupon.save()
@@ -241,9 +243,10 @@ def changeCouponStat(couponID, sellerID, stat, listPrice='-1'):
     elif stat == 'onSale':
         models.Listitem.objects.create(listid=onSaleList, couponid=coupon)
         if listPrice != '-1':
-            coupon.listprice = float(listPrice)
+
+            coupon.listprice = Decimal(listPrice)
             coupon.save()
-    return JsonResponse({'errno': '0', 'message': '操作成功', 'stat': coupon.stat, 'listPrice': coupon.listprice})
+    return JsonResponse({'errno': '0', 'message': '操作成功', 'stat': coupon.stat, 'listPrice': str(coupon.listprice).rstrip('0').rstrip('.')})
 
 
 # 获取数据
@@ -545,8 +548,8 @@ def couponInfo(couponID):
     couponInfo['brand'] = coupon.brandid.name
     couponInfo['cat'] = coupon.catid.name
     couponInfo['catID'] = coupon.catid.catid
-    couponInfo['listPrice'] = str(coupon.listprice)
-    couponInfo['value'] = str(coupon.value)
+    couponInfo['listPrice'] = str(coupon.listprice).rstrip('0').rstrip('.')
+    couponInfo['value'] = str(coupon.value).rstrip('0').rstrip('.')
     couponInfo['product'] = coupon.product
     couponInfo['discount'] = coupon.discount
     couponInfo['stat'] = coupon.stat
@@ -899,11 +902,11 @@ def mobile_myboughtcoupons(request):
 
 
 def mobile_mysoldcoupons(request):
-    return render(request, 'mobile_mysoldcoupons.html', post_getSoldOrLikeCouponsMobile(request, 'sold'))
+    return render(request, 'mobile_mysoldcoupons.html', post_getSoldOrLikeCouponsMobile(request, 'Sold'))
 
 
 def mobile_mylikecoupons(request):
-    return render(request, 'mobile_mylikecoupons.html', post_getSoldOrLikeCouponsMobile(request, 'like'))
+    return render(request, 'mobile_mylikecoupons.html', post_getSoldOrLikeCouponsMobile(request, 'Like'))
 
 
 # post方法加上前缀post_

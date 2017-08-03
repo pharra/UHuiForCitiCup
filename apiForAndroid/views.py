@@ -438,7 +438,7 @@ def post_addCoupon(request):
     brandName = request.POST.get('brand')
     cat = request.POST.get('category')
     expiredTime = datetime.datetime.strptime(request.POST.get('expiredTime'), '%Y-%m-%d')
-    listPrice = float(request.POST.get('listPrice'))
+    listPrice = Decimal(request.POST.get('listPrice'))
     product = request.POST.get('product')
     discount = request.POST.get('discount')
     stat = request.POST.get('stat', 'store')

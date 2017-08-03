@@ -36,8 +36,8 @@ class Coupon(models.Model):
     couponid = models.CharField(db_column='couponID', primary_key=True, max_length=16)  # Field name made lowercase.
     brandid = models.ForeignKey(Brand, models.DO_NOTHING, db_column='brandID', blank=True, null=True)  # Field name made lowercase.
     catid = models.ForeignKey(Category, models.DO_NOTHING, db_column='catID', blank=True, null=True)  # Field name made lowercase.
-    listprice = models.DecimalField(db_column='listPrice', max_digits=10, decimal_places=0, blank=True, null=True)  # Field name made lowercase.
-    value = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
+    listprice = models.DecimalField(db_column='listPrice', max_digits=10, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    value = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     product = models.CharField(max_length=16, blank=True, null=True)
     discount = models.CharField(max_length=16, blank=True, null=True)
     stat = models.CharField(max_length=7, blank=True, null=True)
@@ -114,7 +114,7 @@ class User(models.Model):
     avatar = models.ImageField(upload_to='images/avatar', blank=True, null=True)
     password = models.CharField(max_length=32)
     email = models.CharField(unique=True, max_length=32, blank=True, null=True)
-    ucoin = models.IntegerField(db_column='UCoin')  # Field name made lowercase.
+    ucoin = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
     hasconfirm = models.IntegerField(db_column='hasConfirm')  # Field name made lowercase.
 
 
