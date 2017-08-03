@@ -325,6 +325,8 @@ def post_search(request):
     # 数量不够时的结果仍需补全
     for brand in brandIDResult:
         pc = int(16 / brandIDResult.count())
+        if pc == 0:
+            pc = 1
         brandItem = models.Coupon.objects.filter(brandid=brand.brandid, stat='onSale')
         brandCount = brandCount + brandItem.count()
         for i in range(0, pc):
@@ -475,6 +477,12 @@ def post_getCouponByCatIndex(request):
     # values = coupons.values()
     # values.reverse()
     # couponByCat[cat.name] = values[0:8]
+    emptyCat = []
+    for key in couponByCat:
+        if not couponByCat[key]:
+            emptyCat.append(key)
+    for i in emptyCat:
+        couponByCat.pop(i)
     result = {'coupons': couponByCat}
     return result
 
