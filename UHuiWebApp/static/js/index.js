@@ -185,6 +185,7 @@ function login_handler() {
         data: {"username": $("#login-username").val(), "password": $.md5($("#login-password").val() + "UHui")},
         timeout: 3000,
         cache: false,
+        async:false,
         beforeSend: LoadFunction,
         error: erryFunction,
         success: succFunction
@@ -422,3 +423,8 @@ $(".max").click(function () {
     var tab_title = '#info_' + $(this).attr("id");
     $(tab_title).children().click();
 });
+
+function logout() {
+    $.cookie("uhui",'0');
+    window.location.href = "/";
+}
