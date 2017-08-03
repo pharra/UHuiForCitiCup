@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="utf-8">
@@ -8,300 +8,165 @@
           content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <meta name="format-detection" content="telemobile=no,email=no,date=no,address=no">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" media="screen and (min-width:767px)" href="/static/css/bootstrap.min.css"/>
-    <link rel="stylesheet" media="screen and (min-width:767px)" href="/static/css/forcomputer.css"/>
-    <link rel="stylesheet" media="screen and (max-width:768px)" href="/static/css/aui/aui.css"/>
-
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css"/>
     <link href="/static/css/style.css" rel="stylesheet">
     <link href="/static/css/__base__.css" rel="stylesheet">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     {% block src %}{% endblock %}
 
 </head>
 
 <body>
-<div id="allmap"></div>
-<div class="mobile-body">
-    <div class="aui-content">
-        {% block mobile_header %}
-            <link href="/static/css/aui/aui-flex.css" rel="stylesheet">
-            <div id="modal-wrapper">
-                <div id="modal-backdrop">
-                    <header class="aui-bar aui-bar-nav">
-                        <div class=" aui-col-xs-2 city-position aui-ellipsis-1 aui-font-size-14">
-                            <i class="fa fa-location-arrow"></i>
-                        </div>
 
-                        <div class=" aui-col-xs-10" id="mobile-search-input">
-                            <div class="aui-searchbar" id="search">
-                                <div class="aui-searchbar-input aui-border-radius" tapmode onclick="mobile_doSearch()">
-                                    <i class="aui-iconfont aui-icon-search"></i>
-                                    <form action="/post_search" method="post">
-                                        <input type="search" placeholder="请输入搜索内容" name="keyWord" id="search-input">
-                                    </form>
-                                </div>
-                                <div class="aui-searchbar-cancel" tapmod>取消&nbsp;</div>
-
-                            </div>
-
-                        </div>
-                    </header>
+{% block computer_navbar %}
+    <nav class="navbar">
 
 
-                    <div class="being-hidden" id="mobile-search-body">
-                        <div class="mobile_search_history aui-padded-0" id="mobile_presearch">
-                            <div class="aui-hide aui-padded-15" id="mobile_presearch_content">
-                                <i class="aui-iconfont aui-icon-date float-left"></i>
-                                <div class="float-left aui-padded-l-5"></div>
-
-                                <div class="clear"></div>
-                            </div>
-                        </div>
-                        <div class="mobile_search_history">
-                            <div>
-                                <i class="aui-iconfont aui-icon-date float-left"></i>
-                                <div class="float-left aui-padded-l-5">搜索记录</div>
-                                <i class="aui-iconfont aui-icon-close float-right"></i>
-                                <div class="clear"></div>
-                            </div>
-                            <div class="mobile-search-history-clear">清除搜索记录</div>
-                        </div>
-                        <div class="mobile-recommend-search aui-flex-col aui-padded-15">
-
-                            <div class="mobile-recommend-search-title aui-flex-item-12 aui-padded-b-10">搜索常用分类</div>
-                            <div class="aui-flex-item-4">家居家具</div>
-                            <div class="aui-flex-item-4">家居家具</div>
-                            <div class="aui-flex-item-4">家居家具</div>
-                            <div class="aui-flex-item-4">家居家具</div>
-                            <div class="aui-flex-item-4">家居家具</div>
-                            <div class="aui-flex-item-4">家居家具</div>
-                        </div>
+        <div class="container">
+            <div class="row">
+                <!--Logo-->
+                <div class="navbar-header col-xs-1 col-lg-1 col-md-1  col-sm-1 ">
+                    <div>
+                        <a class="navbar-brand" href="/" style="color: #ff5a00;">U惠</a>
                     </div>
                 </div>
-            </div>
-            <script src="/static/js/jquery-3.2.1.js"></script>
-            <script type="text/javascript">
-                $('#search-input').bind('input propertychange', function () {
-                    $.ajax({
-                        url: '/post_presearch',
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {'keyWord': $('#search-input').val()},
-                        timeout: 3000,
-                        cache: false,
-                        success: succFunction
-                    });
-                    function succFunction(data) {
-                        $("#mobile_presearch_content").nextAll().remove();
-                        $.each(data.result, function (key, value) {
-                            var $presearch = $("#mobile_presearch_content").clone();
-                            $presearch.removeClass("aui-hide").attr("id", 'mobile_presearch_' + value);
-                            $presearch.find(".aui-padded-l-5")[0].innerText = value;
-                            $presearch.click(function () {
-                                $('#search-input').val($(this).find(".aui-padded-l-5")[0].innerText);
-                            });
-                            $("#mobile_presearch").append($presearch);
-                        })
-                    }
-
-
-                });
-            </script>
-            <script type="text/javascript">
-                apiready = function () {
-                    api.parseTapmode();
-                };
-                var searchBar = document.querySelector(".aui-searchbar-input");
-                document.querySelector(".aui-searchbar-cancel").style.marginRight = "-" + document.querySelector(".aui-searchbar-cancel").offsetWidth + "px";
-                if (searchBar) {
-                    searchBar.onclick = function () {
-                        document.querySelector(".aui-searchbar-cancel").style.marginRight = 0;
-                        $("#modal-wrapper").addClass("modal-wrapper");
-                        $("#modal-backdrop").addClass("modal-backdrop");
-                        $(".aui-col-xs-2.city-position").hide();
-                        $("#mobile-search-input").removeClass("aui-col-xs-10").addClass("aui-col-xs-12");
-                        $("header.aui-bar.aui-bar-nav").addClass("mobile-searchbar-active");
-                        $("#mobile-search-body").show();
-                    }
-                }
-                document.querySelector(".aui-searchbar-cancel").onclick = function () {
-                    this.style.marginRight = "-" + this.offsetWidth + "px";
-                    $("#search-input").val("");
-                    $("#modal-wrapper").removeClass("modal-wrapper");
-                    $("#modal-backdrop").removeClass("modal-backdrop");
-                    $(".aui-col-xs-2.city-position").show();
-                    $("#mobile-search-input").removeClass("aui-col-xs-12").addClass("aui-col-xs-10");
-                    $("header.aui-bar.aui-bar-nav").removeClass("mobile-searchbar-active");
-                    $("#mobile-search-body").hide();
-                }
-            </script>
-        {% endblock %}
-        {% block mobile_body %}
-        {% endblock %}
-        {% block mobile_footer %}
-            <footer class="aui-bar aui-bar-tab" id="footer">
-                <div class="aui-bar-tab-item aui-active" tapmode>
-                    <i class="aui-iconfont aui-icon-home"></i>
-                    <div class="aui-bar-tab-label">首页</div>
-                </div>
-                <div class="aui-bar-tab-item" tapmode>
-                    <i class="aui-iconfont aui-icon-star"></i>
-                    <div class="aui-bar-tab-label">U</div>
-                </div>
-
-                <div class="aui-bar-tab-item" tapmode>
-                    <i class="aui-iconfont aui-icon-my"></i>
-                    <div class="aui-bar-tab-label">我的</div>
-                </div>
-
-            </footer>
-            <!--<script type="text/javascript" src="/static/js/aui/aui-tab.js" ></script>
-<script type="text/javascript">
-    var tab = new auiTab({
-        element:document.getElementById("footer"),
-        index:1,
-        repeatClick:false
-    },function(ret){
-        console.log(ret);
-    });
-</script>-->
-
-        {% endblock %}
-    </div>
-</div>
-<div class="computer-body">
-    {% block computer_navbar %}
-        <nav class="navbar">
-
-
-            <div class="container">
-                <div class="row">
-                    <!--Logo-->
-                    <div class="navbar-header col-lg-1 col-md-1  col-sm-1 ">
-                        <a class="navbar-brand" href="/search">Brand</a>
+                <div class="col-xs-2 col-lg-2 col-md-2  col-sm-2 city-position">
+                    <div style="margin: 0 15px 0 15px;color: #ff5a00;" id="city-position"><i
+                            class="fa fa-location-arrow"></i> 定位
                     </div>
-                    <div class="col-lg-2 col-md-2  col-sm-2 city-position">
-                        <div style="margin: 0 15px 0 15px;" id="city-position"><i class="fa fa-location-arrow"></i> 定位
+                </div>
+                <!--注册/登录-->
+                <div class="navbar-search col-xs-6 col-lg-6 col-md-6  col-sm-6">
+                    <form class="navbar-form" action="/post_search" onsubmit="__search();" method="get">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="搜索" id="nav-search" name="keyWord">
                         </div>
-                    </div>
-                    <!--注册/登录-->
-                    <div class="navbar-search col-lg-6 col-md-6  col-sm-6">
-                        <form class="navbar-form" action="/post_search" onsubmit="__search();" method="post">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="搜索" id="nav-search" name="keyWord">
-                            </div>
-                            <button type="submit" class="btn btn-default"><span class="fa fa-arrow-right"></span>
-                            </button>
+                        <button type="submit" class="btn btn-default"><span class="fa fa-arrow-right"></span>
+                        </button>
 
 
-                        </form>
-                    </div>
+                    </form>
+                </div>
 
 
-                    <div class="col-lg-3 col-md-3  col-sm-3">
-                        <ul class="nav-login row">
-                            {% if userid %}
-                                <li class="col-lg-4 col-md-4  col-sm-4">
-                                    <i class="fa fa-comment point showsinglemessage" id="singlemessage"></i>
-                                    <i class="fa fa-caret-up message-div-arrow" aria-hidden="true"></i>
-                                    <div class="being-hidden message-div" id="forsinglemessage">
-                                        <div class="message-div-header row">
-                                            <div style="margin: 5px 0 5px 0;">
-                                                <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
-                                                    <img src="/static/images/youhuiquan.png">
-                                                </div>
-                                                <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
-                                                    <img src="/static/images/systemmessage.png">
-                                                </div>
-
-                                                <div class="col-lg-4 col-md-4  col-sm-4 message-div-header-category">
-                                                    <img src="/static/images/systemmessage.png">
-                                                </div>
-                                                <div class="clear"></div>
+                <div class="col-xs-3 col-lg-3 col-md-3  col-sm-3">
+                    <ul class="nav-login row">
+                        {% if userid %}
+                            <li class="col-xs-4 col-lg-4 col-md-4  col-sm-4">
+                                <img class="point showsinglemessage" id="singlemessage" src="/static/images/消息按钮.png"
+                                     style="height: 30px;width: 30px;">
+                                <div class="being-hidden message-div" id="forsinglemessage">
+                                    <div class="message-div-header row">
+                                        <div style="margin: 5px 0 5px 0;">
+                                            <div class="col-xs-6 col-lg-6 col-md-6  col-sm-6 border-right message-div-header-category">
+                                                <img class="point message-div-point" src="/static/images/youhuiquan.png"
+                                                     id="for_couponsmessagebody">
                                             </div>
-                                            <div class="message-div-body">
-                                                {% for i in couponsOwn %}
-
-                                                    <div class="message-div-body-content">
-                                                        {{ i.product }}
-                                                    </div>
-                                                {% endfor %}
+                                            <div class="col-xs-6 col-lg-6 col-md-6  col-sm-6 border-right message-div-header-category">
+                                                <img class="point message-div-point"
+                                                     src="/static/images/systemmessage.png" id="for_systemmessagebody">
                                             </div>
+                                            <div class="clear"></div>
+                                        </div>
+                                    <div>
+                                        <div class="message-div-body" id="couponsmessagebody">
+                                            {% for i in couponMessages %}
 
-                                            <div class="message-div-footer">
-                                                <div class="col-lg-4 col-md-4  col-lg-4 col-lg-offset-8 col-md-offset-8  col-sm-offset-8 ">
-                                                    <a href="#">查看全部</a></div>
-                                            </div>
+                                                <div class="message-div-body-content">
+                                                    您 最近购买了 {{ i.messageCat }} 优惠券
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="message-div-body being-hidden" id="systemmessagebody">
+                                            {% for i in systemMessages %}
+
+                                                <div class="message-div-body-content">
+                                                    您 最近购买了 {{ i.content }} 优惠券
+                                                </div>
+                                            {% endfor %}
                                         </div>
                                     </div>
-
-
-                                </li>
-                                <li class="col-lg-4 col-md-4 col-sm-4">
-                                    <i class="fa fa-comment point"></i>
-
-
-                                </li>
-                                <li class="col-lg-4 col-md-4 col-sm-4">
-
-                                    <div class="profile-photo-div point" id="userinfo"><img
-                                            src="/static/images/dva_1.jpg">
+                                        <div class="message-div-footer">
+                                            <div class="col-xs-4 col-lg-4 col-md-4  col-sm-4 col-xs-offset-8 col-lg-offset-8 col-md-offset-8  col-sm-offset-8 ">
+                                                <a href="#">查看全部</a></div>
+                                        </div>
                                     </div>
-                                    <div class="being-hidden userinfo-div" id="foruserinfo">
+                                </div>
 
-                                        <p> {{ nickname }}</p>
-                                        <p> U币余额:{{ UCoin }}</p>
-                                        <p><a href="/user">用户中心</a></p>
-                                    </div>
 
-                                </li>
-                            {% else %}
-                                <li class="col-lg-6 col-md-6  col-sm-6">
-                                    <a href="/login?method=register">注册
-                                        <span class="glyphicon glyphicon-user hidden-sm"></span>
-                                    </a>
-                                </li>
-                                <li class="col-lg-6 col-md-6  col-sm-6">
-                                    <a href="/login?method=login">登录
-                                        <span class="glyphicon glyphicon-user  hidden-sm"></span>
-                                    </a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </div>
+                            </li>
+                            <li class="col-xs-4 col-lg-4 col-md-4 col-sm-4">
+                                <a href="/user"> <img class="point" src="/static/images/个人中心按钮.png"
+                                                      style="height: 30px;width: 30px;">
+
+                                </a>
+                            </li>
+                            <li class="col-xs-4 col-lg-4 col-md-4 col-sm-4">
+
+                                <div class="profile-photo-div point" id="userinfo"><img
+                                        src="/static/images/dva_1.jpg">
+                                </div>
+                                <div class="being-hidden userinfo-div" id="foruserinfo">
+
+                                    <p> {{ nickname }}</p>
+                                    <p> U币余额:{{ UCoin }}</p>
+                                    <a href="/post_logout"><p class="point" style="color: #ff5a00;"> 退出</p></a>
+                                </div>
+
+                            </li>
+                        {% else %}
+                            <li class="col-xs-6 col-lg-6 col-md-6  col-sm-6" style="text-align: right;">
+                                <a href="/login?method=register" style="color: #ff5a00;">注册
+                                    <span class="glyphicon glyphicon-user hidden-sm" style="color: #ff5a00;"></span>
+                                </a>
+                            </li>
+                            <li class="col-xs-6 col-lg-6 col-md-6  col-sm-6" style="text-align: right;">
+                                <a href="/login?method=login" style="color: #ff5a00;">登录
+                                    <span class="glyphicon glyphicon-user  hidden-sm" style="color: #ff5a00;"></span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
                 </div>
-
-
             </div>
-        </nav>
-    {% endblock %}
-    {% block body %}{% endblock %}
-</div>
+
+
+        </div>
+    </nav>
+{% endblock %}
+{% block body %}{% endblock %}
+
 </body>
 <script src="/static/js/jquery-3.2.1.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/jquery.md5.js"></script>
+<script src="/static/js/jquery.cookie.js"></script>
 <script src="/static/js/index.js"></script>
 <script src="/static/js/search.js"></script>
-<script src="/static/js/aui/api.js"></script>
-<script src="/static/js/aui/aui-tab.js"></script>
-<script src="/static/js/aui/aui-dialog.js"></script>
 <script src="/static/js/coupons.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GeoLBAU1t7TRpqXhtw8VIth4r6PGAU3U"></script>
 <script type="text/javascript">
     // 百度地图API功能
-    var map = new BMap.Map("allmap");
-    var point = new BMap.Point(116.331398, 39.897445);
-    map.centerAndZoom(point, 12);
 
     function myFun(result) {
         var cityName = result.name;
-        map.setCenter(cityName);
-        $("#city-position,.city-position").html("<i class=\"fa fa-location-arrow\"></i>&nbsp;" + cityName);
+        $("#city-position,.city-position").html("<i class=\"fa fa-location-arrow\" style=\"color: #ff5a00;\"></i>&nbsp;" + cityName).css("color", "#ff5a00");
     }
+
     var myCity = new BMap.LocalCity();
     myCity.get(myFun);
+</script>
+<script type="text/javascript">
+    $(".message-div-point").click(function () {
+        $(this).show();
+        $(this).siblings().hide();
+        var id = '#' + $(this).attr("id").replace("for_","");
+        $(id).show();
+        $(id).siblings().hide();
+
+    })
+
 </script>
 {% block scripts %}{% endblock %}
 

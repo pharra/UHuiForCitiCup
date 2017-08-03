@@ -2,95 +2,10 @@
 {% block title %}用户中心 {% endblock %}
 {% block src %}
 {% endblock %}
-{% block mobile_header %}
-<link rel="stylesheet" type="text/css" href="/static/css/aui/aui-flex.css">
-{% endblock %}
-{% block mobile_body %}
-<div class="aui-row">
-    <div class = "aui-flex-row aui-flex-right mobile-max-user-background">
-            <i class = "aui-iconfont aui-icon-mail mobile-max-user-icon aui-flex-2  aui-margin-r-10"></i>
-    </div>
-        <div class = "aui-flex-col  aui-padded-15 mobile-max-user-background">
-        <div class = "aui-flex-3">
-            <img src="/static/images/dva_4.jpg" class="mobile-user-avator" />
-        </div>
-            <div class = "aui-flex-row aui-flex-9 aui-flex-middle aui-padded-10">
-                <div style = "margin:5px;"><h3 style="color:white;">用户名</h3></div>
-                <div><h4 style="color:white;">用户信息</h4></div>
-            </div>
-        </div>
 
 
 
-    <div class="aui-content aui-margin-b-15">
-        <ul class="aui-list aui-list-in mobile-max-user-font">
-            <li class="aui-list-item aui-list-item-middle">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">
-                        我的钱包
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item aui-list-item-middle">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">
-                        我的优惠
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item aui-list-item-middle">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">
-                        我卖出的
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item aui-list-item-middle">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">
-                        我买入的
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item aui-list-item-middle">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">
-                        我的关注
-                    </div>
-                </div>
-            </li>
-        </ul>
-        &nbsp;
-        <ul class="aui-list aui-list-in">
-            <li class="aui-list-item aui-list-item-middle">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">
-                        应用设置
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item aui-list-item-middle">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">
-                        帮助反馈
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-
-    <footer class="aui-bar aui-bar-tab" id="footer">
-        <div class="aui-bar-tab-item aui-active" tapmode>
-            <i class="aui-iconfont aui-icon-home"></i>
-            <div class="aui-bar-tab-label">首页</div>
-        </div>
-        <div class="aui-bar-tab-item" tapmode>
-            <i class="aui-iconfont aui-icon-star"></i>
-            <div class="aui-bar-tab-label">我的</div>
-        </div>
-    </footer>
-</div>
-{% endblock %}{% block mobile_footer %} {% endblock %} {% block body %}
+{% block body %}
 <div class="container">
     <div class="row">
 
@@ -99,7 +14,7 @@
             <!--头像-->
             <div class="username-text-css">
                 <div class="profile-photo-div">
-                    <img src="/static/images/dva_1.jpg">
+                    <img src="{{ avatar }}">
                 </div>
                 <span>&nbsp;{{ nickname }}</span>
             </div>
@@ -134,8 +49,6 @@
                 <div class="panel-collapse collapse" id="user_trade_list">
                     <div class="panel-body">
                         <li id="tra_balance" class="point max">我的余额</li>
-                        <li id="tra_buy" class="point max">最近买入</li>
-                        <li id="tra_sale" class="point max">最近卖出</li>
                     </div>
                 </div>
             </div>
@@ -238,25 +151,42 @@
 
                     <!--正在出售-->
                     <div class="tab-pane fade" id="tab_own_sale">
-                        {% for i in couponsOnSale %}
-                        <div class="row">
-                            <div class="col-md-2 col-lg-2 col-sm-2 uhui-body">
-                                <img class="img_suit" src="/static/images/dva_4.jpg">
-                            </div>
-                            <div class="col-md-2 col-lg-2 col-sm-2 uhui-body ">
-                                <div class="uhui-partbody uhui-content">
-                                    {{ i.brand }}
-                                </div>
-                                <div class="uhui-partbody uhui-content">
-                                    {{ i.expiredtime }}
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6 col-sm-6 uhui-body uhui-content">
+                        {% for i in couponsOnsale %}
+                        <div class="col-md-6 col-lg-6 col-sm-6">
+                            <div class="user-coupons row">
+                                <div class="col-md-3 col-lg-3 col-sm-3 user-coupons-left">
+                                    <p class="user-coupons-left-value">
+                                        ￥{{ i.listPrice }}
+                                    </p>
+                                    <p>
+                                        估值:￥{{ i.value }}
+                                    </p>
 
-                                {% for k in i.limits %} {{ k }} {% endfor %} {{ i.discount }}
-                            </div>
-                            <div class="col-md-2 col-lg-2 col-sm-2 uhui-body uhui-content">
-                                {{ i.value }}
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-sm-6 user-coupons-middle">
+                                    <div class="user-coupons-middle-value col-md-6 col-lg-6 col-sm-6">
+                                        <p class="font-class">
+                                            {{ i.brand }}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6 user-coupons-middle-value">
+                                        <p>
+                                            {{ i.discount }}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 user-coupons-middle-value">
+                                        {% for k in i.limits %}
+                                        <p class="user-coupons-middle-value-limits-p">{{ k }}</p>
+                                        {% endfor %}
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-md-12 col-lg-12 col-sm-12 user-coupons-bottom">
+                                    <p>截止时间:{{ i.expiredTime }}</p>
+                                </div>
+
                             </div>
                         </div>
                         {% endfor %}
@@ -265,25 +195,41 @@
                     <!--我的关注-->
                     <div class="tab-pane fade" id="tab_own_focus">
                         {% for i in couponsLike %}
-                        <div class="row">
-                            <div class="col-md-2 col-lg-2 col-sm-2 uhui-body">
-                                <img class="img_suit" src="/static/images/dva_4.jpg">
-                            </div>
-                            <div class="col-md-2 col-lg-2 col-sm-2 uhui-body ">
-                                <div class="uhui-partbody uhui-content">
-                                    {{ i.brand }}
-                                </div>
-                                <div class="uhui-partbody uhui-content">
-                                    {{ i.expiredtime }}
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6 col-sm-6 uhui-body uhui-content">
+                        <div class="col-md-6 col-lg-6 col-sm-6">
+                            <div class="user-coupons row">
+                                <div class="col-md-3 col-lg-3 col-sm-3 user-coupons-left">
+                                    <p class="user-coupons-left-value">
+                                        ￥{{ i.listPrice }}
+                                    </p>
+                                    <p>
+                                        估值:￥{{ i.value }}
+                                    </p>
 
-                                {% for k in i.limits %} {{ k }} {% endfor %} {{ i.discount }}
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-sm-6 user-coupons-middle">
+                                    <div class="user-coupons-middle-value col-md-6 col-lg-6 col-sm-6">
+                                        <p class="font-class">
+                                            {{ i.brand }}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6 user-coupons-middle-value">
+                                        <p>
+                                            {{ i.discount }}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 user-coupons-middle-value">
+                                        {% for k in i.limits %}
+                                        <p class="user-coupons-middle-value-limits-p">{{ k }}</p>
+                                        {% endfor %}
+                                    </div>
 
-                            </div>
-                            <div class="col-md-2 col-lg-2 col-sm-2 uhui-body uhui-content">
-                                {{ i.value }}
+
+                                </div>
+
+                                <div class="col-md-12 col-lg-12 col-sm-12 user-coupons-bottom">
+                                    <p>截止时间:{{ i.expiredTime }}</p>
+                                </div>
+
                             </div>
                         </div>
                         {% endfor %}
@@ -302,12 +248,7 @@
                     <li id="info_tra_balance" class="point active">
                         <a href="#tab_tra_balance" data-toggle="tab">我的余额</a>
                     </li>
-                    <li id="info_tra_buy" class="point">
-                        <a href="#tab_tra_buy" data-toggle="tab">最近买入</a>
-                    </li>
-                    <li id="info_tra_sale" class="point">
-                        <a href="#tab_tra_sale" data-toggle="tab">最近卖出</a>
-                    </li>
+
                 </ul>
 
                 <hr/>
@@ -315,16 +256,11 @@
                 <!--选项内容-->
                 <div class="tab-content">
                     <div class="tab-pane fade in active" id="tab_tra_balance">
-                        <p>balance</p>
+                        <p>U币余额:{{ UCoin }}</p>
+                        <div class="button point">充值</div>
                     </div>
 
-                    <div class="tab-pane fade" id="tab_tra_buy">
-                        <p>buy</p>
-                    </div>
 
-                    <div class="tab-pane fade" id="tab_tra_sale">
-                        <p>sale</p>
-                    </div>
                 </div>
                 <!--end tra_menu-->
             </div>
@@ -416,7 +352,7 @@
                                 <label for="newtelno" class="col-md-2 col-lg-2 col-sm-2 control-label">手机号</label>
                                 <div class="col-md-5 col-lg-5 col-sm-5 control-label">
                                     <div>
-                                        <span>{{ mobileNum }}</span>
+                                        <span>{{ phoneNum }}</span>
                                         <i class="fa fa-pencil-square-o point edituserinfo" aria-hidden="true"></i>
                                     </div>
                                     <input type="text" class="form-control being-hidden" id="newtelno" placeholder="新手机将收到验证码">
@@ -475,4 +411,5 @@
         </div>
     </div>
 </div>
-{% endblock %} {% block scripts %} {% endblock %}
+{% endblock %}
+{% block scripts %} {% endblock %}

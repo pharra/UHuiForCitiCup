@@ -1,0 +1,276 @@
+{% extends "__mobilebase__.html" %}
+{% block title %}U惠网 {% endblock %}
+{% block src %}
+    <link rel="stylesheet" type="text/css" href="/static/css/aui/aui-slide.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/dropload.css"/>
+{% endblock %}
+{% block mobile_body %}
+
+    <div class="swiper-container" data-space-between='0' data-pagination='.swiper-pagination' data-autoplay="1000">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide"><img src="static/images/dva_1.jpg" alt=""></div>
+    <div class="swiper-slide"><img src="static/images/dva_1.jpg" alt=""></div>
+    <div class="swiper-slide"><img src="static/images/dva_1.jpg" alt=""></div>
+
+  </div>
+     <div class="swiper-pagination"></div>
+
+</div>
+
+
+    <section class="aui-grid">
+        <div class="aui-row">
+            <div class="aui-col-xs-3">
+
+                <i class="aui-iconfont aui-icon-gear"></i>
+
+                <div class="aui-grid-label">首页</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-gear"></i>
+                <div class="aui-grid-label">设置</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-map"></i>
+                <div class="aui-grid-label">地图</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-calendar"></i>
+                <div class="aui-grid-label">日历</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-mobile"></i>
+                <div class="aui-grid-label">电子产品</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-cart"></i>
+                <div class="aui-grid-label">购物车</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-paper"></i>
+                <div class="aui-grid-label">发现</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-video"></i>
+                <div class="aui-grid-label">视频</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="aui-flex-row infinite-scroll" id="coupons_mobile_pullfresh" data-distance="100">
+        <div>
+            <div class="mobile-user-coupons aui-flex-col aui-hide point" id="mobile_index_coupons">
+                <div class="aui-flex-item-3 user-coupons-left">
+                    <p class="user-coupons-left-value font-class">
+
+                    </p>
+                    <p class="user-coupons-left-value">
+
+                    </p>
+
+                </div>
+                <div class="aui-flex-item-9 user-coupons-middle">
+                    <div class="user-coupons-middle-value">
+                        <p class="font-class">
+
+                        </p>
+                    </div>
+                    <div class="aui-flex-item-9 user-coupons-middle-value">
+                        <p>
+
+                        </p>
+                    </div>
+
+
+                </div>
+
+                <div class="aui-flex-item-12 user-coupons-bottom">
+                    <p></p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/css/dropload.css"></script>
+        <script src="/static/js/dropload.js"></script>
+
+
+    <script type="text/javascript">
+    $(document).on("pageInit",function() {
+        $.cookie("indexM", "0", {path: "/"});
+         var loading = false;
+        $('#coupons_mobile_pullfresh').dropload({
+            scrollArea: window,
+            threshold: 50,
+            autoLoad: true,
+            loadDownFn: function (me) {
+                if (loading) return;
+                $.ajax({
+                    type: 'POST',
+                    url: '/post_getCouponForMobileIndex',
+                    dataType: 'json',
+                    success: function (data) {
+                        $.each(data, function (key, value) {
+                            if (key === "coupons") {
+                                if (value === 'null') {
+                                    loading = true;
+                                    return;
+
+                                }
+                                $.each(value, function (key, value) {
+                                    var $couponsdom = $("#mobile_index_coupons").clone();
+                                    $couponsdom.attr('id', '').removeClass("aui-hide").attr("id", "couponsid_" + value.couponID);
+                                    $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
+                                    $couponsdom.find("p")[1].innerText = "估值:" + value.value;
+                                    $couponsdom.find("p")[2].innerText = value.brand;
+                                    $couponsdom.find("p")[3].innerText = value.discount;
+                                    $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
+                                    $("#mobile_index_coupons").parent().append($couponsdom);
+                                    $("div[id^='couponsid_']").click(function () {
+                                        var couponsid = $(this).attr("id").replace("couponsid_", '');
+                                        window.location.href = "/commodity?couponID=" + couponsid;
+                                    });
+
+                                });
+                                loading = false;
+                            }
+                        });
+                        // 每次数据加载完，必须重置
+
+                        me.resetload();
+                    },
+                    error: function (xhr, type) {
+                        // 即使加载出错，也得重置
+                        loading = false;
+                        me.resetload();
+                    }
+                });
+            }
+        });
+
+        function getcoupons_moblie() {
+            $.ajax({
+                type: 'POST',
+                url: '/post_getCouponForMobileIndex',
+                dataType: 'json',
+                sync: false,
+                success: function (data) {
+                    $.each(data, function (key, value) {
+                        if (key === "coupons") {
+                            $.each(value, function (key, value) {
+                                var $couponsdom = $("#mobile_index_coupons").clone();
+                                $couponsdom.attr('id', '').removeClass("aui-hide").attr("id", "couponsid_" + value.couponID);
+                                $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
+                                $couponsdom.find("p")[1].innerText = "估值:" + value.value;
+                                $couponsdom.find("p")[2].innerText = value.brand;
+                                $couponsdom.find("p")[3].innerText = value.discount;
+                                $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
+                                $("#mobile_index_coupons").parent().append($couponsdom);
+                                $("div[id^='couponsid_']").click(function () {
+                                    var couponsid = $(this).attr("id").replace("couponsid_", '');
+                                    window.location.href = "/commodity?couponID=" + couponsid;
+                                });
+                            });
+                        }
+                    });
+                    // 每次数据加载完，必须重置
+
+                },
+            });
+        }
+    });
+    </script>
+    <link rel="stylesheet" href="/static/css/light7-swiper.css">
+<script src="/static/js/light7-swiper.js"></script>
+    <script type="text/javascript">
+    $.swiper(".swiper-container",{
+         speed: 400,
+    spaceBetween: 100,
+        paginationElement:"div",
+        autoplay:2000,
+    });
+    </script>
+{% endblock %}
+
+
+<!-- <div id="aui-slide">
+    <div class="aui-slide-wrap" >
+        <div class="aui-slide-node">
+            <div class="aui-grid">
+                <div class="aui-row">
+                    <div class="aui-col-xs-4">
+                        <div class="aui-badge">88</div>
+                        <i class="aui-iconfont aui-icon-home"></i>
+                        <div class="aui-grid-label">首页</div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <i class="aui-iconfont aui-icon-gear"></i>
+                        <div class="aui-grid-label">设置</div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <i class="aui-iconfont aui-icon-map"></i>
+                        <div class="aui-grid-label">地图</div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <i class="aui-iconfont aui-icon-calendar"></i>
+                        <div class="aui-grid-label">日历</div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <div class="aui-badge"></div>
+                        <i class="aui-iconfont aui-icon-date"></i>
+                        <div class="aui-grid-label">日期</div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <div class="aui-dot"></div>
+                        <i class="aui-iconfont aui-icon-cart"></i>
+                        <div class="aui-grid-label">购物车</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="aui-slide-node aui-slide-node-middle aui-slide-node-center">
+            <div class="aui-content-padded">
+                <span class="aui-text-danger">AUI Slide</span> 轮播组件不只局限于放置图片，可以自定义内容，分页样式有圆点(dot)，线条(line),结合AUI Flex来实现图片及内容的水平、垂直居中
+            </div>
+        </div>
+        <div class="aui-slide-node aui-bg-warning aui-slide-node-middle aui-slide-node-center">
+            <div class="aui-content-padded">
+                <span class="aui-text-danger">AUI Slide</span>提供了常用的配置属性，可以自定义宽度，高度，自动播放，分页器样式等，支持无缝循环轮播
+            </div>
+        </div>
+        <div class="aui-slide-node bg-dark">
+            <img src="../../image/l1.png" />
+        </div>
+        <div class="aui-slide-node bg-dark">
+            <img src="../../image/l2.png" />
+        </div>
+        <div class="aui-slide-node bg-dark">
+            <img src="../../image/l3.png" />
+        </div>
+    </div>
+    <div class="aui-slide-page-wrap"></div>
+</div>
+
+<script src="/static/js/aui/aui-slide.js"></script>
+<script type="text/javascript">
+    var slide = new auiSlide({
+        container:document.getElementById("aui-slide"),
+        // "width":300,
+        "height":260,
+        "speed":300,
+        "autoPlay": 3000,
+        "pageShow":true,
+        "pageStyle":'dot',
+        "loop":true,
+        'dotPosition':'center',
+        currentPage:currentFun
+    });
+
+    function currentFun(index) {
+        console.log(index);
+    }
+</script>
+-->

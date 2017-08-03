@@ -1,24 +1,23 @@
 {% extends "__base__.html" %} {% block title %}用户登录 {% endblock %}
 {% block src %}
-    <link media="screen and (max-width:768px)" href="/static/css/aui/aui-flex.css" rel="stylesheet">
-{% endblock %}
-{% block mobile_header %}
+
 {% endblock %}
 
 
 
-{% block mobile_body %}
+
+<div class="being-hidden">
     <div style="background: white;">
     <div class="aui-flex-col aui-padded-10 mobile-max-user-background">
         <div class="aui-flex-item-2">
             <i class="aui-iconfont aui-icon-left"></i>
         </div>
-        <div class="aui-flex-item-4 aui-flex-offset-2 content">登陆
+        <div class="aui-flex-item-4 aui-flex-offset-2 content-text">登录
 
         </div>
     </div>
         <div class="aui-padded-15 mobile-login aui-flex-col aui-flex-center aui-hide" id="mobile-register">
-          <div class="content aui-margin-15">
+          <div class="content-text aui-margin-15">
                 <h1>U惠</h1>
                 <h3>FBI WARNING</h3>
           </div>
@@ -58,7 +57,7 @@
         </p>
     </div>
     <div class="aui-padded-15 mobile-login aui-hide" id="mobile-login">
-          <div class="content aui-margin-15">
+          <div class="content-text aui-margin-15">
                 <h1>U惠</h1>
                 <h3>FBI WARNING</h3>
           </div>
@@ -80,22 +79,21 @@
             <div class="clear"></div>
         </div>
         <p>
-        <div class="aui-btn mobile-button-color aui-btn-block aui-btn-sm" onclick="login_handler();">登陆</div>
+        <div class="aui-btn mobile-button-color aui-btn-block aui-btn-sm" onclick="login_handler();">登录</div>
         </p>
     </div>
 
 </div>
+</div>
+
+
+
+  {% block computer_navbar %}
 {% endblock %}
-{% block mobile_footer %}
-{% endblock %}
-
-
-
-
 {% block body %}
     <div class="container">
         <div class="form-container">
-            <div class="content">
+            <div class="content-text " style="padding-top: 100px;">
                 <h1>U惠</h1>
                 <h3>FBI WARNING</h3>
             </div>
@@ -189,7 +187,7 @@
                                 </div>
                             </form>
                             <div class="otherlogin-content">
-                                <h5>社交账户登陆</h5>
+                                <h5>社交账户登录</h5>
                             </div>
                             <div class="otherlogin">
 
@@ -244,10 +242,10 @@
     }
     var state = ( {
 
-                url: '/login',title:"登陆"
+                url: '/login',title:"登录"
     } );
 
-    window.history.pushState(state,"登陆",'/login');
+    window.history.pushState(state,"登录",'/login');
     </script>
     <script type="text/javascript">
     $("input[id^='mobile-']").blur('input propertychange', function () {

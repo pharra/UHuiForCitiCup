@@ -1,11 +1,11 @@
-{% extends "__base__.html" %}
+{% extends "__mobilebase__.html" %}
 {% block title %}商品详情 {% endblock %}
 {% block src %} {% endblock %}
 {% block mobile_header %}{% endblock %}
 {% block mobile_body %}
     <div class="aui-row">
         <header class="aui-bar aui-bar-nav" style="background:rgba(0,0,0,0.3);color:white;position:absolute;">
-            <a class="aui-pull-left aui-btn" href="javascript:history.back(-1)">
+            <a class="aui-pull-left aui-btn external" href="javascript:history.back(-1)">
                 <span class="aui-iconfont aui-icon-left"></span>
             </a>
         </header>
@@ -64,7 +64,7 @@
     </div>
     <footer class="aui-bar aui-bar-tab mobile-max-user-background">
         <div class="aui-bar-tab-item" tapmode>
-            <a href="/" style="color:white;">
+            <a href="/" style="color:white;" class="external">
                 <i class="aui-iconfont aui-icon-home"></i>
                 <div class="aui-bar-tab-label">首页</div>
             </a>
@@ -80,7 +80,7 @@
             <div class="aui-bar-tab-label">已关注</div>
         </div>
         <div class="aui-bar-tab-item" style="background-color:white;color:#ff5a00" tapmode>
-            <a href="/mobile_sell_final?couponID={{ info.couponID }}" style="color:#ff5a00;">
+            <a href="/mobile_sell_final?couponID={{ info.couponID }}" class="external" style="color:#ff5a00;">
                 <i class="aui-iconfont aui-icon-cart"></i>
                 <div class="aui-bar-tab-label">购买</div>
             </a>
@@ -90,7 +90,6 @@
 {% block mobile_footer %}{% endblock %}
 {% block scripts %}
 
-    <script src="/static/js/dialog.js"></script>
     <script type="text/javascript">
 
         function getlikeordislike(like) {
@@ -103,7 +102,8 @@
                 $("#dislike").removeClass("aui-hide");
             }
         }
-        getlikeordislike({{ like }});
+
+        getlikeordislike('{{ like }}');
 
         function post_changelike(url) {
 
@@ -120,26 +120,15 @@
 
 
             function succFunction(Jsondata) {
-                var dialog = new auiDialog({});
                 var msg = Jsondata.message;
                 if (Jsondata.errno === '5') {
-                    dialog.alert({
-                        title: "",
-                        msg: msg,
-                        buttons: ['确定']
-                    }, function (ret) {
-                        if (ret.buttonIndex === 1) {
-                            window.location.href = "/login";
-                        }
-                    })
+                    $.alert(msg, '', function () {
+                        window.location.href = "/login";
+                    });
 
 
                 } else if (Jsondata.errno === '0') {
-                    dialog.alert({
-                        title: "",
-                        msg: msg,
-                        buttons: ['确定']
-                    }, function (ret) {
+                    $.alert(msg, '', function () {
                         if (Jsondata.like === '0') {
                             $("#like").addClass("aui-hide");
                             $("#dislike").removeClass("aui-hide");
@@ -152,17 +141,13 @@
 
                 }
                 else {
-                    dialog.alert({
-                        title: "",
-                        msg: msg,
-                        buttons: ['确定']
-                    }, function (ret) {
-                    })
+                    $.alert(msg, '')
                 }
 
             }
 
         }
+
     </script>
 {% endblock %}
 

@@ -4,198 +4,43 @@
     <link rel="stylesheet" type="text/css" href="/static/css/aui/aui-slide.css"/>
     <link rel="stylesheet" type="text/css" href="/static/css/dropload.css"/>
 {% endblock %}
-{% block mobile_body %}
-    <div class="aui-row">
-        <div id="aui-slide">
-            <div class="aui-slide-wrap">
-                <div class="aui-slide-node bg-dark">
 
-                    <img src="static/images/dva_1.jpg"/>
-                </div>
-                <div class="aui-slide-node bg-dark">
-
-                    <img src="static/images/dva_1.jpg"/>
-                </div>
-                <div class="aui-slide-node bg-dark">
-
-                    <img src="static/images/dva_1.jpg"/>
-                </div>
-            </div>
-            <div class="clear"></div>
-            <div class="aui-slide-page-wrap"><!--分页容器--></div>
-            <div class="clear"></div>
-        </div>
-    </div>
-
-
-    <script src="/static/js/aui/aui-slide.js"></script>
-    <script src="/static/js/jquery-3.2.1.js"></script>
-    <script src="/static/js/dropload.min.js"></script>
-    <script src="/static/js/jquery.cookie.js"></script>
-    <script type="text/javascript">
-        $.cookie("indexM", "0", {path: "/"});
-        var img_height = ($("body").width() / 16) * 9;
-        var slide = new auiSlide({
-            container: document.getElementById("aui-slide"),
-            // "width":300,
-            "height": img_height,
-            "speed": 500,
-            "autoPlay": 3000, //自动播放
-            "loop": true,
-            "pageShow": true,
-            "pageStyle": 'dot',
-            'dotPosition': 'center',
-        });
-    </script>
-    <script type="text/javascript">
-        $('body').dropload({
-            scrollArea: window,
-            distance:50,
-            loadDownFn: function (me) {
-                $.ajax({
-                    type: 'POST',
-                    url: '/post_getCouponForMobileIndex',
-                    dataType: 'json',
-                    success: function (data) {
-                       $.each(data, function (key, value) {
-                    if (key === "coupons") {
-                        $.each(value, function (key, value) {
-                            var $couponsdom = $("#mobile_index_coupons").clone();
-                            $couponsdom.attr('id', '').removeClass("aui-hide").attr("id","couponsid_" + value.couponID);
-                            $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
-                            $couponsdom.find("p")[1].innerText = "估值:" + value.value;
-                            $couponsdom.find("p")[2].innerText = value.brand;
-                            $couponsdom.find("p")[3].innerText = value.discount;
-                            $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
-                            $("#mobile_index_coupons").parent().append($couponsdom);
-                            $("div[id^='couponsid_']").click(function () {
-                            var couponsid = $(this).attr("id").replace("couponsid_",'');
-                                window.location.href = "/commodity?couponID="+couponsid;
-                                });
-                        });
-                    }
-                });
-                        // 每次数据加载完，必须重置
-                        me.resetload();
-                    },
-                    error: function (xhr, type) {
-                        // 即使加载出错，也得重置
-                        me.resetload();
-                    }
-                });
-            }
-        });
-    </script>
-    <section class="aui-grid">
-        <div class="aui-row">
-            <div class="aui-col-xs-3">
-
-                <i class="aui-iconfont aui-icon-gear"></i>
-
-                <div class="aui-grid-label">首页</div>
-            </div>
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-gear"></i>
-                <div class="aui-grid-label">设置</div>
-            </div>
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-map"></i>
-                <div class="aui-grid-label">地图</div>
-            </div>
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-calendar"></i>
-                <div class="aui-grid-label">日历</div>
-            </div>
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-mobile"></i>
-                <div class="aui-grid-label">电子产品</div>
-            </div>
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-cart"></i>
-                <div class="aui-grid-label">购物车</div>
-            </div>
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-paper"></i>
-                <div class="aui-grid-label">发现</div>
-            </div>
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-video"></i>
-                <div class="aui-grid-label">视频</div>
-            </div>
-        </div>
-    </section>
-
-    <div class="aui-flex-row" id="coupons_mobile_pullfresh">
-        <div>
-            <div class="mobile-user-coupons aui-flex-col aui-hide point" id="mobile_index_coupons">
-                <div class="aui-flex-item-3 user-coupons-left">
-                    <p class="user-coupons-left-value font-class">
-
-                    </p>
-                    <p class="user-coupons-left-value">
-
-                    </p>
-
-                </div>
-                <div class="aui-flex-item-9 user-coupons-middle">
-                    <div class="user-coupons-middle-value">
-                        <p class="font-class">
-
-                        </p>
-                    </div>
-                    <div class="aui-flex-item-9 user-coupons-middle-value">
-                        <p>
-
-                        </p>
-                    </div>
-
-
-                </div>
-
-                <div class="aui-flex-item-12 user-coupons-bottom">
-                    <p></p>
-                </div>
-
-            </div>
-        </div>
-    </div>
-{% endblock %}
 {% block body %}
     <div class="container">
-        <div class="col-lg-2 col-md-2  category-left being-hidden" id="homepage_navigation">
+        <div class="col-xs-1 col-lg-1 col-md-1 col-sm-1 category-left " id="homepage_navigation">
             <ul class="category-menu">
                 <!--#homepage_top-->
-                <a href="#index_nav">
-                    <li><img src="/static/images/置顶箭头.png">回到顶部</li>
+                <a href="#">
+                    <li><img src="/static/images/置顶箭头.png">推荐</li>
                 </a>
-                <a href="#index_life">
-                    <li><i class="fa fa-commenting-o"></i>生活百货</li>
+                <a href="#catid_生活百货">
+                    <li><img src="/static/images/生活百货-1.png">百货</li>
                 </a>
-                <a href="#index_elec">
-                    <li><i class="fa fa-commenting-o"></i>电子产品</li>
+                <a href="#catid_美妆装饰">
+                    <li><img src="/static/images/美妆装饰-1.png">美妆</li>
                 </a>
-                <a href="#index_clot">
-                    <li><i class="fa fa-commenting-o"></i>服装装饰</li>
+                <a href="#catid_文娱体育">
+                    <li><img src="/static/images/文娱体育-1.png">体育</li>
                 </a>
-                <a href="#index_eadr">
-                    <li><i class="fa fa-commenting-o"></i>饮食保健</li>
+                <a href="#catid_家具家居">
+                    <li><img src="/static/images/家具家居-1.png">家具</li>
                 </a>
-                <a href="#index_bili">
-                    <li><i class="fa fa-commenting-o"></i>文娱体育</li>
+                <a href="#catid_电子产品">
+                    <li><img src="/static/images/电子产品-1.png">数码</li>
                 </a>
-                <a href="#index_home">
-                    <li><i class="fa fa-commenting-o"></i>家具家居</li>
+                <a href="#catid_服装服饰">
+                    <li><img src="/static/images/服装服饰-1.png">服饰</li>
                 </a>
-                <a href="#index_trip">
-                    <li><i class="fa fa-commenting-o"></i>旅行住宿</li>
+                <a href="#catid_旅行住宿">
+                    <li><img src="/static/images/旅行住宿-1.png">旅游</li>
                 </a>
-                <a href="#index_dres">
-                    <li><i class="fa fa-commenting-o"></i>美妆妆饰</li>
+                <a href="#catid_饮食保健">
+                    <li style="border: 0;"><img src="/static/images/饮食保健-1.png">饮食</li>
                 </a>
             </ul>
         </div>
 
-        <div class="category-right col-lg-12 col-md-12 ">
+        <div class="category-right col-xs-11 col-lg-11 col-md-11 col-sm-11">
             <div id="myCarousel" class="carousel slide">
                 <!-- 轮播（Carousel）指标 -->
                 <ol class="carousel-indicators">
@@ -206,13 +51,13 @@
                 <!-- 轮播（Carousel）项目 -->
                 <div class="carousel-inner">
                     <div class="item active">
-                        <img src="/static/images/dva_1.jpg" alt="First slide">
+                        <img src="/static/images/dva_1.jpg">
                     </div>
                     <div class="item">
-                        <img src="/static/images/dva_2.jpg" alt="Second slide">
+                        <img src="/static/images/dva_2.jpg">
                     </div>
                     <div class="item">
-                        <img src="/static/images/dva_3.jpg" alt="Third slide">
+                        <img src="/static/images/dva_3.jpg">
                     </div>
                 </div>
                 <!-- 轮播（Carousel）导航 -->
@@ -222,23 +67,23 @@
 
 
             <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-3">
+                <div class="col-xs-3 col-lg-3 col-md-3 col-sm-3">
                     <a href="#" class="thumbnail">
                         <img src="/static/images/dva_1.jpg" alt="">
 
                     </a>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-3">
+                <div class="col-xs-3 col-lg-3 col-md-3 col-sm-3">
                     <a href="#" class="thumbnail">
                         <img src="/static/images/dva_1.jpg" alt="">
                     </a>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-3">
+                <div class="col-xs-3 col-lg-3 col-md-3 col-sm-3">
                     <a href="#" class="thumbnail">
                         <img src="/static/images/dva_1.jpg" alt="">
                     </a>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-3">
+                <div class="col-xs-3 col-lg-3 col-md-3 col-sm-3">
                     <a href="#" class="thumbnail">
                         <img src="/static/images/dva_1.jpg" alt="">
                     </a>
@@ -246,14 +91,16 @@
             </div>
             <hr id="index_home"/>
 
-            <div class="row">
 
-                {% for key,value in coupons.items() %}
-                    <p class="text-fix-center">{{ key }}</p>
+
+            {% for key,value in coupons.items() %}
+                <div class="row">
+                    <h3 class="content-text" style="color: #ff5a00;font-weight: bolder;"
+                        id="catid_{{ key }}">{{ key }}</h3>
                     {% for i in value %}
-                        <div class="col-md-6 col-lg-6 col-sm-6">
+                        <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6 coupon_detail" id="{{ i.couponID }}">
                             <div class="user-coupons row">
-                                <div class="col-md-3 col-lg-3 col-sm-3 user-coupons-left">
+                                <div class="col-xs-3 col-md-3 col-lg-3 col-sm-3 user-coupons-left">
                                     <p class="user-coupons-left-value">
                                         ￥{{ i.listPrice }}
                                     </p>
@@ -262,18 +109,18 @@
                                     </p>
 
                                 </div>
-                                <div class="col-md-6 col-lg-6 col-sm-6 user-coupons-middle">
-                                    <div class="user-coupons-middle-value col-md-6 col-lg-6 col-sm-6">
+                                <div class="col-xs-9 col-md-9 col-lg-9 col-sm-9 user-coupons-middle">
+                                    <div class="user-coupons-middle-value col-xs-6 col-md-6 col-lg-6 col-sm-6">
                                         <p class="font-class">
                                             {{ i.brand }}
                                         </p>
                                     </div>
-                                    <div class="col-md-6 col-lg-6 col-sm-6 user-coupons-middle-value">
+                                    <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6 user-coupons-middle-value">
                                         <p>
                                             {{ i.discount }}
                                         </p>
                                     </div>
-                                    <div class="col-md-12 col-lg-12 col-sm-12 user-coupons-middle-value">
+                                    <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12 user-coupons-middle-value">
                                         {% for k in i.limits %}
                                             <p class="user-coupons-middle-value-limits-p">{{ k }}</p>
                                         {% endfor %}
@@ -282,23 +129,60 @@
 
                                 </div>
 
-                                <div class="col-md-12 col-lg-12 col-sm-12 user-coupons-bottom">
+                                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12 user-coupons-bottom">
                                     <p>截止时间:{{ i.expiredTime }}</p>
                                 </div>
 
                             </div>
                         </div>
                     {% endfor %}
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
+
         </div>
 
     </div>
-
+    <div class="modal-wrapper being-hidden">
+        <div class="modal-backdrop modal-backdrop-grey">
+            <div class="index_coupons_detail">
+                <div class="row">
+                    <div class="col-xs-12 col-lg-12 col-md-12 col-sm-12 content-text">优惠券详情</div>
+                    <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4">
+                        <img src="/static/images/dva_1.jpg" style="width: 100%;">
+                    </div>
+                    <div class="col-xs-8 col-lg-8 col-md-8 col-sm-8"></div>
+                </div>
+                <div class="row">
+                    <div class="button col-xs-4 col-lg-4 col-md-4 col-sm-4 col-xs-offset-2 col-lg-offset-2 col-md-offset-2 col-sm-offset-2">
+                        返回
+                    </div>
+                     <div class="button col-xs-4 col-lg-4 col-md-4 col-sm-4 col-xs-offset-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-4">
+                        上架
+                    </div>
+            </div>
+        </div>
+    </div>
+    </div>
 
 {% endblock %}
 {% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function () { //本人习惯这样写了
+            $(window).scroll(function () {
+                //$(window).scrollTop()这个方法是当前滚动条滚动的距离
+                //$(window).height()获取当前窗体的高度
+                //$(document).height()获取当前文档的高度
+                $("#homepage_navigation").css("top", $(window).scrollTop());
+                //当底部基本距离+滚动的高度〉=文档的高度-窗体的高度时；
+                //我们需要去异步加载数据了
 
+            });
+        });
+        $(".coupon_detail").click(function () {
+            $(".modal-wrapper").show();
+
+        })
+    </script>
 {% endblock %}
 
 
