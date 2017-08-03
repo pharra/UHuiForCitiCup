@@ -192,7 +192,7 @@
                             </div>
                             <div class="col-xs-12 col-lg-12 col-md-12 col-sm-12">
                                 <p style="margin: 0;">使用限制:</p>
-                                <p style="margin: 0;height: 10px;line-height:10px;font-size: 10px;"
+                                <p style="margin: 0;height: 14px;line-height:14px;font-size: 14px;"
                                    id="couponDetail_limits"></p>
                             </div>
 
@@ -291,7 +291,7 @@
         }
     }
     function returnindex() {
-        $(".modal-wrapper").hidden();
+        $(".modal-wrapper").hide();
             $("body").css("overflow","auto");
     }
     function post_changelike(url) {
@@ -307,13 +307,10 @@
             function succFunction(Jsondata) {
                 var msg = Jsondata.message;
                 if (Jsondata.errno === '5') {
-                    $.alert(msg,"", function () {
-                        window.location.href = "/login";
-                    });
+                    window.location.href = "/login";
+                }
+                else if (Jsondata.errno === '0') {
 
-
-                } else if (Jsondata.errno === '0') {
-                    $.alert(msg,"", function () {
                         if (Jsondata.like === '0') {
                             $("#couponDetail_like").hide();
                             $("#couponDetail_dislike").show();
@@ -322,11 +319,10 @@
                            $("#couponDetail_like").show();
                             $("#couponDetail_dislike").hide();
                         }
-                    })
 
                 }
                 else {
-                    $.alert(msg,"")
+                    alert(msg)
                 }
 
             }
