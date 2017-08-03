@@ -72,6 +72,18 @@ def post_preSearch(request):
         result.append(coupon)
     return JsonResponse({'result':result})
 
+#分类下预搜索
+def post_preSearchInCategory(request):
+    keyword = request.POST.get('keyword')
+    cat = request.POST.get('category')
+    #if not keyword:
+    #    return JsonResponse({'error':'keyword not exist'})
+    productResult = Coupon.objects.filter(product__istartswith=keyword,stat='onSale',catid=cat).values('product').distinct()
+    result = []
+    for coupon in productResult:
+        result.append(coupon)
+    return JsonResponse({'result':result})
+
 
 #搜索
 def post_searchForAndroid(request):
@@ -115,8 +127,7 @@ def post_searchInCertainCategory(request):
     productResult = models.Coupon.objects.filter(product__contains=key, stat='onSale',catid=cat).values('couponid', 'listprice',
                                                                                               'value', 'product',
                                                                                               'discount', 'pic',
-                                                                                              'expiredtime').order_by(
-        orderBy)
+                                                                                              'expiredtime').order_by(orderBy)
     result = []
     for coupon in productResult:
         result.append(coupon)
@@ -131,17 +142,18 @@ def post_searchInCertainCategory(request):
         return JsonResponse({'coupons': result})
     if result == None:
         return JsonResponse({'result': 'result no exist'})
-    return JsonResponse({'coupon': result})
+    return JsonResponse({'coupons': result})
 
 
 #点击种类进行查询
 def post_searchByCategory(request):
     catID = request.POST.get('categoryID',0)
+    orderBy = request.POST.get('order', 'expiredtime')
     if Category.objects.filter(catid=catID).exists():
         result = []
         couponList = Coupon.objects.filter(catid=catID, stat='onSale').values('couponid', 'listprice', 'value',
                                                                               'product', 'discount', 'pic',
-                                                                              'expiredtime')
+                                                                              'expiredtime').order_by(orderBy)
         for each in couponList:
             result.append(each)
         return JsonResponse({'result': result})
@@ -321,9 +333,17 @@ def post_likeCoupon(request):
 #消息发送接口
 def post_sendMessage(request):
     userID = request.POST.get('userID',0)
-    msg = Message.objects.filter(userid=userID)
-    msgdata = serializers.serialize("json",msg,fields = ('messageid','content','time','messagecat','couponid'))
-    return HttpResponse(msgdata,content_type="application/json")
+    tmp = Message.objects.filter(userid=userID)
+    msg = Message.objects.filter(userid=userID).values('messageid','content','time','messagecat','hasread','couponid')
+    messageResult = []
+    couponResult = []
+    for each in msg:
+        messageResult.append(each)
+    for i in tmp:
+        cp = Coupon.objects.filter(couponid=i.couponid.couponid).values('product')
+        for coupon in cp:
+            couponResult.append(coupon)
+    return JsonResponse({'messageResult':messageResult,'couponResult':couponResult})
 
 
 #修改密码接口
@@ -479,13 +499,13 @@ def post_getOwnList(request):
         ownListID = Couponlist.objects.get(userid=u_id,stat='own').listid
         ownListitem = Listitem.objects.filter(listid=ownListID)
         for each in ownListitem:
-            tmpOnSalelist = Coupon.objects.filter(couponid=each.couponid.couponid,stat='onSale').values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount')
+            tmpOnSalelist = Coupon.objects.filter(couponid=each.couponid.couponid,stat='onSale').values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount','pic')
             for i in tmpOnSalelist:
                 onSaleList.append(i)
-            tmpStoreList = Coupon.objects.filter(couponid=each.couponid.couponid,stat = 'store').values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount')
+            tmpStoreList = Coupon.objects.filter(couponid=each.couponid.couponid,stat = 'store').values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount','pic')
             for i in tmpStoreList:
                 storeList.append(i)
-            tmpUsedList = Coupon.objects.filter(couponid=each.couponid.couponid,stat='used').values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount')
+            tmpUsedList = Coupon.objects.filter(couponid=each.couponid.couponid,stat='used').values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount','pic')
             for i in tmpUsedList:
                 usedList.append(i)
         return JsonResponse({'onSaleList':onSaleList,'storeList':storeList,'usedList':usedList})
@@ -547,9 +567,9 @@ def post_getLikeList(request):
 
 
 #上架下架已拥有的优惠券  还需要创建message
-def post_changeCouponStat(request):
+def post_changeCouponState(request):
     cpID = request.POST.get('couponID')
-    newStat = request.POST.get('stat')
+    newStat = request.POST.get('state')
     cp = Coupon.objects.get(couponid=cpID)
     if newStat=='onSale':
         if cp.stat == 'onSale':
