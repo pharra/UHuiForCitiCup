@@ -898,3 +898,8 @@ p {
 .aui-active div {
     color: #0894ec;
 }
+
+.index_coupons_detail{
+    margin: 15%;
+    background: grey;
+}
