@@ -11,7 +11,9 @@
     <div class="swiper-slide"><img src="static/images/dva_1.jpg" alt=""></div>
     <div class="swiper-slide"><img src="static/images/dva_1.jpg" alt=""></div>
     <div class="swiper-slide"><img src="static/images/dva_1.jpg" alt=""></div>
+
   </div>
+     <div class="swiper-pagination"></div>
 
 </div>
 
@@ -179,8 +181,17 @@
                 },
             });
         }
-    })
-
+    });
+    </script>
+    <link rel="stylesheet" href="/static/css/light7-swiper.css">
+<script src="/static/js/light7-swiper.js"></script>
+    <script type="text/javascript">
+    $.swiper(".swiper-container",{
+         speed: 400,
+    spaceBetween: 100,
+        paginationElement:"div",
+        autoplay:2000,
+    });
     </script>
 {% endblock %}
 
