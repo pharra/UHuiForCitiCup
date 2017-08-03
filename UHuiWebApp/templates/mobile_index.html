@@ -6,25 +6,14 @@
 {% endblock %}
 {% block mobile_body %}
     <div class="aui-row">
-        <div id="aui-slide">
-            <div class="aui-slide-wrap">
-                <div class="aui-slide-node bg-dark">
-
-                    <img src="static/images/dva_1.jpg"/>
-                </div>
-                <div class="aui-slide-node bg-dark">
-
-                    <img src="static/images/dva_1.jpg"/>
-                </div>
-                <div class="aui-slide-node bg-dark">
-
-                    <img src="static/images/dva_1.jpg"/>
-                </div>
-            </div>
-            <div class="clear"></div>
-            <div class="aui-slide-page-wrap"><!--分页容器--></div>
-            <div class="clear"></div>
-        </div>
+    <div class="swiper-container" data-space-between='10' data-pagination='.swiper-pagination' data-autoplay="1000">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide"><img src="static/images/dva_1.jpg" alt=""></div>
+    <div class="swiper-slide"><img src="static/images/dva_1.jpg" alt=""></div>
+    <div class="swiper-slide"><img src="static/images/dva_1.jpg" alt=""></div>
+  </div>
+        <div class="swiper-pagination"></div>
+</div>
     </div>
 
     <section class="aui-grid">
@@ -105,7 +94,10 @@
 
 {% block scripts %}
     <script src="/static/css/dropload.css"></script>
-    <script src="/static/js/dropload.js"></script>
+        <script src="/static/js/dropload.js"></script>
+    <link rel="stylesheet" href="/static/js/light7-swiper.min.js">
+
+
     <script type="text/javascript">
         $.cookie("indexM", "0", {path: "/"});
     </script>
@@ -190,7 +182,8 @@
                 },
             });
         }
-        $.init();
+        $.init;
+
     </script>
 {% endblock %}
 
