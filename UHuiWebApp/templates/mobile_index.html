@@ -97,46 +97,45 @@
 
 
     <script type="text/javascript">
+    $(document).on("pageInit",function() {
         $.cookie("indexM", "0", {path: "/"});
-    </script>
-    <script type="text/javascript">
-    var loading = false;
+         var loading = false;
         $('#coupons_mobile_pullfresh').dropload({
             scrollArea: window,
-            threshold:50,
-            autoLoad:true,
+            threshold: 50,
+            autoLoad: true,
             loadDownFn: function (me) {
-                if(loading) return;
+                if (loading) return;
                 $.ajax({
                     type: 'POST',
                     url: '/post_getCouponForMobileIndex',
                     dataType: 'json',
                     success: function (data) {
-                       $.each(data, function (key, value) {
-                    if (key === "coupons") {
-                        if(value === 'null'){
-                                loading = true;
-                                return;
+                        $.each(data, function (key, value) {
+                            if (key === "coupons") {
+                                if (value === 'null') {
+                                    loading = true;
+                                    return;
 
-                            }
-                        $.each(value, function (key, value) {
-                            var $couponsdom = $("#mobile_index_coupons").clone();
-                            $couponsdom.attr('id', '').removeClass("aui-hide").attr("id","couponsid_" + value.couponID);
-                            $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
-                            $couponsdom.find("p")[1].innerText = "估值:" + value.value;
-                            $couponsdom.find("p")[2].innerText = value.brand;
-                            $couponsdom.find("p")[3].innerText = value.discount;
-                            $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
-                            $("#mobile_index_coupons").parent().append($couponsdom);
-                            $("div[id^='couponsid_']").click(function () {
-                            var couponsid = $(this).attr("id").replace("couponsid_",'');
-                                window.location.href = "/commodity?couponID="+couponsid;
+                                }
+                                $.each(value, function (key, value) {
+                                    var $couponsdom = $("#mobile_index_coupons").clone();
+                                    $couponsdom.attr('id', '').removeClass("aui-hide").attr("id", "couponsid_" + value.couponID);
+                                    $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
+                                    $couponsdom.find("p")[1].innerText = "估值:" + value.value;
+                                    $couponsdom.find("p")[2].innerText = value.brand;
+                                    $couponsdom.find("p")[3].innerText = value.discount;
+                                    $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
+                                    $("#mobile_index_coupons").parent().append($couponsdom);
+                                    $("div[id^='couponsid_']").click(function () {
+                                        var couponsid = $(this).attr("id").replace("couponsid_", '');
+                                        window.location.href = "/commodity?couponID=" + couponsid;
+                                    });
+
                                 });
-
+                                loading = false;
+                            }
                         });
-                        loading = false;
-                    }
-                });
                         // 每次数据加载完，必须重置
 
                         me.resetload();
@@ -149,13 +148,13 @@
                 });
             }
         });
-        getcoupons_moblie();
+
         function getcoupons_moblie() {
             $.ajax({
                 type: 'POST',
                 url: '/post_getCouponForMobileIndex',
                 dataType: 'json',
-                sync:false,
+                sync: false,
                 success: function (data) {
                     $.each(data, function (key, value) {
                         if (key === "coupons") {
@@ -180,8 +179,8 @@
                 },
             });
         }
-        $.init();
-
+    })
+    $.init();
     </script>
 {% endblock %}
 

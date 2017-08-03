@@ -147,13 +147,13 @@
     {% block mobile_footer %}
         <footer class="aui-bar aui-bar-tab" id="footer">
             <div class="aui-bar-tab-item aui-active" tapmode>
-                <a href="/" style="color:#757575;">
+                <a href="/" style="color:#757575;" class="external">
                     <i class="aui-iconfont aui-icon-home"></i>
                     <div class="aui-bar-tab-label">首页</div>
                 </a>
             </div>
             <div class="aui-bar-tab-item" tapmode>
-                <a href="/mobile_mylikecoupons" style="color:#757575;">
+                <a href="/mobile_mylikecoupons" style="color:#757575;" class="external">
                     <i class="aui-iconfont aui-icon-star"></i>
                     <div class="aui-bar-tab-label">U</div>
                 </a>
@@ -161,7 +161,7 @@
 
 
             <div class="aui-bar-tab-item" tapmode>
-                <a href="/mobile_user" style="color:#757575;">
+                <a href="/mobile_user" style="color:#757575;" class="external">
                     <i class="aui-iconfont aui-icon-my"></i>
                     <div class="aui-bar-tab-label">我的</div>
                 </a>
@@ -185,7 +185,6 @@ var tab = new auiTab({
 <script src="/static/js/jquery-3.2.1.js"></script>
 <script src="/static/js/light7.min.js"></script>
 <script src="/static/js/light7-swiper.js"></script>
-<script src="/static/js/light7-swipeout.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/jquery.md5.js"></script>
 <script src="/static/js/jquery.cookie.js"></script>
@@ -195,14 +194,20 @@ var tab = new auiTab({
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GeoLBAU1t7TRpqXhtw8VIth4r6PGAU3U"></script>
 <script type="text/javascript">
     // 百度地图API功能
-    function myFun(result) {
+    $(document).on("pageInit",function(){
+   function myFun(result) {
         var cityName = result.name;
         $("#city-position,.city-position").html("<i class=\"fa fa-location-arrow\"></i>&nbsp;" + cityName);
     }
 
     var myCity = new BMap.LocalCity();
     myCity.get(myFun);
+});
+
 </script>
 {% block scripts %}{% endblock %}
+<script type="text/javascript">
 
+    $.init();
+</script>
 </html>

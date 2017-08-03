@@ -64,7 +64,7 @@
     </div>
     <footer class="aui-bar aui-bar-tab mobile-max-user-background">
         <div class="aui-bar-tab-item" tapmode>
-            <a href="/" style="color:white;">
+            <a href="/" style="color:white;" class="external">
                 <i class="aui-iconfont aui-icon-home"></i>
                 <div class="aui-bar-tab-label">首页</div>
             </a>
@@ -103,7 +103,7 @@
             }
         }
 
-        getlikeordislike({{ like }});
+        getlikeordislike('{{ like }}');
 
         function post_changelike(url) {
 

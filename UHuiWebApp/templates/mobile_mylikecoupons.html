@@ -12,7 +12,7 @@
         <div class="aui-flex-item-4">
             <i class="aui-iconfont aui-icon-left"></i>
         </div>
-        <div class="aui-flex-item-4 content-text">我的关注的
+        <div class="aui-flex-item-4 content-text">我的关注
         </div>
     </div>
 
@@ -20,7 +20,8 @@
 
 {% block mobile_body %}
       <div class="aui-flex-row">
-        {% for i in couponsOwn %}
+      {% if couponsLike %}
+        {% for i in couponsLike %}
             <div class="mobile-user-coupons aui-flex-col">
                 <div class="aui-flex-item-3 user-coupons-left">
                     <p class="user-coupons-left-value font-class">
@@ -51,12 +52,13 @@
                 </div>
 
             </div>
-            {% empty %}
+            {% endfor %}
+      {% else %}
             <div class="aui-padded-15 aui-margin-15">
             <img src="/static/images/coupons_empty.png">
             <p class="mobile-content">什么！？这里居然是空的！</p>
             </div>
-        {% endfor %}
+        {% endif %}
     </div>
 {% endblock %}
 {% block mobile_footer %}

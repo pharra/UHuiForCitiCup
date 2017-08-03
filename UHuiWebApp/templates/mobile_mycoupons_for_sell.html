@@ -65,7 +65,7 @@
     </div>
     <footer class="aui-bar aui-bar-tab mobile-max-user-background">
         <div class="aui-bar-tab-item" tapmode>
-            <a href="/" style="color:white;">
+            <a href="/" style="color:white;" class="external">
                 <i class="aui-iconfont aui-icon-home"></i>
                 <div class="aui-bar-tab-label">首页</div>
             </a>
@@ -105,8 +105,8 @@
 
         function post_changesalestat(url, message, button_left, button_right) {
             if (url === '/post_putOnSale') {
-                $.alert(message, '', function (ret) {
-                    if (ret.buttonIndex === 2) {
+                $.alert(message, '', function () {
+
                         $.prompt('输入价格', function (value) {
                             if (isUnsignedInteger(value)) {
                                 $.ajax({
@@ -125,7 +125,7 @@
                             }
                         });
 
-                    }
+
                 })
 
             }
