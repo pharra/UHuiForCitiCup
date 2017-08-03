@@ -7,7 +7,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login$', views.login, name='login'),
     url(r'^user$', views.userPage, name='user'),
-    url(r'^mycoupons$', views.myCouponsPage, name='mycoupons'),
+    url(r'^mobile_mycoupons$', views.myCouponsPage, name='mycoupons'),
     url(r'^search$', views.search, name='search'),
     url(r'^commodity$', views.commodity, name='commodity'),
     url(r'^mobile_appraisement$', views.mobile_appraisement, name='mobile_appraisement'),
@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^mobile_user_wallet$', views.mobile_user_wallet, name='mobile_user_wallet'),
     url(r'^mobile_sell_final$', views.mobile_sell_final, name='mobile_sell_final'),
     url(r'^couponsmessage$', views.mobile_couponsmessage, name='mobile_couponsmessage'),
+
     url(r'^mobile_myboughtcoupons$', views.mobile_myboughtcoupons, name='mobile_myboughtcoupons'),
     url(r'^mobile_mysoldcoupons$', views.mobile_mysoldcoupons, name='mobile_mysoldcoupons'),
     url(r'^mobile_mylikecoupons$', views.mobile_mylikecoupons, name='mobile_mylikecoupons'),
