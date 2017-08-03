@@ -36,7 +36,7 @@ class SimpleMiddleware(object):
             request.uid = uid
         elif url.startswith("/manage") or url.startswith('/user'):
             return HttpResponseRedirect("/login?method=login")
-        elif url.startswith('/mobile_my') or url.startswith('/mobile_user_') or url.startswith('/mobile_sell_final'):
+        elif url.startswith('/mobile_my') or url.startswith('/mobile_user') or url.startswith('/mobile_sell_final'):
             return HttpResponseRedirect("/mobile_login?method=login")
         elif url.startswith('/post_dislike') or url.startswith('/post_like'):
             return JsonResponse({'errno': '5', 'message': '您未登录'})

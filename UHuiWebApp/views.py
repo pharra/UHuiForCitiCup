@@ -995,7 +995,8 @@ def post_signUp(request):
 # 根据request的COOKIES判断登录uid
 def get_uid(request):
     cookie_content = request.COOKIES.get('uhui', False)
-    print(type(cookie_content))
+    if cookie_content == 0:
+        return False
     if cookie_content:
         content = cookie_content.split('_')
     else:
