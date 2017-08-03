@@ -142,7 +142,7 @@
         </div>
 
     </div>
-    <div class="modal-wrapper being-hidden">
+    <div class="modal-wrapper being-hidden z-index">
         <div class="modal-backdrop modal-backdrop-white">
             <div class="index_coupons_detail">
                 <div class="row">
@@ -240,11 +240,11 @@
                     <h4 class="modal-title">输入您的价格</h4>
                 </div>
                 <div class="modal-body">
-                    <input type="text" id="couponDetail_value">
+                    <input type="text" id="couponDetail_input">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" onclick="buy()">确定上架</button>
+                    <button type="button" class="btn btn-primary" onclick="buy('/post_putOnSale')">确定上架</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -411,7 +411,7 @@
 
 
             else {
-                $.confirm(message, '', function () {
+
 
                     $.ajax({
                         async: false,
@@ -425,11 +425,12 @@
                     });
 
 
-                })
+
             }
         }
 
         function succFunction(Jsondata) {
+            $('.modal').modal('hide');
             var msg = Jsondata.message;
             if (Jsondata.errno === '0') {
                     if (Jsondata.stat === 'onSale') {
@@ -451,8 +452,8 @@
         }
 
 
-        function buy() {
-            var value = $("#couponDetail_value")[0].innerText;
+        function buy(url) {
+            var value = $("#couponDetail_input").val();
             if (isUnsignedInteger(value)) {
                 $.ajax({
                     async: false,

@@ -815,7 +815,9 @@ p {
     overflow-y: auto;
     transition: opacity .3s ease-out;
 }
-
+.modal-wrapper.z-index{
+    z-index: 1049;
+}
 .modal-backdrop{
     position: absolute;
     top: 0;
@@ -907,6 +909,7 @@ p {
 .index_coupons_detail{
     margin: 15%;
     background: #f0f0f0;
+    min-width: 750px;
 }
 
 .coupons_detail_title {
