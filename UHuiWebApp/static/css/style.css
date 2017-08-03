@@ -924,3 +924,10 @@ p {
     background: #ff5a00;
     color: white;
 }
+.aui-active i {
+    color: #0894ec;
+}
+
+.aui-active div {
+    color: #0894ec;
+}
