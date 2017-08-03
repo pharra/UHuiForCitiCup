@@ -424,7 +424,3 @@ $(".max").click(function () {
     $(tab_title).children().click();
 });
 
-function logout() {
-    $.cookie("uhui",'0');
-    window.location.href = "/";
-}
