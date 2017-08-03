@@ -328,9 +328,10 @@ def post_likeCoupon(request):
     CouponObj = Coupon.objects.get(pk = cpID)
     userLikeList = Couponlist.objects.get(userid=u_ID,stat='like')
     if Listitem.objects.filter(couponid = cpID,listid = userLikeList).exists():
-        return JsonResponse({'result':'already like'})
+        Listitem.objects.filter(couponid = cpID,listid = userLikeList).delete()
+        return JsonResponse({'result':'dislike'})
     Listitem.objects.create(couponid = CouponObj,listid = userLikeList)
-    return JsonResponse({'result':'success'})
+    return JsonResponse({'result':'like'})
 
 
 #消息发送接口
