@@ -14,11 +14,19 @@ class SimpleMiddleware(object):
     def process_request(self, request):
         url = request.path
         uid = views.get_uid(request)
+        UA = request.META['HTTP_USER_AGENT']
         if uid is False:
             response = HttpResponseRedirect('/login')
             response.delete_cookie('uhui')
             return response
         request.uid = None
+
+        if url == '/' and ('Android' in UA or 'Mobile Safari' in UA):
+            if uid:
+                request.uid = uid
+            response = HttpResponseRedirect('/mobile_index')
+            return response
+
         if uid:
             request.uid = uid
         elif url.startswith("/manage") or url.startswith('/user') or url.startswith('/mobile_sell_final'):

@@ -316,6 +316,8 @@ def post_search(request):
     result = []
     productResult = models.Coupon.objects.filter(product__icontains=key, stat='onSale').order_by(orderBy)
     brandIDResult = models.Brand.objects.filter(name__icontains=key)
+    productCount = productResult.count()
+    brandCount = 0
     for i in range(0, 16):
         if (16 * page + i) == productResult.count():
             break
@@ -324,14 +326,17 @@ def post_search(request):
     for brand in brandIDResult:
         pc = int(16 / brandIDResult.count())
         brandItem = models.Coupon.objects.filter(brandid=brand.brandid, stat='onSale')
+        brandCount = brandCount + brandItem.count()
         for i in range(0, pc):
             if (pc * page + i) == brandItem.count():
                 break
             result.append(couponInfo(brandItem[pc * page + i].couponid))
-
+    maxPage = max(productCount/16, brandCount/16)
+    if maxPage > int(maxPage):
+        maxPage = int(maxPage) + 1
     # if not productResult.exists() and not brandIDResult.exists():
     #     return render(request, 'search.html')
-    response = render_to_response('search.html', {'coupons': result, 'keyWord': key})
+    response = render_to_response('search.html', {'coupons': result, 'keyWord': key, 'maxPage': maxPage})
     # response.set_cookie('history', addSearchHistory(key, history))
     return response
 
