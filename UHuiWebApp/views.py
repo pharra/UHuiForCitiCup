@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from UHuiProject.settings import DEBUG
 from django.core.exceptions import ObjectDoesNotExist
 from UHuiWebApp import models
-from .shortcut import JsonResponse, render, render_to_response
+from .shortcut import JsonResponse, render
 
 import smtplib
 from email.mime.text import MIMEText
@@ -316,6 +316,8 @@ def post_search(request):
     result = []
     productResult = models.Coupon.objects.filter(product__icontains=key, stat='onSale').order_by(orderBy)
     brandIDResult = models.Brand.objects.filter(name__icontains=key)
+    productCount = productResult.count()
+    brandCount = 0
     for i in range(0, 16):
         if (16 * page + i) == productResult.count():
             break
@@ -323,15 +325,20 @@ def post_search(request):
     # 数量不够时的结果仍需补全
     for brand in brandIDResult:
         pc = int(16 / brandIDResult.count())
+        if pc == 0:
+            pc = 1
         brandItem = models.Coupon.objects.filter(brandid=brand.brandid, stat='onSale')
+        brandCount = brandCount + brandItem.count()
         for i in range(0, pc):
             if (pc * page + i) == brandItem.count():
                 break
             result.append(couponInfo(brandItem[pc * page + i].couponid))
-
+    maxPage = max(productCount/16, brandCount/16)
+    if maxPage > int(maxPage):
+        maxPage = int(maxPage) + 1
     # if not productResult.exists() and not brandIDResult.exists():
     #     return render(request, 'search.html')
-    response = render_to_response('search.html', {'coupons': result, 'keyWord': key})
+    response = render('search.html', {'coupons': result, 'keyWord': key, 'maxPage': maxPage})
     # response.set_cookie('history', addSearchHistory(key, history))
     return response
 
@@ -470,6 +477,12 @@ def post_getCouponByCatIndex(request):
     # values = coupons.values()
     # values.reverse()
     # couponByCat[cat.name] = values[0:8]
+    emptyCat = []
+    for key in couponByCat:
+        if not couponByCat[key]:
+            emptyCat.append(key)
+    for i in emptyCat:
+        couponByCat.pop(i)
     result = {'coupons': couponByCat}
     return result
 
@@ -862,6 +875,10 @@ def mobile_user_setting(request):
 
 def mobile_user_wallet(request):
     return render(request, 'mobile_user_wallet.html')
+
+
+def mobile_user(request):
+    return render(request, 'mobile_user.html', post_getUserCoupon(request))
 
 
 def mobile_couponsmessage(request):
