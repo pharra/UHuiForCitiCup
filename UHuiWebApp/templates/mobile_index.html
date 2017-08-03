@@ -20,39 +20,39 @@
 
     <section class="aui-grid">
         <div class="aui-row">
-            <div class="aui-col-xs-3">
+            <div class="aui-col-xs-3 catname">
 
-                <i class="aui-iconfont aui-icon-gear"></i>
+                <img src="/static/images/生活百货.png" style="height: 29px;width: 29px;margin: 0 auto;">
 
-                <div class="aui-grid-label">首页</div>
+                <div class="aui-grid-label">生活百货</div>
             </div>
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-gear"></i>
-                <div class="aui-grid-label">设置</div>
+            <div class="aui-col-xs-3 catname">
+                <img src="/static/images/美妆装饰.png" style="height: 29px;width: 29px;margin: 0 auto;">
+                <div class="aui-grid-label">美妆装饰</div>
             </div>
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-map"></i>
-                <div class="aui-grid-label">地图</div>
+            <div class="aui-col-xs-3 catname">
+                <img src="/static/images/文娱体育.png" style="height: 29px;width: 29px;margin: 0 auto;">
+                <div class="aui-grid-label">文娱体育</div>
             </div>
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-calendar"></i>
-                <div class="aui-grid-label">日历</div>
+            <div class="aui-col-xs-3 catname">
+                <img src="/static/images/家具家居.png" style="height: 29px;width: 29px;margin: 0 auto;">
+                <div class="aui-grid-label">家具家居</div>
             </div>
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-mobile"></i>
+            <div class="aui-col-xs-3 catname">
+                <img src="/static/images/电子产品.png" style="height: 29px;width: 29px;margin: 0 auto;">
                 <div class="aui-grid-label">电子产品</div>
             </div>
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-cart"></i>
-                <div class="aui-grid-label">购物车</div>
+            <div class="aui-col-xs-3 catname">
+                <img src="/static/images/服装服饰.png" style="height: 29px;width: 29px;margin: 0 auto;">
+                <div class="aui-grid-label">服装服饰</div>
             </div>
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-paper"></i>
-                <div class="aui-grid-label">发现</div>
+            <div class="aui-col-xs-3 catname">
+               <img src="/static/images/旅行住宿.png" style="height: 29px;width: 29px;margin: 0 auto;">
+                <div class="aui-grid-label">旅行住宿</div>
             </div>
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-video"></i>
-                <div class="aui-grid-label">视频</div>
+            <div class="aui-col-xs-3 catname">
+                <img src="/static/images/饮食保健.png" style="height: 29px;width: 29px;margin: 0 auto;">
+                <div class="aui-grid-label">饮食保健</div>
             </div>
         </div>
     </section>
@@ -192,6 +192,9 @@
         paginationElement:"div",
         autoplay:2000,
     });
+    $(".catname").click(function () {
+        window.location.href = "/post_getCouponByCat?catName=" + $(this).find("div")[0].innerText + "&page=1";
+    })
     </script>
 {% endblock %}
 
