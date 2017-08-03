@@ -338,7 +338,7 @@ def post_search(request):
         maxPage = int(maxPage) + 1
     # if not productResult.exists() and not brandIDResult.exists():
     #     return render(request, 'search.html')
-    response = render('search.html', {'coupons': result, 'keyWord': key, 'maxPage': maxPage})
+    response = render(request, 'search.html', {'coupons': result, 'keyWord': key, 'maxPage': maxPage})
     # response.set_cookie('history', addSearchHistory(key, history))
     return response
 
