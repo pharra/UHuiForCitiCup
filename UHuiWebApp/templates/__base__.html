@@ -34,7 +34,7 @@
                             </div>
                     </div>
                     <div class="col-xs-2 col-lg-2 col-md-2  col-sm-2 city-position">
-                        <div style="margin: 0 15px 0 15px;" id="city-position"><i class="fa fa-location-arrow"></i> 定位
+                        <div style="margin: 0 15px 0 15px;color: #ff5a00;" id="city-position" ><i class="fa fa-location-arrow"></i> 定位
                         </div>
                     </div>
                     <!--注册/登录-->
@@ -110,13 +110,13 @@
                                 </li>
                             {% else %}
                                 <li class="col-xs-6 col-lg-6 col-md-6  col-sm-6" style="text-align: right;">
-                                    <a href="/login?method=register">注册
-                                        <span class="glyphicon glyphicon-user hidden-sm"></span>
+                                    <a href="/login?method=register" style="color: #ff5a00;">注册
+                                        <span class="glyphicon glyphicon-user hidden-sm" style="color: #ff5a00;"></span>
                                     </a>
                                 </li>
                                 <li class="col-xs-6 col-lg-6 col-md-6  col-sm-6" style="text-align: right;">
-                                    <a href="/login?method=login">登录
-                                        <span class="glyphicon glyphicon-user  hidden-sm"></span>
+                                    <a href="/login?method=login" style="color: #ff5a00;">登录
+                                        <span class="glyphicon glyphicon-user  hidden-sm" style="color: #ff5a00;"></span>
                                     </a>
                                 </li>
                             {% endif %}
@@ -144,7 +144,7 @@
 
     function myFun(result) {
         var cityName = result.name;
-        $("#city-position,.city-position").html("<i class=\"fa fa-location-arrow\"></i>&nbsp;" + cityName);
+        $("#city-position,.city-position").html("<i class=\"fa fa-location-arrow\" style=\"color: #ff5a00;\"></i>&nbsp;" + cityName).css("color","#ff5a00");
     }
     var myCity = new BMap.LocalCity();
     myCity.get(myFun);

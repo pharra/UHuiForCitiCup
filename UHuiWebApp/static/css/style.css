@@ -5,6 +5,9 @@ body {
     line-height: 1.7;
     color: black;
 }
+input{
+    outline: none;
+}
 
 a {
     -webkit-transition: 0.5s;
@@ -101,20 +104,22 @@ li {
     display: inline-block;
     width: 100%;
     border-radius: 0;
+    border: 2px solid #ff5a00;
 }
 
 .navbar-search .form-group .form-control:focus {
     border-radius: 0;
+    border: 2px solid #ff5a00;
 }
 
 .navbar-search .btn {
     left: -4px;
     position: relative;
     border-radius: 0;
-    border: 1px solid #0f88eb;
+    border: 1px solid #ff5a00;
     border-left: 0;
     width: 12%;
-    background-color: #0f88eb;
+    background-color: #ff5a00;
     color: white;
 }
 
@@ -154,18 +159,10 @@ li {
     background-color: white;
     padding: 0 0 0 0;
     position: relative;
+    border:2px solid #ff5a00;
 }
 
-.menu-left {
-    float: left;
-    width: 10%;
-}
 
-.menu-right {
-    float: right;
-    width: 85%;
-    position: relative;
-}
 
 .category-right {
     float: right;
@@ -174,52 +171,23 @@ li {
 
 .category-menu {
     padding: 0;
-    margin: 0 15% 0 15%;
+    margin: 0 5px 0 5px;
     font-size: 14px;
-    letter-spacing: 1px;
-    border: 1px solid coral;
-    border-radius: 4px;
+    text-align: center;
 }
 
-@media (max-width: 768px) {
-    .category-menu {
-        display: none;
-    }
-    .category-right {
-        width: 100%;
-    }
-}
 
-@media (min-width: 768px) and (max-width: 992px) {
-    .category-menu {
-        display: none;
-    }
-    .category-right {
-        width: 100%;
-    }
-}
-
-@media (min-width: 992px) and (max-width: 1200px) {
-    .category-menu {
-        margin: 0 10% 0 10%;
-    }
-}
-
-@media (min-width: 1200px) {
-    .category-menu {
-        margin: 0 16% 0 16%;
-    }
-}
 
 .category-menu li {
-    margin: 0 8px 0 8px;
-    padding: 0 10px 0 10px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #ff5a00;
+    margin: 5px 0 5px 0;
+    font-weight: bold;
+    color: #ff5a00;
 }
 
 .category-menu li:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    padding: 0 10px 0 10px;
+    background-color: #ff5a00;
+    color: white;
 }
 
 .category-menu li i {
@@ -603,6 +571,7 @@ button[type=button]:disabled {
 .edit-verification_code .form-control {
     display: inline-block;
     width: 100px;
+
 }
 
 .edit-verification_code {

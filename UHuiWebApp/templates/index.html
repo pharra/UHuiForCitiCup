@@ -4,40 +4,40 @@
 {% endblock %}
 {% block body %}
     <div class="container">
-        <div class="col-xs-2 col-lg-2 col-md-2 col-sm-2 category-left being-hidden" id="homepage_navigation">
+        <div class="col-xs-1 col-lg-1 col-md-1 col-sm-1 category-left " id="homepage_navigation">
             <ul class="category-menu">
                 <!--#homepage_top-->
-                <a href="#index_nav">
-                    <li><img src="/static/images/置顶箭头.png">回到顶部</li>
+                <a href="#">
+                    <li><img src="/static/images/置顶箭头.png">推荐</li>
                 </a>
-                <a href="#index_life">
-                    <li><i class="fa fa-commenting-o"></i>生活百货</li>
+                <a href="#生活百货">
+                    <li><i class="fa fa-commenting-o"></i>百货</li>
                 </a>
-                <a href="#index_elec">
-                    <li><i class="fa fa-commenting-o"></i>电子产品</li>
+                <a href="#美妆装饰">
+                    <li><i class="fa fa-commenting-o"></i>美妆</li>
                 </a>
-                <a href="#index_clot">
-                    <li><i class="fa fa-commenting-o"></i>服装装饰</li>
+                <a href="#文娱体育">
+                    <li><i class="fa fa-commenting-o"></i>体育</li>
                 </a>
-                <a href="#index_eadr">
-                    <li><i class="fa fa-commenting-o"></i>饮食保健</li>
+                <a href="#家具家居">
+                    <li><i class="fa fa-commenting-o"></i>家具</li>
                 </a>
-                <a href="#index_bili">
-                    <li><i class="fa fa-commenting-o"></i>文娱体育</li>
+                <a href="#电子产品">
+                    <li><i class="fa fa-commenting-o"></i>数码</li>
                 </a>
-                <a href="#index_home">
-                    <li><i class="fa fa-commenting-o"></i>家具家居</li>
+                <a href="#服装服饰">
+                    <li><i class="fa fa-commenting-o"></i>服饰</li>
                 </a>
-                <a href="#index_trip">
-                    <li><i class="fa fa-commenting-o"></i>旅行住宿</li>
+                <a href="#旅行住宿">
+                    <li><i class="fa fa-commenting-o"></i>旅游</li>
                 </a>
-                <a href="#index_dres">
-                    <li><i class="fa fa-commenting-o"></i>美妆妆饰</li>
+                <a href="#饮食保健" >
+                    <li style="border: 0;"><i class="fa fa-commenting-o"></i>饮食</li>
                 </a>
             </ul>
         </div>
 
-        <div class="category-right col-xs-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="category-right col-xs-11 col-lg-11 col-md-11 col-sm-11">
             <div id="myCarousel" class="carousel slide">
                 <!-- 轮播（Carousel）指标 -->
                 <ol class="carousel-indicators">
@@ -88,10 +88,11 @@
             </div>
             <hr id="index_home"/>
 
-            <div class="row">
+
 
                 {% for key,value in coupons.items() %}
-                    <p class="text-fix-center">{{ key }}</p>
+                    <div class="row">
+                    <h3 class="content-text" style="color: #ff5a00;font-weight: bolder;" id="{{ key }}">{{ key }}</h3>
                     {% for i in value %}
                         <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6">
                             <div class="user-coupons row">
@@ -131,8 +132,9 @@
                             </div>
                         </div>
                     {% endfor %}
+                    </div>
                 {% endfor %}
-            </div>
+
         </div>
 
     </div>
