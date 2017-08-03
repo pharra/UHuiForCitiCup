@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^post_sendMobileVerifyCode$', views.post_sendMobileVerifyCode, name='post_sendMobileVerifyCode'),
     url(r'^post_modifyUserInfo$', views.post_modifyUserInfo, name='post_modifyUserInfo'),
     url(r'^post_search$', views.post_search, name='post_search'),
+    url(r'^mobile_search$', views.mobile_search, name='mobile_search'),
     url(r'^post_getUserCoupon$', views.post_getUserCoupon, name='post_getUserCoupon'),
     url(r'^post_getCouponForMobileIndex$', views.post_getCouponForMobileIndex, name='post_getCouponForMobileIndex'),
     url(r'^post_getCouponByCatIndex$', views.post_getCouponByCatIndex, name='post_getCouponByCatIndex'),
@@ -43,6 +44,7 @@ urlpatterns = [
     url(r'^post_putOffSale$', views.post_putOffSale, name='post_putOffSale'),
     url(r'^post_buyCredit$', views.post_buyCredit, name='post_buyCredit'),
     url(r'^post_couponDetail$', views.post_couponDetail, name='post_couponDetail'),
+    url(r'^post_getCouponByCat$', views.post_getCouponByCat, name='post_getCouponByCat'),
 
     url(r'^post_loginForAndroid$', androidViews.post_loginForAndroid, name='post_loginForAndroid'),
     url(r'^post_signUpForAndroid$', androidViews.post_signUpForAndroid, name='post_signUpForAndroid'),

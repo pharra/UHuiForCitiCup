@@ -88,7 +88,7 @@ class Listitem(models.Model):
     class Meta:
         managed = True
         db_table = 'listitem'
-        unique_together = (('couponid', 'listid'),)
+        unique_together = ('couponid', 'listid')
 
 
 class Message(models.Model):

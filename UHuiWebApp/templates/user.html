@@ -110,7 +110,7 @@
                     <div class="tab-pane fade in active" id="tab_own_have">
                         {% if couponsOwn %}
                         {% for i in couponsOwn %}
-                        <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6">
+                        <div class="point coupon_detail col-xs-6 col-md-6 col-lg-6 col-sm-6" id="{{ i.couponID }}">
                             <div class="user-coupons row">
                                 <div class="col-xs-3 col-md-3 col-lg-3 col-sm-3 user-coupons-left">
                                     <p class="user-coupons-left-value">
@@ -158,9 +158,9 @@
 
                     <!--正在出售-->
                     <div class="tab-pane fade" id="tab_own_sale">
-                      {% if couponsOnsale %}
-                        {% for i in couponsOnsale %}
-                        <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6">
+                      {% if couponsOnSale %}
+                        {% for i in couponsOnSale %}
+                        <div class="point coupon_detail col-xs-6 col-md-6 col-lg-6 col-sm-6" id="{{ i.couponID }}">
                             <div class="user-coupons row">
                                 <div class="col-xs-3 col-md-3 col-lg-3 col-sm-3 user-coupons-left">
                                     <p class="user-coupons-left-value">
@@ -210,7 +210,7 @@
                     <div class="tab-pane fade" id="tab_own_focus">
                         {% if couponsLike %}
                         {% for i in couponsLike %}
-                        <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6">
+                        <div class="point coupon_detail col-xs-6 col-md-6 col-lg-6 col-sm-6" id="{{ i.couponID }}">
                             <div class="user-coupons row">
                                 <div class="col-xs-3 col-md-3 col-lg-3 col-sm-3 user-coupons-left">
                                     <p class="user-coupons-left-value">
