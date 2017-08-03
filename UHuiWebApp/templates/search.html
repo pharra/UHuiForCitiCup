@@ -132,13 +132,19 @@
     <script type="text/javascript">
     function getmaxandindexpage(max,current) {
         $("#pagination").children().remove();
-        $("#pagination").append($("<li><a href=\""+  "post_search?keyWord={{ keyWord }}&page={{ currentPage - 1 }}"   +"\" aria-label=\"Previous\"><span aria-hidden=\"true\">&laquo;</span></a></li>"));
+        var before = current -1;
+        var after = current +1;
+        if( before > 0) {
+            $("#pagination").append($("<li><a href=\"" + "post_search?keyWord={{ keyWord }}&page=" + before + "\" aria-label=\"Previous\"><span aria-hidden=\"true\">&laquo;</span></a></li>"));
+        }
         for(var i=1;i<=int;i++){
             var $dom = $("<li><a href=\""+  "post_search?keyWord={{ keyWord }}&page=" + i +"\">"+ i + "</a></li>");
             $("#pagination").append($dom);
         }
-        $("#pagination").append($("<li><a href=\""+  "post_search?keyWord={{ keyWord }}&page={{ currentPage + 1 }}"   +"\" aria-label=\"Previous\"><span aria-hidden=\"true\">&raquo;</span></a></li>"));
-    }
+        if(after <= max) {
+            $("#pagination").append($("<li><a href=\"" + "post_search?keyWord={{ keyWord }}&page=" + after + "\" aria-label=\"Previous\"><span aria-hidden=\"true\">&raquo;</span></a></li>"));
+        }
+        }
     getmaxandindexpage({{ maxPage }},{{ currentPage }});
     </script>
 {% endblock %}
