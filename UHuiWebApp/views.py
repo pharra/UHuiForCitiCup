@@ -642,7 +642,7 @@ def post_getMessage(request):
     content = []
     systemMsg = []
     for item in messages:
-        message = {'messageID': item.messageid, 'time': item.time, 'messageCat': item.messagecat,
+        message = {'messageID': item.messageid, 'time': item.time.strftime("%Y-%m-%d"), 'messageCat': item.messagecat,
                    'hasRead': item.hasread, 'content': item.content}
         if item.messagecat == '系统通知':
             systemMsg.append(message)
