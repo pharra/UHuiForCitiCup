@@ -28,15 +28,17 @@
             <div class="container">
                 <div class="row">
                     <!--Logo-->
-                    <div class="navbar-header col-lg-1 col-md-1  col-sm-1 ">
-                        <a class="navbar-brand" href="/search">Brand</a>
+                    <div class="navbar-header col-xs-1 col-lg-1 col-md-1  col-sm-1 ">
+                        <div>
+                        <a class="navbar-brand" href="/" style="color: #ff5a00;">U惠</a>
+                            </div>
                     </div>
-                    <div class="col-lg-2 col-md-2  col-sm-2 city-position">
+                    <div class="col-xs-2 col-lg-2 col-md-2  col-sm-2 city-position">
                         <div style="margin: 0 15px 0 15px;" id="city-position"><i class="fa fa-location-arrow"></i> 定位
                         </div>
                     </div>
                     <!--注册/登录-->
-                    <div class="navbar-search col-lg-6 col-md-6  col-sm-6">
+                    <div class="navbar-search col-xs-6 col-lg-6 col-md-6  col-sm-6">
                         <form class="navbar-form" action="/post_search" onsubmit="__search();" method="get">
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="搜索" id="nav-search" name="keyWord">
@@ -49,23 +51,23 @@
                     </div>
 
 
-                    <div class="col-lg-3 col-md-3  col-sm-3">
+                    <div class="col-xs-3 col-lg-3 col-md-3  col-sm-3">
                         <ul class="nav-login row">
                             {% if userid %}
-                                <li class="col-lg-4 col-md-4  col-sm-4">
+                                <li class="col-xs-4 col-lg-4 col-md-4  col-sm-4">
                                     <i class="fa fa-comment point showsinglemessage" id="singlemessage"></i>
                                     <i class="fa fa-caret-up message-div-arrow" aria-hidden="true"></i>
                                     <div class="being-hidden message-div" id="forsinglemessage">
                                         <div class="message-div-header row">
                                             <div style="margin: 5px 0 5px 0;">
-                                                <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
+                                                <div class="col-xs-4 col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
                                                     <img src="/static/images/youhuiquan.png">
                                                 </div>
-                                                <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
+                                                <div class="col-xs-4 col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
                                                     <img src="/static/images/systemmessage.png">
                                                 </div>
 
-                                                <div class="col-lg-4 col-md-4  col-sm-4 message-div-header-category">
+                                                <div class="col-xs-4 col-lg-4 col-md-4  col-sm-4 message-div-header-category">
                                                     <img src="/static/images/systemmessage.png">
                                                 </div>
                                                 <div class="clear"></div>
@@ -80,7 +82,7 @@
                                             </div>
 
                                             <div class="message-div-footer">
-                                                <div class="col-lg-4 col-md-4  col-lg-4 col-lg-offset-8 col-md-offset-8  col-sm-offset-8 ">
+                                                <div class="col-xs-4 col-lg-4 col-md-4  col-sm-4 col-xs-offset-8 col-lg-offset-8 col-md-offset-8  col-sm-offset-8 ">
                                                     <a href="#">查看全部</a></div>
                                             </div>
                                         </div>
@@ -88,12 +90,12 @@
 
 
                                 </li>
-                                <li class="col-lg-4 col-md-4 col-sm-4">
+                                <li class="col-xs-4 col-lg-4 col-md-4 col-sm-4">
                                     <i class="fa fa-comment point"></i>
 
 
                                 </li>
-                                <li class="col-lg-4 col-md-4 col-sm-4">
+                                <li class="col-xs-4 col-lg-4 col-md-4 col-sm-4">
 
                                     <div class="profile-photo-div point" id="userinfo"><img
                                             src="/static/images/dva_1.jpg">
@@ -107,12 +109,12 @@
 
                                 </li>
                             {% else %}
-                                <li class="col-lg-6 col-md-6  col-sm-6">
+                                <li class="col-xs-6 col-lg-6 col-md-6  col-sm-6" style="text-align: right;">
                                     <a href="/login?method=register">注册
                                         <span class="glyphicon glyphicon-user hidden-sm"></span>
                                     </a>
                                 </li>
-                                <li class="col-lg-6 col-md-6  col-sm-6">
+                                <li class="col-xs-6 col-lg-6 col-md-6  col-sm-6" style="text-align: right;">
                                     <a href="/login?method=login">登录
                                         <span class="glyphicon glyphicon-user  hidden-sm"></span>
                                     </a>

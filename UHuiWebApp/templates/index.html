@@ -4,7 +4,7 @@
 {% endblock %}
 {% block body %}
     <div class="container">
-        <div class="col-lg-2 col-md-2  category-left being-hidden" id="homepage_navigation">
+        <div class="col-xs-2 col-lg-2 col-md-2 col-sm-2 category-left being-hidden" id="homepage_navigation">
             <ul class="category-menu">
                 <!--#homepage_top-->
                 <a href="#index_nav">
@@ -37,7 +37,7 @@
             </ul>
         </div>
 
-        <div class="category-right col-lg-12 col-md-12 ">
+        <div class="category-right col-xs-12 col-lg-12 col-md-12 col-sm-12">
             <div id="myCarousel" class="carousel slide">
                 <!-- 轮播（Carousel）指标 -->
                 <ol class="carousel-indicators">
@@ -64,23 +64,23 @@
 
 
             <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-3">
+                <div class="col-xs-3 col-lg-3 col-md-3 col-sm-3">
                     <a href="#" class="thumbnail">
                         <img src="/static/images/dva_1.jpg" alt="">
 
                     </a>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-3">
+                <div class="col-xs-3 col-lg-3 col-md-3 col-sm-3">
                     <a href="#" class="thumbnail">
                         <img src="/static/images/dva_1.jpg" alt="">
                     </a>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-3">
+                <div class="col-xs-3 col-lg-3 col-md-3 col-sm-3">
                     <a href="#" class="thumbnail">
                         <img src="/static/images/dva_1.jpg" alt="">
                     </a>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-3">
+                <div class="col-xs-3 col-lg-3 col-md-3 col-sm-3">
                     <a href="#" class="thumbnail">
                         <img src="/static/images/dva_1.jpg" alt="">
                     </a>
@@ -93,9 +93,9 @@
                 {% for key,value in coupons.items() %}
                     <p class="text-fix-center">{{ key }}</p>
                     {% for i in value %}
-                        <div class="col-md-6 col-lg-6 col-sm-6">
+                        <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6">
                             <div class="user-coupons row">
-                                <div class="col-md-3 col-lg-3 col-sm-3 user-coupons-left">
+                                <div class="col-xs-3 col-md-3 col-lg-3 col-sm-3 user-coupons-left">
                                     <p class="user-coupons-left-value">
                                         ￥{{ i.listPrice }}
                                     </p>
@@ -104,18 +104,18 @@
                                     </p>
 
                                 </div>
-                                <div class="col-md-6 col-lg-6 col-sm-6 user-coupons-middle">
-                                    <div class="user-coupons-middle-value col-md-6 col-lg-6 col-sm-6">
+                                <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6 user-coupons-middle">
+                                    <div class="user-coupons-middle-value col-xs-6 col-md-6 col-lg-6 col-sm-6">
                                         <p class="font-class">
                                             {{ i.brand }}
                                         </p>
                                     </div>
-                                    <div class="col-md-6 col-lg-6 col-sm-6 user-coupons-middle-value">
+                                    <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6 user-coupons-middle-value">
                                         <p>
                                             {{ i.discount }}
                                         </p>
                                     </div>
-                                    <div class="col-md-12 col-lg-12 col-sm-12 user-coupons-middle-value">
+                                    <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12 user-coupons-middle-value">
                                         {% for k in i.limits %}
                                             <p class="user-coupons-middle-value-limits-p">{{ k }}</p>
                                         {% endfor %}
@@ -124,7 +124,7 @@
 
                                 </div>
 
-                                <div class="col-md-12 col-lg-12 col-sm-12 user-coupons-bottom">
+                                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12 user-coupons-bottom">
                                     <p>截止时间:{{ i.expiredTime }}</p>
                                 </div>
 
