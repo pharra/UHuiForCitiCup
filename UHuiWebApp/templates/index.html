@@ -41,7 +41,7 @@
         </div>
 
         <div class="category-right col-xs-11 col-lg-11 col-md-11 col-sm-11">
-            <div id="myCarousel" class="carousel slide">
+            <div id="myCarousel" class="carousel slide" data-interval="2000">
                 <!-- 轮播（Carousel）指标 -->
                 <ol class="carousel-indicators">
                     <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -51,13 +51,13 @@
                 <!-- 轮播（Carousel）项目 -->
                 <div class="carousel-inner">
                     <div class="item active">
-                        <img src="/static/images/dva_1.jpg">
+                        <img src="/static/images/web广告5.jpg">
                     </div>
                     <div class="item">
-                        <img src="/static/images/dva_2.jpg">
+                        <img src="/static/images/web广告2.jpg">
                     </div>
                     <div class="item">
-                        <img src="/static/images/dva_3.jpg">
+                        <img src="/static/images/web广告3.jpg">
                     </div>
                 </div>
                 <!-- 轮播（Carousel）导航 -->
@@ -69,23 +69,23 @@
             <div class="row">
                 <div class="col-xs-3 col-lg-3 col-md-3 col-sm-3">
                     <a href="#" class="thumbnail">
-                        <img src="/static/images/dva_1.jpg" alt="">
+                        <img src="/static/images/web广告1.jpg" alt="">
 
                     </a>
                 </div>
                 <div class="col-xs-3 col-lg-3 col-md-3 col-sm-3">
                     <a href="#" class="thumbnail">
-                        <img src="/static/images/dva_1.jpg" alt="">
+                        <img src="/static/images/web广告2.jpg" alt="">
                     </a>
                 </div>
                 <div class="col-xs-3 col-lg-3 col-md-3 col-sm-3">
                     <a href="#" class="thumbnail">
-                        <img src="/static/images/dva_1.jpg" alt="">
+                        <img src="/static/images/web广告3.jpg" alt="">
                     </a>
                 </div>
                 <div class="col-xs-3 col-lg-3 col-md-3 col-sm-3">
                     <a href="#" class="thumbnail">
-                        <img src="/static/images/dva_1.jpg" alt="">
+                        <img src="/static/images/web广告4.jpg" alt="">
                     </a>
                 </div>
             </div>
@@ -157,6 +157,10 @@
 
             });
         });
+        $('#mycarousel').carousel({
+	interval: 2000
+});
+        $("#myCarousel").carousel('cycle');
         </script>
 
 
