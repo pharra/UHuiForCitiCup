@@ -165,6 +165,7 @@
 
 {% block scripts %}
     <script type="text/javascript">
+    $("#search-input").attr('placeholder','{{ keyWord }}');
     $(".mycouponstab").click(function () {
         var couponshow = '#for' + $(this).attr("id");
         $(this).addClass("mobile-mycoupons-header-content-active");
