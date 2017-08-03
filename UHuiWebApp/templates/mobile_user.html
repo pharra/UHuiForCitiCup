@@ -8,9 +8,19 @@
 {% block mobile_body %}
 
 <div class="aui-row">
-    <div class = "aui-flex-row aui-flex-right mobile-max-user-background">
-            <i class = "aui-iconfont aui-icon-mail mobile-max-user-icon aui-flex-2  aui-margin-r-10"></i>
+    <div class = "aui-flex-col mobile-max-user-background">
+        <div class = "aui-flex-col-1" style="padding: 10px 0 0 5px;">
+            <a href="javascript:history.back(-1)" class = "external" style="color:white;">
+                <i class="aui-iconfont aui-icon-left"></i>
+            </a>
+        </div>
+        <div class = "aui-flex-offset-10">
+            <a href = "/mobile_user_setting" class = "external" style="color:white">
+            <i class = "aui-iconfont aui-icon-gear mobile-max-user-icon aui-flex-2  aui-margin-r-10"></i>
+            </a>
+        </div>
     </div>
+
         <div class = "aui-flex-col  aui-padded-15 mobile-max-user-background">
         <div class = "aui-flex-3">
             <img src="{{ avatar }}" class="mobile-user-avator" />
@@ -26,50 +36,36 @@
     <div class="aui-content aui-margin-b-15">
         <ul class="aui-list aui-list-in mobile-max-user-font">
             <li class="aui-list-item aui-list-item-middle">
-                <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-inner aui-list-item-arrow external" onclick="javascript:window.location.href='/mobile_user_wallet'">
                     <div class="aui-list-item-title">
                         我的钱包
                     </div>
                 </div>
             </li>
             <li class="aui-list-item aui-list-item-middle">
-                <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-inner aui-list-item-arrow external" onclick="javascript:window.location.href='/mobile_mycoupons'">
                     <div class="aui-list-item-title">
                         我的优惠
                     </div>
                 </div>
             </li>
             <li class="aui-list-item aui-list-item-middle">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">
-                        我卖出的
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item aui-list-item-middle">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">
-                        我买入的
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item aui-list-item-middle">
-                <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-inner aui-list-item-arrow external" onclick="javascript:window.location.href='/mobile_mylikecoupons'">
                     <div class="aui-list-item-title">
                         我的关注
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item aui-list-item-middle">
+                <div class="aui-list-item-inner aui-list-item-arrow external" onclick="javascript:window.location.href='/mobile_couponsmessage'">
+                    <div class="aui-list-item-title">
+                        我的信息
                     </div>
                 </div>
             </li>
         </ul>
         &nbsp;
         <ul class="aui-list aui-list-in">
-            <li class="aui-list-item aui-list-item-middle">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">
-                        应用设置
-                    </div>
-                </div>
-            </li>
             <li class="aui-list-item aui-list-item-middle">
                 <div class="aui-list-item-inner aui-list-item-arrow">
                     <div class="aui-list-item-title">

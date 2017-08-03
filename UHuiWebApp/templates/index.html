@@ -1,6 +1,163 @@
 {% extends "__base__.html" %}
 {% block title %}U惠网 {% endblock %}
 {% block src %}
+    <link rel="stylesheet" type="text/css" href="/static/css/aui/aui-slide.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/dropload.css"/>
+{% endblock %}
+{% block mobile_body %}
+    <div class="aui-row">
+        <div id="aui-slide">
+            <div class="aui-slide-wrap">
+                <div class="aui-slide-node bg-dark">
+                    <img src="static/images/dva_1.jpg"/>
+                </div>
+                <div class="aui-slide-node bg-dark">
+
+                    <img src="static/images/dva_1.jpg"/>
+                </div>
+                <div class="aui-slide-node bg-dark">
+
+                    <img src="static/images/dva_1.jpg"/>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div class="aui-slide-page-wrap"><!--分页容器--></div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+
+    <script src="/static/js/aui/aui-slide.js"></script>
+    <script src="/static/js/jquery-3.2.1.js"></script>
+    <script src="/static/js/dropload.min.js"></script>
+    <script src="/static/js/jquery.cookie.js"></script>
+    <script type="text/javascript">
+        $.cookie("indexM", "0", {path: "/"});
+        var img_height = ($("body").width() / 16) * 9;
+        var slide = new auiSlide({
+            container: document.getElementById("aui-slide"),
+            // "width":300,
+            "height": img_height,
+            "speed": 500,
+            "autoPlay": 3000, //自动播放
+            "loop": true,
+            "pageShow": true,
+            "pageStyle": 'dot',
+            'dotPosition': 'center',
+        });
+    </script>
+    <script type="text/javascript">
+        $('body').dropload({
+            scrollArea: window,
+            distance:50,
+            loadDownFn: function (me) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/post_getCouponForMobileIndex',
+                    dataType: 'json',
+                    success: function (data) {
+                       $.each(data, function (key, value) {
+                    if (key === "coupons") {
+                        $.each(value, function (key, value) {
+                            var $couponsdom = $("#mobile_index_coupons").clone();
+                            $couponsdom.attr('id', '').removeClass("aui-hide").attr("id","couponsid_" + value.couponID);
+                            $couponsdom.find("p")[0].innerText = '￥' + value.listPrice;
+                            $couponsdom.find("p")[1].innerText = "估值:" + value.value;
+                            $couponsdom.find("p")[2].innerText = value.brand;
+                            $couponsdom.find("p")[3].innerText = value.discount;
+                            $couponsdom.find("p")[4].innerText = '截止时间:' + value.expiredTime;
+                            $("#mobile_index_coupons").parent().append($couponsdom);
+                            $("div[id^='couponsid_']").click(function () {
+                            var couponsid = $(this).attr("id").replace("couponsid_",'');
+                                window.location.href = "/commodity?couponID="+couponsid;
+                                });
+                        });
+                    }
+                });
+                        // 每次数据加载完，必须重置
+                        me.resetload();
+                    },
+                    error: function (xhr, type) {
+                        // 即使加载出错，也得重置
+                        me.resetload();
+                    }
+                });
+            }
+        });
+    </script>
+    <section class="aui-grid">
+        <div class="aui-row">
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-gear"></i>
+                <div class="aui-grid-label">首页</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-gear"></i>
+                <div class="aui-grid-label">设置</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-map"></i>
+                <div class="aui-grid-label">地图</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-calendar"></i>
+                <div class="aui-grid-label">日历</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <a href = "/classify">
+                <i class="aui-iconfont aui-icon-mobile"></i>
+                <div class="aui-grid-label">电子产品</div>
+                </a>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-cart"></i>
+                <div class="aui-grid-label">购物车</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-paper"></i>
+                <div class="aui-grid-label">发现</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-video"></i>
+                <div class="aui-grid-label">视频</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="aui-flex-row" id="coupons_mobile_pullfresh">
+        <div>
+            <div class="mobile-user-coupons aui-flex-col aui-hide point" id="mobile_index_coupons">
+                <div class="aui-flex-item-3 user-coupons-left">
+                    <p class="user-coupons-left-value font-class">
+
+                    </p>
+                    <p class="user-coupons-left-value">
+
+                    </p>
+
+                </div>
+                <div class="aui-flex-item-9 user-coupons-middle">
+                    <div class="user-coupons-middle-value">
+                        <p class="font-class">
+
+                        </p>
+                    </div>
+                    <div class="aui-flex-item-9 user-coupons-middle-value">
+                        <p>
+
+                        </p>
+                    </div>
+
+
+                </div>
+
+                <div class="aui-flex-item-12 user-coupons-bottom">
+                    <p></p>
+                </div>
+
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block body %}
     <div class="container">
@@ -31,7 +188,7 @@
                 <a href="#catid_旅行住宿">
                     <li><i class="fa fa-commenting-o"></i>旅游</li>
                 </a>
-                <a href="#catid_饮食保健" >
+                <a href="#catid_饮食保健">
                     <li style="border: 0;"><i class="fa fa-commenting-o"></i>饮食</li>
                 </a>
             </ul>
@@ -90,9 +247,10 @@
 
 
 
-                {% for key,value in coupons.items() %}
-                    <div class="row">
-                    <h3 class="content-text" style="color: #ff5a00;font-weight: bolder;" id="catid_{{ key }}">{{ key }}</h3>
+            {% for key,value in coupons.items() %}
+                <div class="row">
+                    <h3 class="content-text" style="color: #ff5a00;font-weight: bolder;"
+                        id="catid_{{ key }}">{{ key }}</h3>
                     {% for i in value %}
                         <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6 coupon_detail" id="{{ i.couponID }}">
                             <div class="user-coupons row">
@@ -132,51 +290,43 @@
                             </div>
                         </div>
                     {% endfor %}
-                    </div>
-                {% endfor %}
+                </div>
+            {% endfor %}
 
         </div>
 
     </div>
-<div class="modal-wrapper being-hidden">
-<div class="modal-backdrop modal-backdrop-grey">
-<div class="index_coupons_detail">
-<div class="row" >
-<iframe id="iframe"></iframe>
+    <div class="modal-wrapper being-hidden">
+        <div class="modal-backdrop modal-backdrop-grey">
+            <div class="index_coupons_detail">
+                <div class="row">
+                    
 
 
-</div>
-</div>
-</div>
-</div>
+            </div>
+        </div>
+    </div>
+    </div>
 
 {% endblock %}
 {% block scripts %}
-<script type="text/javascript">
- $(document).ready(function () { //本人习惯这样写了
-    $(window).scroll(function () {
-        //$(window).scrollTop()这个方法是当前滚动条滚动的距离
-        //$(window).height()获取当前窗体的高度
-        //$(document).height()获取当前文档的高度
-        $("#homepage_navigation").css("top",$(window).scrollTop());
-           //当底部基本距离+滚动的高度〉=文档的高度-窗体的高度时；
-            //我们需要去异步加载数据了
+    <script type="text/javascript">
+        $(document).ready(function () { //本人习惯这样写了
+            $(window).scroll(function () {
+                //$(window).scrollTop()这个方法是当前滚动条滚动的距离
+                //$(window).height()获取当前窗体的高度
+                //$(document).height()获取当前文档的高度
+                $("#homepage_navigation").css("top", $(window).scrollTop());
+                //当底部基本距离+滚动的高度〉=文档的高度-窗体的高度时；
+                //我们需要去异步加载数据了
 
-    });
-});
- $(".coupon_detail").click(function () {
-    $(".modal-wrapper").show();
-    $.ajax({
-        type: 'GET',
-        url: '/commodity?couponID='+ $(this).attr("id"),
-        dataType: 'html',
-        success: function (data) {
-            alert(data);
-            $("#iframe").innerHTML = (data);
-                    }
-    })
- })
-</script>
+            });
+        });
+        $(".coupon_detail").click(function () {
+            $(".modal-wrapper").show();
+
+        })
+    </script>
 {% endblock %}
 
 
