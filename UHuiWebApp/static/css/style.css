@@ -831,6 +831,10 @@ p {
     background: rgba(0,0,0,0.5);
 }
 
+.modal-backdrop.modal-backdrop-white{
+    background: rgba(1,1,1,0.5);
+}
+
 .mobile-searchbar-active.aui-bar-nav{
     background: white;
     color: #616161;
@@ -902,6 +906,15 @@ p {
 
 .index_coupons_detail{
     margin: 15%;
-    background: grey;
+    background: #f0f0f0;
 }
 
+.coupons_detail_title {
+    border-bottom: 1px solid rgb(177, 177, 177);
+    font-size: 30px;
+    padding: 0 0 10px 0;
+    color:grey;
+}
+.being-hidden.button{
+    display: none;
+}
