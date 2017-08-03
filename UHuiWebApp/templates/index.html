@@ -150,6 +150,7 @@
                         <div class="coupons_detail_title" >
                             优惠券详情
                             <div class="being-hidden" id="couponDetail_ID"></div>
+                            <div class="being-hidden" id="couponDetail_sellerID"></div>
                         </div>
                     </div>
                     <div class="clear"></div>
@@ -207,15 +208,15 @@
                             返回
                         </div>
                         <div class="point button col-xs-4 col-lg-4 col-md-4 col-sm-4 col-xs-offset-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-4"
-                             id="couponDetail_putonsale">
+                             id="couponDetail_putonsale" onclick="post_changesalestat('/post_putOnSale','您确定要上架吗？','取消','确定上架')">
                             上架
                         </div>
                         <div class="point being-hidden button col-xs-4 col-lg-4 col-md-4 col-sm-4 col-xs-offset-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-4 "
-                             id="couponDetail_putoffsale">
+                             id="couponDetail_putoffsale" onclick="post_changesalestat('/post_putOffSale','您确定要下架吗？','取消','确定下架')">
                             下架
                         </div>
                         <div class="point being-hidden button col-xs-4 col-lg-4 col-md-4 col-sm-4 col-xs-offset-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-4"
-                             id="couponDetail_buy">
+                             id="couponDetail_buy" onclick="post_buy()">
                             购买
                         </div>
                         <div class="clear"></div>
@@ -256,8 +257,10 @@
                     $("#couponDetail_discount")[0].innerText = data.info.discount;
                     $("#couponDetail_brand")[0].innerText = data.info.brand;
                     $("#couponDetail_sellername")[0].innerText = data.info.sellerInfo.nickname;
+                    $("#couponDetail_sellerID")[0].innerText = data.info.sellerInfo.userid;
                     $("#couponDetail_expiredTime")[0].innerText = data.info.expiredTime;
                     $("#couponDetail_ID")[0].innerText = data.info.couponID;
+
                     $.each(data.info.limits,function (key,value) {
                         var $limits = $("#couponDetail_limits").clone();
                     $limits.attr("id","");
@@ -327,6 +330,114 @@
                     alert(msg)
                 }
 
+            }
+
+        }
+         function post_buy() {
+            $.ajax({
+                url: '/post_buy',
+                type: 'POST',
+                dataType: 'json',
+                data: {"couponID": $("#couponDetail_ID")[0].innerText, "sellerID": $("#couponDetail_sellerID")[0].innerText},
+                timeout: 3000,
+                cache: false,
+                async:false,
+                beforeSend: LoadFunction,
+                error: erryFunction,
+                success: succFunction
+            });
+
+            function LoadFunction() {
+            }
+
+            function erryFunction() {
+            }
+
+            function succFunction(Jsondata) {
+                if (Jsondata.errno === '0') {
+
+                        window.location.href = "/mobile_myboughtcoupons";
+
+
+
+                } else {
+                    alert(Jsondata.message);
+
+                }
+
+            }
+
+        }
+        function isUnsignedInteger(a) {
+            var reg = /^[1-9]\d*(.\d{1,2})?$/;
+            return reg.test(a);
+        }
+         function post_changesalestat(url, message, button_left, button_right) {
+            if (url === '/post_putOnSale') {
+                $.alert(message, '', function () {
+
+                        $.prompt('输入价格', function (value) {
+                            if (isUnsignedInteger(value)) {
+                                $.ajax({
+                                    async: false,
+                                    url: url,
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    data: {'couponID': '{{ info.couponID }}', 'listPrice': value},
+                                    timeout: 3000,
+                                    cache: false,
+                                    success: succFunction
+                                });
+                            }
+                            else {
+                                $.alert("请输入正确价格",'');
+                            }
+                        });
+
+
+                })
+
+            }
+
+
+            else {
+                $.confirm(message,'', function () {
+
+                        $.ajax({
+                            async: false,
+                            url: url,
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {'couponID': '{{ info.couponID }}'},
+                            timeout: 3000,
+                            cache: false,
+                            success: succFunction
+                        });
+
+
+
+                })
+            }
+        }
+
+        function succFunction(Jsondata) {
+            var msg = Jsondata.message;
+            if (Jsondata.errno === '0') {
+                $.alert(msg,'', function () {
+                    if (Jsondata.stat === 'onSale') {
+                        $("#Offsale").addClass("aui-hide");
+                        $("#Onsale").removeClass("aui-hide");
+                    }
+                    else {
+                        $("#Onsale").addClass("aui-hide");
+                        $("#Offsale").removeClass("aui-hide");
+                    }
+                    $("#listprice")[0].innerText ='￥' +  Jsondata.listPrice;
+                })
+
+            }
+            else {
+                $.alert(msg,'');
             }
 
         }
