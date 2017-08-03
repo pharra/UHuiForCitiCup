@@ -243,13 +243,13 @@ def post_sellerInformation(request):
     sellerOnSaleListitem = Listitem.objects.filter(listid=sellerOnSaleList)
     if sellerOnSaleListitem.exists():
         for each in sellerOnSaleListitem:
-            onSaleCoupon = Coupon.objects.filter(couponid=each.couponid.couponid).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount')
+            onSaleCoupon = Coupon.objects.filter(couponid=each.couponid.couponid).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount','pic')
             for i in onSaleCoupon:
                 onSaleList.append(i)
     sellerSoldListitem = Listitem.objects.filter(listid = sellerSoldList)
     if sellerSoldListitem.exists():
         for each in sellerSoldListitem:
-            soldCoupon = Coupon.objects.filter(couponid=each.couponid.couponid).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount')
+            soldCoupon = Coupon.objects.filter(couponid=each.couponid.couponid).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount','pic')
             for i in soldCoupon:
                 soldList.append(i)
     return JsonResponse({'onSale':onSaleList,'sold':soldList})
@@ -389,7 +389,7 @@ def post_updateUserInformation(request):
     newNickname = request.POST.get('nickname',user.nickname)
     newGender = request.POST.get('gender',user.gender)
     if User.objects.filter(nickname=newNickname).exists():
-        return JsonResponse({'error':'nickname exist'})
+        return JsonResponse({'result':'nickname exist'})
     user.nickname = newNickname
     user.gender = newGender
     user.save()
