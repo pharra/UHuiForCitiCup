@@ -446,7 +446,7 @@ def post_getSoldOrLikeCouponsMobile(request, stat):
     for couponid in couponIDs:
         result.append(couponInfo(couponid.couponid.couponid))
 
-    return {stat: result}
+    return {'coupons' + stat: result}
 
 
 def post_getCouponByCat(request):

@@ -21,12 +21,12 @@ class SimpleMiddleware(object):
             return response
         request.uid = None
 
-        if url == '/' and ('Android' in UA or 'Mobile Safari' in UA):
+        if url == '/' and ('Android' in UA or 'iPhone' in UA):
             if uid:
                 request.uid = uid
             response = HttpResponseRedirect('/mobile_index')
             return response
-        elif url == '/mobile_index' and ('Android' not in UA and 'Mobile Safari' not in UA):
+        elif url == '/mobile_index' and ('Android' not in UA and 'iPhone' not in UA):
             if uid:
                 request.uid = uid
             response = HttpResponseRedirect('/')
