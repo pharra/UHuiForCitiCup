@@ -17,7 +17,7 @@ import time
 import random
 import datetime
 
-DEFAULT_PIC = ''/static/'images/1.jpg'
+DEFAULT_PIC = '/static/images/1.jpg'
 
 
 # Create your views here.
