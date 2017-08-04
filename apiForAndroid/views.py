@@ -298,10 +298,10 @@ def post_buyCoupon(request):
     Listitem.objects.filter(couponid=cpID).filter(listid=ownerOnsaleList).delete()
     Listitem.objects.filter(couponid=cpID).filter(listid=ownerOwnList).delete()
     Listitem.objects.create(couponid = coupon,listid=ownerSoldList)
-    #将优惠券加入购买者的brought list和own list中
-    buyerBroughtList = Couponlist.objects.get(userid=u_id,stat = 'brought')
+    #将优惠券加入购买者的bought list和own list中
+    buyerboughtList = Couponlist.objects.get(userid=u_id,stat = 'bought')
     buyerOwnList = Couponlist.objects.get(userid=u_id,stat='own')
-    Listitem.objects.create(couponid= coupon,listid = buyerBroughtList)
+    Listitem.objects.create(couponid= coupon,listid = buyerboughtList)
     Listitem.objects.create(couponid = coupon,listid = buyerOwnList)
     #修改用户UCoin
     seller = User.objects.get(id=sellerID)
@@ -486,9 +486,9 @@ def post_getBoughtList(request):
     u_id = request.POST.get('userID')
     boughtList = []
     if User.objects.filter(id=u_id).exists():
-        broughtListID = Couponlist.objects.get(userid=u_id, stat='brought').listid
-        broughtListitem = Listitem.objects.filter(listid=broughtListID)
-        for each in broughtListitem:
+        boughtListID = Couponlist.objects.get(userid=u_id, stat='bought').listid
+        boughtListitem = Listitem.objects.filter(listid=boughtListID)
+        for each in boughtListitem:
             couponList = Coupon.objects.filter(couponid=each.couponid.couponid).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount')
             for i in couponList:
                 boughtList.append(i)
