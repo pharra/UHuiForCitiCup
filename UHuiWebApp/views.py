@@ -8,7 +8,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from UHuiWebApp import models
 from .shortcut import JsonResponse, render
 
-
 import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
@@ -229,9 +228,11 @@ def changeCouponStat(couponID, sellerID, stat, listPrice='-1'):
         return JsonResponse({'errno': '1', 'message': '优惠券不存在', 'stat': '', 'listPrice': ''})
 
     if stat == 'onSale' and coupon.stat != 'store':
-        return JsonResponse({'errno': '1', 'message': '上架失败', 'stat': coupon.stat, 'listPrice': str(coupon.listprice).rstrip('0').rstrip('.')})
+        return JsonResponse({'errno': '1', 'message': '上架失败', 'stat': coupon.stat,
+                             'listPrice': str(coupon.listprice).rstrip('0').rstrip('.')})
     elif stat == 'store' and coupon.stat != 'onSale':
-        return JsonResponse({'errno': '1', 'message': '下架失败', 'stat': coupon.stat, 'listPrice': str(coupon.listprice).rstrip('0').rstrip('.')})
+        return JsonResponse({'errno': '1', 'message': '下架失败', 'stat': coupon.stat,
+                             'listPrice': str(coupon.listprice).rstrip('0').rstrip('.')})
 
     coupon.stat = stat
     coupon.save()
@@ -243,10 +244,10 @@ def changeCouponStat(couponID, sellerID, stat, listPrice='-1'):
     elif stat == 'onSale':
         models.Listitem.objects.create(listid=onSaleList, couponid=coupon)
         if listPrice != '-1':
-
             coupon.listprice = Decimal(listPrice)
             coupon.save()
-    return JsonResponse({'errno': '0', 'message': '操作成功', 'stat': coupon.stat, 'listPrice': str(coupon.listprice).rstrip('0').rstrip('.')})
+    return JsonResponse({'errno': '0', 'message': '操作成功', 'stat': coupon.stat,
+                         'listPrice': str(coupon.listprice).rstrip('0').rstrip('.')})
 
 
 # 获取数据
@@ -301,7 +302,7 @@ def post_presearch(request):
         if brand.name not in result:
             result.append(brand.name)
     result = result[0:min(10, len(result))]
-            
+
     return JsonResponse({'result': result})
 
 
@@ -336,7 +337,7 @@ def searchResult(request):
             if (pc * page + i) >= brandItem.count():
                 break
             result.append(couponInfo(brandItem[pc * page + i].couponid))
-    maxPage = max(productCount/8, brandCount/8)
+    maxPage = max(productCount / 8, brandCount / 8)
     if maxPage > int(maxPage):
         maxPage = int(maxPage) + 1
     # if not productResult.exists() and not brandIDResult.exists():
@@ -468,14 +469,15 @@ def post_getCouponByCat(request):
     except ObjectDoesNotExist:
         return JsonResponse({'error': '类别不存在'})
     coupons = models.Coupon.objects.filter(catid=catid, stat='onSale')
-    maxPage = coupons.count()/16
+    maxPage = coupons.count() / 16
     if maxPage > int(maxPage):
         maxPage = int(maxPage) + 1
     result = []
     for i in range(16 * page, min(16 * (page + 1), coupons.count())):
         result.append(couponInfo(coupons[i].couponid))
 
-    return render(request, 'mobile_search.html', {'coupons': result, 'keyWord': catName, 'maxPage': maxPage, 'currentPage': page + 1})
+    return render(request, 'mobile_search.html',
+                  {'coupons': result, 'keyWord': catName, 'maxPage': maxPage, 'currentPage': page + 1})
 
 
 def post_getCouponByCatIndex(request):
@@ -796,7 +798,6 @@ def post_dislike(request):
         return JsonResponse({'errno': '0', 'message': '取消关注成功', 'like': '0'})
     else:
         return JsonResponse({'errno': '1', 'message': '此优惠券不在关注列表中', 'like': '0'})
-
 
 
 def post_buyCredit(request):

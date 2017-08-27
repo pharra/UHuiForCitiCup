@@ -38,7 +38,7 @@ class SimpleMiddleware(object):
             return HttpResponseRedirect("/login?method=login")
         elif url.startswith('/mobile_my') or url.startswith('/mobile_user') or url.startswith('/mobile_sell_final'):
             return HttpResponseRedirect("/mobile_login?method=login")
-        elif url.startswith('/post_dislike') or url.startswith('/post_like'):
+        elif url == '/post_dislike' or url == '/post_like':
             return JsonResponse({'errno': '5', 'message': '您未登录'})
 
     def __call__(self, request):
