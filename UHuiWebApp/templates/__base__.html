@@ -342,15 +342,6 @@
                 props: ['coupon'],
                 created: function () {
                     var _self = this;
-                    $.ajax({
-                        type: 'POST',
-                        url: '/post_couponDetail',
-                        data: {"couponID": _self.$el},
-                        dataType: 'json',
-                        success: function (data) {
-                            _self.stat = data.stat;
-                        }
-                    });
                 },
                 data: function () {
                     return {stat:this.coupon.stat};
