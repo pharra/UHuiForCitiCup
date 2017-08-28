@@ -325,7 +325,7 @@ def searchResult(request):
     for i in range(0, 8):
         if (8 * page + i) >= productResult.count():
             break
-        result.append(couponInfo(productResult[8 * page + i].couponid))
+        result.append(couponInfo(productResult[8 * page + i].couponid, request))
     # 数量不够时的结果仍需补全
     for brand in brandIDResult:
         pc = int(8 / brandIDResult.count())
@@ -336,7 +336,7 @@ def searchResult(request):
         for i in range(0, pc):
             if (pc * page + i) >= brandItem.count():
                 break
-            result.append(couponInfo(brandItem[pc * page + i].couponid))
+            result.append(couponInfo(brandItem[pc * page + i].couponid, request))
     maxPage = max(productCount / 8, brandCount / 8)
     if maxPage > int(maxPage):
         maxPage = int(maxPage) + 1
@@ -378,26 +378,26 @@ def post_getUserCoupon(request):
     if ownCoupons.exists():
         if (count != 'all' and ownCoupons.count() <= count) or count == 'all':
             for coupon in ownCoupons:
-                own.append(couponInfo(coupon.couponid.couponid))
+                own.append(couponInfo(coupon.couponid.couponid, request))
         else:
             for i in range(0, count):
-                own.append(couponInfo(ownCoupons[i].couponid.couponid))
+                own.append(couponInfo(ownCoupons[i].couponid.couponid, request))
 
     if likeCoupons.exists():
         if (count != 'all' and likeCoupons.count() <= count) or count == 'all':
             for coupon in likeCoupons:
-                like.append(couponInfo(coupon.couponid.couponid))
+                like.append(couponInfo(coupon.couponid.couponid, request))
         else:
             for i in range(0, count):
-                onSale.append(couponInfo(likeCoupons[i].couponid.couponid))
+                onSale.append(couponInfo(likeCoupons[i].couponid.couponid, request))
 
     if onSaleCoupons.exists():
         if (count != 'all' and onSaleCoupons.count() <= count) or count == 'all':
             for coupon in onSaleCoupons:
-                onSale.append(couponInfo(coupon.couponid.couponid))
+                onSale.append(couponInfo(coupon.couponid.couponid, request))
         else:
             for i in range(0, count):
-                onSale.append(couponInfo(onSaleCoupons[i].couponid.couponid))
+                onSale.append(couponInfo(onSaleCoupons[i].couponid.couponid, request))
 
     own.reverse()
     like.reverse()
@@ -418,7 +418,7 @@ def post_getMobileUserCoupon(request):
     couponsOnSale = []
     couponsExpired = []
     for id in objects:
-        info = couponInfo(id.couponid.couponid)
+        info = couponInfo(id.couponid.couponid, request)
         if info['stat'] == 'store':
             couponsStore.append(info)
         elif info['stat'] == 'onSale':
@@ -443,9 +443,9 @@ def post_getBoughtCouponsMobile(request):
     own = []
     for couponid in couponIDs:
         if couponid.couponid.stat == 'used':
-            used.append(couponInfo(couponid.couponid.couponid))
+            used.append(couponInfo(couponid.couponid.couponid, request))
         elif couponid.couponid.stat == 'store':
-            own.append(couponInfo(couponid.couponid.couponid))
+            own.append(couponInfo(couponid.couponid.couponid, request))
     return {'own': own, 'used': used}
 
 
@@ -456,7 +456,7 @@ def post_getSoldOrLikeCouponsMobile(request, stat):
     couponIDs.reverse()
     result = []
     for couponid in couponIDs:
-        result.append(couponInfo(couponid.couponid.couponid))
+        result.append(couponInfo(couponid.couponid.couponid, request))
 
     return {'coupons' + stat: result}
 
@@ -474,7 +474,7 @@ def post_getCouponByCat(request):
         maxPage = int(maxPage) + 1
     result = []
     for i in range(16 * page, min(16 * (page + 1), coupons.count())):
-        result.append(couponInfo(coupons[i].couponid))
+        result.append(couponInfo(coupons[i].couponid, request))
 
     return render(request, 'mobile_search.html',
                   {'coupons': result, 'keyWord': catName, 'maxPage': maxPage, 'currentPage': page + 1})
@@ -487,8 +487,8 @@ def post_getCouponByCatIndex(request):
         coupons = models.Coupon.objects.filter(catid=cat.catid, stat='onSale')
         coupons.reverse()
         couponByCat[cat.name] = []
-        for i in range(0, min(8, coupons.count())):
-            couponByCat[cat.name].append(couponInfo(coupons[i].couponid))
+        for i in range(0, min(9, coupons.count())):
+            couponByCat[cat.name].append(couponInfo(coupons[i].couponid, request))
     # values = coupons.values()
     # values.reverse()
     # couponByCat[cat.name] = values[0:8]
@@ -508,7 +508,7 @@ def post_getCouponForMobileIndex(request):
     couponsAll.reverse()
     resultSet = []
     for i in range(index, min(couponsAll.count(), index + 10)):
-        resultSet.append(couponInfo(couponsAll[i].couponid))
+        resultSet.append(couponInfo(couponsAll[i].couponid, request))
     if len(resultSet) == 0:
         resultSet = 'null'
     result = {'coupons': resultSet}
@@ -531,7 +531,7 @@ def post_couponDetailMobile(request):
         like = '1'
     else:
         like = '0'
-    info = couponInfo(couponID)
+    info = couponInfo(couponID, request)
     if info.get('error', False) is not False:
         return {'info': info, 'like': like, 'isOwner': '0'}
     sellerInfo = info['sellerInfo']
@@ -544,7 +544,7 @@ def post_couponDetailMobile(request):
 
 def post_couponDetail(request):
     couponID = request.POST.get('couponID')
-    info = couponInfo(couponID)
+    info = couponInfo(couponID, request)
     # stat: 0 未关注 1 已关注 2 已上架 3 未上架
     if request.uid is None:
         return JsonResponse({'info': info, 'stat': '0'})
@@ -563,7 +563,31 @@ def post_couponDetail(request):
             return JsonResponse({'info': info, 'stat': '0'})
 
 
-def couponInfo(couponID):
+def modifyStat(request, info, couponID):
+    # stat: 0 未关注 1 已关注 2 已上架 3 未上架
+    if request.uid is None:
+        info['stat'] = '0'
+        return info
+    sellerInfo = info['sellerInfo']
+    if not sellerInfo or sellerInfo['userid'] == request.uid:
+        if info['stat'] == 'onSale':
+            info['stat'] = '2'
+            return info
+        elif info['stat'] == 'store':
+            info['stat'] = '3'
+            return info
+    else:
+        likeList = models.Couponlist.objects.get(userid=request.uid, stat='like')
+        like = models.Listitem.objects.filter(listid=likeList.listid, couponid=couponID).exists()
+        if like:
+            info['stat'] = '1'
+            return info
+        else:
+            info['stat'] = '0'
+            return info
+
+
+def couponInfo(couponID, request):
     try:
         coupon = models.Coupon.objects.get(couponid=couponID)
     except ObjectDoesNotExist:
@@ -594,7 +618,7 @@ def couponInfo(couponID):
             limitList.append(content.content)
     couponInfo['limits'] = limitList
     couponInfo['sellerInfo'] = sellerInfo
-    return couponInfo
+    return modifyStat(request, couponInfo, couponID)
 
 
 def post_userInfo(u_id):
