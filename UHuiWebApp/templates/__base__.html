@@ -27,13 +27,13 @@
                 </h3>
                 <div class="confirm-content">  {{ content }} </div>
                 <div class="confirm-btns">
-                    <button class="btn" @click="op(1)">{{ button1 }}</button>
-                    <button class="btn btn-primary" @click="op(2)">{{ button2 }}</button>
+                    <button class="cancelbtn btn" id="v-cancel" @click="op('cancel')">{{ button1 }}</button>
+                    <button class="okbtn btn btn-primary" id="v-ok" @click="op('ok')">{{ button2 }}</button>
                 </div>
             </div>
         </div>
     </div>
-     <div id="V-alert">
+    <div id="V-alert">
         <div class="modal-mask modal-transition" v-show="show">
             <div class="modal-confirm">
                 <h3 class="confirm-header" style="margin-bottom: 0px;">
@@ -41,7 +41,23 @@
                 </h3>
                 <div class="confirm-content">  {{ content }} </div>
                 <div class="confirm-btns">
-                    <button class="btn btn-primary" @click="op">{{ button }}</button>
+                    <button class="okbtn btn btn-primary" @click="op">{{ button }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+ <div id="V-input">
+        <div class="modal-mask modal-transition" v-show="show">
+            <div class="modal-confirm">
+                <h3 class="confirm-header" style="margin-bottom: 0px;">
+                    <i class="fa fa-question-circle-o" style="color: #ff5a00;"></i> {{ title }}
+                </h3>
+                <label style="margin: 10px;">
+                    <input v-model="message"  :placeholder="content">
+                </label>
+                <div class="confirm-btns">
+                    <button class="cancelbtn btn" id="v-cancel" @click="op('cancel')">{{ button1 }}</button>
+                    <button class="okbtn btn btn-primary" id="v-ok" @click="op('ok')">{{ button2 }}</button>
                 </div>
             </div>
         </div>
@@ -301,9 +317,10 @@
         methods: {
             op: function (type) {
                 this.show = false;
-                if (type === '1') {
+                if (type === 'cancel') {
                     if (this.onCancel) this.onCancel()
-                } else {
+                }
+                else {
                     if (this.onOk) this.onOk()
                 }
 
@@ -353,8 +370,51 @@
             }
         }
     });
+    var vueinput = new Vue({
+        el: '#V-input',
+        data: {
+            show: false,
+            onCancel: false,
+            onOk: false,
+            title: '',
+            content: '',
+            button1: '',
+            button2: '',
+            message:''
+        },
+        methods: {
+            op: function (type) {
+                this.show = false;
+                if (type === 'cancel') {
+                    if (this.onCancel) this.onCancel()
+                }
+                else {
+                    if (this.onOk) this.onOk()
+                }
+
+                this.onCancel = false;
+                this.onOk = false;
+
+                document.body.style.overflow = '';
+            },
+            alert: function (setting) {
+                this.title = setting.title || '';
+                this.content = setting.content || '';
+                this.button1 = setting.button1 || '取 消';
+                this.button2 = setting.button2 || '确 定';
+                this.onOk = setting.onOk || false;
+                this.onCancel = setting.onCancel || false;
+                this.show = true;
+                document.body.style.overflow = 'hidden';
+            }
+        }
+    });
 </script>
 <script type="text/javascript">
+function isUnsignedInteger(a) {
+        var reg = /^[1-9]\d*(.\d{1,2})?$/;
+        return reg.test(a);
+    }
     {% raw %}
         Vue.component('coupon', {
                 template: '<div class="coupon-pc col-xs-4" :id="coupon.couponID">\n' +
@@ -374,8 +434,8 @@
                 '                                <div class="btn col-xs-5" v-if="like" v-on:click="changelike(\'/post_like\')">关注</div>\n' +
                 '                                <div class="btn col-xs-5" v-if="dislike" v-on:click="changelike(\'/post_dislike\')">已关注</div>\n' +
                 '                                <div class="btn col-xs-5 col-xs-offset-2" v-if="buy" v-on:click="post_buy">购买</div>\n' +
-                '                                <div class="btn col-xs-5 col-xs-offset-7" v-if="putOffSale" v-on:click="putOffSale">下架</div>\n' +
-                '                                <div class="btn col-xs-5 col-xs-offset-7" v-if="putOnSale" v-on:click="putOnSale">上架</div>\n' +
+                '                                <div class="btn col-xs-5 col-xs-offset-7" v-if="putOffSale" v-on:click="post_putOffSale">下架</div>\n' +
+                '                                <div class="btn col-xs-5 col-xs-offset-7" v-if="putOnSale" v-on:click="post_putOnSale">上架</div>\n' +
                 '                            </div>\n' +
                 '                            <div class="coupon-time-limt">截止时间:{{ coupon.expiredTime }}</div>\n' +
                 '                        </div>\n' +
@@ -450,7 +510,32 @@
                             async: false,
                             beforeSend: LoadFunction,
                             error: erryFunction,
-                            success: succFunction
+                            success: function succFunction(Jsondata) {
+                                if (Jsondata.errno === '0') {
+                                    var setting = {
+                                        content: "购买成功",
+                                        button1: '确定',
+                                        button2: "查看我的优惠券",
+                                        onCancel: function () {
+                                            return true;
+                                        },
+                                        onOk: function () {
+                                            window.location.href = "/user";
+                                            return true;
+                                        }
+                                    };
+                                    vueconfirm.alert(setting);
+                                    _self.stat = '3';
+                                } else {
+                                    var settings = {
+                                        content: Jsondata.message,
+                                        button: '确定'
+                                    };
+                                    vuealert.alert(settings);
+
+                                }
+
+                            }
                         });
 
                         function LoadFunction() {
@@ -459,27 +544,85 @@
                         function erryFunction() {
                         }
 
-                        function succFunction(Jsondata) {
-                            if (Jsondata.errno === '0') {
-                                var setting = {
-                                    content:"购买成功",
-                                    button1:'确定',
-                                    button2:"查看我的优惠券",
-                                    onCancel:function () {
-                                    return true;
-                                    },
-                                    onOk:function () {
-                                        window.location.href = "/user";
-                                        return true;
-                                    }
-                                };
-                                vueconfirm.alert(setting);
-                            } else {
-                                alert(Jsondata.message);
+
+                    },
+                    post_putOffSale: function () {
+                        var _self = this;
+                        $.ajax({
+                            url: '/post_putOffSale',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {'couponID': _self.coupon.couponID},
+                            timeout: 3000,
+                            cache: false,
+                            success: function succFunction(Jsondata) {
+                                var msg = Jsondata.message;
+                                if (Jsondata.errno === '0') {
+                                    var setting = {
+                                        title:'优惠券下架',
+                                        content: "下架成功"
+                                    };
+                                    vuealert.alert(setting);
+                                    _self.stat = '3';
+                                }
+                                else {
+                                    var setting = {
+                                        title:'下架失败',
+                                        content: msg
+                                    };
+                                    vuealert.alert(setting);
+                                }
+                            }
+                        });
+                    },
+                    post_putOnSale: function () {
+                        var _self = this;
+                        var setting = {
+                            title:'上架优惠券',
+                            content:"输入优惠券价格",
+                            onOk:function () {
+                                if(isUnsignedInteger(this.message)) {
+                                    var msg = this.message;
+                                    $.ajax({
+                                        url: '/post_putOnSale',
+                                        type: 'POST',
+                                        dataType: 'json',
+                                        data: {'couponID': _self.coupon.couponID, 'listPrice': msg},
+                                        timeout: 3000,
+                                        cache: false,
+                                        success: function succFunction(Jsondata) {
+                                            var msg = Jsondata.message;
+                                            if (Jsondata.errno === '0') {
+                                                var setting = {
+                                                    title: '优惠券上架',
+                                                    content: "上架架成功"
+                                                };
+                                                vuealert.alert(setting);
+                                                _self.stat = '2';
+                                                _self.coupon.listPrice =  Jsondata.listPrice;
+                                            }
+                                            else {
+                                                var setting2 = {
+                                                    title: '上架失败',
+                                                    content: msg
+                                                };
+                                                vuealert.alert(setting2);
+                                            }
+                                        }
+                                    });
+                                }
+                                else{
+                                    var setting1 = {
+                                        content:"请输入正确价格"
+                                    };
+                                    vuealert.alert(setting1);
+                                }
+                            },
+                            onCancel:function () {
 
                             }
-
-                        }
+                        };
+                        vueinput.alert(setting);
 
                     }
                 }
