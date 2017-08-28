@@ -1130,11 +1130,9 @@ p {
     font-variant-ligatures: normal;
     font-variant-caps: normal;
     font-variant-numeric: normal;
-    font-weight: 400;
     font-stretch: normal;
-    font-size: 34px;
+    font-size: 28px;
     line-height: normal;
-    font-family: arial;
 }
 
 .coupon-font-limit{
