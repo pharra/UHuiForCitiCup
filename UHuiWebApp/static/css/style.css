@@ -155,6 +155,7 @@ li {
     padding: 0 0 0 0;
     position: relative;
     border: 2px solid #ff5a00;
+    right: 10px;
 }
 
 .category-right {
