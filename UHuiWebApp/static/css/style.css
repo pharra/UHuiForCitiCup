@@ -148,11 +148,6 @@ li {
     color: #5e5e5e;
 }
 
-@media screen and (max-width: 768px) {
-    .navbar-search {
-        display: none;
-    }
-}
 
 .category-left {
     display: inline-block;

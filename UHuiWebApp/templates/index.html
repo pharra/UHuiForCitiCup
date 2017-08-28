@@ -7,7 +7,7 @@
 
 {% block body %}
     <div class="container">
-        <div class="col-xs-1 col-lg-1 col-md-1 col-sm-1 category-left " id="homepage_navigation">
+        <div class="col-xs-1 category-left " id="homepage_navigation">
             <ul class="category-menu">
                 <!--#homepage_top-->
                 <a href="#">
@@ -40,7 +40,7 @@
             </ul>
         </div>
 
-        <div class="category-right col-xs-11 col-lg-11 col-md-11 col-sm-11">
+        <div class="category-right col-xs-11">
             <div id="myCarousel" class="carousel slide" data-interval="2000">
                 <!-- 轮播（Carousel）指标 -->
                 <ol class="carousel-indicators">
@@ -67,23 +67,23 @@
 
 
             <div class="row">
-                <div class="col-xs-3 col-lg-3 col-md-3 col-sm-3">
+                <div class="col-xs-3">
                     <a href="#" class="thumbnail">
                         <img src="/static/images/web广告1.jpg" alt="">
 
                     </a>
                 </div>
-                <div class="col-xs-3 col-lg-3 col-md-3 col-sm-3">
+                <div class="col-xs-3">
                     <a href="#" class="thumbnail">
                         <img src="/static/images/web广告2.jpg" alt="">
                     </a>
                 </div>
-                <div class="col-xs-3 col-lg-3 col-md-3 col-sm-3">
+                <div class="col-xs-3">
                     <a href="#" class="thumbnail">
                         <img src="/static/images/web广告3.jpg" alt="">
                     </a>
                 </div>
-                <div class="col-xs-3 col-lg-3 col-md-3 col-sm-3">
+                <div class="col-xs-3">
                     <a href="#" class="thumbnail">
                         <img src="/static/images/web广告4.jpg" alt="">
                     </a>
@@ -97,9 +97,9 @@
                     <h3 class="content-text" style="color: #ff5a00;font-weight: bolder;"
                         id="catid_{{ key }}">{{ key }}</h3>
                     {% for i in value %}
-                        <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6 " >
+                        <div class="col-xs-6" >
                             <div class="point coupon_detail  user-coupons row" id="{{ i.couponID }}">
-                                <div class="col-xs-3 col-md-3 col-lg-3 col-sm-3 user-coupons-left">
+                                <div class="col-xs-3 user-coupons-left">
                                     <p class="user-coupons-left-value">
                                         ￥{{ i.listPrice }}
                                     </p>
@@ -108,18 +108,18 @@
                                     </p>
 
                                 </div>
-                                <div class="col-xs-9 col-md-9 col-lg-9 col-sm-9 user-coupons-middle">
-                                    <div class="user-coupons-middle-value col-xs-6 col-md-6 col-lg-6 col-sm-6">
+                                <div class="col-xs-9 user-coupons-middle">
+                                    <div class="user-coupons-middle-value col-xs-6">
                                         <p class="font-class">
                                             {{ i.brand }}
                                         </p>
                                     </div>
-                                    <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6 user-coupons-middle-value">
+                                    <div class="col-xs-6 user-coupons-middle-value">
                                         <p>
                                             {{ i.discount }}
                                         </p>
                                     </div>
-                                    <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12 user-coupons-middle-value">
+                                    <div class="col-xs-12 user-coupons-middle-value">
                                         {% for k in i.limits %}
                                             <p class="user-coupons-middle-value-limits-p">{{ k }}</p>
                                         {% endfor %}
@@ -128,7 +128,7 @@
 
                                 </div>
 
-                                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12 user-coupons-bottom">
+                                <div class="col-xs-12 user-coupons-bottom">
                                     <p>截止时间:{{ i.expiredTime }}</p>
                                 </div>
 
@@ -138,6 +138,7 @@
                 </div>
             {% endfor %}
     -->
+            <div class="row" id="coupons">
             <div class="row" id="coupons">
                 <div v-for="(value, key) in coupons">
                     <h3 :id="key" class="content-text" style="color: #ff5a00;font-weight: bolder;">{{ key }}</h3>
@@ -149,7 +150,7 @@
 
         </div>
     </div>
-
+<div class="clear"></div>
 {% endblock %}
 {% block scripts %}
     <script type="text/javascript">
