@@ -33,6 +33,19 @@
             </div>
         </div>
     </div>
+     <div id="V-alert">
+        <div class="modal-mask modal-transition" v-show="show">
+            <div class="modal-confirm">
+                <h3 class="confirm-header" style="margin-bottom: 0px;">
+                    <i class="fa fa-question-circle-o" style="color: #ff5a00;"></i> {{ title }}
+                </h3>
+                <div class="confirm-content">  {{ content }} </div>
+                <div class="confirm-btns">
+                    <button class="btn btn-primary" @click="op">{{ button }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endraw %}
 <div class="modal-wrapper being-hidden z-index">
     <div class="modal-backdrop modal-backdrop-white">
@@ -274,7 +287,7 @@
 </body>
 <script src="/static/js/vue.js"></script>
 <script type="text/javascript">
-    var confirm = new Vue({
+    var vueconfirm = new Vue({
         el: '#V-confirm',
         data: {
             show: false,
@@ -300,12 +313,41 @@
                 document.body.style.overflow = '';
             },
             alert: function (setting) {
-                this.title = setting.title || '标题';
-                this.content = setting.content || '内容';
+                this.title = setting.title || '';
+                this.content = setting.content || '';
                 this.button1 = setting.button1 || '取 消';
-                this.button2 = setting.button1 || '确 定';
+                this.button2 = setting.button2 || '确 定';
                 this.onOk = setting.onOk || false;
                 this.onCancel = setting.onCancel || false;
+                this.show = true;
+                document.body.style.overflow = 'hidden';
+            }
+        }
+    });
+    var vuealert = new Vue({
+        el: '#V-alert',
+        data: {
+            show: false,
+            onOk: false,
+            title: '',
+            content: '',
+            button: ''
+        },
+        methods: {
+            op: function () {
+                this.show = false;
+                if (this.onOk) this.onOk();
+
+                this.onCancel = false;
+                this.onOk = false;
+
+                document.body.style.overflow = '';
+            },
+            alert: function (setting) {
+                this.title = setting.title || '';
+                this.content = setting.content || '';
+                this.button = setting.button || '确 定';
+                this.onOk = setting.onOk || false;
                 this.show = true;
                 document.body.style.overflow = 'hidden';
             }
@@ -329,11 +371,11 @@
                 '\n' +
                 '                            <div class="coupon-range">{{ coupon.product }}</div>\n' +
                 '                            <div class="coupon-btn-box">\n' +
-                '                                <div class="btn col-xs-5" v-if="like">关注</div>\n' +
-                '                                <div class="btn col-xs-5" v-if="dislike">已关注</div>\n' +
-                '                                <div class="btn col-xs-5 col-xs-offset-2" v-if="buy">购买</div>\n' +
-                '                                <div class="btn col-xs-5 col-xs-offset-7" v-if="putOffSale">下架</div>\n' +
-                '                                <div class="btn col-xs-5 col-xs-offset-7" v-if="putOnSale">上架</div>\n' +
+                '                                <div class="btn col-xs-5" v-if="like" v-on:click="changelike(\'/post_like\')">关注</div>\n' +
+                '                                <div class="btn col-xs-5" v-if="dislike" v-on:click="changelike(\'/post_dislike\')">已关注</div>\n' +
+                '                                <div class="btn col-xs-5 col-xs-offset-2" v-if="buy" v-on:click="post_buy">购买</div>\n' +
+                '                                <div class="btn col-xs-5 col-xs-offset-7" v-if="putOffSale" v-on:click="putOffSale">下架</div>\n' +
+                '                                <div class="btn col-xs-5 col-xs-offset-7" v-if="putOnSale" v-on:click="putOnSale">上架</div>\n' +
                 '                            </div>\n' +
                 '                            <div class="coupon-time-limt">截止时间:{{ coupon.expiredTime }}</div>\n' +
                 '                        </div>\n' +
@@ -344,7 +386,7 @@
                     var _self = this;
                 },
                 data: function () {
-                    return {stat:this.coupon.stat};
+                    return {stat: this.coupon.stat};
                 },
                 computed: {
                     buy: function () {
@@ -362,7 +404,86 @@
                     putOffSale: function () {
                         return this.stat === '2';
                     }
+                },
+                methods: {
+                    changelike: function (url) {
+                        var _self = this;
+                        $.ajax({
+                            url: url,
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {'couponID': _self.coupon.couponID},
+                            timeout: 3000,
+                            success: function (Jsondata) {
+                                var msg = Jsondata.message;
+                                if (Jsondata.errno === '5') {
+                                    window.location.href = "/login";
+                                }
+                                else if (Jsondata.errno === '0') {
+
+                                    if (Jsondata.like === '0') {
+                                        _self.stat = '0';
+                                    }
+                                    else {
+                                        _self.stat = '1';
+                                    }
+
+                                }
+                                else {
+                                    alert(msg)
+                                }
+                            }
+                        })
+                    },
+                    post_buy: function () {
+                        var _self = this;
+                        $.ajax({
+                            url: '/post_buy',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                "couponID": _self.coupon.couponID,
+                                "sellerID": _self.coupon.sellerInfo.userid
+                            },
+                            timeout: 3000,
+                            cache: false,
+                            async: false,
+                            beforeSend: LoadFunction,
+                            error: erryFunction,
+                            success: succFunction
+                        });
+
+                        function LoadFunction() {
+                        }
+
+                        function erryFunction() {
+                        }
+
+                        function succFunction(Jsondata) {
+                            if (Jsondata.errno === '0') {
+                                var setting = {
+                                    content:"购买成功",
+                                    button1:'确定',
+                                    button2:"查看我的优惠券",
+                                    onCancel:function () {
+                                    return true;
+                                    },
+                                    onOk:function () {
+                                        window.location.href = "/user";
+                                        return true;
+                                    }
+                                };
+                                vueconfirm.alert(setting);
+                            } else {
+                                alert(Jsondata.message);
+
+                            }
+
+                        }
+
+                    }
                 }
+
             }
         );
     {% endraw %}
