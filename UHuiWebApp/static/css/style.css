@@ -1042,6 +1042,10 @@ p {
     text-align: right;
 }
 
+#v-alert .modal-confirm .confirm-btns{
+    text-align: center;
+}
+
 .confirm-content {
     padding-left: 30px;
     padding-top: 30px;
