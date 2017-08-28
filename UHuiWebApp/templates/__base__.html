@@ -18,6 +18,22 @@
 </head>
 
 <body>
+{% raw %}
+    <div id="V-confirm">
+        <div class="modal-mask modal-transition" v-show="show">
+            <div class="modal-confirm">
+                <h3 class="confirm-header" style="margin-bottom: 0px;">
+                    <i class="fa fa-question-circle-o" style="color: #ff5a00;"></i> {{ title }}
+                </h3>
+                <div class="confirm-content">  {{ content }} </div>
+                <div class="confirm-btns">
+                    <button class="btn" @click="op(1)">{{ button1 }}</button>
+                    <button class="btn btn-primary" @click="op(2)">{{ button2 }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endraw %}
 <div class="modal-wrapper being-hidden z-index">
     <div class="modal-backdrop modal-backdrop-white">
         <div class="index_coupons_detail_top">
@@ -129,8 +145,6 @@
 </div><!-- /.modal -->
 {% block computer_navbar %}
     <nav class="navbar">
-
-
         <div class="container">
             <div class="row">
                 <!--Logo-->
@@ -252,9 +266,116 @@
     <div class="rect5"></div>
   </div> -->
 {% endblock %}
-
+{% block footer %}
+    <div style="height: 100px;text-align: center;">
+        <span style="font-size: 12px;color: #5f646e;line-height: 100px;">© 2017 U惠网. All Rights Reserved.</span>
+    </div>
+{% endblock %}
 </body>
 <script src="/static/js/vue.js"></script>
+<script type="text/javascript">
+    var confirm = new Vue({
+        el: '#V-confirm',
+        data: {
+            show: false,
+            onCancel: false,
+            onOk: false,
+            title: '',
+            content: '',
+            button1: '',
+            button2: ''
+        },
+        methods: {
+            op: function (type) {
+                this.show = false;
+                if (type === '1') {
+                    if (this.onCancel) this.onCancel()
+                } else {
+                    if (this.onOk) this.onOk()
+                }
+
+                this.onCancel = false;
+                this.onOk = false;
+
+                document.body.style.overflow = '';
+            },
+            alert: function (setting) {
+                this.title = setting.title || '标题';
+                this.content = setting.content || '内容';
+                this.button1 = setting.button1 || '取 消';
+                this.button2 = setting.button1 || '确 定';
+                this.onOk = setting.onOk || false;
+                this.onCancel = setting.onCancel || false;
+                this.show = true;
+                document.body.style.overflow = 'hidden';
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
+    {% raw %}
+        Vue.component('coupon', {
+                template: '<div class="coupon-pc col-xs-4" :id="coupon.couponID">\n' +
+                '                    <div class="coupon">\n' +
+                '                        <div class="coupon-img">\n' +
+                '                            <img :src="coupon.pic">\n' +
+                '                        </div>\n' +
+                '                        <div class="coupon-content col-xs-offset-4 col-xs-8">\n' +
+                '                            <div class="coupon-price">\n' +
+                '                                <em>¥</em><strong class="coupon-font-value">{{ coupon.listPrice }}</strong>\n' +
+                '                                <span class="coupon-font-limit">{{ coupon.discount }} </span>\n' +
+                '                                <span class="coupon-detail">详情>></span>\n' +
+                '                            </div>\n' +
+                '\n' +
+                '                            <div class="coupon-range">{{ coupon.product }}</div>\n' +
+                '                            <div class="coupon-btn-box">\n' +
+                '                                <div class="btn col-xs-5" v-if="like">关注</div>\n' +
+                '                                <div class="btn col-xs-5" v-if="dislike">已关注</div>\n' +
+                '                                <div class="btn col-xs-5 col-xs-offset-7" v-if="buy">购买</div>\n' +
+                '                                <div class="btn col-xs-5 col-xs-offset-7" v-if="putOffSale">下架</div>\n' +
+                '                                <div class="btn col-xs-5 col-xs-offset-7" v-if="putOnSale">购买</div>\n' +
+                '                            </div>\n' +
+                '                            <div class="coupon-time-limt">截止时间:{{ coupon.expiredTime }}</div>\n' +
+                '                        </div>\n' +
+                '                    </div>\n' +
+                '                </div>',
+                props: ['coupon'],
+                created: function () {
+                    var _self = this;
+                    $.ajax({
+                        type: 'POST',
+                        url: '/post_couponDetail',
+                        data: {"couponID": _self.$el},
+                        dataType: 'json',
+                        success: function (data) {
+                            _self.data.stat = data.stat;
+                        }
+                    });
+                },
+                data: {
+                    stat: "0"
+                },
+                computed: {
+                    buy: function () {
+                        return stat === '0' || stat === '1';
+                    },
+                    like: function () {
+                        return stat === '0';
+                    },
+                    dislike: function () {
+                        return stat === '1';
+                    },
+                    putOnSale: function () {
+                        return stat === '3';
+                    },
+                    putOffSale: function () {
+                        return stat === '2';
+                    }
+                }
+            }
+        );
+    {% endraw %}
+</script>
 <script src="/static/js/jquery-3.2.1.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/jquery.md5.js"></script>
@@ -328,18 +449,18 @@
         $("#couponDetail_buy").hide();
         $("#couponDetail_like").hide();
         $("#couponDetail_dislike").hide();
-        if (stat == "0") {
+        if (stat === "0") {
             $("#couponDetail_buy").show();
             $("#couponDetail_like").show();
         }
-        else if (stat == "1") {
+        else if (stat === "1") {
             $("#couponDetail_dislike").show();
             $("#couponDetail_buy").show();
         }
-        else if (stat == "2") {
+        else if (stat === "2") {
             $("#couponDetail_putoffsale").show();
         }
-        else if (stat == "3") {
+        else if (stat === "3") {
             $("#couponDetail_putonsale").show();
         }
     }
@@ -432,11 +553,7 @@
         if (url === '/post_putOnSale') {
             $('.modal').modal('show');
         }
-
-
         else {
-
-
             $.ajax({
                 async: false,
                 url: url,
@@ -447,8 +564,6 @@
                 cache: false,
                 success: succFunction
             });
-
-
         }
     }
 
@@ -465,15 +580,11 @@
                 $("#couponDetail_putoffsale").hide();
             }
             $("#couponDetail_listPrice")[0].innerText = '￥' + Jsondata.listPrice;
-
-
         }
         else {
             alert(msg);
         }
-
     }
-
 
     function buy(url) {
         var value = $("#couponDetail_input").val();

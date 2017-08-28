@@ -13,28 +13,28 @@
                 <a href="#">
                     <li><img src="/static/images/推荐-橙.png">推荐</li>
                 </a>
-                <a href="#catid_生活百货">
+                <a href="#生活百货">
                     <li><img src="/static/images/生活百货-1.png">百货</li>
                 </a>
-                <a href="#catid_美妆装饰">
+                <a href="#美妆装饰">
                     <li><img src="/static/images/美妆装饰-1.png">美妆</li>
                 </a>
-                <a href="#catid_文娱体育">
+                <a href="#文娱体育">
                     <li><img src="/static/images/文娱体育-1.png">体育</li>
                 </a>
-                <a href="#catid_家具家居">
+                <a href="#家具家居">
                     <li><img src="/static/images/家具家居-1.png">家具</li>
                 </a>
-                <a href="#catid_电子产品">
+                <a href="#电子产品">
                     <li><img src="/static/images/电子产品-1.png">数码</li>
                 </a>
-                <a href="#catid_服装服饰">
+                <a href="#服装服饰">
                     <li><img src="/static/images/服装服饰-1.png">服饰</li>
                 </a>
-                <a href="#catid_旅行住宿">
+                <a href="#旅行住宿">
                     <li><img src="/static/images/旅行住宿-1.png">旅游</li>
                 </a>
-                <a href="#catid_饮食保健">
+                <a href="#饮食保健">
                     <li style="border: 0;"><img src="/static/images/饮食保健-1.png">饮食</li>
                 </a>
             </ul>
@@ -92,8 +92,7 @@
             <hr id="index_home"/>
 
 
-
-            {% for key,value in coupons.items() %}
+            <!--         {% for key,value in coupons.items() %}
                 <div class="row">
                     <h3 class="content-text" style="color: #ff5a00;font-weight: bolder;"
                         id="catid_{{ key }}">{{ key }}</h3>
@@ -138,13 +137,29 @@
                     {% endfor %}
                 </div>
             {% endfor %}
+    -->
+            <div class="row" id="coupons">
+                <div v-for="(value, key) in coupons">
+                    <h3 :id="key" class="content-text" style="color: #ff5a00;font-weight: bolder;">{{ key }}</h3>
+            <coupon v-for="coupon in value" :coupon="coupon"></coupon>
+                    <div class="clear"></div>
+                </div>
+            </div>
+
 
         </div>
-
     </div>
 
 {% endblock %}
 {% block scripts %}
+    <script type="text/javascript">
+                new Vue({
+  el: '#coupons',
+                    data:{
+      "coupons":{{ coupons | safe }}
+                    }
+})
+            </script>
     <script type="text/javascript">
         $(document).ready(function () { //本人习惯这样写了
             $(window).scroll(function () {
@@ -158,10 +173,10 @@
             });
         });
         $('#mycarousel').carousel({
-	interval: 2000
-});
+            interval: 2000
+        });
         $("#myCarousel").carousel('cycle');
-        </script>
+    </script>
 
 
 {% endblock %}
