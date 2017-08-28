@@ -18,6 +18,7 @@
 </head>
 
 <body>
+<div id="app">
 <div class="loader"></div>
 <!-- confirm框-->
 {% raw %}
@@ -298,52 +299,15 @@
         <span style="font-size: 12px;color: #5f646e;line-height: 100px;">© 2017 U惠网. All Rights Reserved.</span>
     </div>
 {% endblock %}
+</div>
 </body>
 <script src="/static/js/jquery-3.2.1.js"></script>
 <script src="/static/js/vue.js"></script>
+<script src="/static/js/preimg.js"></script>
 <!-- 图片组件 -->
 <script type="text/javascript">
-    var loaderPage = function() {
-		$(".loader").fadeOut("slow");
-	};
-    $(function(){
-        loaderPage();
-});
-    Vue.component('pre-img', {
-        template: '<div class="spinner" v-if="loading">\n' +
-        '    <div class="rect1"></div>\n' +
-        '    <div class="rect2"></div>\n' +
-        '    <div class="rect3"></div>\n' +
-        '    <div class="rect4"></div>\n' +
-        '    <div class="rect5"></div>\n' +
-        '  </div> ' +
-        '<img :src="imgurl" v-else-if="loaded">',
-        props:['imgurl'],
-        computed:{
-            loading:function () {
-                return !this.imgurl;
-            },
-            loaded:function () {
-                return !this.loading;
-            }
-        }
-    });
-    var vueimg = new Vue({
-        el:'.vue-img',
-        data:{
-            url:''
-        },
-        methods:{
-            getimgurl:function (url) {
-                var _self = this;
-                var img = new Image();
-                img.src = url;
-                img.onload = function () {
-                    _self.url = url;
-                }
-            }
-        }
-    })
+
+
 </script>
 <!-- confirm框 -->
 <script type="text/javascript">
@@ -465,7 +429,7 @@
                 template: '<div class="coupon-pc col-xs-4" :id="coupon.couponID">\n' +
                 '                    <div class="coupon">\n' +
                 '                        <div class="coupon-img">\n' +
-                '                            <img :src="coupon.pic">\n' +
+                '                            <coupon-img></coupon-img>\n' +
                 '                        </div>\n' +
                 '                        <div class="coupon-content col-xs-offset-4 col-xs-8">\n' +
                 '                            <div class="coupon-price">\n' +

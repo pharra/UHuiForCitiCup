@@ -424,3 +424,9 @@ $(".max").click(function () {
     $(tab_title).children().click();
 });
 
+var loaderPage = function() {
+		$(".loader").fadeOut("slow");
+	};
+    $(function(){
+        loaderPage();
+});
