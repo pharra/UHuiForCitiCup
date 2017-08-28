@@ -9,7 +9,7 @@
 <div class="container">
     <div class="row">
 
-        <div class="panel-group col-xs-2 col-md-2 col-lg-2 col-sm-2 user-left-menu" id="user_menu">
+        <div class="panel-group col-xs-2 user-left-menu" id="user_menu">
 
             <!--头像-->
             <div class="username-text-css">
@@ -85,7 +85,7 @@
             <!--end panel group-->
         </div>
 
-        <div class="col-xs-10 col-md-10 col-lg-10 col-sm-10">
+        <div class="col-xs-10">
 
             <!--我的优惠-->
             <div class="" id="own_menu">
@@ -110,9 +110,9 @@
                     <div class="tab-pane fade in active" id="tab_own_have">
                         {% if couponsOwn %}
                         {% for i in couponsOwn %}
-                        <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6" >
+                        <div class="col-xs-6" >
                             <div class="point coupon_detail user-coupons row" id="{{ i.couponID }}">
-                                <div class="col-xs-3 col-md-3 col-lg-3 col-sm-3 user-coupons-left">
+                                <div class="col-xs-3  user-coupons-left">
                                     <p class="user-coupons-left-value">
                                         ￥{{ i.listPrice }}
                                     </p>
@@ -121,18 +121,18 @@
                                     </p>
 
                                 </div>
-                                <div class="col-xs- 9col-md-9 col-lg-9 col-sm-9 user-coupons-middle">
-                                    <div class="user-coupons-middle-value col-md-6 col-lg-6 col-sm-6">
+                                <div class="col-xs-9 user-coupons-middle">
+                                    <div class="user-coupons-middle-value col-xs-6">
                                         <p class="font-class">
                                             {{ i.brand }}
                                         </p>
                                     </div>
-                                    <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6 user-coupons-middle-value">
+                                    <div class="col-xs-6  user-coupons-middle-value">
                                         <p>
                                             {{ i.discount }}
                                         </p>
                                     </div>
-                                    <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12 user-coupons-middle-value">
+                                    <div class="col-xs-12  user-coupons-middle-value">
                                         {% for k in i.limits %}
                                         <p class="user-coupons-middle-value-limits-p">{{ k }}</p>
                                         {% endfor %}
@@ -141,7 +141,7 @@
 
                                 </div>
 
-                                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12 user-coupons-bottom">
+                                <div class="col-xs-12  user-coupons-bottom">
                                     <p>截止时间:{{ i.expiredTime }}</p>
                                 </div>
 
@@ -160,9 +160,9 @@
                     <div class="tab-pane fade" id="tab_own_sale">
                       {% if couponsOnSale %}
                         {% for i in couponsOnSale %}
-                        <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6" >
+                        <div class="col-xs-6" >
                             <div class="point coupon_detail user-coupons row" id="{{ i.couponID }}">
-                                <div class="col-xs-3 col-md-3 col-lg-3 col-sm-3 user-coupons-left">
+                                <div class="col-xs-3  user-coupons-left">
                                     <p class="user-coupons-left-value">
                                         ￥{{ i.listPrice }}
                                     </p>
@@ -171,18 +171,18 @@
                                     </p>
 
                                 </div>
-                                <div class="col-xs-9 col-md-9 col-lg-9 col-sm-9 user-coupons-middle">
-                                    <div class="user-coupons-middle-value col-xs-6 col-md-6 col-lg-6 col-sm-6">
+                                <div class="col-xs-9 user-coupons-middle">
+                                    <div class="user-coupons-middle-value col-xs-6 ">
                                         <p class="font-class">
                                             {{ i.brand }}
                                         </p>
                                     </div>
-                                    <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6 user-coupons-middle-value">
+                                    <div class="col-xs-6  user-coupons-middle-value">
                                         <p>
                                             {{ i.discount }}
                                         </p>
                                     </div>
-                                    <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12 user-coupons-middle-value">
+                                    <div class="col-xs-12 user-coupons-middle-value">
                                         {% for k in i.limits %}
                                         <p class="user-coupons-middle-value-limits-p">{{ k }}</p>
                                         {% endfor %}
@@ -191,7 +191,7 @@
 
                                 </div>
 
-                                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12 user-coupons-bottom">
+                                <div class="col-xs-12  user-coupons-bottom">
                                     <p>截止时间:{{ i.expiredTime }}</p>
                                 </div>
 
@@ -210,9 +210,9 @@
                     <div class="tab-pane fade" id="tab_own_focus">
                         {% if couponsLike %}
                         {% for i in couponsLike %}
-                        <div class=" col-xs-6 col-md-6 col-lg-6 col-sm-6" >
+                        <div class=" col-xs-6" >
                             <div class="point coupon_detail user-coupons row" id="{{ i.couponID }}">
-                                <div class="col-xs-3 col-md-3 col-lg-3 col-sm-3 user-coupons-left">
+                                <div class="col-xs-3 user-coupons-left">
                                     <p class="user-coupons-left-value">
                                         ￥{{ i.listPrice }}
                                     </p>
@@ -221,18 +221,18 @@
                                     </p>
 
                                 </div>
-                                <div class="col-xs-9 col-md-9 col-lg-9 col-sm-9 user-coupons-middle">
-                                    <div class="user-coupons-middle-value col-xs-6 col-md-6 col-lg-6 col-sm-6">
+                                <div class="col-xs-9  user-coupons-middle">
+                                    <div class="user-coupons-middle-value col-xs-6">
                                         <p class="font-class">
                                             {{ i.brand }}
                                         </p>
                                     </div>
-                                    <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6 user-coupons-middle-value">
+                                    <div class="col-xs-6  user-coupons-middle-value">
                                         <p>
                                             {{ i.discount }}
                                         </p>
                                     </div>
-                                    <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12 user-coupons-middle-value">
+                                    <div class="col-xs-12 user-coupons-middle-value">
                                         {% for k in i.limits %}
                                         <p class="user-coupons-middle-value-limits-p">{{ k }}</p>
                                         {% endfor %}
@@ -241,7 +241,7 @@
 
                                 </div>
 
-                                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12 user-coupons-bottom">
+                                <div class="col-xs-12 user-coupons-bottom">
                                     <p>截止时间:{{ i.expiredTime }}</p>
                                 </div>
 
@@ -326,8 +326,8 @@
                     <div class="tab-pane fade in active" id="tab_set_content">
                         <form class="form-horizontal">
                             <div class="form-group">
-                                <label for="newname" class="col-xs-2 col-md-2 col-lg-2 col-sm-2 control-label">昵称</label>
-                                <div class="col-xs-5 col-md-5 col-lg-5 col-sm-5 control-label">
+                                <label for="newname" class="col-xs-2  control-label">昵称</label>
+                                <div class="col-xs-5  control-label">
                                     <div>
                                         <span>{{ nickname }}</span>
                                         <i class="fa fa-pencil-square-o point edituserinfo" aria-hidden="true"></i>
@@ -337,9 +337,9 @@
                             </div>
 
                             <div class="form-group">
-                                <lable for="newpassword" class="col-xs-2 col-md-2 col-lg-2 col-sm-2 control-label"><b>密码</b>
+                                <lable for="newpassword" class="col-xs-2  control-label"><b>密码</b>
                                 </lable>
-                                <div class="col-xs-5 col-md-5 col-lg-5 col-sm-5 control-label">
+                                <div class="col-xs-5  control-label">
                                     <div>
                                         <i class="fa fa-pencil-square-o point edituserinfo" aria-hidden="true"></i>
                                     </div>
@@ -349,8 +349,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="newemail" class="col-xs-2 col-md-2 col-lg-2 col-sm-2 control-label">邮箱</label>
-                                <div class="col-xs-5 col-md-5 col-lg-5 col-sm-5 control-label">
+                                <label for="newemail" class="col-xs-2 control-label">邮箱</label>
+                                <div class="col-xs-5 control-label">
                                     <div>
                                         <span>{{ email }}</span>
                                         <i class="fa fa-pencil-square-o point edituserinfo" aria-hidden="true"></i>
@@ -370,8 +370,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="newtelno" class="col-xs-2 col-md-2 col-lg-2 col-sm-2 control-label">手机号</label>
-                                <div class="col-xs-5 col-md-5 col-lg-5 col-sm-5 control-label">
+                                <label for="newtelno" class="col-xs-2 control-label">手机号</label>
+                                <div class="col-xs-5 control-label">
                                     <div>
                                         <span>{{ phoneNum }}</span>
                                         <i class="fa fa-pencil-square-o point edituserinfo" aria-hidden="true"></i>
@@ -405,7 +405,7 @@
                                </div>
                            </div> -->
                             <hr/>
-                            <div class="col-xs-2 col-md-2 col-lg-2 col-sm-2 being-hidden" id="edit-userinfo-commit-div">
+                            <div class="col-xs-2 being-hidden" id="edit-userinfo-commit-div">
                                 <button type="button" class="button" onclick="func_edit_userinfo_submit();" id="edit_userinfo_submit">提交修改
                                 </button>
                             </div>

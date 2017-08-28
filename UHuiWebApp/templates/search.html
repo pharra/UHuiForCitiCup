@@ -67,9 +67,9 @@
     <div class="row">
 {% if coupons %}
         {% for i in coupons %}
-        <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6">
+        <div class="col-xs-6">
             <div class="user-coupons row">
-                <div class="col-xs-3 col-md-3 col-lg-3 col-sm-3 user-coupons-left">
+                <div class="col-xs-3 user-coupons-left">
                     <p class="user-coupons-left-value">
                         ￥{{ i.listPrice }}
                     </p>
@@ -78,18 +78,18 @@
                     </p>
 
                 </div>
-                <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6 user-coupons-middle">
-                    <div class="col-xs-6 user-coupons-middle-value col-md-6 col-lg-6 col-sm-6">
+                <div class="col-xs-6 user-coupons-middle">
+                    <div class="col-xs-6 user-coupons-middle-value">
                         <p class="font-class">
                             {{ i.brand }}
                         </p>
                     </div>
-                    <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6 user-coupons-middle-value">
+                    <div class="col-xs-6 user-coupons-middle-value">
                         <p>
                             {{ i.discount }}
                         </p>
                     </div>
-                    <div class="col-xs-6 col-md-12 col-lg-12 col-sm-12 user-coupons-middle-value">
+                    <div class="col-xs-6  user-coupons-middle-value">
                         {% for k in i.limits %}
                         <p class="user-coupons-middle-value-limits-p">{{ k }}</p>
                         {% endfor %}
@@ -98,7 +98,7 @@
 
                 </div>
 
-                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12 user-coupons-bottom">
+                <div class="col-xs-12  user-coupons-bottom">
                     <p>截止时间:{{ i.expiredTime }}</p>
                 </div>
 
