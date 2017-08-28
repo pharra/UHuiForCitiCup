@@ -51,7 +51,11 @@
                 <!-- 轮播（Carousel）项目 -->
                 <div class="carousel-inner">
                     <div class="item active">
-                        <img src="/static/images/web广告5.jpg">
+                        <div class="vue-img" :onload="getimgurl('/static/images/web广告5.jpg')">
+                            <pre-img :imgurl="url"></pre-img>
+                        </div>
+
+
                     </div>
                     <div class="item">
                         <img src="/static/images/web广告2.jpg">
@@ -151,6 +155,7 @@
         </div>
     </div>
 <div class="clear"></div>
+    </div>
 {% endblock %}
 {% block scripts %}
     <script type="text/javascript">

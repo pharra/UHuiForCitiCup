@@ -18,6 +18,7 @@
 </head>
 
 <body>
+<!-- confirm框-->
 {% raw %}
     <div id="V-confirm">
         <div class="modal-mask modal-transition" v-show="show">
@@ -46,14 +47,14 @@
             </div>
         </div>
     </div>
- <div id="V-input">
+    <div id="V-input">
         <div class="modal-mask modal-transition" v-show="show">
             <div class="modal-confirm">
                 <h3 class="confirm-header" style="margin-bottom: 0px;">
                     <i class="fa fa-question-circle-o" style="color: #ff5a00;"></i> {{ title }}
                 </h3>
                 <label style="margin: 10px;">
-                    <input v-model="message"  :placeholder="content">
+                    <input v-model="message" :placeholder="content">
                 </label>
                 <div class="confirm-btns">
                     <button class="cancelbtn btn" id="v-cancel" @click="op('cancel')">{{ button1 }}</button>
@@ -63,6 +64,8 @@
         </div>
     </div>
 {% endraw %}
+<!-- -->
+
 <div class="modal-wrapper being-hidden z-index">
     <div class="modal-backdrop modal-backdrop-white">
         <div class="index_coupons_detail_top">
@@ -287,13 +290,7 @@
     </nav>
 {% endblock %}
 {% block body %}
-    <!--  <div class="spinner">
-    <div class="rect1"></div>
-    <div class="rect2"></div>
-    <div class="rect3"></div>
-    <div class="rect4"></div>
-    <div class="rect5"></div>
-  </div> -->
+
 {% endblock %}
 {% block footer %}
     <div style="height: 100px;text-align: center;">
@@ -301,7 +298,47 @@
     </div>
 {% endblock %}
 </body>
+<script src="/static/js/jquery-3.2.1.js"></script>
 <script src="/static/js/vue.js"></script>
+<!-- 图片组件 -->
+<script type="text/javascript">
+    Vue.component('pre-img', {
+        template: '<div class="spinner" v-if="loading">\n' +
+        '    <div class="rect1"></div>\n' +
+        '    <div class="rect2"></div>\n' +
+        '    <div class="rect3"></div>\n' +
+        '    <div class="rect4"></div>\n' +
+        '    <div class="rect5"></div>\n' +
+        '  </div> ' +
+        '<img :src="imgurl" v-else-if="loaded">',
+        props:['imgurl'],
+        computed:{
+            loading:function () {
+                return !this.imgurl;
+            },
+            loaded:function () {
+                return !this.loading;
+            }
+        }
+    });
+    var vueimg = new Vue({
+        el:'.vue-img',
+        data:{
+            url:''
+        },
+        methods:{
+            getimgurl:function (url) {
+                var _self = this;
+                var img = new Image();
+                img.src = url;
+                img.onload = function () {
+                    _self.url = url;
+                }
+            }
+        }
+    })
+</script>
+<!-- confirm框 -->
 <script type="text/javascript">
     var vueconfirm = new Vue({
         el: '#V-confirm',
@@ -380,7 +417,7 @@
             content: '',
             button1: '',
             button2: '',
-            message:''
+            message: ''
         },
         methods: {
             op: function (type) {
@@ -410,8 +447,9 @@
         }
     });
 </script>
+<!-- 优惠券组件 -->
 <script type="text/javascript">
-function isUnsignedInteger(a) {
+    function isUnsignedInteger(a) {
         var reg = /^[1-9]\d*(.\d{1,2})?$/;
         return reg.test(a);
     }
@@ -559,7 +597,7 @@ function isUnsignedInteger(a) {
                                 var msg = Jsondata.message;
                                 if (Jsondata.errno === '0') {
                                     var setting = {
-                                        title:'优惠券下架',
+                                        title: '优惠券下架',
                                         content: "下架成功"
                                     };
                                     vuealert.alert(setting);
@@ -567,7 +605,7 @@ function isUnsignedInteger(a) {
                                 }
                                 else {
                                     var setting = {
-                                        title:'下架失败',
+                                        title: '下架失败',
                                         content: msg
                                     };
                                     vuealert.alert(setting);
@@ -578,10 +616,10 @@ function isUnsignedInteger(a) {
                     post_putOnSale: function () {
                         var _self = this;
                         var setting = {
-                            title:'上架优惠券',
-                            content:"输入优惠券价格",
-                            onOk:function () {
-                                if(isUnsignedInteger(this.message)) {
+                            title: '上架优惠券',
+                            content: "输入优惠券价格",
+                            onOk: function () {
+                                if (isUnsignedInteger(this.message)) {
                                     var msg = this.message;
                                     $.ajax({
                                         url: '/post_putOnSale',
@@ -599,7 +637,7 @@ function isUnsignedInteger(a) {
                                                 };
                                                 vuealert.alert(setting);
                                                 _self.stat = '2';
-                                                _self.coupon.listPrice =  Jsondata.listPrice;
+                                                _self.coupon.listPrice = Jsondata.listPrice;
                                             }
                                             else {
                                                 var setting2 = {
@@ -611,14 +649,14 @@ function isUnsignedInteger(a) {
                                         }
                                     });
                                 }
-                                else{
+                                else {
                                     var setting1 = {
-                                        content:"请输入正确价格"
+                                        content: "请输入正确价格"
                                     };
                                     vuealert.alert(setting1);
                                 }
                             },
-                            onCancel:function () {
+                            onCancel: function () {
 
                             }
                         };
@@ -631,7 +669,7 @@ function isUnsignedInteger(a) {
         );
     {% endraw %}
 </script>
-<script src="/static/js/jquery-3.2.1.js"></script>
+
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/jquery.md5.js"></script>
 <script src="/static/js/jquery.cookie.js"></script>
