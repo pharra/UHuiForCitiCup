@@ -47,6 +47,13 @@ def randomID():
     return ID
 
 
+# 去除尾数
+def removeTailZero(listprice):
+    if '.' not in listprice:
+        return listprice
+    return listprice.rstrip('0').rstrip('.')
+
+
 def emailVerifyCode():
     code = ''
     for i in range(0, 4):
@@ -229,10 +236,10 @@ def changeCouponStat(couponID, sellerID, stat, listPrice='-1'):
 
     if stat == 'onSale' and coupon.stat != 'store':
         return JsonResponse({'errno': '1', 'message': '上架失败', 'stat': coupon.stat,
-                             'listPrice': str(coupon.listprice).rstrip('0').rstrip('.')})
+                             'listPrice': removeTailZero(str(coupon.listprice))})
     elif stat == 'store' and coupon.stat != 'onSale':
         return JsonResponse({'errno': '1', 'message': '下架失败', 'stat': coupon.stat,
-                             'listPrice': str(coupon.listprice).rstrip('0').rstrip('.')})
+                             'listPrice': removeTailZero(str(coupon.listprice))})
 
     coupon.stat = stat
     coupon.save()
@@ -247,7 +254,7 @@ def changeCouponStat(couponID, sellerID, stat, listPrice='-1'):
             coupon.listprice = Decimal(listPrice)
             coupon.save()
     return JsonResponse({'errno': '0', 'message': '操作成功', 'stat': coupon.stat,
-                         'listPrice': str(coupon.listprice).rstrip('0').rstrip('.')})
+                         'listPrice': removeTailZero(str(coupon.listprice))})
 
 
 # 获取数据
@@ -605,8 +612,8 @@ def couponInfo(couponID, request):
     couponInfo['brand'] = coupon.brandid.name
     couponInfo['cat'] = coupon.catid.name
     couponInfo['catID'] = coupon.catid.catid
-    couponInfo['listPrice'] = str(coupon.listprice).rstrip('0').rstrip('.')
-    couponInfo['value'] = str(coupon.value).rstrip('0').rstrip('.')
+    couponInfo['listPrice'] = removeTailZero(str(coupon.listprice))
+    couponInfo['value'] = removeTailZero(str(coupon.value))
     couponInfo['product'] = coupon.product
     couponInfo['discount'] = coupon.discount
     couponInfo['stat'] = coupon.stat
@@ -629,7 +636,7 @@ def post_userInfo(u_id):
         couponList.append({'type': item.stat, 'listid': item.listid})
     nickname = user.nickname
     gender = user.gender
-    UCoin = str(user.ucoin).rstrip('0').rstrip('.')
+    UCoin = removeTailZero(str(user.ucoin))
     avatar = '/static/' + str(user.avatar)
     phoneNum = user.phonenum
     if phoneNum is None:
