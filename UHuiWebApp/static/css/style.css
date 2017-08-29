@@ -924,8 +924,9 @@ p {
 }
 
 .spinner {
-    margin: 100px auto;
+    margin: 0 auto;
     width: 50px;
+    height: 100%;
     text-align: center;
     font-size: 10px;
 }
@@ -1104,7 +1105,7 @@ p {
     z-index: 1;
 }
 
-.coupon-img img,.spinner {
+.coupon-img img,.spinnerdiv {
     height: 180px;
     width: 180px;
     vertical-align: middle;
