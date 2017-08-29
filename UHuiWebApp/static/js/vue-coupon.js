@@ -182,7 +182,7 @@ Vue.component('coupon', {
                                     if (Jsondata.errno === '0') {
                                         var setting = {
                                             title: '优惠券上架',
-                                            content: "上架架成功"
+                                            content: "优惠券上架成功"
                                         };
                                         vuealert.alert(setting);
                                         _self.stat = '2';
