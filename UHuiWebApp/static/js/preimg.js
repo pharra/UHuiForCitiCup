@@ -25,6 +25,33 @@ Vue.component('coupon-img', {
     }
 });
 
+Vue.component('lazy-img', {
+    template: '<div class="spinnerdiv" v-if="loading">\n'+
+    '<div class="spinner">\n' +
+        '    <div class="rect1"></div>\n' +
+        '    <div class="rect2"></div>\n' +
+        '    <div class="rect3"></div>\n' +
+        '    <div class="rect4"></div>\n' +
+        '    <div class="rect5"></div>\n' +
+        '  </div> \n' +
+        '  </div> ' +
+        '<img :src="url" v-else>',
+    props: ['imgurl'],
+    data: function () {
+        return {url: '',loading:true}
+    },
+    created: function () {
+        var _self = this;
+        var url = _self.imgurl;
+        var img = new Image();
+        img.src = url;
+        img.onload = function () {
+            _self.loading = false;
+            _self.url = url;
+        }
+    }
+});
+
 
 
 

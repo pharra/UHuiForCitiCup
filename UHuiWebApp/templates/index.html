@@ -41,56 +41,64 @@
         </div>
 
         <div class="category-right col-xs-11">
-            <div id="myCarousel" class="carousel slide" data-interval="2000">
-                <!-- 轮播（Carousel）指标 -->
-                <ol class="carousel-indicators">
-                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#myCarousel" data-slide-to="1"></li>
-                    <li data-target="#myCarousel" data-slide-to="2"></li>
-                </ol>
-                <!-- 轮播（Carousel）项目 -->
-                <div class="carousel-inner">
-                    <div class="item active">
-                   <!--     <div class="vue-img" :onload="getimgurl('/static/images/web广告5.jpg')">
-                            <pre-img :imgurl="url"></pre-img>
-                        </div> -->
-                     <img src="/static/images/web广告5.jpg">
+            <div id="Carousel-img">
+                <div id="myCarousel" class="carousel slide" data-interval="2000">
+                    <!-- 轮播（Carousel）指标 -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
+                    <!-- 轮播（Carousel）项目 -->
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <!--     <div class="vue-img" :onload="getimgurl('/static/images/web广告5.jpg')">
+                                     <pre-img :imgurl="url"></pre-img>
+                                 </div> -->
+                            <lazy-img :imgurl="img1"></lazy-img>
 
+
+                        </div>
+                        <div class="item">
+                            <lazy-img :imgurl="img2"></lazy-img>
+
+                        </div>
+                        <div class="item">
+                            <lazy-img :imgurl="img3"></lazy-img>
+
+                        </div>
                     </div>
-                    <div class="item">
-                        <img src="/static/images/web广告2.jpg">
+                    <!-- 轮播（Carousel）导航 -->
+                    <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                    <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <a href="#" class="thumbnail">
+                            <lazy-img :imgurl="img4"></lazy-img>
+
+
+                        </a>
                     </div>
-                    <div class="item">
-                        <img src="/static/images/web广告3.jpg">
+                    <div class="col-xs-3">
+                        <a href="#" class="thumbnail">
+                            <lazy-img :imgurl="img5"></lazy-img>
+
+                        </a>
                     </div>
-                </div>
-                <!-- 轮播（Carousel）导航 -->
-                <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-                <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-            </div>
+                    <div class="col-xs-3">
+                        <a href="#" class="thumbnail">
+                            <lazy-img :imgurl="img6"></lazy-img>
 
-
-            <div class="row">
-                <div class="col-xs-3">
-                    <a href="#" class="thumbnail">
-                        <img src="/static/images/web广告1.jpg" alt="">
-
-                    </a>
-                </div>
-                <div class="col-xs-3">
-                    <a href="#" class="thumbnail">
-                        <img src="/static/images/web广告2.jpg" alt="">
-                    </a>
-                </div>
-                <div class="col-xs-3">
-                    <a href="#" class="thumbnail">
-                        <img src="/static/images/web广告3.jpg" alt="">
-                    </a>
-                </div>
-                <div class="col-xs-3">
-                    <a href="#" class="thumbnail">
-                        <img src="/static/images/web广告4.jpg" alt="">
-                    </a>
+                        </a>
+                    </div>
+                    <div class="col-xs-3">
+                        <a href="#" class="thumbnail">
+                            <lazy-img :imgurl="img7"></lazy-img>
+                           </a>
+                    </div>
                 </div>
             </div>
             <hr id="index_home"/>
@@ -143,29 +151,41 @@
             {% endfor %}
     -->
             <div class="row" id="coupons">
-            <div class="row" id="coupons">
-                <div v-for="(value, key) in coupons">
-                    <h3 :id="key" class="content-text" style="color: #ff5a00;font-weight: bolder;">{{ key }}</h3>
-            <coupon v-for="coupon in value" :coupon="coupon"></coupon>
-                    <div class="clear"></div>
+                <div class="row" id="coupons">
+                    <div v-for="(value, key) in coupons">
+                        <h3 :id="key" class="content-text" style="color: #ff5a00;font-weight: bolder;">{{ key }}</h3>
+                        <coupon v-for="coupon in value" :coupon="coupon"></coupon>
+                        <div class="clear"></div>
+                    </div>
                 </div>
+
+
             </div>
-
-
         </div>
-    </div>
-<div class="clear"></div>
+        <div class="clear"></div>
     </div>
 {% endblock %}
 {% block scripts %}
     <script type="text/javascript">
-                new Vue({
-  el: '#coupons',
-                    data:{
-      "coupons":{{ coupons | safe }}
-                    }
-})
-            </script>
+        new Vue({
+            el: '#coupons',
+            data: {
+                "coupons":{{ coupons | safe }}
+            }
+        })
+        new Vue({
+            el:"#Carousel-img",
+            data:{
+                img1:'/static/images/web广告5.jpg',
+                img2:'/static/images/web广告1.jpg',
+                img3:'/static/images/web广告2.jpg',
+                img4:'/static/images/web广告3.jpg',
+                img5:'/static/images/web广告1.jpg',
+                img6:'/static/images/web广告2.jpg',
+                img7:'/static/images/web广告4.jpg'
+            }
+        })
+    </script>
     <script type="text/javascript">
         $(document).ready(function () { //本人习惯这样写了
             $(window).scroll(function () {
