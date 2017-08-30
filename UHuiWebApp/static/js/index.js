@@ -213,7 +213,7 @@ function login_handler() {
         if (data.error === "") {
             window.location.href = "/";
         } else {
-            $("#login_failed_content").children().text(data.error)
+            $("#login_failed_content").children().text(data.error);
             $("#login_failed_content").show();
         }
 
@@ -297,11 +297,11 @@ $("#singlemessage, #userinfo").click(function (event) {
 });
 
 
-$(".edituserinfo").click(function () {
+/*$(".edituserinfo").click(function () {
     $(this).parent().hide();
     $(this).parent().nextAll().show();
     $("#edit-userinfo-commit-div").show();
-});
+});*/
 
 $('#newemail').blur('input propertychange', function () {
     if (isEmail($("#newemail").val())) {
