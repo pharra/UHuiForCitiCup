@@ -56,7 +56,7 @@
                     <i class="fa fa-question-circle-o" style="color: #ff5a00;"></i> {{ title }}
                 </h3>
                 <label style="margin: 10px;">
-                    <input v-model="message" :placeholder="content">
+                    <input v-model="message" class="form-control" :placeholder="content">
                 </label>
                 <div class="confirm-btns">
                     <button class="cancelbtn btn" id="v-cancel" @click="op('cancel')">{{ button1 }}</button>
@@ -421,7 +421,6 @@
 <script src="/static/js/jquery.cookie.js"></script>
 <script src="/static/js/index.js"></script>
 <script src="/static/js/search.js"></script>
-<script src="/static/js/coupons.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GeoLBAU1t7TRpqXhtw8VIth4r6PGAU3U"></script>
 <script type="text/javascript">
     // 百度地图API功能

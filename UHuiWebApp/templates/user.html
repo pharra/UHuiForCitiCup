@@ -105,11 +105,11 @@
 
 
                 <!--选项内容-->
-                <div class="tab-content row">
+                <div class="tab-content row" id="coupons">
                     <!--当前持有-->
-                    <div class="tab-pane fade in active" id="tab_own_have">
+                    <div class="tab-pane fade in active" style="padding-top: 15px;" id="tab_own_have">
                         {% if couponsOwn %}
-                        {% for i in couponsOwn %}
+                      <!--  {% for i in couponsOwn %}
                         <div class="col-xs-6" >
                             <div class="point coupon_detail user-coupons row" id="{{ i.couponID }}">
                                 <div class="col-xs-3  user-coupons-left">
@@ -147,19 +147,20 @@
 
                             </div>
                         </div>
-                        {% endfor %}
+                        {% endfor %} -->
                         {% else %}
                             <div class="content-text">
             <img src="/static/images/coupons_empty.png">
             <p >什么！？这里居然是空的！</p>
             </div>
                     {% endif %}
+                        <coupon v-for="coupon in couponsOwn" :coupon="coupon"></coupon>
                     </div>
 
                     <!--正在出售-->
-                    <div class="tab-pane fade" id="tab_own_sale">
+                    <div class="tab-pane fade" style="padding-top: 15px;" id="tab_own_sale">
                       {% if couponsOnSale %}
-                        {% for i in couponsOnSale %}
+                    <!--    {% for i in couponsOnSale %}
                         <div class="col-xs-6" >
                             <div class="point coupon_detail user-coupons row" id="{{ i.couponID }}">
                                 <div class="col-xs-3  user-coupons-left">
@@ -197,19 +198,20 @@
 
                             </div>
                         </div>
-                        {% endfor %}
+                        {% endfor %} -->
                     {% else %}
                        <div class="content-text">
             <img src="/static/images/coupons_empty.png">
             <p >什么！？这里居然是空的！</p>
             </div>
                     {% endif %}
+                    <coupon v-for="coupon in couponsOnSale" :coupon="coupon"></coupon>
                     </div>
 
                     <!--我的关注-->
-                    <div class="tab-pane fade" id="tab_own_focus">
+                    <div class="tab-pane fade" style="padding-top: 15px;" id="tab_own_focus">
                         {% if couponsLike %}
-                        {% for i in couponsLike %}
+                    <!--    {% for i in couponsLike %}
                         <div class=" col-xs-6" >
                             <div class="point coupon_detail user-coupons row" id="{{ i.couponID }}">
                                 <div class="col-xs-3 user-coupons-left">
@@ -247,13 +249,14 @@
 
                             </div>
                         </div>
-                        {% endfor %}
+                        {% endfor %} -->
                     {% else %}
                        <div class="content-text">
             <img src="/static/images/coupons_empty.png">
             <p >什么！？这里居然是空的！</p>
             </div>
                     {% endif %}
+                    <coupon v-for="coupon in couponsLike" :coupon="coupon"></coupon>
                     </div>
 
                     <!--end tab-content-->
@@ -433,4 +436,15 @@
     </div>
 </div>
 {% endblock %}
-{% block scripts %} {% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+    new Vue({
+            el: '#coupons',
+            data: {
+                "couponsOwn":{{ couponsOwn | safe }},
+                "couponsOnSale":{{ couponsOnSale | safe }},
+                "couponsLike" : {{ couponsLike |safe }}
+            }
+        });
+    </script>
+{% endblock %}

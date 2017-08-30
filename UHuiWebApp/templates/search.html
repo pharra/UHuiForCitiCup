@@ -64,9 +64,9 @@
     </div>
 -->
 
-    <div class="row">
+    <div class="row" id="coupons">
 {% if coupons %}
-        {% for i in coupons %}
+       <!-- {% for i in coupons %}
         <div class="col-xs-6">
             <div class="user-coupons row">
                 <div class="col-xs-3 user-coupons-left">
@@ -104,13 +104,14 @@
 
             </div>
         </div>
-        {% endfor %}
+        {% endfor %} -->
     {% else %}
     <div class="content-text">
             <img src="/static/images/coupons_empty.png">
             <p >什么！？这里居然是空的！</p>
             </div>
     {% endif %}
+        <coupon v-for="coupon in coupons" :coupon="coupon"></coupon>
         <div>
         </div>
         <div>
@@ -127,6 +128,14 @@
 </div>
 {% endblock %}
 {% block scripts %}
+    <script type="text/javascript">
+    new Vue({
+            el: '#coupons',
+            data: {
+                "coupons":{{ coupons | safe }}
+            }
+        });
+    </script>
     <script type="text/javascript">
     function getmaxandindexpage(max,current) {
         $("#nav-search").attr('placeholder','{{ keyWord }}');

@@ -548,7 +548,7 @@ button[type=button]:disabled {
     padding: 15px 0 0 0;
 }
 
-.userinfo-setting-body .form-group .col-xs-5 {
+.userinfo-setting-body .form-group .col-xs-5.control-label {
     text-align: left;
 }
 
