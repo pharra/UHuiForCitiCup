@@ -329,13 +329,13 @@ def searchResult(request):
     brandIDResult = models.Brand.objects.filter(name__icontains=key)
     productCount = productResult.count()
     brandCount = 0
-    for i in range(0, 8):
+    for i in range(0, 9):
         if (8 * page + i) >= productResult.count():
             break
         result.append(couponInfo(productResult[8 * page + i].couponid, request))
     # 数量不够时的结果仍需补全
     for brand in brandIDResult:
-        pc = int(8 / brandIDResult.count())
+        pc = int(6 / brandIDResult.count())
         if pc == 0:
             pc = 1
         brandItem = models.Coupon.objects.filter(brandid=brand.brandid, stat='onSale')
@@ -344,7 +344,7 @@ def searchResult(request):
             if (pc * page + i) >= brandItem.count():
                 break
             result.append(couponInfo(brandItem[pc * page + i].couponid, request))
-    maxPage = max(productCount / 8, brandCount / 8)
+    maxPage = max(productCount / 9, brandCount / 6)
     if maxPage > int(maxPage):
         maxPage = int(maxPage) + 1
     # if not productResult.exists() and not brandIDResult.exists():
