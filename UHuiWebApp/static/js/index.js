@@ -20,13 +20,25 @@
  });
 
  */
-
+$(function ($) {
+    $.fn.autoHide = function () {
+        var ele = this;
+        $(document).on('click',function (e) {
+            if(ele.is(':visible') && (!$(e.target)[0].isEqualNode(ele[0]) && ele.has(e.target).length === 0)){
+                ele.addClass("being-hidden");
+            }
+            e.stopPropagation();
+            return true;
+        });
+        return this;
+    }
+});
 
 $(".login-li").click(function () {
     removechecked("#re-password");
     removechecked("#user_id");
     $(this).addClass("login-active");
-    $(this).siblings().removeClass("login-active")
+    $(this).siblings().removeClass("login-active");
     $($(this).children().attr("href")).addClass("active in");
     $($(this).siblings().children().attr("href")).removeClass("active in");
 });
@@ -45,7 +57,7 @@ function isEmail(email) {
 function CheckedCss(id) {
     var left1 = $(id).offset().left + $(id).width() + 'px';
     var top1 = $(id).offset().top + ($(id).height() / 2) + 'px';
-    id = id.split('#')[1]
+    id = id.split('#')[1];
     var thisid = "for" + id;
     var newdom = $("<i></i>").addClass("fa fa-check").css("position", "absolute").attr("aria-hidden", "true").attr("id", thisid);
     newdom.css("left", left1);
@@ -113,12 +125,12 @@ $('#user_id,#mobile_user_id').blur('input propertychange', function () {
 
 
 $('#re-password,#password').blur('input propertychange', function () {
-    if (($('#re-password').val() == $("#password").val()) && ($('#re-password').val() != "") && $('#password').val() != "") {
+    if (($('#re-password').val() === $("#password").val()) && ($('#re-password').val() !== "") && $('#password').val() !== "") {
         $('#password_content').hide();
         removechecked("#re-password");
         CheckedCss("#re-password");
         $("#signup-md5-password").val($.md5($("#re-password").val() + "UHui"));
-    } else if (($('#re-password').val() == "") || ($('#password').val() == "")) {
+    } else if (($('#re-password').val() === "") || ($('#password').val() === "")) {
         $('#password_content').hide();
         removechecked("#re-password");
     } else {
@@ -128,12 +140,12 @@ $('#re-password,#password').blur('input propertychange', function () {
 });
 
 $('#mobile_re-password,#mobile_password').blur('input propertychange', function () {
-    if (($('#mobile_re-password').val() == $("#mobile_password").val()) && ($('#mobile_re-password').val() != "") && $('#mobile_password').val() != "") {
+    if (($('#mobile_re-password').val() === $("#mobile_password").val()) && ($('#mobile_re-password').val() !== "") && $('#mobile_password').val() !== "") {
         $('#mobile_password_content').hide();
         removechecked("#mobile_re-password");
         CheckedCss("#mobile_re-password");
         $("#signup-md5-password").val($.md5($("#mobile_re-password").val() + "UHui"));
-    } else if (($('#mobile_re-password').val() == "") || ($('#mobile_password').val() == "")) {
+    } else if (($('#mobile_re-password').val() === "") || ($('#mobile_password').val() === "")) {
         $('#mobile_password_content').hide();
         removechecked("#mobile_re-password");
     } else {
@@ -185,7 +197,7 @@ function login_handler() {
         data: {"username": $("#login-username").val(), "password": $.md5($("#login-password").val() + "UHui")},
         timeout: 3000,
         cache: false,
-        async:false,
+        async: false,
         beforeSend: LoadFunction,
         error: erryFunction,
         success: succFunction
@@ -198,10 +210,10 @@ function login_handler() {
     }
 
     function succFunction(data) {
-        if (data.error == "") {
+        if (data.error === "") {
             window.location.href = "/";
         } else {
-            $("#login_failed_content").children().text(data.error)
+            $("#login_failed_content").children().text(data.error);
             $("#login_failed_content").show();
         }
 
@@ -234,10 +246,10 @@ function sign_up() {
     }
 
     function succFunction(data) {
-        if (data.errno == "1") {
+        if (data.errno === "1") {
             $("#login-failed").children()[0].innerHTML = data.message;
             $("#login-failed").show();
-        } else if (data.errno == "0") {
+        } else if (data.errno === "0") {
 
 
             $.ajax({
@@ -252,15 +264,16 @@ function sign_up() {
                 cache: false,
                 success: succinnerFunction
             });
-            function succinnerFunction (data) {
-                if (data.error == "") {
+
+            function succinnerFunction(data) {
+                if (data.error === "") {
                     window.location.href = "/";
                 }
 
             }
 
 
-        } else if (data.errno == "2") {
+        } else if (data.errno === "2") {
             window.location.href = "/";
         }
     }
@@ -270,29 +283,25 @@ function sign_up() {
 $(document).ready(function () {
     $(window).scroll(function (event) {
         $("#index_navigation").css("top", $(window).scrollTop() + 'px');
-
-
     });
 });
 
 
-$("#singlemessage, #userinfo").click(function () {
+$("#singlemessage, #userinfo").click(function (event) {
+
     var being_hidden_message = '#for' + $(this).attr("id");
-    $(being_hidden_message).toggleClass("being-hidden");
+    $(being_hidden_message).toggleClass("being-hidden").autoHide();
     var offsetleft = '-' + ($(being_hidden_message).width() / 2 - $(this).parent().width() / 2) + "px";
-    // var offsetleft = $(this).offset().left;
-    // var offsettop = $(this).offset().top;
-    // $(being_hidden_message).css("top",offsettop);
-    // $(being_hidden_message).css.("left",offsetleft);
     $(being_hidden_message).css("left", offsetleft);
+    return false;
 });
 
 
-$(".edituserinfo").click(function () {
+/*$(".edituserinfo").click(function () {
     $(this).parent().hide();
     $(this).parent().nextAll().show();
     $("#edit-userinfo-commit-div").show();
-});
+});*/
 
 $('#newemail').blur('input propertychange', function () {
     if (isEmail($("#newemail").val())) {
@@ -424,3 +433,9 @@ $(".max").click(function () {
     $(tab_title).children().click();
 });
 
+var loaderPage = function () {
+    $(".loader").fadeOut("slow");
+};
+$(function () {
+    loaderPage();
+});
