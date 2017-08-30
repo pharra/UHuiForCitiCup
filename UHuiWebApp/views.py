@@ -166,6 +166,7 @@ def addSearchHistory(key, history):
 # 修改用户信息
 def post_modifyUserInfo(request):
     uid = request.uid
+    hasChange = False
     oldPsw = request.POST.get('oldPassword', False)
     newNickName = request.POST.get('nickname', False)
     newPhoneNum = request.POST.get('phoneNum', False)
@@ -177,6 +178,7 @@ def post_modifyUserInfo(request):
     if newPsw and oldPsw:
         if encryption(oldPsw) == bytes.decode(user.password.encode("UTF-8")):
             user.password = encryption(newPsw)
+            hasChange = True
         else:
             response.content = json.dumps({'errno': '1', 'message': '旧密码不正确'})
 
@@ -190,11 +192,13 @@ def post_modifyUserInfo(request):
             response.content = json.dumps({'errno': '1', 'message': '昵称已存在'})
             return response
         user.nickname = newNickName
+        hasChange = True
 
     if newPhoneNum:
         # 需要短信验证码
         if encryption(request.POST['newphone_verification_code']) == request.COOKIES.get('VCm', -1):
             user.phonenum = newPhoneNum
+            hasChange = True
         else:
             response.content = json.dumps({'errno': '1', 'message': '手机验证码不正确'})
             response.delete_cookie('VCm')
@@ -205,6 +209,7 @@ def post_modifyUserInfo(request):
 
         if encryption(request.POST['email_verification_code']) == request.COOKIES.get('VCe', -1):
             user.email = newEmail
+            hasChange = True
         else:
             response.content = json.dumps({'errno': '1', 'message': '邮箱验证码不正确'})
             response.delete_cookie('VCe')
@@ -212,9 +217,13 @@ def post_modifyUserInfo(request):
 
     if newGender:
         user.gender = newGender
+        hasChange = True
 
     user.save()
-    response.content = json.dumps({'errno': '0', 'message': '修改成功'})
+    if not hasChange:
+        response.content = json.dumps({'errno': '1', 'message': '请输入新数据'})
+    else:
+        response.content = json.dumps({'errno': '0', 'message': '修改成功'})
     return response
 
 
@@ -319,7 +328,7 @@ def searchResult(request):
     orderBy = request.POST.get('order', None)
     page = int(request.GET.get('page', 1)) - 1
     if not key:
-        return render(request, 'search.html', {'keyWord': key})
+        return {'keyWord': key, 'maxPage': 0, 'currentPage': 0}
     if not orderBy:
         orderBy = 'expiredtime'
     else:
