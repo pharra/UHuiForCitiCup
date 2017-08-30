@@ -65,6 +65,28 @@
                 </div>
             </div>
         </div>
+        <div id="V-passwordinput">
+            <div class="modal-mask modal-transition" v-show="show" style="display: none;">
+                <div class="modal-confirm">
+                    <h3 class="confirm-header" style="margin-bottom: 0px;">
+                        <i class="fa fa-info-circle" style="color: #ff5a00;"></i> {{ title }}
+                    </h3>
+                    <label style="margin: 10px;">
+                        <input type="password" v-model="oldPassword" class="form-control" :placeholder="content1">
+                    </label>
+                    <label style="margin: 10px;">
+                        <input type="password" v-model="newPassword1" class="form-control" :placeholder="content2">
+                    </label>
+                    <label style="display: none;margin: 10px;">
+                        <input type="password" v-model="newPassword2" class="form-control" :placeholder="content3">
+                    </label>
+                    <div class="confirm-btns">
+                        <button class="cancelbtn btn" id="v-cancel" @click="op('cancel')">{{ button1 }}</button>
+                        <button class="okbtn btn btn-primary" id="v-ok" @click="op('ok')">{{ button2 }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endraw %}
     <!-- -->
 
@@ -411,6 +433,54 @@
             alert: function (setting) {
                 this.title = setting.title || '';
                 this.content = setting.content || '';
+                this.button1 = setting.button1 || '取 消';
+                this.button2 = setting.button2 || '确 定';
+                this.onOk = setting.onOk || false;
+                this.onCancel = setting.onCancel || false;
+                this.show = true;
+                document.body.style.overflow = 'hidden';
+            }
+        }
+    });
+    var vuePwdInput = new Vue({
+        el: '#V-passwordinput',
+        data: {
+            show: false,
+            onCancel: false,
+            onOk: false,
+            title: '',
+            content1: '',
+            content2: '',
+            content3: '',
+            button1: '',
+            button2: '',
+            oldPassword: '',
+            newPassword1:'',
+            newPassword2:''
+        },
+        methods: {
+            op: function (type) {
+                this.show = false;
+                if (type === 'cancel') {
+                    if (this.onCancel) this.onCancel()
+                }
+                else {
+                    if (this.onOk) this.onOk()
+                }
+
+                this.onCancel = false;
+                this.onOk = false;
+
+                document.body.style.overflow = '';
+                this.oldPassword = '';
+                this.newPassword1 = '';
+                this.newPassword2 = '';
+            },
+            alert: function (setting) {
+                this.title = setting.title || '';
+                this.content1 = setting.content1 || '';
+                this.content2 = setting.content2 || '';
+                this.content3 = setting.content3 || '';
                 this.button1 = setting.button1 || '取 消';
                 this.button2 = setting.button2 || '确 定';
                 this.onOk = setting.onOk || false;

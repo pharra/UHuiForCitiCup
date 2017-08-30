@@ -449,9 +449,6 @@
                         content: content,
                         onOk: function () {
                             var message = this.message;
-                            if(keyWord === 'password'){
-                                message = $.md5(message + 'UHui')
-                            }
                             postData[keyWord] = message;
                             $.ajax({
                                 url: '/post_modifyUserInfo',
@@ -470,19 +467,33 @@
                             });
                         }
                     };
-                    var Passwordsetting = {
+                    var passwordsetting = {
                         title: '修改密码',
-                        content: '输入旧密码',
+                        content1: '输入旧密码',
+                        content2: '输入新密码',
                         onOk: function () {
-                            var oldpw = this.message;
+                            var oldpw = this.oldPassword;
+                            var newpw = this.newPassword1;
                             oldpw = $.md5(oldpw + 'UHui');
+                            newpw = $.md5(newpw + 'UHui');
                             postData.oldPassword = oldpw;
-                            vueinput.alert(setting);
+                            postData[keyWord] = newpw;
+                            $.ajax({
+                                url: '/post_modifyUserInfo',
+                                type: 'POST',
+                                dataType: 'json',
+                                data: postData,
+                                timeout: 3000,
+                                cache: false,
+                                async:false,
+                                success: function (data) {
+                                    vuealert.alert({title: title, content: data.message});
+                                }
+                            });
                         }
                     };
                     if (keyWord === 'password') {
-                        vueinput.alert(Passwordsetting);
-                        _self[keyWord] = ' ';
+                        vuePwdInput.alert(passwordsetting);
                     }
                     else {
                         vueinput.alert(setting);
