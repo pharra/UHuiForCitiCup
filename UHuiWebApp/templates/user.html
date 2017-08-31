@@ -75,14 +75,36 @@
                 <!--个人设置菜单栏-->
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4 class="panel-title point max" id="set_content">个人设置</h4>
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#user_menu" href="#user_set_list" style="display: block;text-align: center">
+                                个人设置
+                                <span class = "caret"></span>
+                            </a>
+                        </h4>
+                    </div>
+                    <div class = "panel-collapse collapse" id = "user_set_list">
+                        <div class = "panel-body">
+                            <li id="set_content" class = "point max">个人设置</li>
+                        </div>
                     </div>
                 </div>
 
                 <!--帮助菜单栏-->
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4 class="panel-title point max" id="hel_content">帮助</h4>
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#user_menu" href = "#user_hel_list" style="display: block;text-align: center">
+                                系统帮助
+                                <span class = "caret"></span>
+                            </a>
+                        </h4>
+                    </div>
+                    <div class = "panel-collapse collapse" id = "user_hel_list">
+                        <div class = "panel-body">
+                            <li id = "hel_content" class = "point max">
+                                系统帮助
+                            </li>
+                        </div>
                     </div>
                 </div>
                 <!--end panel group-->
@@ -275,7 +297,6 @@
                         <li id="info_tra_balance" class="point active">
                             <a href="#tab_tra_balance" data-toggle="tab">我的余额</a>
                         </li>
-
                     </ul>
 
                     <hr/>
@@ -294,7 +315,6 @@
 
                 <!--我的消息-->
                 <div class="being-hidden" id="mes_menu">
-
                     <!--选项卡-->
                     <ul class="nav nav-tabs">
                         <li id="info_mes_system" class="point active">
