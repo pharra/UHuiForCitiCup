@@ -1,4 +1,3 @@
-
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -11,12 +10,20 @@ from __future__ import unicode_literals
 from django.db import models
 
 
+class Area(models.Model):
+    areaid = models.CharField(db_column='areaID', primary_key=True, max_length=128)  # Field name made lowercase.
+    x = models.CharField(db_column='X', max_length=45, blank=True, null=True)  # Field name made lowercase.
+    y = models.CharField(db_column='Y', max_length=45, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = True
+        db_table = 'area'
 
 
 class Brand(models.Model):
     brandid = models.AutoField(db_column='brandID', primary_key=True)  # Field name made lowercase.
     name = models.CharField(unique=True, max_length=16)
-    address = models.CharField(max_length=128, blank=True, null=True)
+    areaid = models.ForeignKey(Area, models.DO_NOTHING, db_column='areaID', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = True
@@ -32,63 +39,53 @@ class Category(models.Model):
         db_table = 'category'
 
 
+class Companycoupon(models.Model):
+    id = models.CharField(db_column='ID', primary_key=True, max_length=4)  # Field name made lowercase.
+    brandid = models.ForeignKey(Brand, models.DO_NOTHING, db_column='brandID')  # Field name made lowercase.
+    catid = models.ForeignKey(Category, models.DO_NOTHING, db_column='catID')  # Field name made lowercase.
+    value = models.DecimalField(max_digits=10, decimal_places=2)
+    product = models.CharField(max_length=16)
+    discount = models.CharField(max_length=16)
+    pic = models.ImageField(upload_to='images/pic', blank=True, null=True)
+    expiredtime = models.DateField(db_column='expiredTime')  # Field name made lowercase.
+    remain = models.IntegerField()
+
+    class Meta:
+        managed = True
+        db_table = 'companycoupon'
+
+
 class Coupon(models.Model):
     couponid = models.CharField(db_column='couponID', primary_key=True, max_length=16)  # Field name made lowercase.
-    brandid = models.ForeignKey(Brand, models.DO_NOTHING, db_column='brandID', blank=True, null=True)  # Field name made lowercase.
-    catid = models.ForeignKey(Category, models.DO_NOTHING, db_column='catID', blank=True, null=True)  # Field name made lowercase.
-    listprice = models.DecimalField(db_column='listPrice', max_digits=10, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
-    value = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userID', blank=True, null=True)  # Field name made lowercase.
+    brandid = models.ForeignKey(Brand, models.DO_NOTHING, db_column='brandID')  # Field name made lowercase.
+    catid = models.ForeignKey(Category, models.DO_NOTHING, db_column='catID')  # Field name made lowercase.
+    listprice = models.DecimalField(db_column='listPrice', max_digits=10, decimal_places=2)  # Field name made lowercase.
+    value = models.DecimalField(max_digits=10, decimal_places=2)
     product = models.CharField(max_length=16, blank=True, null=True)
-    discount = models.CharField(max_length=16, blank=True, null=True)
-    stat = models.CharField(max_length=7, blank=True, null=True)
+    discount = models.CharField(max_length=16)
     pic = models.ImageField(upload_to='images/pic', blank=True, null=True)
-    expiredtime = models.DateField(db_column='expiredTime', blank=True, null=True)  # Field name made lowercase.
+    expiredtime = models.DateField(db_column='expiredTime')  # Field name made lowercase.
+    onsale = models.IntegerField(db_column='onSale', blank=True, null=True)  # Field name made lowercase.
+    expired = models.IntegerField(blank=True, null=True)
+    used = models.IntegerField(blank=True, null=True)
+    store = models.IntegerField(blank=True, null=True)
+    brought = models.DateField(blank=True, null=True)
+    sold = models.DateField(blank=True, null=True)
 
     class Meta:
         managed = True
         db_table = 'coupon'
 
 
-class Couponlist(models.Model):
-    listid = models.AutoField(db_column='listID', primary_key=True)  # Field name made lowercase.
-    stat = models.CharField(max_length=7)
-    userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userID')  # Field name made lowercase.
-
-    class Meta:
-        managed = True
-        db_table = 'couponlist'
-
-
-class DjangoMigrations(models.Model):
-    app = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
-    applied = models.DateTimeField()
-
-    class Meta:
-        managed = True
-        db_table = 'django_migrations'
-
-
-
-
 class Limit(models.Model):
-    couponid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='couponID', blank=True, primary_key=True)  # Field name made lowercase.
-    content = models.CharField(max_length=128, blank=True)
+    couponid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='couponID', primary_key=True)  # Field name made lowercase.
+    content = models.CharField(max_length=128)
 
     class Meta:
         managed = True
         db_table = 'limit'
         unique_together = (('couponid', 'content'),)
-
-
-class Listitem(models.Model):
-    listid = models.ForeignKey(Couponlist, models.DO_NOTHING, db_column='listID')  # Field name made lowercase.
-    couponid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='couponID', primary_key=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = True
-        db_table = 'listitem'
-        unique_together = ('couponid', 'listid')
 
 
 class Message(models.Model):
@@ -114,11 +111,9 @@ class User(models.Model):
     avatar = models.ImageField(upload_to='images/avatar', blank=True, null=True)
     password = models.CharField(max_length=32)
     email = models.CharField(unique=True, max_length=32, blank=True, null=True)
-    ucoin = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    ucoin = models.DecimalField(db_column='UCoin', max_digits=10, decimal_places=2)  # Field name made lowercase.
     hasconfirm = models.IntegerField(db_column='hasConfirm')  # Field name made lowercase.
-
 
     class Meta:
         managed = True
         db_table = 'user'
-

@@ -20,20 +20,20 @@ class couponSerializer(serializers.ModelSerializer):
         model = Coupon
         fields =('couponID','brandID','catID','listPrice','value','product','stat')
 
-class couponListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Couponlist
-        fields = ('listID','stat','userID')
+# class couponListSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Couponlist
+#         fields = ('listID','stat','userID')
 
 class limitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Limit
         fields = ('couponID','content')
 
-class listItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Listitem
-        fields =('listID','couponID')
+# class listItemSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Listitem
+#         fields =('listID','couponID')
 
 class messageSerializer(serializers.ModelSerializer):
     class Meta:
