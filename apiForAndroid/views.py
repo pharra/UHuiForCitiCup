@@ -448,8 +448,6 @@ def post_addCoupon(request):
     stat = request.POST.get('stat', 'store')
     pic = request.FILES.get('pic', DEFAULT_PIC)
     limit = request.POST.getlist('limit[]')
-
-
     #估值
     value = 0
     # 判断brand是否存在
@@ -458,13 +456,11 @@ def post_addCoupon(request):
         brandID.save()
     else:
         brandID = models.Brand.objects.get(name=brandName)
-
     # 获取catID
     #if not models.Category.objects.filter(name=cat).exists():
     #    return JsonResponse({'errno': 1, 'message': 'category not found'})
     #else:
     catID = models.Category.objects.get(catid=cat)
-
     user = models.User.objects.get(id=u_id)
     couponID = randomID()
     coupon = models.Coupon(couponid=couponID, brandid=brandID, catid=catID, listprice=listPrice,
@@ -486,7 +482,7 @@ def post_getBoughtList(request):
     u_id = request.POST.get('userID')
     boughtList = []
     if User.objects.filter(id=u_id).exists():
-        broughtListID = Couponlist.objects.get(userid=u_id, stat='brought').listid
+        broughtListID = Couponlist.objects.get(userid=u_id, stat='bought').listid
         broughtListitem = Listitem.objects.filter(listid=broughtListID)
         for each in broughtListitem:
             couponList = Coupon.objects.filter(couponid=each.couponid.couponid).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount')
