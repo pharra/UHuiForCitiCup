@@ -1,0 +1,46 @@
+{% extends "__mobilebase__.html" %}
+{% block title %}充值中心{% endblock %}
+{% block src %}
+ <link rel="stylesheet" type="text/css" href="/static/css/aui/aui-slide.css"/>
+{% endblock %}
+{% block mobile_header %}
+<header class = "aui-bar aui-bar-nav">
+    <a class = "aui-pull-left aui-btn external" href="javascript:history.back(-1)">
+        <span class = "aui-iconfont aui-icon-left"></span>
+    </a>
+    <div class = "aui-title">我的钱包</div>
+    <div class = "aui-pull-right">说明</div>
+</header>
+{% endblock %}
+{% block mobile_body %}
+<div class = "row mobile-max-user-background">
+    <div>
+        <h4 style="padding:10px 0px 0px 20px;color:white;margin:0px;">U币余额</h4>
+    </div>
+    <div style="height:100px;">
+        <p style = "padding:20px 50px 0px 20px;color:white;margin:0px;font-size:50px;">{{ UCoin }}</p>
+    </div>
+</div>
+<div style="background-color:#ff5a00;color:white;width:60%;position:absolute;left:20%;top:35%;">
+        <div class = "aui-btn aui-btn-block aui-btn-outlined" tapmode onclick="addUbi('add')">
+            充值U币
+        </div>
+</div>
+{% endblock %}
+{% block mobile_footer %} {% endblock %}
+{% block body %} {% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+    function addUbi(type){
+        switch (type) {
+        case "add":
+                $.prompt("请输入充值金额",function(value){
+                        $.alert("充值成功",'')
+                });
+                break;
+        default:
+            break;
+        }
+    }
+</script>
+{% endblock %}

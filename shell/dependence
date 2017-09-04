@@ -1,0 +1,12 @@
+#!/bin/bash
+sudo apt-get install nginx supervisor << EOF
+uhuiforciti123
+Y
+EOF
+pip3 install --upgrade pip
+pip3 install django
+pip3 install pymysql
+pip3 install djangorestframework
+pip3 install pillow
+pip3 install django_crontab
+pip3 install jinja2

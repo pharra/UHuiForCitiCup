@@ -1,37 +1,75 @@
 {% extends "__base__.html" %} {% block title %}搜索结果 {% endblock %} {% block src %} {% endblock %} {% block body %}
+
 <div class="container">
-    <div class="row">
-        <div class="button-center">
-            <div class="btn-group">
+
+    <!--<div class="row">
+        <div class="col-md-5 col-md-offset-1">
+            <div class="btn-group select-div">
                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                按位置排序<span class = "caret"></span>
-            </button>
+                按优惠券售价排序<span class = "caret"></span>
+                </button>
                 <ul class="dropdown-menu">
-                    <li>离我最近</li>
-                    <li>热门商圈</li>
+                    <li>从高到低</li>
+                    <li>从低到高</li>
                 </ul>
-            </div>&nbsp
-            <div class="btn-group">
+
+                &nbsp;&nbsp;&nbsp;
+            </div>
+
+            <div class="select-div">
+                <input type="text" class="select-box"> &nbsp;&nbsp;&nbsp;
+            </div>
+
+            <p class="select-div">~ &nbsp;&nbsp;</p>
+
+            <div class="select-div">
+                <input type="text" class="select-box">&nbsp;&nbsp;&nbsp;
+            </div>
+
+            <div class="select-div">
+                <button type="button" class="btn btn-info">
+                查询
+            </button> &nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+
+        <div class="col-md-5 col-md-offset-1">
+            <div class="btn-group select-div">
+
                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 按优惠额度排序<span class = "caret"></span>
             </button>
                 <ul class="dropdown-menu">
-                    <li>小于10元</li>
-                    <li>10~50元</li>
-                    <li>大于50元</li>
-                    <li>自定义额度</li>
+                    <li>从高到低</li>
+                    <li>从低到高</li>
                 </ul>
+                &nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="select-div">
+                <input type="text" class="select-box"> &nbsp;&nbsp;&nbsp;
+            </div>
+
+            <p class="select-div">~ &nbsp;&nbsp;</p>
+
+            <div class="select-div">
+                <input type="text" class="select-box">&nbsp;&nbsp;&nbsp;
+            </div>
+
+            <div class="select-div">
+                <button type="button" class="btn btn-info">
+                查询
+            </button>
             </div>
         </div>
     </div>
+-->
 
-    <!--第一行搜索结果-->
-    <div class="row">
-        <!--一行有两个搜索结果-->
-        {% for i in coupons %}
-        <div class="col-md-6 col-lg-6 col-sm-6">
+    <div class="row" id="coupons">
+{% if coupons %}
+       <!-- {% for i in coupons %}
+        <div class="col-xs-6">
             <div class="user-coupons row">
-                <div class="col-md-3 col-lg-3 col-sm-3 user-coupons-left">
+                <div class="col-xs-3 user-coupons-left">
                     <p class="user-coupons-left-value">
                         ￥{{ i.listPrice }}
                     </p>
@@ -40,18 +78,18 @@
                     </p>
 
                 </div>
-                <div class="col-md-6 col-lg-6 col-sm-6 user-coupons-middle">
-                    <div class="user-coupons-middle-value col-md-6 col-lg-6 col-sm-6">
+                <div class="col-xs-6 user-coupons-middle">
+                    <div class="col-xs-6 user-coupons-middle-value">
                         <p class="font-class">
                             {{ i.brand }}
                         </p>
                     </div>
-                    <div class="col-md-6 col-lg-6 col-sm-6 user-coupons-middle-value">
+                    <div class="col-xs-6 user-coupons-middle-value">
                         <p>
                             {{ i.discount }}
                         </p>
                     </div>
-                    <div class="col-md-12 col-lg-12 col-sm-12 user-coupons-middle-value">
+                    <div class="col-xs-6  user-coupons-middle-value">
                         {% for k in i.limits %}
                         <p class="user-coupons-middle-value-limits-p">{{ k }}</p>
                         {% endfor %}
@@ -60,13 +98,20 @@
 
                 </div>
 
-                <div class="col-md-12 col-lg-12 col-sm-12 user-coupons-bottom">
+                <div class="col-xs-12  user-coupons-bottom">
                     <p>截止时间:{{ i.expiredTime }}</p>
                 </div>
 
             </div>
         </div>
-        {% endfor %}
+        {% endfor %} -->
+    {% else %}
+    <div class="content-text">
+            <img src="/static/images/coupons_empty.png">
+            <p >什么！？这里居然是空的！</p>
+            </div>
+    {% endif %}
+        <coupon v-for="coupon in coupons" :coupon="coupon"></coupon>
         <div>
         </div>
         <div>
@@ -74,23 +119,43 @@
     </div>
 
     <nav aria-label="Page navigation" class="page-fix">
-        <ul class="pagination">
-            <li>
-                <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li>
-                <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
+        <ul class="pagination" id="pagination">
+
+            <li><a href="#"></a></li>
+
         </ul>
     </nav>
 </div>
-{% endblock %} {% block scripts %} {% endblock %}
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+    new Vue({
+            el: '#coupons',
+            data: {
+                "coupons":{{ coupons | safe }}
+            }
+        });
+    </script>
+    <script type="text/javascript">
+    function getmaxandindexpage(max,current) {
+        $("#nav-search").attr('placeholder','{{ keyWord }}');
+        $("#pagination").children().remove();
+        var before = current -1;
+        var after = current +1;
+        if( before > 0) {
+            $("#pagination").append($("<li><a href=\"" + "post_search?keyWord={{ keyWord }}&page=" + before + "\" aria-label=\"Previous\"><span aria-hidden=\"true\">&laquo;</span></a></li>"));
+        }
+        for(var i=1;i<=max;i++){
+            var $dom = $("<li><a href=\""+  "post_search?keyWord={{ keyWord }}&page=" + i +"\">"+ i + "</a></li>");
+            if( i === current){
+                $dom.children().css("color","black");
+            }
+            $("#pagination").append($dom);
+        }
+        if(after <= max) {
+            $("#pagination").append($("<li><a href=\"" + "post_search?keyWord={{ keyWord }}&page=" + after + "\" aria-label=\"Previous\"><span aria-hidden=\"true\">&raquo;</span></a></li>"));
+        }
+        }
+    getmaxandindexpage({{ maxPage }},{{ currentPage }});
+    </script>
+{% endblock %}

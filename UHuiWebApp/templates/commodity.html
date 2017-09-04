@@ -1,0 +1,153 @@
+{% extends "__mobilebase__.html" %}
+{% block title %}商品详情 {% endblock %}
+{% block src %} {% endblock %}
+{% block mobile_header %}{% endblock %}
+{% block mobile_body %}
+    <div class="aui-row">
+        <header class="aui-bar aui-bar-nav" style="background:rgba(0,0,0,0.3);color:white;position:absolute;">
+            <a class="aui-pull-left aui-btn external" href="javascript:history.back(-1)">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+        </header>
+        <img src="{{ info.pic }}" class="aui-col-xs-12">
+
+        <div class="aui-content aui-margin-b-15">
+            <ul class="aui-list aui-list-in" style="line-height:30px;margin-bottom:20px;">
+                <li class="aui-list-item">
+                    <div class="aui-media-list-item-inner">
+                        <div>
+                            <div>
+                                {{ info.product }}
+                            </div>
+                            <div style="color:#ff5a00;font-size:30px;line-height:30px;padding:0px 0px 0px 9px;">
+                                ￥{{ info.listPrice }}
+                            </div>
+                            <div style="color:#ff5a00;padding:0px 0px 0px 15px;margin:0px 0px 10px 0px;">
+                                估值：{{ info.value }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="aui-list aui-list-in" style="margin-bottom:20px;">
+                <li class="aui-list-item">
+                    <div class="aui-media-list-item-inner">
+                        优惠额度：{{ info.discount }}
+                    </div>
+                </li>
+            </ul>
+            <ul class="aui-list aui-list-in" style="margin-bottom:20px;">
+                <li class="aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
+                    <div class="aui-media-list-item-inner">
+                        用户名：{{ info.sellerInfo.nickname }}
+                    </div>
+                </li>
+                <li class="aui-list-item" style="border-bottom:1px solid rgb(231,231,231)">
+                    <div class="aui-media-list-item-inner">
+                        商家名：{{ info.brand }}
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-media-list-item-inner">
+                        使用期限：{{ info.expiredTime }}
+                    </div>
+                </li>
+            </ul>
+            <ul class="aui-list aui-list-in">
+                <li class="aui-list-item">
+                    <div class="aui-media-item-inner">
+                        使用限制：{% for i in info.limits %} <span>i</span>{% endfor %}
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <footer class="aui-bar aui-bar-tab mobile-max-user-background">
+        <div class="aui-bar-tab-item" tapmode>
+            <a href="/" style="color:white;" class="external">
+                <i class="aui-iconfont aui-icon-home"></i>
+                <div class="aui-bar-tab-label">首页</div>
+            </a>
+        </div>
+        <div class="aui-bar-tab-item" tapmode
+             onclick="post_changelike('/post_like')" id="dislike">
+            <i class="aui-iconfont aui-icon-star"></i>
+            <div class="aui-bar-tab-label">关注</div>
+        </div>
+        <div class="aui-bar-tab-item aui-hide" tapmode
+             onclick="post_changelike('/post_dislike')" id="like">
+            <i class="aui-iconfont aui-icon-star"></i>
+            <div class="aui-bar-tab-label">已关注</div>
+        </div>
+        <div class="aui-bar-tab-item" style="background-color:white;color:#ff5a00" tapmode>
+            <a href="/mobile_sell_final?couponID={{ info.couponID }}" class="external" style="color:#ff5a00;">
+                <i class="aui-iconfont aui-icon-cart"></i>
+                <div class="aui-bar-tab-label">购买</div>
+            </a>
+        </div>
+    </footer>
+{% endblock %}
+{% block mobile_footer %}{% endblock %}
+{% block scripts %}
+
+    <script type="text/javascript">
+
+        function getlikeordislike(like) {
+            if (like === '1') {
+                $("#dislike").addClass("aui-hide");
+                $("#like").removeClass("aui-hide");
+            }
+            else {
+                $("#like").addClass("aui-hide");
+                $("#dislike").removeClass("aui-hide");
+            }
+        }
+
+        getlikeordislike('{{ like }}');
+
+        function post_changelike(url) {
+
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: {'couponID': '{{ info.couponID }}'},
+                timeout: 3000,
+                cache: false,
+                success: succFunction
+            });
+
+
+            function succFunction(Jsondata) {
+                var msg = Jsondata.message;
+                if (Jsondata.errno === '5') {
+                    $.alert(msg, '', function () {
+                        window.location.href = "/login";
+                    });
+
+
+                } else if (Jsondata.errno === '0') {
+                    $.alert(msg, '', function () {
+                        if (Jsondata.like === '0') {
+                            $("#like").addClass("aui-hide");
+                            $("#dislike").removeClass("aui-hide");
+                        }
+                        else {
+                            $("#dislike").addClass("aui-hide");
+                            $("#like").removeClass("aui-hide");
+                        }
+                    })
+
+                }
+                else {
+                    $.alert(msg, '')
+                }
+
+            }
+
+        }
+
+    </script>
+{% endblock %}
+

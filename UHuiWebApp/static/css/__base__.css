@@ -1,41 +1,52 @@
-@media (max-width: 767px) {
-    .computer-body{
-        display: none;
-    }
-}
 
-@media (min-width: 768px) and (max-width: 992px) {
-    .phone-body{
-        display: none;
-    }
-}
-
-@media (min-width: 992px) and (max-width: 1200px) {
-    .phone-body{
-        display: none;
-    }
-}
-
-@media (min-width: 1200px) {
-    .phone-body{
-        display: none;
-    }
-}
-
-.aui-searchbar{
+.aui-searchbar {
     background-color: transparent;
     color: white;
     height: 50px;
 }
-.aui-bar-nav{
+
+.aui-bar-nav {
     background-color: #ff5a00;
 }
-.aui-searchbar-cancel{
+
+.aui-searchbar-cancel {
     transition: 0.3s;
     -webkit-transition: 0.3s;
     -moz-transition: 0.3s;
 }
 
-.aui-searchbar-input{
-    background-color: rgb(202,71,0);
+.aui-searchbar-input {
+    background-color: rgb(202, 71, 0);
+}
+
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+
+@media (max-width: 768px) {
+    .container {
+        width: 1170px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+    .container {
+        width: 1170px;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1200px) {
+    .container {
+        width: 1170px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        width: 1170px;
+    }
 }

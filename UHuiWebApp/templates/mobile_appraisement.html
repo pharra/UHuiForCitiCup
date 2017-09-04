@@ -1,0 +1,183 @@
+{% extends "__base__.html" %}
+{% block title %}优惠券估值{% endblock %}
+{% block src %} {% endblock %}
+{% block mobile_header %}
+<header class = "aui-bar aui-bar-nav">
+    <a class = "aui-pull-left aui-btn" href="javascript:history.back(-1)">
+        <span class = "aui-iconfont aui-icon-left"></span>
+    </a>
+    <div class = "aui-title">估值展示</div>
+    <div class = "aui-pull-right">帮助</div>
+</header>
+{% endblock %}
+{% block mobile_body %}
+<div class = "aui-flex-row" style="background-color:white;color:#ff5a00">
+    <div style="padding:25px 0px 0px 20px;">
+        此优惠券估值为
+    </div>
+    <div style="font-size:60px;padding:0px 0px 0px 25px;margin:0px 0px 5px 0px;" id = "appraisement">
+        100.00
+    </div>
+</div>
+<div style="height:100px;padding:10px 0px 10px 10px;background-color:white;margin:0px 0px 5px 0px;">
+    <div style="width:80px;height:80px;float:left;">
+        <img src = "/static/images/dva_4.jpg" class = "img_suit">
+    </div>
+    <div style="float:left;height:80px;width:180px;padding:17px 0px 0px 10px;">
+        <input type="text" disabled="disabled" placeholder="今天米粒儿变可爱了吗" id = "change_name"/>
+    </div>
+    <div style="float:right;padding-right:5px;color:#ff5a00;height:80px;line-height:80px;" onclick="able()" id = "change_button">
+        修改
+    </div>
+</div>
+<div class = "aui-content aui-margin-b-15">
+    <ul class = "aui-list aui-form-list">
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-label mobile-max-line">
+                价格：
+            </div>
+            <div class = "aui-list-item-input mobile-max-line" style="padding-right:0px;text-">
+                <input type="text" placeholder="请输入优惠券价格" id = "change_value">
+            </div>
+            <div class = "aui-list-item-label mobile-max-line" style="color:#ff5a00;" onclick="appraisement()">
+                采用估值
+            </div>
+        </li>
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-label mobile-max-line">
+                优惠额度：
+            </div>
+            <div class = "aui-list-item-input mobile-max-line">
+                <input type = "text" placeholder="九折"  id = "change_discount">
+            </div>
+        </li>
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-label mobile-max-line">
+                商家名：
+            </div>
+            <div class = "aui-list-item-input mobile-max-line">
+                <input type = "text" placeholder="就是这个名儿" id = "change_own">
+            </div>
+        </li>
+        <li class = "aui-list-item">
+            <div class = "aui-list-item-label mobile-max-line">
+                品种：
+            </div>
+            <div class = "aui-list-item-input mobile-max-line">
+                <input type = "text" placeholder="家居家具" id = "change_type">
+            </div>
+        </li>
+    </ul>
+</div>
+<div class = "aui-card-list">
+    <div class = "aui-card-list">
+        <div class = "aui-card-list-header">
+            使用门槛：
+        </div>
+        <div class = "aui-card-list-content-padded">
+            1.可爱又迷人的反派角色<br/>
+            2.年轻帅气又有钱的共产党员<br/>
+            3.小U这样的
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block mobile_footer %}
+<footer class="aui-bar aui-bar-tab" id="footer">
+    <div class="aui-bar-tab-item" style="background-color:#ff5a00;color:white;"tapmode onclick="chooseDialog('own')">
+        <div class="aui-bar-tab-label">
+                添加到"我的"
+        </div>
+    </div>
+    <div class="aui-bar-tab-item" style="background-color:white;color:#ff5a00;"tapmode onclick="chooseDialog('up')">
+        <div class="aui-bar-tab-label">上架优惠券</div>
+    </div>
+</footer>
+{% endblock %}
+{% block body %} {% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+function able(){
+var content = document.getElementById("change_button");
+var change = document.getElementById("change_name");
+if (content.innerHTML == "修改"){
+change.disabled="";
+content.innerHTML = "确定";
+}
+else{
+change.disabled="disabled";
+content.innerHTML = "修改";
+}
+}
+</script>
+<script type = "text/javascript">
+    function chooseDialog(type){
+    var dialog = new auiDialog({})
+    var name = document.getElementById("change_name").value
+    var value = document.getElementById("change_value").value
+    var discount = document.getElementById("change_discount").value
+    var own = document.getElementById("change_own").value
+    var type2 = document.getElementById("change_type").value
+    var flag = 1
+    if (name && value && discount && own && type2)
+    {
+    flag = 1
+    }
+    else
+    {
+    flag = 0
+    }
+        switch (type) {
+            case "own":
+            if(flag == 1){
+                dialog.alert({
+                    title:"",
+                    msg:'添加成功',
+                    buttons:['确定']
+                })}
+            else{
+                dialog.alert({
+                    title:"",
+                    msg:'请将优惠券信息填写完整',
+                    buttons:['确定']
+                })}
+                break;
+            case "up":
+                if(flag == 1){
+                dialog.alert({
+                    title:"",
+                    msg:'已上架',
+                    buttons:['确定']
+                })}
+            else{
+                dialog.alert({
+                    title:"",
+                    msg:'请将优惠券信息填写完整',
+                    buttons:['确定']
+                })}
+                break;
+            default:
+                break;
+        }
+    }
+</script>
+<script type="text/javascript">
+    function appraisement(){
+        document.getElementById("change_value").value = document.getElementById("appraisement").innerHTML
+        }
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

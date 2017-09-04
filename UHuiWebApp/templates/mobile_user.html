@@ -1,0 +1,97 @@
+{% extends "__mobilebase__.html" %}
+{% block title %}用户中心 {% endblock %}
+{% block src %}
+{% endblock %}
+{% block mobile_header %}
+<link rel="stylesheet" type="text/css" href="/static/css/aui/aui-flex.css">
+{% endblock %}
+{% block mobile_body %}
+
+<div class="aui-row">
+    <div class = "aui-flex-col mobile-max-user-background">
+        <div class = "aui-flex-col-1" style="padding: 10px 0 0 5px;">
+            <a href="javascript:history.back(-1)" class = "external" style="color:white;">
+                <i class="aui-iconfont aui-icon-left"></i>
+            </a>
+        </div>
+        <div class = "aui-flex-offset-10">
+            <a href = "/mobile_user_setting" class = "external" style="color:white">
+            <i class = "aui-iconfont aui-icon-gear mobile-max-user-icon aui-flex-2  aui-margin-r-10"></i>
+            </a>
+        </div>
+    </div>
+
+        <div class = "aui-flex-col  aui-padded-15 mobile-max-user-background">
+        <div class = "aui-flex-3">
+            <img src="{{ avatar }}" class="mobile-user-avator" />
+        </div>
+            <div class = "aui-flex-row aui-flex-9 aui-flex-middle aui-padded-10">
+                <div style = "margin:5px;"><h3 style="color:white;">{{ nickname }}</h3></div>
+                <div><h4 style="color:white;">U币:{{ UCoin }}</h4></div>
+            </div>
+        </div>
+
+
+
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-list-in mobile-max-user-font">
+            <li class="aui-list-item aui-list-item-middle">
+                <div class="aui-list-item-inner aui-list-item-arrow external" onclick="javascript:window.location.href='/mobile_user_wallet'">
+
+                    <div class="aui-list-item-title" >
+                      我的钱包
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item aui-list-item-middle">
+                <div class="aui-list-item-inner aui-list-item-arrow external" onclick="javascript:window.location.href='/mobile_mycoupons'">
+                    <div class="aui-list-item-title">
+                        我的优惠
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item aui-list-item-middle">
+                <div class="aui-list-item-inner aui-list-item-arrow external" onclick="javascript:window.location.href='/mobile_mylikecoupons'">
+                    <div class="aui-list-item-title">
+                        我的关注
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item aui-list-item-middle">
+                <div class="aui-list-item-inner aui-list-item-arrow external" onclick="javascript:window.location.href='/mobile_couponsmessage'">
+                    <div class="aui-list-item-title">
+                        我的信息
+                    </div>
+                </div>
+            </li>
+        </ul>
+        &nbsp;
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item aui-list-item-middle">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">
+                        帮助反馈
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <footer class="aui-bar aui-bar-tab" id="footer">
+        <div class="aui-bar-tab-item" tapmode>
+             <a href="/" style="color:#757575;" class="external">
+            <i class="aui-iconfont aui-icon-home"></i>
+            <div class="aui-bar-tab-label">首页</div>
+             </a>
+        </div>
+        <div class="aui-bar-tab-item aui-active" tapmode>
+             <a href="/mobile_user" style="color:#757575;" class="external">
+            <i class="aui-iconfont aui-icon-star"></i>
+            <div class="aui-bar-tab-label">我的</div>
+             </a>
+        </div>
+    </footer>
+</div>
+{% endblock %}
+{% block mobile_footer %} {% endblock %}
+{% block scripts %} {% endblock %}

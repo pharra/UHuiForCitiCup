@@ -1,107 +1,223 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE = edge">
     <meta name="viewport"
           content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <meta name="format-detection" content="telemobile=no,email=no,date=no,address=no">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" media="screen and (min-width:767px)" href="/static/css/bootstrap.min.css"/>
-    <link rel="stylesheet" media="screen and (max-width:768px)" href="/static/css/aui/aui.css"/>
-
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css"/>
     <link href="/static/css/style.css" rel="stylesheet">
     <link href="/static/css/__base__.css" rel="stylesheet">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     {% block src %}{% endblock %}
 
 </head>
 
 <body>
-<div id="allmap"></div>
-<div class="phone-body">
-    <div class="aui-content">
-        {% block phone_header %}
-            <header class="aui-bar aui-bar-nav">
-                <div class=" aui-col-xs-2 city-position aui-ellipsis-1 aui-font-size-14">
-                    <i class="fa fa-location-arrow"></i>
-                </div>
-
-                <div class=" aui-col-xs-10">
-                    <div class="aui-searchbar" id="search">
-                        <div class="aui-searchbar-input aui-border-radius" tapmode onclick="phone_doSearch()">
-                            <i class="aui-iconfont aui-icon-search"></i>
-                            <form action="/post_search" method="post">
-                                <input type="search" placeholder="请输入搜索内容" name="keyWord" id="search-input">
-                            </form>
-                        </div>
-                        <div class="aui-searchbar-cancel" tapmod>取消&nbsp;</div>
-                        <script type="text/javascript">
-                            apiready = function () {
-                                api.parseTapmode();
-                            };
-                            var searchBar = document.querySelector(".aui-searchbar-input");
-                            document.querySelector(".aui-searchbar-cancel").style.marginRight = "-" + document.querySelector(".aui-searchbar-cancel").offsetWidth + "px";
-                            if (searchBar) {
-                                searchBar.onclick = function () {
-                                    document.querySelector(".aui-searchbar-cancel").style.marginRight = 0;
-                                }
-                            }
-                            document.querySelector(".aui-searchbar-cancel").onclick = function () {
-                                this.style.marginRight = "-" + this.offsetWidth + "px";
-                                $("#search-input").val("");
-                            }
-                        </script>
+<div id="app">
+    <div class="loader"></div>
+    <!-- confirm框-->
+    {% raw %}
+        <div id="V-confirm">
+            <div class="modal-mask modal-transition" v-show="show" style="display: none;">
+                <div class="modal-confirm">
+                    <h3 class="confirm-header" style="margin-bottom: 0px;">
+                        <i class="fa fa-info-circle" style="color: #ff5a00;"></i> {{ title }}
+                    </h3>
+                    <div class="confirm-content">  {{ content }} </div>
+                    <div class="confirm-btns">
+                        <button class="cancelbtn btn" id="v-cancel" @click="op('cancel')">{{ button1 }}</button>
+                        <button class="okbtn btn btn-primary" id="v-ok" @click="op('ok')">{{ button2 }}</button>
                     </div>
                 </div>
-            </header>
-        {% endblock %}
-        {% block phone_body %}
-        {% endblock %}
-        {% block phone_footer %}
-            <footer class="aui-bar aui-bar-tab" id="footer">
-                <div class="aui-bar-tab-item aui-active" tapmode>
-                    <i class="aui-iconfont aui-icon-home"></i>
-                    <div class="aui-bar-tab-label">首页</div>
+            </div>
+        </div>
+        <div id="V-alert">
+            <div class="modal-mask modal-transition" v-show="show" style="display: none;">
+                <div class="modal-confirm">
+                    <h3 class="confirm-header" style="margin-bottom: 0px;">
+                        <i class="fa fa-info-circle" style="color: #ff5a00;"></i> {{ title }}
+                    </h3>
+                    <div class="confirm-content">  {{ content }} </div>
+                    <div class="confirm-btns">
+                        <button class="okbtn btn btn-primary" @click="op">{{ button }}</button>
+                    </div>
                 </div>
-                <div class="aui-bar-tab-item" tapmode>
-                    <i class="aui-iconfont aui-icon-star"></i>
-                    <div class="aui-bar-tab-label">收藏</div>
+            </div>
+        </div>
+        <div id="V-input">
+            <div class="modal-mask modal-transition" v-show="show" style="display: none;">
+                <div class="modal-confirm">
+                    <h3 class="confirm-header" style="margin-bottom: 0px;">
+                        <i class="fa fa-info-circle" style="color: #ff5a00;"></i> {{ title }}
+                    </h3>
+                    <label style="margin: 10px;">
+                        <input v-model="message" class="form-control" :placeholder="content">
+                    </label>
+                    <div class="confirm-btns">
+                        <button class="cancelbtn btn" id="v-cancel" @click="op('cancel')">{{ button1 }}</button>
+                        <button class="okbtn btn btn-primary" id="v-ok" @click="op('ok')">{{ button2 }}</button>
+                    </div>
                 </div>
-                <div class="aui-bar-tab-item" tapmode>
-                    <div class="aui-badge">99</div>
-                    <i class="aui-iconfont aui-icon-cart"></i>
-                    <div class="aui-bar-tab-label">购物车</div>
+            </div>
+        </div>
+        <div id="V-passwordinput">
+            <div class="modal-mask modal-transition" v-show="show" style="display: none;">
+                <div class="modal-confirm">
+                    <h3 class="confirm-header" style="margin-bottom: 0px;">
+                        <i class="fa fa-info-circle" style="color: #ff5a00;"></i> {{ title }}
+                    </h3>
+                    <label style="margin: 10px;">
+                        <input type="password" v-model="oldPassword" class="form-control" :placeholder="content1">
+                    </label>
+                    <label style="margin: 10px;">
+                        <input type="password" v-model="newPassword1" class="form-control" :placeholder="content2">
+                    </label>
+                    <label style="display: none;margin: 10px;">
+                        <input type="password" v-model="newPassword2" class="form-control" :placeholder="content3">
+                    </label>
+                    <div class="confirm-btns">
+                        <button class="cancelbtn btn" id="v-cancel" @click="op('cancel')">{{ button1 }}</button>
+                        <button class="okbtn btn btn-primary" id="v-ok" @click="op('ok')">{{ button2 }}</button>
+                    </div>
                 </div>
-                <div class="aui-bar-tab-item" tapmode>
-                    <div class="aui-dot"></div>
-                    <i class="aui-iconfont aui-icon-my"></i>
-                    <div class="aui-bar-tab-label">我的</div>
+            </div>
+        </div>
+    {% endraw %}
+    <!-- -->
+
+    <div class="modal-wrapper being-hidden z-index">
+        <div class="modal-backdrop modal-backdrop-white">
+            <div class="index_coupons_detail_top">
+                <div class="index_coupons_detail">
+                    <div class="row">
+                        <div class="col-xs-12 content-text ">
+                            <div class="coupons_detail_title">
+                                优惠券详情
+                                <div class="being-hidden" id="couponDetail_ID"></div>
+                                <div class="being-hidden" id="couponDetail_sellerID"></div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div style="padding: 15px;">
+                            <div class="col-xs-4">
+                                <img src="" id="couponDetail_image" style="width: 100%;">
+                                <div style="padding: 15px;" class="row">
+                                    <div class="point button col-xs-6 col-xs-offset-3"
+                                         id="couponDetail_like" onclick="post_changelike('post_like')">
+                                        关注
+                                    </div>
+                                    <div class="point being-hidden button col-xs-6 col-xs-offset-3"
+                                         id="couponDetail_dislike" onclick="post_changelike('post_dislike')">
+                                        已关注
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-8  row">
+                                <div class="col-xs-12">
+                                    <span style="font-size: 20px;color: #ff5a00;" id="couponDetail_name">暑期超值优惠券</span>
+                                </div>
+                                <div class="col-xs-12">
+                                    <span style="font-size: 18px;color: #ff5a00;"
+                                          id="couponDetail_listPrice"></span><span
+                                        id="couponDetail_value"></span>
+                                </div>
+                                <div class="col-xs-12">
+                                    <span class="float-left">优惠券额度</span> <span class="float-right"
+                                                                                id="couponDetail_discount"></span>
+                                </div>
+                                <div class="col-xs-12">
+                                    <span class="float-left">商家名</span> <span class="float-right"
+                                                                              id="couponDetail_brand"></span>
+                                </div>
+                                <div class="col-xs-12">
+                                    <span class="float-left">卖家</span> <span class="float-right"
+                                                                             id="couponDetail_sellername"></span>
+                                </div>
+                                <div class="col-xs-12">
+                                    <span class="float-left">到期时间</span> <span class="float-right"
+                                                                               id="couponDetail_expiredTime"></span>
+                                </div>
+                                <div class="col-xs-12">
+                                    <p style="margin: 0;">使用限制:</p>
+                                    <p style="margin: 0;height: 14px;line-height:14px;font-size: 14px;"
+                                       id="couponDetail_limits"></p>
+                                </div>
+                                <div class="col-xs-12" id="couponDetail_errormessage"
+                                     style="color: red;">
+
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="padding: 15px;">
+                            <div class="point button col-xs-4 col-xs-offset-2"
+                                 onclick="returnindex()">
+                                返回
+                            </div>
+                            <div class="point button col-xs-4 col-xs-offset-4"
+                                 id="couponDetail_putonsale"
+                                 onclick="post_changesalestat('/post_putOnSale','您确定要上架吗？','取消','确定上架')">
+                                上架
+                            </div>
+                            <div class="point being-hidden button col-xs-4 col-xs-offset-4 "
+                                 id="couponDetail_putoffsale"
+                                 onclick="post_changesalestat('/post_putOffSale','您确定要下架吗？','取消','确定下架')">
+                                下架
+                            </div>
+                            <div class="point being-hidden button col-xs-4  col-xs-offset-4"
+                                 id="couponDetail_buy" onclick="post_buy()">
+                                购买
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
                 </div>
-            </footer>
-        {% endblock %}
+            </div>
+        </div>
     </div>
-</div>
-<div class="computer-body">
+    <div class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">输入您的价格</h4>
+                </div>
+                <div class="modal-body">
+                    <label for="couponDetail_input"></label><input type="text" id="couponDetail_input">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="buy('/post_putOnSale')">确定上架</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     {% block computer_navbar %}
         <nav class="navbar">
-
-
             <div class="container">
                 <div class="row">
                     <!--Logo-->
-                    <div class="navbar-header col-lg-1 col-md-1  col-sm-1 ">
-                        <a class="navbar-brand" href="/search">Brand</a>
+                    <div class="navbar-header col-xs-1">
+                        <div>
+                            <a class="navbar-brand" href="/" style="color: #ff5a00;">U惠</a>
+                        </div>
                     </div>
-                    <div class="col-lg-2 col-md-2  col-sm-2 city-position">
-                        <div style="margin: 0 15px 0 15px;" id="city-position"><i class="fa fa-location-arrow"></i> 定位
+                    <div class="col-xs-2 city-position">
+                        <div style="margin: 0 15px 0 15px;color: #ff5a00;" id="city-position"><i
+                                class="fa fa-location-arrow"></i> 定位
                         </div>
                     </div>
                     <!--注册/登录-->
-                    <div class="navbar-search col-lg-6 col-md-6  col-sm-6">
-                        <form class="navbar-form" action="/post_search" onsubmit="__search();" method="post">
+                    <div class="navbar-search col-xs-6">
+                        <form class="navbar-form" action="/post_search" onsubmit="__search();" method="get">
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="搜索" id="nav-search" name="keyWord">
                             </div>
@@ -113,38 +229,48 @@
                     </div>
 
 
-                    <div class="col-lg-3 col-md-3  col-sm-3">
+                    <div class="col-xs-3">
                         <ul class="nav-login row">
                             {% if userid %}
-                                <li class="col-lg-4 col-md-4  col-sm-4">
-                                    <i class="fa fa-comment point showsinglemessage" id="singlemessage"></i>
-                                    <i class="fa fa-caret-up message-div-arrow" aria-hidden="true"></i>
+                                <li class="col-xs-4">
+                                    <img class="point showsinglemessage" id="singlemessage"
+                                         src="/static/images/消息按钮.png"
+                                         style="height: 30px;width: 30px;">
                                     <div class="being-hidden message-div" id="forsinglemessage">
                                         <div class="message-div-header row">
                                             <div style="margin: 5px 0 5px 0;">
-                                                <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
-                                                    <img src="/static/images/youhuiquan.png">
+                                                <div class="col-xs-6 border-right message-div-header-category">
+                                                    <img class="point message-div-point"
+                                                         src="/static/images/youhuiquan.png"
+                                                         id="for_couponsmessagebody">
                                                 </div>
-                                                <div class="col-lg-4 col-md-4  col-sm-4 border-right message-div-header-category">
-                                                    <img src="/static/images/systemmessage.png">
-                                                </div>
-
-                                                <div class="col-lg-4 col-md-4  col-sm-4 message-div-header-category">
-                                                    <img src="/static/images/systemmessage.png">
+                                                <div class="col-xs-6 border-right message-div-header-category">
+                                                    <img class="point message-div-point"
+                                                         src="/static/images/systemmessage.png"
+                                                         id="for_systemmessagebody">
                                                 </div>
                                                 <div class="clear"></div>
                                             </div>
-                                            <div class="message-div-body">
-                                                {% for i in couponsOwn %}
+                                            <div>
+                                                <div class="message-div-body" id="couponsmessagebody">
+                                                    {% for i in couponMessages %}
 
-                                                    <div class="message-div-body-content">
-                                                        {{ i.product }}
-                                                    </div>
-                                                {% endfor %}
+                                                        <div class="message-div-body-content">
+                                                            您 最近购买了 {{ i.messageCat }} 优惠券
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                                <div class="message-div-body being-hidden" id="systemmessagebody">
+                                                    {% for i in systemMessages %}
+
+                                                        <div class="message-div-body-content">
+                                                            您 最近购买了 {{ i.content }} 优惠券
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
                                             </div>
-
                                             <div class="message-div-footer">
-                                                <div class="col-lg-4 col-md-4  col-lg-4 col-lg-offset-8 col-md-offset-8  col-sm-offset-8 ">
+                                                <div class="col-xs-4 col-xs-offset-8">
                                                     <a href="#">查看全部</a></div>
                                             </div>
                                         </div>
@@ -152,33 +278,35 @@
 
 
                                 </li>
-                                <li class="col-lg-4 col-md-4 col-sm-4">
-                                    <i class="fa fa-comment point"></i>
+                                <li class="col-xs-4">
+                                    <a href="/user"> <img class="point" src="/static/images/个人中心按钮1.png"
+                                                          style="height: 30px;width: 30px;">
 
-
+                                    </a>
                                 </li>
-                                <li class="col-lg-4 col-md-4 col-sm-4">
+                                <li class="col-xs-4">
 
                                     <div class="profile-photo-div point" id="userinfo"><img
-                                            src="/static/images/dva_1.jpg">
+                                            src="{{ avatar }}">
                                     </div>
                                     <div class="being-hidden userinfo-div" id="foruserinfo">
 
                                         <p> {{ nickname }}</p>
                                         <p> U币余额:{{ UCoin }}</p>
-                                        <p><a href="/user">用户中心</a></p>
+                                        <a href="/post_logout"><p class="point" style="color: #ff5a00;"> 退出</p></a>
                                     </div>
 
                                 </li>
                             {% else %}
-                                <li class="col-lg-6 col-md-6  col-sm-6">
-                                    <a href="/login?method=register">注册
-                                        <span class="glyphicon glyphicon-user hidden-sm"></span>
+                                <li class="col-xs-6" style="text-align: right;">
+                                    <a href="/login?method=register" style="color: #ff5a00;">注册
+                                        <span class="glyphicon glyphicon-user hidden-sm" style="color: #ff5a00;"></span>
                                     </a>
                                 </li>
-                                <li class="col-lg-6 col-md-6  col-sm-6">
-                                    <a href="/login?method=login">登录
-                                        <span class="glyphicon glyphicon-user  hidden-sm"></span>
+                                <li class="col-xs-6" style="text-align: right;">
+                                    <a href="/login?method=login" style="color: #ff5a00;">登录
+                                        <span class="glyphicon glyphicon-user  hidden-sm"
+                                              style="color: #ff5a00;"></span>
                                     </a>
                                 </li>
                             {% endif %}
@@ -190,31 +318,412 @@
             </div>
         </nav>
     {% endblock %}
-    {% block body %}{% endblock %}
+    {% block body %}
+
+    {% endblock %}
+    {% block footer %}
+        <div class="container">
+            <div style="height: 100px;text-align: center;">
+                <span style="font-size: 12px;color: #5f646e;line-height: 100px;">© 2017 U惠网. All Rights Reserved.</span>
+            </div>
+        </div>
+    {% endblock %}
 </div>
 </body>
 <script src="/static/js/jquery-3.2.1.js"></script>
+<script src="/static/js/vue.js"></script>
+<script src="/static/js/preimg.js"></script>
+<!-- confirm框 -->
+<script type="text/javascript">
+    var vueconfirm = new Vue({
+        el: '#V-confirm',
+        data: {
+            show: false,
+            onCancel: false,
+            onOk: false,
+            title: '',
+            content: '',
+            button1: '',
+            button2: ''
+        },
+        methods: {
+            op: function (type) {
+                this.show = false;
+                if (type === 'cancel') {
+                    if (this.onCancel) this.onCancel()
+                }
+                else {
+                    if (this.onOk) this.onOk()
+                }
+
+                this.onCancel = false;
+                this.onOk = false;
+
+                document.body.style.overflow = '';
+            },
+            alert: function (setting) {
+                this.title = setting.title || '';
+                this.content = setting.content || '';
+                this.button1 = setting.button1 || '取 消';
+                this.button2 = setting.button2 || '确 定';
+                this.onOk = setting.onOk || false;
+                this.onCancel = setting.onCancel || false;
+                this.show = true;
+                document.body.style.overflow = 'hidden';
+            }
+        }
+    });
+    var vuealert = new Vue({
+        el: '#V-alert',
+        data: {
+            show: false,
+            onOk: false,
+            title: '',
+            content: '',
+            button: ''
+        },
+        methods: {
+            op: function () {
+                this.show = false;
+                if (this.onOk) this.onOk();
+
+                this.onCancel = false;
+                this.onOk = false;
+
+                document.body.style.overflow = '';
+            },
+            alert: function (setting) {
+                this.title = setting.title || '';
+                this.content = setting.content || '';
+                this.button = setting.button || '确 定';
+                this.onOk = setting.onOk || false;
+                this.show = true;
+                document.body.style.overflow = 'hidden';
+            }
+        }
+    });
+    var vueinput = new Vue({
+        el: '#V-input',
+        data: {
+            show: false,
+            onCancel: false,
+            onOk: false,
+            title: '',
+            content: '',
+            button1: '',
+            button2: '',
+            message: ''
+        },
+        methods: {
+            op: function (type) {
+                this.show = false;
+                if (type === 'cancel') {
+                    if (this.onCancel) this.onCancel()
+                }
+                else {
+                    if (this.onOk) this.onOk()
+                }
+
+                this.onCancel = false;
+                this.onOk = false;
+
+                document.body.style.overflow = '';
+                this.message = '';
+            },
+            alert: function (setting) {
+                this.title = setting.title || '';
+                this.content = setting.content || '';
+                this.button1 = setting.button1 || '取 消';
+                this.button2 = setting.button2 || '确 定';
+                this.onOk = setting.onOk || false;
+                this.onCancel = setting.onCancel || false;
+                this.show = true;
+                document.body.style.overflow = 'hidden';
+            }
+        }
+    });
+    var vuePwdInput = new Vue({
+        el: '#V-passwordinput',
+        data: {
+            show: false,
+            onCancel: false,
+            onOk: false,
+            title: '',
+            content1: '',
+            content2: '',
+            content3: '',
+            button1: '',
+            button2: '',
+            oldPassword: '',
+            newPassword1:'',
+            newPassword2:''
+        },
+        methods: {
+            op: function (type) {
+                this.show = false;
+                if (type === 'cancel') {
+                    if (this.onCancel) this.onCancel()
+                }
+                else {
+                    if (this.onOk) this.onOk()
+                }
+
+                this.onCancel = false;
+                this.onOk = false;
+
+                document.body.style.overflow = '';
+                this.oldPassword = '';
+                this.newPassword1 = '';
+                this.newPassword2 = '';
+            },
+            alert: function (setting) {
+                this.title = setting.title || '';
+                this.content1 = setting.content1 || '';
+                this.content2 = setting.content2 || '';
+                this.content3 = setting.content3 || '';
+                this.button1 = setting.button1 || '取 消';
+                this.button2 = setting.button2 || '确 定';
+                this.onOk = setting.onOk || false;
+                this.onCancel = setting.onCancel || false;
+                this.show = true;
+                document.body.style.overflow = 'hidden';
+            }
+        }
+    });
+</script>
+<script src="/static/js/vue-coupon.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/jquery.md5.js"></script>
+<script src="/static/js/jquery.cookie.js"></script>
 <script src="/static/js/index.js"></script>
 <script src="/static/js/search.js"></script>
-<script src="/static/js/aui/api.js"></script>
-<script src="/static/js/aui/aui-tab.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GeoLBAU1t7TRpqXhtw8VIth4r6PGAU3U"></script>
 <script type="text/javascript">
     // 百度地图API功能
-    var map = new BMap.Map("allmap");
-    var point = new BMap.Point(116.331398, 39.897445);
-    map.centerAndZoom(point, 12);
 
     function myFun(result) {
         var cityName = result.name;
-        map.setCenter(cityName);
-        $("#city-position,.city-position").html("<i class=\"fa fa-location-arrow\"></i>&nbsp;" + cityName);
+        $("#city-position,.city-position").html("<i class=\"fa fa-location-arrow\" style=\"color: #ff5a00;\"></i>&nbsp;" + cityName).css("color", "#ff5a00");
     }
+
     var myCity = new BMap.LocalCity();
     myCity.get(myFun);
 </script>
+<script type="text/javascript">
+    $(".message-div-point").click(function () {
+        $(this).show();
+        $(this).siblings().hide();
+        var id = '#' + $(this).attr("id").replace("for_", "");
+        $(id).show();
+        $(id).siblings().hide();
+
+    })
+
+</script>
+<!-- 原优惠券功能
+<script type="text/javascript">
+    $(".coupon_detail").click(function () {
+        $(".modal-wrapper").show();
+        $("body").css("overflow", "hidden");
+        $.ajax({
+            type: 'POST',
+            url: '/post_couponDetail',
+            data: {"couponID": $(this).attr("id")},
+            dataType: 'json',
+            sync: false,
+            success: function (data) {
+                $("#couponDetail_image").attr("src", data.info.pic);
+                $("#couponDetail_limits").siblings().remove();
+                $("#couponDetail_name")[0].innerText = data.info.product;
+                $("#couponDetail_listPrice")[0].innerText = '￥' + data.info.listPrice;
+                $("#couponDetail_value")[0].innerText = '(￥' + data.info.value + ')';
+                $("#couponDetail_discount")[0].innerText = data.info.discount;
+                $("#couponDetail_brand")[0].innerText = data.info.brand;
+                $("#couponDetail_sellername")[0].innerText = data.info.sellerInfo.nickname;
+                $("#couponDetail_sellerID")[0].innerText = data.info.sellerInfo.userid;
+                $("#couponDetail_expiredTime")[0].innerText = data.info.expiredTime;
+                $("#couponDetail_ID")[0].innerText = data.info.couponID;
+
+                $.each(data.info.limits, function (key, value) {
+                    var $limits = $("#couponDetail_limits").clone();
+                    $limits.attr("id", "");
+                    $limits[0].innerText = value;
+                    $("#couponDetail_limits").after($limits);
+
+                });
+                getstat(data.stat);
+
+            }
+        })
+
+    })
+
+    function getstat(stat) {
+        $("#couponDetail_putonsale").hide();
+        $("#couponDetail_putoffsale").hide();
+        $("#couponDetail_buy").hide();
+        $("#couponDetail_like").hide();
+        $("#couponDetail_dislike").hide();
+        if (stat === "0") {
+            $("#couponDetail_buy").show();
+            $("#couponDetail_like").show();
+        }
+        else if (stat === "1") {
+            $("#couponDetail_dislike").show();
+            $("#couponDetail_buy").show();
+        }
+        else if (stat === "2") {
+            $("#couponDetail_putoffsale").show();
+        }
+        else if (stat === "3") {
+            $("#couponDetail_putonsale").show();
+        }
+    }
+
+    function returnindex() {
+        $(".modal-wrapper").hide();
+        $("body").css("overflow", "auto");
+    }
+
+    function post_changelike(url) {
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            data: {'couponID': $("#couponDetail_ID")[0].innerText},
+            timeout: 3000,
+            cache: false,
+            success: succFunction
+        });
+
+        function succFunction(Jsondata) {
+            var msg = Jsondata.message;
+            if (Jsondata.errno === '5') {
+                window.location.href = "/login";
+            }
+            else if (Jsondata.errno === '0') {
+
+                if (Jsondata.like === '0') {
+                    $("#couponDetail_like").show();
+                    $("#couponDetail_dislike").hide();
+                }
+                else {
+                    $("#couponDetail_like").hide();
+                    $("#couponDetail_dislike").show();
+                }
+
+            }
+            else {
+                alert(msg)
+            }
+
+        }
+
+    }
+
+    function post_buy() {
+        $.ajax({
+            url: '/post_buy',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                "couponID": $("#couponDetail_ID")[0].innerText,
+                "sellerID": $("#couponDetail_sellerID")[0].innerText
+            },
+            timeout: 3000,
+            cache: false,
+            async: false,
+            beforeSend: LoadFunction,
+            error: erryFunction,
+            success: succFunction
+        });
+
+        function LoadFunction() {
+        }
+
+        function erryFunction() {
+        }
+
+        function succFunction(Jsondata) {
+            if (Jsondata.errno === '0') {
+
+                window.location.href = "/mobile_myboughtcoupons";
+
+
+            } else {
+                alert(Jsondata.message);
+
+            }
+
+        }
+
+    }
+
+    function isUnsignedInteger(a) {
+        var reg = /^[1-9]\d*(.\d{1,2})?$/;
+        return reg.test(a);
+    }
+
+    function post_changesalestat(url, message, button_left, button_right) {
+        if (url === '/post_putOnSale') {
+            $('.modal').modal('show');
+        }
+        else {
+            $.ajax({
+                async: false,
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: {'couponID': $("#couponDetail_ID")[0].innerText},
+                timeout: 3000,
+                cache: false,
+                success: succFunction
+            });
+        }
+    }
+
+    function succFunction(Jsondata) {
+        $('.modal').modal('hide');
+        var msg = Jsondata.message;
+        if (Jsondata.errno === '0') {
+            if (Jsondata.stat === 'onSale') {
+                $("#couponDetail_putonsale").hide();
+                $("#couponDetail_putoffsale").show();
+            }
+            else {
+                $("#couponDetail_putonsale").show();
+                $("#couponDetail_putoffsale").hide();
+            }
+            $("#couponDetail_listPrice")[0].innerText = '￥' + Jsondata.listPrice;
+        }
+        else {
+            alert(msg);
+        }
+    }
+
+    function buy(url) {
+        var value = $("#couponDetail_input").val();
+        if (isUnsignedInteger(value)) {
+            $.ajax({
+                async: false,
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'couponID': $("#couponDetail_ID")[0].innerText,
+                    'listPrice': value
+                },
+                timeout: 3000,
+                cache: false,
+                success: succFunction
+            });
+        }
+        else {
+            alert("请输入正确价格");
+        }
+    }
+</script>
+-->
 {% block scripts %}{% endblock %}
 
 </html>

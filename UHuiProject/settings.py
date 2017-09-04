@@ -23,8 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'ylf276l+_vgkj0pzran@17+pg@%r_=g3xwdd%&)^55=_i#wr(n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+try:
+    from . import config
+    DEBUG = config.DEBUG
+except ImportError:
+    DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 # upload image
@@ -62,7 +65,7 @@ ROOT_URLCONF = 'UHuiProject.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'DIRS': [BASE_DIR + "/UHuiWebApp/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -84,7 +87,7 @@ WSGI_APPLICATION = 'UHuiProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'uhui',
+        'NAME': 'uhui2',
         'USER': 'uhui',
         'PASSWORD': 'uhuiforciti',
     }
