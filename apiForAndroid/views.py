@@ -22,12 +22,12 @@ class userForm(forms.Form):
     avatar = forms.FileField()
 
 #注册
-def post_signUpForAndroid(request):
+def signUpForAndroid(request):
     return post_signUp(request)
 
 
 #登录
-def post_loginForAndroid(request):
+def loginForAndroid(request):
     u_name = request.POST.get('username')
     # 通过@判断用户名为email/手机号
     if "@" in u_name:
@@ -62,23 +62,24 @@ def post_loginForAndroid(request):
 
 
 #预搜索
-def post_preSearch(request):
+def preSearch(request):
     keyword = request.POST.get('keyword')
     #if not keyword:
     #    return JsonResponse({'error':'keyword not exist'})
-    productResult = Coupon.objects.filter(product__istartswith=keyword,stat='onSale').values('product').distinct()
+    productResult = Coupon.objects.filter(product__istartswith=keyword,onsale = 1).values('product').distinct()
     result = []
     for coupon in productResult:
         result.append(coupon)
     return JsonResponse({'result':result})
 
+
 #分类下预搜索
-def post_preSearchInCategory(request):
+def preSearchInCategory(request):
     keyword = request.POST.get('keyword')
     cat = request.POST.get('category')
     #if not keyword:
     #    return JsonResponse({'error':'keyword not exist'})
-    productResult = Coupon.objects.filter(product__istartswith=keyword,stat='onSale',catid=cat).values('product').distinct()
+    productResult = Coupon.objects.filter(product__istartswith=keyword,onsale=1,catid=cat).values('product').distinct()
     result = []
     for coupon in productResult:
         result.append(coupon)
@@ -86,45 +87,45 @@ def post_preSearchInCategory(request):
 
 
 #搜索
-def post_searchForAndroid(request):
+def searchForAndroid(request):
     key = request.POST.get('keyWord',0)
     orderBy = request.POST.get('order', None)
-    if not key:
-        return {'result': "请输入关键词"}
-    if not orderBy:
+    if key == 0:
+        return {'error': '101'}
+    if orderBy == None:
         orderBy = 'expiredtime'
     else:
         pass
-    productResult = models.Coupon.objects.filter(product__icontains=key, stat='onSale').values('couponid','listprice','value','product','discount','pic','expiredtime').order_by(orderBy)
+    productResult = models.Coupon.objects.filter(product__icontains=key, onsale=1).values('couponid','listprice','value','product','discount','pic','expiredtime').order_by(orderBy)
     result = []
     for coupon in productResult:
         result.append(coupon)
     brandIDResult = models.Brand.objects.filter(name__icontains=key)
     for brand in brandIDResult:
-        temp = models.Coupon.objects.filter(brandid=brand.brandid,stat = 'onSale').values('couponid','listprice','value','product','discount','pic','expiredtime')
+        temp = models.Coupon.objects.filter(brandid=brand.brandid,onsale = 1).values('couponid','listprice','value','product','discount','pic','expiredtime')
         if temp.exists():
             for info in temp:
                 result.append(info)
-        return JsonResponse({'coupons': result})
+        return JsonResponse({'result': result})
     if result == None:
-        return JsonResponse({'result':'result no exist'})
-    return JsonResponse({'coupon':result})
+        return JsonResponse({'error':'102'})
+    return JsonResponse({'result':result})
 
 
 #在分类下搜索
-def post_searchInCertainCategory(request):
+def searchInCategory(request):
     key = request.POST.get('keyWord', 0)
     cat = request.POST.get('category',0)
     orderBy = request.POST.get('order', None)
-    if not cat:
-        return JsonResponse({'result': "种类不存在"})
-    if not key:
-        return JsonResponse({'result': "请输入关键词"})
-    if not orderBy:
+    if cat == 0:
+        return JsonResponse({'error': '103'})
+    if key == 0:
+        return JsonResponse({'error': '101'})
+    if orderBy == None:
         orderBy = 'expiredtime'
     else:
         pass
-    productResult = models.Coupon.objects.filter(product__contains=key, stat='onSale',catid=cat).values('couponid', 'listprice',
+    productResult = models.Coupon.objects.filter(product__contains=key, onsale=1,catid=cat).values('couponid', 'listprice',
                                                                                               'value', 'product',
                                                                                               'discount', 'pic',
                                                                                               'expiredtime').order_by(orderBy)
@@ -133,39 +134,38 @@ def post_searchInCertainCategory(request):
         result.append(coupon)
     brandIDResult = models.Brand.objects.filter(name__contains=key)
     for brand in brandIDResult:
-        temp = models.Coupon.objects.filter(brandid=brand.brandid, stat='onSale',catid=cat).values('couponid', 'listprice',
+        temp = models.Coupon.objects.filter(brandid=brand.brandid, onsale=1,catid=cat).values('couponid', 'listprice',
                                                                                          'value', 'product', 'discount',
                                                                                          'pic', 'expiredtime')
         if temp.exists():
             for info in temp:
                 result.append(info)
-        return JsonResponse({'coupons': result})
+        return JsonResponse({'result': result})
     if result == None:
-        return JsonResponse({'result': 'result no exist'})
-    return JsonResponse({'coupons': result})
+        return JsonResponse({'error': '102'})
+    return JsonResponse({'result': result})
 
 
 #点击种类进行查询
-def post_searchByCategory(request):
+def searchByCategory(request):
     catID = request.POST.get('categoryID',0)
     orderBy = request.POST.get('order', 'expiredtime')
     if Category.objects.filter(catid=catID).exists():
         result = []
-        couponList = Coupon.objects.filter(catid=catID, stat='onSale').values('couponid', 'listprice', 'value',
+        couponList = Coupon.objects.filter(catid=catID, onsale=1).values('couponid', 'listprice', 'value',
                                                                               'product', 'discount', 'pic',
                                                                               'expiredtime').order_by(orderBy)
         for each in couponList:
             result.append(each)
         return JsonResponse({'result': result})
-    return JsonResponse({'error':'不存在该种类'})
-
+    return JsonResponse({'error':'103'})
 
 
 #查询优惠券详细信息
-def post_couponDetailForAndroid(request):
+def couponDetail(request):
     cpID = request.POST.get('couponID',0)
     if cpID == 0 :
-        return JsonResponse({'error':'优惠券不存在'})
+        return JsonResponse({'error':'104'})
     CouponResult = Coupon.objects.filter(pk=cpID).values()
     CResult= []
     for coupon in CouponResult:
@@ -175,14 +175,8 @@ def post_couponDetailForAndroid(request):
     for limit in LimitResult:
         LResult.append(limit)
     #查询所有者ID
-    checklist = Listitem.objects.filter(couponid=cpID)
-    checkUserid = 0
-    for each in checklist:
-        listID = each.listid.listid
-        listStat = models.Couponlist.objects.get(listid=listID)
-        if listStat.stat == 'onSale':
-            checkUserid = listStat.userid.id
-    Seller = User.objects.filter(pk = checkUserid).values('id','nickname','gender','avatar')
+    userid = Coupon.objects.get(couponid=cpID).userid.id
+    Seller = User.objects.filter(pk = userid).values('id','nickname','gender','avatar')
     SResult = []
     for seller in Seller:
         SResult.append(seller)
@@ -195,33 +189,29 @@ def post_couponDetailForAndroid(request):
 
 
 #返回使用限制、商家名以及出售者信息
-def post_returnInformation(request):
+def returnInformation(request):
     cpID = request.POST.get('couponID',0)
     u_id = request.POST.get('userID')
     msgID = request.POST.get('messageID', 0)
     if msgID != 0:
         Message.objects.filter(messageid=msgID).update(hasread=1)
     if u_id=='':
-        return JsonResponse({'errno':'user no exist'})
+        return JsonResponse({'error':'105'})
+    if cpID == 0 :
+        return JsonResponse({'error':'104'})
     isLike = 0
     #查看该优惠券是否已被关注
-    likeList = Couponlist.objects.get(userid=u_id,stat='like')
-    if Listitem.objects.filter(listid=likeList.listid,couponid=cpID).exists():
+
+
+    if Like.objects.filter(cid=cpID,uid=u_id).exists():
         isLike = 1
-    if cpID == 0 :
-        return JsonResponse({'error':'优惠券不存在'})
+
     limitResult = Limit.objects.filter(couponid = cpID).values('content')
     LResult = []
     for limit in limitResult:
         LResult.append(limit)
-    checklist = Listitem.objects.filter(couponid=cpID)
-    checkUserid = 0
-    for each in checklist:
-        listID = each.listid.listid
-        listStat = models.Couponlist.objects.get(listid=listID)
-        if listStat.stat == 'onSale':
-            checkUserid = listStat.userid.id
-    Seller = User.objects.filter(pk=checkUserid).values('id','nickname','gender','avatar')
+    userid = Coupon.objects.get(couponid=cpID).userid.id
+    Seller = User.objects.filter(pk=userid).values('id','nickname','gender','avatar')
     SResult = []
     for seller in Seller:
         SResult.append(seller)
@@ -234,29 +224,24 @@ def post_returnInformation(request):
 
 
 #返回出售者卖过的、正在卖的优惠券
-def post_sellerInformation(request):
-    sellerID = request.POST.get('sellerID')
-    sellerOnSaleList = Couponlist.objects.get(userid=sellerID,stat = 'onSale').listid
-    sellerSoldList = Couponlist.objects.get(userid=sellerID,stat='Sold').listid
+def sellerInformation(request):
+    sellerID = request.POST.get('sellerID',0)
+    if sellerID ==0:
+        return JsonResponse({'error':'105'})
+    sellerOnSaleList = Coupon.objects.filter(userid=sellerID,onsale=1).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount','pic')
+    sellerSoldList = Coupon.objects.filter(userid=sellerID,sold__isnull=False).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount','pic')
     onSaleList =[]
     soldList = []
-    sellerOnSaleListitem = Listitem.objects.filter(listid=sellerOnSaleList)
-    if sellerOnSaleListitem.exists():
-        for each in sellerOnSaleListitem:
-            onSaleCoupon = Coupon.objects.filter(couponid=each.couponid.couponid).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount','pic')
-            for i in onSaleCoupon:
-                onSaleList.append(i)
-    sellerSoldListitem = Listitem.objects.filter(listid = sellerSoldList)
-    if sellerSoldListitem.exists():
-        for each in sellerSoldListitem:
-            soldCoupon = Coupon.objects.filter(couponid=each.couponid.couponid).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount','pic')
-            for i in soldCoupon:
-                soldList.append(i)
+    for each in sellerOnSaleList:
+        onSaleList.append(each)
+    for each in sellerSoldList:
+        soldList.append(each)
     return JsonResponse({'onSale':onSaleList,'sold':soldList})
 
 
-#通过优惠券ID查询所有者
-def post_ownerDetailForAndroid(request):
+#通过优惠券ID查询所有
+'''
+def ownerDetail(request):
     cpID = request.POST.get('couponID',0)
     checklistitem = Listitem.objects.filter(couponid=cpID)
     checklistID = checklistitem.values('listid')
@@ -265,46 +250,33 @@ def post_ownerDetailForAndroid(request):
     try:
         result = User.objects.filter(id=checkUserid)
     except User.DoesNotExist:
-        return JsonResponse({'error':'用户不存在'})
+        return JsonResponse({'error':'105'})
     resultdata = serializers.serialize('json',result)
-    return HttpResponse(resultdata,content_type='application/json')
+    return HttpResponse(resultdata,content_type='application/json')'''
 
 
 #购买
-def post_buyCoupon(request):
+def buyCoupon(request):
     cpID = request.POST.get('couponID',0)
     u_id = request.POST.get('userID',0)
     #检查优惠券是否存在
     coupon = models.Coupon.objects.get(couponid=cpID)
-    if coupon.stat != 'onSale':
-        return JsonResponse({'errno': 1, 'message': '优惠券已下架'})
+    if coupon.onsale != 1:
+        return JsonResponse({'error': '106'})
     #检查用户UCoin
     buyerUCoin = models.User.objects.get(id=u_id).ucoin
     if buyerUCoin < coupon.listprice:
-        return JsonResponse({'errno': 1, 'message': 'UCoin不足以支付'})
-    #修改优惠券stat信息
-    Coupon.objects.filter(couponid=cpID).update(stat = 'store')
-    #将优惠券从拥有者的OnSale list、own list中删除并加入sold list中
-    checklist = Listitem.objects.filter(couponid=cpID)
-    sellerID = 0
-    for each in checklist:
-        listID = each.listid.listid
-        listStat = models.Couponlist.objects.get(listid=listID)
-        if listStat.stat == 'onSale':
-            sellerID = listStat.userid.id
-    ownerOnsaleList = Couponlist.objects.get(userid=sellerID,stat='onSale').listid
-    ownerOwnList = Couponlist.objects.get(userid = sellerID,stat = 'own').listid
-    ownerSoldList = Couponlist.objects.get(userid=sellerID,stat='sold')
-    Listitem.objects.filter(couponid=cpID).filter(listid=ownerOnsaleList).delete()
-    Listitem.objects.filter(couponid=cpID).filter(listid=ownerOwnList).delete()
-    Listitem.objects.create(couponid = coupon,listid=ownerSoldList)
-    #将优惠券加入购买者的bought list和own list中
-    buyerboughtList = Couponlist.objects.get(userid=u_id,stat = 'bought')
-    buyerOwnList = Couponlist.objects.get(userid=u_id,stat='own')
-    Listitem.objects.create(couponid= coupon,listid = buyerboughtList)
-    Listitem.objects.create(couponid = coupon,listid = buyerOwnList)
+        return JsonResponse({'error': '107'})
+    #修改当前优惠券状态
+    coupon.onsale = 0
+    coupon.store = 0
+    coupon.expired = 0
+    coupon.used = 0
+    coupon.sold = time.strftime("%Y-%m-%d", time.localtime())
+    #创建新的coupon行
+    Coupon.objects.create(couponid = coupon.couponid,userid = u_id,brandid = coupon.brandid,catid = coupon.catid,listprice = coupon.listprice,value = coupon.value,product = coupon.product,pic = coupon.pic,expiredtime = coupon.expiredtime,onsale = 0,expired = 0,used = 0,store = 1,bought = time.strftime("%Y-%m-%d", time.localtime()))
     #修改用户UCoin
-    seller = User.objects.get(id=sellerID)
+    seller = coupon.userid
     userUcoin = buyerUCoin-coupon.listprice
     User.objects.filter(id=u_id).update(ucoin = userUcoin)
     sellerUcoin = seller.ucoin + coupon.listprice
@@ -313,29 +285,36 @@ def post_buyCoupon(request):
     createMessage('上架的优惠券被购买', cpID)
     #生成通知关注者的message
     createMessage('关注的优惠券已被购买', cpID)
-    likeList = models.Listitem.objects.filter(couponid=cpID)
-    for lists in likeList:
-        temp = models.Couponlist.objects.get(listid=lists.listid.listid)
-        if temp.stat == 'like':
-            lists.delete()
-    return JsonResponse({'errno': 0, 'message': '购买成功'})
+
+    tmp = Like.objects.filter(cid=cpID)
+    for each in tmp:
+        each.delete()
+
+    return JsonResponse({'result':'200'})
 
 
 #关注优惠券接口
-def post_likeCoupon(request):
+def likeCoupon(request):
     cpID = request.POST.get('couponID',0)
     u_ID = request.POST.get('userID',0)
-    CouponObj = Coupon.objects.get(pk = cpID)
-    userLikeList = Couponlist.objects.get(userid=u_ID,stat='like')
-    if Listitem.objects.filter(couponid = cpID,listid = userLikeList).exists():
-        Listitem.objects.filter(couponid = cpID,listid = userLikeList).delete()
-        return JsonResponse({'result':'dislike'})
-    Listitem.objects.create(couponid = CouponObj,listid = userLikeList)
-    return JsonResponse({'result':'like'})
+    if Like.objects.filter(cid=cpID,uid=u_ID).exists():
+        return JsonResponse({'error':'115'})
+    Like.objects.create(cid=cpID,uid=u_ID)
+    return JsonResponse({'result':'200'})
+
+
+#取消关注
+def dislikeCoupon(request):
+    cpID = request.POST.get('couponID', 0)
+    u_ID = request.POST.get('userID', 0)
+    if Like.objects.filter(cid=cpID, uid=u_ID).exists():
+        Like.objects.get(cid=cpID,uid=u_ID).delete()
+        return JsonResponse({'result': '200'})
+    return JsonResponse({'error': '116'})
 
 
 #消息发送接口
-def post_sendMessage(request):
+def sendMessage(request):
     userID = request.POST.get('userID',0)
     tmp = Message.objects.filter(userid=userID)
     msg = Message.objects.filter(userid=userID).values('messageid','content','time','messagecat','hasread','couponid')
@@ -351,31 +330,31 @@ def post_sendMessage(request):
 
 
 #修改密码接口
-def post_updatePassword(request):
+def updatePassword(request):
     newPassword = request.POST.get('password',0)
     phone = request.POST.get('phoneNum',0)
     newPassword = encryption(newPassword)
     if newPassword == User.objects.get(phonenum = phone).password:
-        return JsonResponse({'result':'New Password is the same as old'})
+        return JsonResponse({'error':'108'})
     User.objects.filter(phonenum=phone).update(password = newPassword)
-    return JsonResponse({'result':'success'})
+    return JsonResponse({'result':'200'})
 
 
 #判断手机/邮箱是否存在
-def post_checkUsername(request):
+def checkUsername(request):
     username = request.POST.get('username')
     if '@' in username:
         if User.objects.filter(email=username).exists():
-            return JsonResponse({'result':'0'})
-        return JsonResponse({'result':'1'})
+            return JsonResponse({'error':'109'})
+        return JsonResponse({'result':'200'})
     else:
         if User.objects.filter(phonenum=username).exists():
-            return JsonResponse({'result': '0'})
-        return JsonResponse({'result': '1'})
+            return JsonResponse({'error': '109'})
+        return JsonResponse({'result': '200'})
 
 
 #获取个人信息
-def post_getUserInformation(request):
+def getUserInformation(request):
     u_id = request.POST.get('userID')
     result = User.objects.filter(pk = u_id)
     resultdata = serializers.serialize('json',result)
@@ -383,61 +362,63 @@ def post_getUserInformation(request):
 
 
 #修改个人信息
-def post_updateUserInformation(request):
+def updateUserInformation(request):
     u_id = request.POST.get('userID')
     user = User.objects.get(id=u_id)
     newNickname = request.POST.get('nickname',user.nickname)
     newGender = request.POST.get('gender',user.gender)
     if User.objects.filter(nickname=newNickname).exists():
-        return JsonResponse({'result':'nickname exist'})
+        return JsonResponse({'error':'110'})
     user.nickname = newNickname
     user.gender = newGender
     user.save()
-    return JsonResponse({'result':'success'})
+    return JsonResponse({'result':'200'})
 
 
 #修改头像
-def post_updateAvatar(request):
+def updateAvatar(request):
     #uf = userForm(request.POST,request.FILES)
     #u_id = uf.cleaned_data['userID']
     #headImg = uf.cleaned_data['avatar']
     u_id = request.POST.get('userID',0)
+    if u_id == 0:
+        return JsonResponse({'error':'105'})
     headImg = request.FILES.get('imgFile',None)
     user = User.objects.get(id = u_id)
     if User.objects.filter(id = u_id).exists():
         user.avatar = headImg
         user.save()
-    return JsonResponse({'errno': '0', 'message': '成功'})
+    return JsonResponse({'result': '200'})
 
 
 #修改手机/邮箱
-def post_updatePhonenumOrEmail(request):
+def updatePhoneOrEmail(request):
     u_id = request.POST.get('userID')
-    NewPhonenumOrEmail = request.POST.get('username')
+    NewPhoneOrEmail = request.POST.get('username')
     userObj = User.objects.get(pk = u_id)
-    if  '@'in NewPhonenumOrEmail:
+    if  '@'in NewPhoneOrEmail:
         if userObj.phonenum == None:
-            userObj.email = NewPhonenumOrEmail
+            userObj.email = NewPhoneOrEmail
             userObj.save()
-            return JsonResponse({'result':'success'})
+            return JsonResponse({'result':'200'})
         else:
-            return JsonResponse({'result':'该账户使用手机注册'})
+            return JsonResponse({'error':'111'})
     else:
         if userObj.email == None:
-            userObj.phonenum = NewPhonenumOrEmail
+            userObj.phonenum = NewPhoneOrEmail
             userObj.save()
-            return JsonResponse({'result':'success'})
+            return JsonResponse({'result':'200'})
         else:
-            return JsonResponse({'result':'该账户使用邮箱注册'})
+            return JsonResponse({'error':'112'})
 
 
 #估值
-def post_getValue(request):
+def getValue(request):
     return JsonResponse({'value':100.00})
 
 
 #添加优惠券
-def post_addCoupon(request):
+def addCoupon(request):
     u_id = request.POST.get('userID')
     brandName = request.POST.get('brand')
     cat = request.POST.get('category')
@@ -448,8 +429,6 @@ def post_addCoupon(request):
     stat = request.POST.get('stat', 'store')
     pic = request.FILES.get('pic', DEFAULT_PIC)
     limit = request.POST.getlist('limit[]')
-
-
     #估值
     value = 0
     # 判断brand是否存在
@@ -458,49 +437,49 @@ def post_addCoupon(request):
         brandID.save()
     else:
         brandID = models.Brand.objects.get(name=brandName)
-
     # 获取catID
     #if not models.Category.objects.filter(name=cat).exists():
     #    return JsonResponse({'errno': 1, 'message': 'category not found'})
     #else:
     catID = models.Category.objects.get(catid=cat)
-
     user = models.User.objects.get(id=u_id)
     couponID = randomID()
-    coupon = models.Coupon(couponid=couponID, brandid=brandID, catid=catID, listprice=listPrice,
-                           value=value, product=product, discount=discount, stat=stat, pic=pic,
-                           expiredtime=expiredTime)
-    coupon.save()
+    if stat == 'store':
+        coupon = models.Coupon(couponid=couponID, brandid=brandID, catid=catID, listprice=listPrice,
+                               value=value, product=product, discount=discount, onsale=0,store=1,expired=0,used=0, pic=pic,
+                               expiredtime=expiredTime)
+        coupon.save()
+    elif stat == 'onsale':
+        coupon = models.Coupon(couponid=couponID, brandid=brandID, catid=catID, listprice=listPrice,
+                               value=value, product=product, discount=discount, onsale=1, store=0, expired=0, used=0,
+                               pic=pic,
+                               expiredtime=expiredTime)
+        coupon.save()
+    else:
+        return JsonResponse({'error':'113'})
+
     for each in limit:
         Limit.objects.create(couponid=coupon,content=each)
-    if stat == 'onSale':
-        list = models.Couponlist.objects.get(stat='onSale', userid=user.id)
-    else:
-        list = models.Couponlist.objects.get(stat='own', userid=user.id)
-    models.Listitem.objects.create(listid=list, couponid=coupon)
-    return JsonResponse({'errno': 0, 'message': 'store success'})
+    return JsonResponse({'result': '200'})
 
 
 #获取"我买过的"优惠券
-def post_getBoughtList(request):
+def getBoughtList(request):
     u_id = request.POST.get('userID')
     boughtList = []
     if User.objects.filter(id=u_id).exists():
-        boughtListID = Couponlist.objects.get(userid=u_id, stat='bought').listid
-        boughtListitem = Listitem.objects.filter(listid=boughtListID)
-        for each in boughtListitem:
-            couponList = Coupon.objects.filter(couponid=each.couponid.couponid).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount')
-            for i in couponList:
-                boughtList.append(i)
-        return JsonResponse({'boughtList':boughtList})
+        tmp = Coupon.objects.filter(userid=u_id,bought__isnull=False).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount','bought')
+        for each in tmp:
+            boughtList.append(each)
+        return JsonResponse({'result':boughtList})
     else:
-        return JsonResponse({'result':'user not exist'})
+        return JsonResponse({'error':'105'})
 
 
 #获取我拥有的优惠券
-def post_getOwnList(request):
+'''def getOwnList(request):
     u_id = request.POST.get('userID')
-    onSaleList = []
+    onSaleList =[]
     storeList = []
     usedList = []
     if User.objects.filter(id=u_id).exists():
@@ -518,27 +497,63 @@ def post_getOwnList(request):
                 usedList.append(i)
         return JsonResponse({'onSaleList':onSaleList,'storeList':storeList,'usedList':usedList})
     else:
-        return JsonResponse({'result':'user not exist'})
+        return JsonResponse({'result':'user not exist'})'''
 
 
-#获取我卖出的优惠券
-def post_getSoldList(request):
+#获取我正在出售的优惠券
+def getOnSaleList(request):
     u_id = request.POST.get('userID')
-    soldList = []
-    if User.objects.filter(id = u_id).exists():
-        soldListID = Couponlist.objects.get(userid=u_id,stat='sold').listid
-        soldListitem = Listitem.objects.filter(listid = soldListID)
-        for each in soldListitem:
-            couponList = Coupon.objects.filter(couponid=each.couponid.couponid).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount')
-            for i in couponList:
-                soldList.append(i)
-        return JsonResponse({'soldList':soldList})
+    onSaleList =[]
+    if User.objects.filter(id=u_id).exists():
+        tmp = Coupon.objects.filter(userid=u_id,onsale=1).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount')
+        for each in tmp:
+            onSaleList.append(each)
+        return JsonResponse({'result':onSaleList})
     else:
-        return JsonResponse({'result':'user not exist'})
+        return JsonResponse({'error':'105'})
+
+
+#获取我存储的优惠券
+def getStoreList(request):
+    u_id = request.POST.get('userID')
+    storeList = []
+    if User.objects.filter(id= u_id).exists():
+        tmp = Coupon.objects.filter(userid=u_id,store=1).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount')
+        for each in tmp:
+            storeList.append(each)
+        return JsonResponse({'result':storeList})
+    else:
+        return JsonResponse({'error':'105'})
 
 
 #获取我用过的优惠券
-def post_getUsedCoupon(request):
+def getUsedList(request):
+    u_id = request.POST.get('userID')
+    usedList = []
+    if User.objects.filter(id = u_id).exists():
+        tmp = Coupon.objects.filter(userid=u_id,used=1).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount')
+        for each in tmp:
+            usedList.append(each)
+        return JsonResponse({'result':usedList})
+    else:
+        return JsonResponse({'error':'105'})
+
+
+#获取我卖出的优惠券
+def getSoldList(request):
+    u_id = request.POST.get('userID')
+    soldList = []
+    if User.objects.filter(id = u_id).exists():
+        tmp = Coupon.objects.filter(userid=u_id,sold__isnull=False).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount','bought')
+        for each in tmp:
+            soldList.append(each)
+        return JsonResponse({'result':soldList})
+    else:
+        return JsonResponse({'error':'105'})
+
+
+#获取我用过的优惠券
+'''def post_getUsedCoupon(request):
     u_id = request.POST.get('userID')
     usedList =[]
     if User.objects.filter(id = u_id).exists():
@@ -550,59 +565,54 @@ def post_getUsedCoupon(request):
                 usedList.append(i)
         return JsonResponse({'usedList':usedList})
     else:
-        return JsonResponse({'result':'user not exist'})
+        return JsonResponse({'result':'user not exist'})'''
 
 
 #充值
-def post_buyUcoin(request):
+def buyUcoin(request):
     pass
 
 
 #獲取關注列表
-def post_getLikeList(request):
+def getLikeList(request):
     u_id = request.POST.get('userID')
     likeList = []
     if User.objects.filter(id = u_id).exists():
-        likeListID = Couponlist.objects.get(userid=u_id,stat='like').listid
-        likeListitem = Listitem.objects.filter(listid = likeListID)
-        for each in likeListitem:
-            couponList = Coupon.objects.filter(couponid=each.couponid.couponid).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount','pic')
-            for i in couponList:
-                likeList.append(i)
-        return JsonResponse({'likeList':likeList})
+        tmp = Like.objects.filter(uid=u_id)
+        for each in tmp:
+            likeList.append(each)
+        return JsonResponse({'result':likeList})
     else:
-        return JsonResponse({'result':'user not exist'})
+        return JsonResponse({'error':'105'})
 
 
 #上架下架已拥有的优惠券  还需要创建message
-def post_changeCouponState(request):
+def changeCouponState(request):
     cpID = request.POST.get('couponID')
     newStat = request.POST.get('state')
     cp = Coupon.objects.get(couponid=cpID)
     if newStat=='onSale':
-        if cp.stat == 'onSale':
-            return JsonResponse({'errno':'1','message':'优惠券已上架'})
-        elif cp.stat == 'store':
-            cp.stat = 'onSale'
+        if  cp.store == 1:
+            cp.store = 0
+            cp.onsale = 1
             cp.save()
-            return JsonResponse({'errno':'0','message':'优惠券上架成功'})
-        else:
-            return JsonResponse({'errno':'2','message':'优惠券状态错误'})
+            return JsonResponse({'result':'200'})
+        else :
+            return JsonResponse({'error':'113'})
     elif newStat == 'store':
-        if cp.stat == 'store':
-            return JsonResponse({'errno':'1','message':'优惠券已下架'})
-        elif cp.stat == 'onSale':
-            cp.stat = 'store'
+        if cp.onsale == 1:
+            cp.store = 1
+            cp.onsale = 0
             cp.save()
-            return JsonResponse({'errno':'0','message':'优惠券下架成功'})
+            return JsonResponse({'result':'200'})
         else:
-            return JsonResponse({'errno':'2','message':'优惠券状态错误'})
+            return JsonResponse({'error':'113'})
     else:
-        return JsonResponse({'errno':'3','message':'提交的状态错误'})
+        return JsonResponse({'error':'114'})
 
 
 #主页的推荐
-def post_homepageCoupon(request):
+def homepageCoupon(request):
     couponCat_1 = Coupon.objects.filter(catid = 1)
     tmp1 = couponCat_1.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_1.count(),5)].reverse()#生活百货
     couponCat_2 = Coupon.objects.filter(catid = 2)
@@ -637,13 +647,15 @@ def post_homepageCoupon(request):
     for each in tmp8:
         result.append(each)
     return JsonResponse({'result':result})
+
+
 #搜索栏的推荐 未完成
-def post_searchCoupon(request):
+def searchCoupon(request):
     pass
 
 
 #主页轮播图
-def post_getBanner(request):
+def getBanner(request):
     url1 = 'images/banner/banner_1.jpg'
     url2 = 'images/banner/banner_2.jpg'
     url3 = 'images/banner/banner_3.jpg'

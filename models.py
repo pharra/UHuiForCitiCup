@@ -83,7 +83,10 @@ class Like(models.Model):
     cid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='cid')
 
     class Meta:
+
         managed = False
+
+
         db_table = 'like'
         unique_together = (('uid', 'cid'),)
 

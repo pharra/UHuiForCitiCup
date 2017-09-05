@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from UHuiWebApp.models import *
-class userSerializer(serializers.ModelSerializer):
+'''class userSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('ID','username','nickname','password','phoneNum','gender','avatar','email')
@@ -38,4 +38,4 @@ class limitSerializer(serializers.ModelSerializer):
 class messageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ('messageID','useID','content','time','messageCat')
+        fields = ('messageID','useID','content','time','messageCat')'''
