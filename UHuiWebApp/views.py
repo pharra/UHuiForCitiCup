@@ -1,6 +1,7 @@
 import json
 from decimal import Decimal
 
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 
 from UHuiProject.settings import DEBUG
@@ -135,17 +136,17 @@ def timer():
     coupons = models.Coupon.objects.all()
     currentDate = datetime.date.today()
     for coupon in coupons:
+        if coupon.used is True:
+            continue
         expiredTime = coupon.expiredtime
-        lists = models.Listitem.objects.filter(couponid=coupon.couponid)
-        listID = lists[0].listid.listid
-        userID = models.Couponlist.objects.get(listid=listID).userid.id
+        userID = coupon.userid.id
         if currentDate >= expiredTime:
-            if coupon.stat == 'onSale':
+            if coupon.onsale is True:
                 createMessage('上架的优惠券已过期', coupon.couponid)
             changeCouponStat(coupon.couponid, userID, 'expired')
             createMessage('我的优惠券已过期', coupon.couponid)
         elif (currentDate + datetime.timedelta(days=1)) == expiredTime:
-            if coupon.stat == 'onSale':
+            if coupon.onsale is True:
                 createMessage('上架的优惠券即将过期', coupon.couponid)
                 createMessage('关注的优惠券即将过期', coupon.couponid)
             changeCouponStat(coupon.couponid, userID, 'expired')
@@ -243,27 +244,39 @@ def changeCouponStat(couponID, sellerID, stat, listPrice='-1'):
     except ObjectDoesNotExist:
         return JsonResponse({'errno': '1', 'message': '优惠券不存在', 'stat': '', 'listPrice': ''})
 
-    if stat == 'onSale' and coupon.stat != 'store':
-        return JsonResponse({'errno': '1', 'message': '上架失败', 'stat': coupon.stat,
-                             'listPrice': removeTailZero(str(coupon.listprice))})
-    elif stat == 'store' and coupon.stat != 'onSale':
-        return JsonResponse({'errno': '1', 'message': '下架失败', 'stat': coupon.stat,
-                             'listPrice': removeTailZero(str(coupon.listprice))})
-
-    coupon.stat = stat
-    coupon.save()
-    onSaleList = models.Couponlist.objects.get(stat='onSale', userid=sellerID)
-    if stat == 'store' or stat == 'expired':
-        if models.Listitem.objects.filter(listid=onSaleList, couponid=coupon).exists():
-            models.Listitem.objects.filter(listid=onSaleList, couponid=coupon).delete()
-            createMessage('关注的优惠券已下架', couponID)
-    elif stat == 'onSale':
-        models.Listitem.objects.create(listid=onSaleList, couponid=coupon)
+    if stat == 'onSale':
+        if coupon.store is False:
+            return JsonResponse({'errno': '1', 'message': '上架失败', 'stat': '',
+                                 'listPrice': removeTailZero(str(coupon.listprice))})
+        coupon.onsale = True
         if listPrice != '-1':
             coupon.listprice = Decimal(listPrice)
-            coupon.save()
-    return JsonResponse({'errno': '0', 'message': '操作成功', 'stat': coupon.stat,
-                         'listPrice': removeTailZero(str(coupon.listprice))})
+        coupon.save()
+        return JsonResponse({'errno': '0', 'message': '操作成功', 'stat': stat,
+                             'listPrice': removeTailZero(str(coupon.listprice))})
+
+    elif stat == 'store':
+        if coupon.onsale is False:
+            return JsonResponse({'errno': '1', 'message': '下架失败', 'stat': stat,
+                                'listPrice': removeTailZero(str(coupon.listprice))})
+        coupon.onsale = False
+        coupon.save()
+        if models.Like.objects.filter(cid=couponID).exists():
+            createMessage('关注的优惠券已下架', couponID)
+            models.Like.objects.filter(cid=couponID).delete()
+        return JsonResponse({'errno': '0', 'message': '操作成功', 'stat': stat,
+                             'listPrice': removeTailZero(str(coupon.listprice))})
+
+    elif stat == 'expired':
+        coupon.onsale = False
+        coupon.store = False
+        coupon.expired = True
+        coupon.save()
+        if models.Like.objects.filter(cid=couponID).exists():
+            createMessage('关注的优惠券已下架', couponID)
+            models.Like.objects.filter(cid=couponID).delete()
+        return JsonResponse({'errno': '0', 'message': '操作成功', 'stat': stat,
+                             'listPrice': removeTailZero(str(coupon.listprice))})
 
 
 # 获取数据
@@ -866,7 +879,6 @@ def createMessage(messageType, couponID, content=None):
     messageID = randomID()
     # 为该优惠券所有符合messageType的用户添加messageType的消息
     # 找owner
-    lists = models.Listitem.objects.filter(couponid=couponID)
     coupon = models.Coupon.objects.get(couponid=couponID)
     # 根据messageType的不同寻找不同的接收USER，并填入相应的content
     #               0                    1                   2                3                 4
@@ -879,23 +891,24 @@ def createMessage(messageType, couponID, content=None):
     userlist = []
     if messageType == types[3] or messageType == types[4] or messageType == types[7]:
         # like列表
-
-        for listItem in lists:
-            if models.Couponlist.objects.filter(stat='like', listid=listItem.listid.listid).exists():
-                userlist.append(models.Couponlist.objects.get(stat='like', listid=listItem.listid.listid))
+        if models.Like.objects.filter(cid=couponID).exists():
+            users = models.Like.objects.filter(cid=couponID)
+            for user in users:
+                userlist.append(user.uid)
         pass
     else:
         # own列表
-        for listItem in lists:
-            if models.Couponlist.objects.filter(stat='own', listid=listItem.listid.listid).exists():
-                userlist.append(models.Couponlist.objects.get(stat='own', listid=listItem.listid.listid))
+        if models.Coupon.objects.filter(Q(store=True) | Q(store=True), couponid=couponID).exists():
+            users = models.Coupon.objects.filter(Q(store=True) | Q(store=True), couponid=couponID)
+            for user in users:
+                userlist.append(user.userid)
 
     if content is None:
         content = messageType
     if not userlist:
         return {'errno': 0, 'message': '目标用户不存在'}
     for user in userlist:
-        models.Message.objects.create(messageid=randomID(), userid=user.userid, content=content,
+        models.Message.objects.create(messageid=randomID(), userid=user, content=content,
                                       time=time.strftime("%Y-%m-%d", time.localtime()), messagecat=messageType,
                                       couponid=coupon, hasread=False, hassend=False)
     return {'errno': '0', 'message': '成功'}
