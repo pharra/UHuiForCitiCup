@@ -258,8 +258,8 @@ def changeCouponStat(couponID, stat, listPrice='-1'):
 
     elif stat == 'store':
         if coupon.onsale is False:
-            return JsonResponse({'errno': '1', 'message': '下架失败', 'stat': stat,
-                                'listPrice': removeTailZero(str(coupon.listprice))})
+            return JsonResponse({'errno': '1', 'message': '下架失败', 'stat': '',
+                                 'listPrice': removeTailZero(str(coupon.listprice))})
         coupon.onsale = False
         coupon.store = True
         coupon.save()
@@ -579,7 +579,6 @@ def post_couponDetail(request):
     return JsonResponse({'info': info, 'stat': info['stat']})
 
 
-
 # def modifyStat(request, info, couponID):
 #     # stat: 0 未关注 1 已关注 2 已上架 3 未上架
 #     if request.uid is None:
@@ -630,7 +629,7 @@ def couponInfo(couponID, request):
             limitList.append(content.content)
     couponInfo['limits'] = limitList
     couponInfo['sellerInfo'] = post_userInfo(coupon.userid.id)
-    
+
     if request.uid is None:
         couponInfo['stat'] = '0'
         return couponInfo
@@ -754,15 +753,14 @@ def post_storeCoupon(request):
     couponID = randomID()
     if stat == 'onSale':
         coupon = models.Coupon(couponid=couponID, userid=user, brandid=brandID, catid=catID, listPrice=listPrice,
-                            value=value, product=product, discount=discount, onsale=True, pic=pic,
-                            expiredTime=expiredTime)
+                               value=value, product=product, discount=discount, onsale=True, pic=pic,
+                               expiredTime=expiredTime)
         coupon.save()
     elif stat == 'store':
         coupon = models.Coupon(couponid=couponID, userid=user, brandid=brandID, catid=catID, listPrice=listPrice,
                                value=value, product=product, discount=discount, store=True, pic=pic,
                                expiredTime=expiredTime)
         coupon.save()
-
 
     return JsonResponse({'errno': 0, 'message': 'store success'})
 
@@ -788,9 +786,11 @@ def post_buy(request):
     coupon.used = False
     coupon.expired = False
     coupon.sold = date
-    newCoupon = models.Coupon(couponid=coupon, userid=buyer, brandid=coupon.brandid, catid=coupon.catid, listPrice=coupon.listPrice,
-                               value=coupon.value, product=coupon.product, discount=coupon.discount, store=True, bought=date, pic=coupon.pic,
-                               expiredTime=coupon.expiredTime)
+    newCoupon = models.Coupon(couponid=coupon, userid=buyer, brandid=coupon.brandid, catid=coupon.catid,
+                              listPrice=coupon.listPrice,
+                              value=coupon.value, product=coupon.product, discount=coupon.discount, store=True,
+                              bought=date, pic=coupon.pic,
+                              expiredTime=coupon.expiredTime)
     buyer.save()
     coupon.save()
     newCoupon.save()
