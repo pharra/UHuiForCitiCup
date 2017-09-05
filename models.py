@@ -70,12 +70,22 @@ class Coupon(models.Model):
     expired = models.IntegerField(blank=True, null=True)
     used = models.IntegerField(blank=True, null=True)
     store = models.IntegerField(blank=True, null=True)
-    brought = models.DateField(blank=True, null=True)
+    bought = models.DateField(blank=True, null=True)
     sold = models.DateField(blank=True, null=True)
 
     class Meta:
         managed = True
         db_table = 'coupon'
+
+
+class Like(models.Model):
+    uid = models.ForeignKey('User', models.DO_NOTHING, db_column='uid', primary_key=True)
+    cid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='cid')
+
+    class Meta:
+        managed = True
+        db_table = 'like'
+        unique_together = (('uid', 'cid'),)
 
 
 class Limit(models.Model):
