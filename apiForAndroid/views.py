@@ -192,20 +192,14 @@ def couponDetail(request):
 def returnInformation(request):
     cpID = request.POST.get('couponID',0)
     u_id = request.POST.get('userID')
-    msgID = request.POST.get('messageID', 0)
-    if msgID != 0:
-        Message.objects.filter(messageid=msgID).update(hasread=1)
     if u_id=='':
         return JsonResponse({'error':'105'})
     if cpID == 0 :
         return JsonResponse({'error':'104'})
     isLike = 0
     #查看该优惠券是否已被关注
-
-
     if Like.objects.filter(cid=cpID,uid=u_id).exists():
         isLike = 1
-
     limitResult = Limit.objects.filter(couponid = cpID).values('content')
     LResult = []
     for limit in limitResult:
@@ -216,11 +210,16 @@ def returnInformation(request):
     for seller in Seller:
         SResult.append(seller)
     brandID = Coupon.objects.get(couponid=cpID).brandid.brandid
-    brandResult = Brand.objects.filter(brandid=brandID).values('name','address')
+    brandResult = Brand.objects.filter(brandid=brandID).values('name')
     BResult = []
+    AResult = []
     for b in brandResult:
         BResult.append(b)
-    return JsonResponse({'brand': BResult, 'limit': LResult, 'seller': SResult,'isLike':isLike})
+    for each in brandResult:
+        AreaResult = Area.objects.filter(areaid=each.areaid.areaid).values('areaid','x','y')
+        for a in AreaResult:
+            AResult.append(a)
+    return JsonResponse({'brand': BResult,'area':AResult, 'limit': LResult, 'seller': SResult,'isLike':isLike})
 
 
 #返回出售者卖过的、正在卖的优惠券
