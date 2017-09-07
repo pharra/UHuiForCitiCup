@@ -216,7 +216,7 @@ def returnInformation(request):
     for b in brandResult:
         BResult.append(b)
     for each in brandResult:
-        AreaResult = Area.objects.filter(areaid=each.areaid.areaid).values('areaid','x','y')
+        AreaResult = Area.objects.filter(areaid=each.areaid).values('areaid','x','y')
         for a in AreaResult:
             AResult.append(a)
     return JsonResponse({'brand': BResult,'area':AResult, 'limit': LResult, 'seller': SResult,'isLike':isLike})
