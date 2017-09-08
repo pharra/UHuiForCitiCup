@@ -151,6 +151,10 @@ def timer():
                 createMessage('关注的优惠券即将过期', coupon.couponid)
             changeCouponStat(coupon.couponid, userID, 'expired')
             createMessage('我的优惠券即将过期', coupon.couponid)
+        elif currentDate < expiredTime:
+            if coupon.onsale is True:
+                # 每日减价
+                pass
 
 
 def addSearchHistory(key, history):
