@@ -24,7 +24,22 @@ DEFAULT_PIC = 'images/avatar/default.jpg'
 
 # Create your views here.
 # 估值算法
-def calculateValue():
+def calculateValue(x1, x2, x3):
+    pass
+    # x1 面值
+    # x2 折扣比例
+    # x3 到期时间
+
+    # 函数模拟获得公式
+    # curve fitting tool
+
+    # 用Ksdensity获得概率分布曲线
+
+    #
+
+
+def calculateValueVer2():
+    # s0现价， k
     pass
 
 
