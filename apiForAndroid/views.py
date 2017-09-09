@@ -273,7 +273,8 @@ def buyCoupon(request):
     coupon.used = 0
     coupon.sold = time.strftime("%Y-%m-%d", time.localtime())
     #创建新的coupon行
-    Coupon.objects.create(couponid = coupon.couponid,userid = u_id,brandid = coupon.brandid,catid = coupon.catid,listprice = coupon.listprice,value = coupon.value,product = coupon.product,pic = coupon.pic,expiredtime = coupon.expiredtime,onsale = 0,expired = 0,used = 0,store = 1,bought = time.strftime("%Y-%m-%d", time.localtime()))
+    user = User.objects.get(id=u_id)
+    Coupon.objects.create(couponid = coupon.couponid,userid = user,brandid = coupon.brandid.brandid,catid = coupon.catid.catid,listprice = coupon.listprice,value = coupon.value,product = coupon.product,pic = coupon.pic,expiredtime = coupon.expiredtime,onsale = 0,expired = 0,used = 0,store = 1,bought = time.strftime("%Y-%m-%d", time.localtime()))
     #修改用户UCoin
     seller = coupon.userid
     userUcoin = buyerUCoin-coupon.listprice
