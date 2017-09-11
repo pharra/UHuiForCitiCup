@@ -3,7 +3,7 @@
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
 #   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = True` lines if you wish to allow Django to create, modify, and delete the table
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from __future__ import unicode_literals
 
@@ -16,7 +16,7 @@ class Area(models.Model):
     y = models.CharField(db_column='Y', max_length=45, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'area'
 
 
@@ -27,7 +27,7 @@ class Brand(models.Model):
                                null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'brand'
 
 
@@ -36,7 +36,7 @@ class Category(models.Model):
     name = models.CharField(unique=True, max_length=16)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'category'
 
 
@@ -47,12 +47,12 @@ class Companycoupon(models.Model):
     value = models.DecimalField(max_digits=10, decimal_places=2)
     product = models.CharField(max_length=16)
     discount = models.CharField(max_length=16)
-    pic = models.ImageField(upload_to='images/pic', blank=True, null=True)
+    pic = models.CharField(max_length=128)
     expiredtime = models.DateField(db_column='expiredTime')  # Field name made lowercase.
     remain = models.IntegerField()
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'companycoupon'
 
 
@@ -64,7 +64,7 @@ class Coupon(models.Model):
     catid = models.ForeignKey(Category, models.DO_NOTHING, db_column='catID')  # Field name made lowercase.
     listprice = models.DecimalField(db_column='listPrice', max_digits=10,
                                     decimal_places=2)  # Field name made lowercase.
-    value = models.DecimalField(max_digits=10, decimal_places=2)
+    value = models.ForeignKey('Valueset', models.DO_NOTHING, db_column='value')
     product = models.CharField(max_length=16, blank=True, null=True)
     discount = models.CharField(max_length=16)
     pic = models.ImageField(upload_to='images/pic', blank=True, null=True)
@@ -77,7 +77,7 @@ class Coupon(models.Model):
     sold = models.DateField(blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'coupon'
 
 
@@ -86,7 +86,7 @@ class Like(models.Model):
     cid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='cid')
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'like'
         unique_together = (('uid', 'cid'),)
 
@@ -97,7 +97,7 @@ class Limit(models.Model):
     content = models.CharField(max_length=128)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'limit'
         unique_together = (('couponid', 'content'),)
 
@@ -115,7 +115,7 @@ class Message(models.Model):
     hassend = models.IntegerField(db_column='hasSend')  # Field name made lowercase.
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'message'
 
 
@@ -132,5 +132,24 @@ class User(models.Model):
     hasconfirm = models.IntegerField(db_column='hasConfirm')  # Field name made lowercase.
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'user'
+
+
+class Valuecalculate(models.Model):
+    vid = models.ForeignKey('Valueset', models.DO_NOTHING, db_column='vid', primary_key=True)
+    listprice = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'valuecalculate'
+
+
+class Valueset(models.Model):
+    vid = models.IntegerField(db_column='VID', primary_key=True)  # Field name made lowercase.
+    value = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    description = models.CharField(max_length=45, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'valueset'

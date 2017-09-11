@@ -38,9 +38,46 @@ def calculateValue(x1, x2, x3):
     #
 
 
-def calculateValueVer2():
+def calculateValueVer2(coupon):
     # s0现价， k
-    pass
+    r = pow(1.0035, 1/365) - 1
+    # 利率
+    u = 0
+    # 标准差/根号1/365
+    # 系数1
+    d = 0
+    # 系数2
+    s = 0
+    # lastC
+    x = coupon.discount
+    # 面额discount
+    p = ((1 + r) - d) / (u - d)
+    Cuu = max(u * u * s - x, 0)
+    Cud = max(u * d * s - x, 0)
+    Cdu = Cud
+    Cdd = max(d * d * s - x, 0)
+
+    C = (p * p * Cuu + p * (1 - p) * Cud + p * (1 - p) * Cdu + (1 - p) * (1 - p) * Cdd) / ((1 + r) * (1 + r))
+    return C
+
+
+def discountByDay(mode, coupon):
+    if mode == 'None':
+        pass
+    elif mode == 'average':
+        coupon.listprice = coupon.listprice - int(coupon.x)
+        coupon.save()
+    elif mode == 'accelerate':
+        # 加速模式 x存为 第一天_最后一天_T
+        first = coupon.x.split('_')[0]
+        last = coupon.x.split('_')[1]
+        t = coupon.x.split('_')[2]
+        a = ((coupon.listprice - t * first - last) * 2) / ((t - 1) * (t - 1))
+        currentDate = datetime.date.today()
+        delta = coupon.expiredTime - currentDate
+        dayCount = t - delta.day
+        coupon.listprice = coupon.listprice - dayCount * first - (((dayCount - 1) * (dayCount - 1)) * a) / 2
+        coupon.save()
 
 
 # 普通函数

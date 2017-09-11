@@ -20,6 +20,7 @@ class Area(models.Model):
         db_table = 'area'
 
 
+
 class Brand(models.Model):
     brandid = models.AutoField(db_column='brandID', primary_key=True)  # Field name made lowercase.
     name = models.CharField(unique=True, max_length=16)
@@ -61,7 +62,7 @@ class Coupon(models.Model):
     brandid = models.ForeignKey(Brand, models.DO_NOTHING, db_column='brandID')  # Field name made lowercase.
     catid = models.ForeignKey(Category, models.DO_NOTHING, db_column='catID')  # Field name made lowercase.
     listprice = models.DecimalField(db_column='listPrice', max_digits=10, decimal_places=2)  # Field name made lowercase.
-    value = models.DecimalField(max_digits=10, decimal_places=2)
+    value = models.ForeignKey('Valueset', models.DO_NOTHING, db_column='value')
     product = models.CharField(max_length=16, blank=True, null=True)
     discount = models.CharField(max_length=16)
     pic = models.CharField(max_length=128, blank=True, null=True)
@@ -78,15 +79,13 @@ class Coupon(models.Model):
         db_table = 'coupon'
 
 
+
 class Like(models.Model):
     uid = models.ForeignKey('User', models.DO_NOTHING, db_column='uid', primary_key=True)
     cid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='cid')
 
     class Meta:
-
         managed = False
-
-
         db_table = 'like'
         unique_together = (('uid', 'cid'),)
 
@@ -130,3 +129,22 @@ class User(models.Model):
     class Meta:
         managed = False
         db_table = 'user'
+
+
+class Valuecalculate(models.Model):
+    vid = models.ForeignKey('Valueset', models.DO_NOTHING, db_column='vid', primary_key=True)
+    listprice = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'valuecalculate'
+
+
+class Valueset(models.Model):
+    vid = models.IntegerField(db_column='VID', primary_key=True)  # Field name made lowercase.
+    value = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    description = models.CharField(max_length=45, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'valueset'
