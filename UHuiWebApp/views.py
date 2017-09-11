@@ -24,30 +24,44 @@ DEFAULT_PIC = 'images/avatar/default.jpg'
 
 # Create your views here.
 # 估值算法
-def calculateValue(x1, x2, x3):
-    pass
-    # x1 面值
-    # x2 折扣比例
-    # x3 到期时间
 
-    # 函数模拟获得公式
-    # curve fitting tool
-
-    # 用Ksdensity获得概率分布曲线
-
-    #
+# 标准差
+def stdev(percentage):
+    if len(percentage) < 1:
+        return None
+    else:
+        avg = percentage.avg()
+        sdsq = sum([(i - avg) ** 2 for i in percentage.sequence])
+        stdev = (sdsq / (len(percentage.sequence) - 1)) ** .5
+        return stdev
 
 
-def calculateValueVer2(coupon):
+def calculateValue(couponid):
+    getCoupon = models.Coupon.objects.filter(couponid=couponid)
+    if getCoupon.exists():
+        coupon = getCoupon[0]
+    else:
+        return 1
+    valueSets = models.Valueset.objects.filter(vid=coupon.value.value)
+    if valueSets.exists():
+        valueSet = valueSets[0]
+    else:
+        return 1
+    listprices = models.Valuecalculate.objects.filter(vid=valueSet.vid)
     # s0现价， k
-    r = pow(1.0035, 1/365) - 1
+    r = pow(1.0035, 1 / 365) - 1
     # 利率
-    u = 0
+    percentage = [Decimal]
+    for i in range(1, listprices.count()):
+        percentage.append(listprices[i-1].listprice / listprices[i].listprice)
+
+    standard = stdev(percentage)
+    u = standard / ((1 / 365) ** 0.5)
     # 标准差/根号1/365
     # 系数1
-    d = 0
+    d = 1 / u
     # 系数2
-    s = 0
+    s = valueSet.value
     # lastC
     x = coupon.discount
     # 面额discount
@@ -671,7 +685,7 @@ def couponInfo(couponID, request):
     couponInfo['cat'] = coupon.catid.name
     couponInfo['catID'] = coupon.catid.catid
     couponInfo['listPrice'] = removeTailZero(str(coupon.listprice))
-    couponInfo['value'] = removeTailZero(str(coupon.value))
+
     couponInfo['product'] = coupon.product
     couponInfo['discount'] = coupon.discount
     couponInfo['stat'] = None
@@ -685,6 +699,12 @@ def couponInfo(couponID, request):
             limitList.append(content.content)
     couponInfo['limits'] = limitList
     couponInfo['sellerInfo'] = post_userInfo(coupon.userid.id)
+
+    # get value
+    value = 0
+    if models.Valueset.objects.filter(vid=coupon.value.vid):
+        value = models.Valueset.objects.get(vid=coupon.value.vid)
+    couponInfo['value'] = removeTailZero(str(value.value))
 
     if request.uid is None:
         couponInfo['stat'] = '0'
