@@ -23,9 +23,76 @@ DEFAULT_PIC = 'images/avatar/default.jpg'
 
 
 # Create your views here.
+
+
+# 标准差
+def stdev(percentage):
+    if len(percentage) < 1:
+        return None
+    else:
+        avg = percentage.avg()
+        sdsq = sum([(i - avg) ** 2 for i in percentage.sequence])
+        stdev = (sdsq / (len(percentage.sequence) - 1)) ** .5
+        return stdev
+
+
 # 估值算法
-def calculateValue():
-    pass
+def calculateValue(couponid):
+    getCoupon = models.Coupon.objects.filter(couponid=couponid)
+    if getCoupon.exists():
+        coupon = getCoupon[0]
+    else:
+        return 1
+    valueSets = models.Valueset.objects.filter(vid=coupon.value.value)
+    if valueSets.exists():
+        valueSet = valueSets[0]
+    else:
+        return 1
+    listprices = models.Valuecalculate.objects.filter(vid=valueSet.vid)
+    # s0现价， k
+    r = pow(1.0035, 1 / 365) - 1
+    # 利率
+    percentage = [Decimal]
+    for i in range(1, listprices.count()):
+        percentage.append(listprices[i - 1].listprice / listprices[i].listprice)
+
+    standard = stdev(percentage)
+    u = standard / ((1 / 365) ** 0.5)
+    # 标准差/根号1/365
+    # 系数1
+    d = 1 / u
+    # 系数2
+    s = valueSet.value
+    # lastC
+    x = coupon.discount
+    # 面额discount
+    p = ((1 + r) - d) / (u - d)
+    Cuu = max(u * u * s - x, 0)
+    Cud = max(u * d * s - x, 0)
+    Cdu = Cud
+    Cdd = max(d * d * s - x, 0)
+
+    C = (p * p * Cuu + p * (1 - p) * Cud + p * (1 - p) * Cdu + (1 - p) * (1 - p) * Cdd) / ((1 + r) * (1 + r))
+    return C
+
+
+def discountByDay(mode, coupon):
+    if mode == 'None':
+        pass
+    elif mode == 'average':
+        coupon.listprice = coupon.listprice - int(coupon.x)
+        coupon.save()
+    elif mode == 'accelerate':
+        # 加速模式 x存为 第一天_最后一天_T
+        first = coupon.x.split('_')[0]
+        last = coupon.x.split('_')[1]
+        t = coupon.x.split('_')[2]
+        a = ((coupon.listprice - t * first - last) * 2) / ((t - 1) * (t - 1))
+        currentDate = datetime.date.today()
+        delta = coupon.expiredTime - currentDate
+        dayCount = t - delta.day
+        coupon.listprice = coupon.listprice - dayCount * first - (((dayCount - 1) * (dayCount - 1)) * a) / 2
+        coupon.save()
 
 
 # 普通函数
@@ -122,7 +189,7 @@ def emailVerification(request):
     try:
         user = models.User.objects.get(id=uid)
     except ObjectDoesNotExist:
-        pass
+        return None
     user.hasconfirm = True
     user.save()
     value = uid + "_" + encryption(uid + user.password)
@@ -134,6 +201,7 @@ def emailVerification(request):
 # 定时任务
 def timer():
     coupons = models.Coupon.objects.all()
+    valueSets = models.Valueset.objects.all()
     currentDate = datetime.date.today()
     for coupon in coupons:
         if coupon.used is True or (coupon.store is False and coupon.onsale is False) or coupon.expired is True:
@@ -151,6 +219,13 @@ def timer():
                 createMessage('关注的优惠券即将过期', coupon.couponid)
             changeCouponStat(coupon.couponid, userID, 'expired')
             createMessage('我的优惠券即将过期', coupon.couponid)
+        elif currentDate < expiredTime:
+            if coupon.onsale is True:
+                # 每日减价
+                pass
+    for valueSet in valueSets:
+        # calculateValue()
+        pass
 
 
 def addSearchHistory(key, history):
@@ -252,24 +327,35 @@ def changeCouponStat(couponID, stat, listPrice='-1'):
         coupon.store = False
         if listPrice != '-1':
             coupon.listprice = Decimal(listPrice)
+            models.Valuecalculate.objects.create(vid=coupon.value, listpirce=Decimal(listPrice))
+
         coupon.save()
+        calculateValue(couponID)
         return JsonResponse({'errno': '0', 'message': '操作成功', 'stat': stat,
                              'listPrice': removeTailZero(str(coupon.listprice))})
 
     elif stat == 'store':
         if coupon.onsale is False:
-            return JsonResponse({'errno': '1', 'message': '下架失败', 'stat': stat,
-                                'listPrice': removeTailZero(str(coupon.listprice))})
+            return JsonResponse({'errno': '1', 'message': '下架失败', 'stat': '',
+                                 'listPrice': removeTailZero(str(coupon.listprice))})
         coupon.onsale = False
         coupon.store = True
         coupon.save()
         if models.Like.objects.filter(cid=couponID).exists():
             createMessage('关注的优惠券已下架', couponID)
             models.Like.objects.filter(cid=couponID).delete()
+        if models.Valuecalculate.objects.filter(listprice=coupon.listprice).exists():
+            models.Valuecalculate.objects.filter(listprice=coupon.listprice)[0].delete()
+
+        calculateValue(couponID)
         return JsonResponse({'errno': '0', 'message': '操作成功', 'stat': stat,
                              'listPrice': removeTailZero(str(coupon.listprice))})
 
     elif stat == 'expired':
+        if coupon.onsale is True:
+            if models.Valuecalculate.objects.filter(listprice=coupon.listprice).exists():
+                models.Valuecalculate.objects.filter(listprice=coupon.listprice)[0].delete()
+            calculateValue(couponID)
         coupon.onsale = False
         coupon.store = False
         coupon.expired = True
@@ -579,7 +665,6 @@ def post_couponDetail(request):
     return JsonResponse({'info': info, 'stat': info['stat']})
 
 
-
 # def modifyStat(request, info, couponID):
 #     # stat: 0 未关注 1 已关注 2 已上架 3 未上架
 #     if request.uid is None:
@@ -616,7 +701,7 @@ def couponInfo(couponID, request):
     couponInfo['cat'] = coupon.catid.name
     couponInfo['catID'] = coupon.catid.catid
     couponInfo['listPrice'] = removeTailZero(str(coupon.listprice))
-    couponInfo['value'] = removeTailZero(str(coupon.value))
+
     couponInfo['product'] = coupon.product
     couponInfo['discount'] = coupon.discount
     couponInfo['stat'] = None
@@ -630,7 +715,13 @@ def couponInfo(couponID, request):
             limitList.append(content.content)
     couponInfo['limits'] = limitList
     couponInfo['sellerInfo'] = post_userInfo(coupon.userid.id)
-    
+
+    # get value
+    value = 0
+    if models.Valueset.objects.filter(vid=coupon.value.vid):
+        value = models.Valueset.objects.get(vid=coupon.value.vid)
+    couponInfo['value'] = removeTailZero(str(value.value))
+
     if request.uid is None:
         couponInfo['stat'] = '0'
         return couponInfo
@@ -754,15 +845,14 @@ def post_storeCoupon(request):
     couponID = randomID()
     if stat == 'onSale':
         coupon = models.Coupon(couponid=couponID, userid=user, brandid=brandID, catid=catID, listPrice=listPrice,
-                            value=value, product=product, discount=discount, onsale=True, pic=pic,
-                            expiredTime=expiredTime)
+                               value=value, product=product, discount=discount, onsale=True, pic=pic,
+                               expiredTime=expiredTime)
         coupon.save()
     elif stat == 'store':
         coupon = models.Coupon(couponid=couponID, userid=user, brandid=brandID, catid=catID, listPrice=listPrice,
                                value=value, product=product, discount=discount, store=True, pic=pic,
                                expiredTime=expiredTime)
         coupon.save()
-
 
     return JsonResponse({'errno': 0, 'message': 'store success'})
 
@@ -788,9 +878,11 @@ def post_buy(request):
     coupon.used = False
     coupon.expired = False
     coupon.sold = date
-    newCoupon = models.Coupon(couponid=coupon, userid=buyer, brandid=coupon.brandid, catid=coupon.catid, listPrice=coupon.listPrice,
-                               value=coupon.value, product=coupon.product, discount=coupon.discount, store=True, bought=date, pic=coupon.pic,
-                               expiredTime=coupon.expiredTime)
+    newCoupon = models.Coupon(couponid=coupon, userid=buyer, brandid=coupon.brandid, catid=coupon.catid,
+                              listPrice=coupon.listPrice,
+                              value=coupon.value, product=coupon.product, discount=coupon.discount, store=True,
+                              bought=date, pic=coupon.pic,
+                              expiredTime=coupon.expiredTime)
     buyer.save()
     coupon.save()
     newCoupon.save()
