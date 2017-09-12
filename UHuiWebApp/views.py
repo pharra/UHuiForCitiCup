@@ -967,7 +967,7 @@ def createMessage(messageType, couponID, content=None):
     messageID = randomID()
     # 为该优惠券所有符合messageType的用户添加messageType的消息
     # 找owner
-    coupon = models.Coupon.objects.get(couponid=couponID)
+    coupon = models.Coupon.objects.filter(couponid=couponID)[0]
     # 根据messageType的不同寻找不同的接收USER，并填入相应的content
     #               0                    1                   2                3                 4
     types = ['上架的优惠券被购买', '上架的优惠券即将过期', '上架的优惠券已过期', '关注的优惠券即将过期', '关注的优惠券已被购买',
