@@ -58,12 +58,10 @@ class Companycoupon(models.Model):
 
 class Coupon(models.Model):
     couponid = models.CharField(db_column='couponID', primary_key=True, max_length=16)  # Field name made lowercase.
-    userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userID', blank=True,
-                               null=True)  # Field name made lowercase.
+    userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userID')  # Field name made lowercase.
     brandid = models.ForeignKey(Brand, models.DO_NOTHING, db_column='brandID')  # Field name made lowercase.
     catid = models.ForeignKey(Category, models.DO_NOTHING, db_column='catID')  # Field name made lowercase.
-    listprice = models.DecimalField(db_column='listPrice', max_digits=10,
-                                    decimal_places=2)  # Field name made lowercase.
+    listprice = models.DecimalField(db_column='listPrice', max_digits=10, decimal_places=2)  # Field name made lowercase.
     value = models.ForeignKey('Valueset', models.DO_NOTHING, db_column='value')
     product = models.CharField(max_length=16, blank=True, null=True)
     discount = models.CharField(max_length=16)
@@ -79,6 +77,7 @@ class Coupon(models.Model):
     class Meta:
         managed = False
         db_table = 'coupon'
+        unique_together = (('couponid', 'userid'),)
 
 
 class Like(models.Model):

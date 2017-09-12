@@ -481,7 +481,7 @@ def post_getUserCoupon(request):
 
     ownCoupons = models.Coupon.objects.filter(userid=request.uid, store=True)
     onSaleCoupons = models.Coupon.objects.filter(userid=request.uid, onsale=True)
-    likeCoupons = models.Like.objects.filter(userid=request.uid)
+    likeCoupons = models.Like.objects.filter(uid=request.uid)
 
     messages = post_getMessage(request)
     own = []
