@@ -23,7 +23,7 @@ DEFAULT_PIC = 'images/avatar/default.jpg'
 
 
 # Create your views here.
-# 估值算法
+
 
 # 标准差
 def stdev(percentage):
@@ -36,6 +36,7 @@ def stdev(percentage):
         return stdev
 
 
+# 估值算法
 def calculateValue(couponid):
     getCoupon = models.Coupon.objects.filter(couponid=couponid)
     if getCoupon.exists():
@@ -53,7 +54,7 @@ def calculateValue(couponid):
     # 利率
     percentage = [Decimal]
     for i in range(1, listprices.count()):
-        percentage.append(listprices[i-1].listprice / listprices[i].listprice)
+        percentage.append(listprices[i - 1].listprice / listprices[i].listprice)
 
     standard = stdev(percentage)
     u = standard / ((1 / 365) ** 0.5)
@@ -188,7 +189,7 @@ def emailVerification(request):
     try:
         user = models.User.objects.get(id=uid)
     except ObjectDoesNotExist:
-        pass
+        return None
     user.hasconfirm = True
     user.save()
     value = uid + "_" + encryption(uid + user.password)
@@ -200,6 +201,7 @@ def emailVerification(request):
 # 定时任务
 def timer():
     coupons = models.Coupon.objects.all()
+    valueSets = models.Valueset.objects.all()
     currentDate = datetime.date.today()
     for coupon in coupons:
         if coupon.used is True or (coupon.store is False and coupon.onsale is False) or coupon.expired is True:
@@ -221,6 +223,9 @@ def timer():
             if coupon.onsale is True:
                 # 每日减价
                 pass
+    for valueSet in valueSets:
+        # calculateValue()
+        pass
 
 
 def addSearchHistory(key, history):
@@ -322,7 +327,10 @@ def changeCouponStat(couponID, stat, listPrice='-1'):
         coupon.store = False
         if listPrice != '-1':
             coupon.listprice = Decimal(listPrice)
+            models.Valuecalculate.objects.create(vid=coupon.value, listpirce=Decimal(listPrice))
+
         coupon.save()
+        calculateValue(couponID)
         return JsonResponse({'errno': '0', 'message': '操作成功', 'stat': stat,
                              'listPrice': removeTailZero(str(coupon.listprice))})
 
@@ -336,10 +344,18 @@ def changeCouponStat(couponID, stat, listPrice='-1'):
         if models.Like.objects.filter(cid=couponID).exists():
             createMessage('关注的优惠券已下架', couponID)
             models.Like.objects.filter(cid=couponID).delete()
+        if models.Valuecalculate.objects.filter(listprice=coupon.listprice).exists():
+            models.Valuecalculate.objects.filter(listprice=coupon.listprice)[0].delete()
+
+        calculateValue(couponID)
         return JsonResponse({'errno': '0', 'message': '操作成功', 'stat': stat,
                              'listPrice': removeTailZero(str(coupon.listprice))})
 
     elif stat == 'expired':
+        if coupon.onsale is True:
+            if models.Valuecalculate.objects.filter(listprice=coupon.listprice).exists():
+                models.Valuecalculate.objects.filter(listprice=coupon.listprice)[0].delete()
+            calculateValue(couponID)
         coupon.onsale = False
         coupon.store = False
         coupon.expired = True
