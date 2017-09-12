@@ -211,15 +211,15 @@ def returnInformation(request):
         SResult.append(seller)
     brandID = Coupon.objects.get(couponid=cpID).brandid.brandid
     brandResult = Brand.objects.filter(brandid=brandID).values('name')
+    brand = Brand.objects.get(brandid = brandID)
     BResult = []
     AResult = []
     for b in brandResult:
         BResult.append(b)
-    for each in brandResult:
-        AreaResult = Area.objects.filter(areaid=each.areaid).values('areaid','x','y')
-        for a in AreaResult:
-            AResult.append(a)
-    return JsonResponse({'brand': BResult,'area':AResult, 'limit': LResult, 'seller': SResult,'isLike':isLike})
+    #AreaResult = Area.objects.filter(areaid=brand.areaid.areaid).values('areaid','x','y')
+    #for each in AreaResult:
+    #    AResult.append(each)
+    return JsonResponse({'brand': BResult, 'limit': LResult, 'seller': SResult,'isLike':isLike})
 
 
 #返回出售者卖过的、正在卖的优惠券
@@ -274,7 +274,7 @@ def buyCoupon(request):
     coupon.sold = time.strftime("%Y-%m-%d", time.localtime())
     #创建新的coupon行
     user = User.objects.get(id=u_id)
-    Coupon.objects.create(couponid = coupon.couponid,userid = user,brandid = coupon.brandid.brandid,catid = coupon.catid.catid,listprice = coupon.listprice,value = coupon.value,product = coupon.product,pic = coupon.pic,expiredtime = coupon.expiredtime,onsale = 0,expired = 0,used = 0,store = 1,bought = time.strftime("%Y-%m-%d", time.localtime()))
+    Coupon.objects.create(couponid = coupon.couponid,userid = user,brandid = coupon.brandid,catid = coupon.catid,listprice = coupon.listprice,value = coupon.value,product = coupon.product,pic = coupon.pic,expiredtime = coupon.expiredtime,onsale = 0,expired = 0,used = 0,store = 1,bought = time.strftime("%Y-%m-%d", time.localtime()))
     #修改用户UCoin
     seller = coupon.userid
     userUcoin = buyerUCoin-coupon.listprice
@@ -299,7 +299,9 @@ def likeCoupon(request):
     u_ID = request.POST.get('userID',0)
     if Like.objects.filter(cid=cpID,uid=u_ID).exists():
         return JsonResponse({'error':'115'})
-    Like.objects.create(cid=cpID,uid=u_ID)
+    cp = Coupon.objects.get(couponid=cpID)
+    user = User.objects.get(id=u_ID)
+    Like.objects.create(cid=cp,uid=user)
     return JsonResponse({'result':'200'})
 
 
@@ -507,7 +509,10 @@ def getOnSaleList(request):
     if User.objects.filter(id=u_id).exists():
         tmp = Coupon.objects.filter(userid=u_id,onsale=1).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount')
         for each in tmp:
+            temp = each.value
+            each.value = Valueset.objects.get(vid=temp).value
             onSaleList.append(each)
+            each.value = temp
         return JsonResponse({'result':onSaleList})
     else:
         return JsonResponse({'error':'105'})
@@ -520,7 +525,10 @@ def getStoreList(request):
     if User.objects.filter(id= u_id).exists():
         tmp = Coupon.objects.filter(userid=u_id,store=1).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount')
         for each in tmp:
+            temp = each.value
+            each.value = Valueset.objects.get(vid=temp).value
             storeList.append(each)
+            each.value = temp
         return JsonResponse({'result':storeList})
     else:
         return JsonResponse({'error':'105'})
@@ -533,7 +541,10 @@ def getUsedList(request):
     if User.objects.filter(id = u_id).exists():
         tmp = Coupon.objects.filter(userid=u_id,used=1).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount')
         for each in tmp:
+            temp = each.value
+            each.value = Valueset.objects.get(vid=temp).value
             usedList.append(each)
+            each.value = temp
         return JsonResponse({'result':usedList})
     else:
         return JsonResponse({'error':'105'})
@@ -546,7 +557,10 @@ def getSoldList(request):
     if User.objects.filter(id = u_id).exists():
         tmp = Coupon.objects.filter(userid=u_id,sold__isnull=False).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount','bought')
         for each in tmp:
+            temp = each.value
+            each.value = Valueset.objects.get(vid=temp).value
             soldList.append(each)
+            each.value = temp
         return JsonResponse({'result':soldList})
     else:
         return JsonResponse({'error':'105'})
