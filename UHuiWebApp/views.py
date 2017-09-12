@@ -204,23 +204,23 @@ def timer():
     valueSets = models.Valueset.objects.all()
     currentDate = datetime.date.today()
     for coupon in coupons:
-        if coupon.used is True or (coupon.store is False and coupon.onsale is False) or coupon.expired is True:
+        if coupon.used == 1 or (coupon.store == 0 and coupon.onsale == 0) or coupon.expired == 1:
             continue
         expiredTime = coupon.expiredtime
         userID = coupon.userid.id
         if currentDate >= expiredTime:
-            if coupon.onsale is True:
+            if coupon.onsale == 1:
                 createMessage('上架的优惠券已过期', coupon.couponid)
             changeCouponStat(coupon.couponid, userID, 'expired')
             createMessage('我的优惠券已过期', coupon.couponid)
         elif (currentDate + datetime.timedelta(days=1)) == expiredTime:
-            if coupon.onsale is True:
+            if coupon.onsale == 1:
                 createMessage('上架的优惠券即将过期', coupon.couponid)
                 createMessage('关注的优惠券即将过期', coupon.couponid)
             changeCouponStat(coupon.couponid, userID, 'expired')
             createMessage('我的优惠券即将过期', coupon.couponid)
         elif currentDate < expiredTime:
-            if coupon.onsale is True:
+            if coupon.onsale == 1:
                 # 每日减价
                 pass
     for valueSet in valueSets:
@@ -315,19 +315,20 @@ def post_changeAvatar(request):
 def changeCouponStat(couponID, stat, listPrice='-1'):
     # 只用于上架下架与过期
     try:
-        coupon = models.Coupon.objects.get(couponid=couponID)
+        coupon = models.Coupon.objects.get(Q(store=True) | Q(onsale=True), couponid=couponID)
     except ObjectDoesNotExist:
         return JsonResponse({'errno': '1', 'message': '优惠券不存在', 'stat': '', 'listPrice': ''})
 
     if stat == 'onSale':
-        if coupon.store is False:
+        if coupon.store == 0:
             return JsonResponse({'errno': '1', 'message': '上架失败', 'stat': '',
                                  'listPrice': removeTailZero(str(coupon.listprice))})
         coupon.onsale = True
         coupon.store = False
         if listPrice != '-1':
             coupon.listprice = Decimal(listPrice)
-            models.Valuecalculate.objects.create(vid=coupon.value, listpirce=Decimal(listPrice))
+            price = models.Valuecalculate(vid=coupon.value, listprice=Decimal(listPrice))
+            price.save()
 
         coupon.save()
         calculateValue(couponID)
@@ -335,7 +336,7 @@ def changeCouponStat(couponID, stat, listPrice='-1'):
                              'listPrice': removeTailZero(str(coupon.listprice))})
 
     elif stat == 'store':
-        if coupon.onsale is False:
+        if coupon.onsale == 0:
             return JsonResponse({'errno': '1', 'message': '下架失败', 'stat': '',
                                  'listPrice': removeTailZero(str(coupon.listprice))})
         coupon.onsale = False
@@ -352,7 +353,7 @@ def changeCouponStat(couponID, stat, listPrice='-1'):
                              'listPrice': removeTailZero(str(coupon.listprice))})
 
     elif stat == 'expired':
-        if coupon.onsale is True:
+        if coupon.onsale == 1:
             if models.Valuecalculate.objects.filter(listprice=coupon.listprice).exists():
                 models.Valuecalculate.objects.filter(listprice=coupon.listprice)[0].delete()
             calculateValue(couponID)
@@ -530,14 +531,14 @@ def post_getMobileUserCoupon(request):
     couponsExpired = []
     for coupon in own:
         info = couponInfo(coupon.couponid, request)
-        if coupon.onsale is False:
+        if coupon.onsale == 0:
             couponsStore.append(info)
-        elif coupon.onsale is True:
+        elif coupon.onsale == 1:
             couponsOnSale.append(info)
-        elif coupon.expired is True:
+        elif coupon.expired == 1:
             info['expiredReason'] = '于' + info['expiredTime'] + '过期'
             couponsExpired.append(info)
-        elif coupon.used is True:
+        elif coupon.used == 1:
             info['expiredReason'] = '已使用'
             couponsExpired.append(info)
 
@@ -552,9 +553,9 @@ def post_getBoughtCouponsMobile(request):
     used = []
     own = []
     for couponid in coupons:
-        if couponid.used is True:
+        if couponid.used == 1:
             used.append(couponInfo(couponid.couponid, request))
-        elif couponid.store is True:
+        elif couponid.store == 1:
             own.append(couponInfo(couponid.couponid, request))
     return {'own': own, 'used': used}
 
@@ -707,8 +708,8 @@ def couponInfo(couponID, request):
     couponInfo['stat'] = None
     couponInfo['pic'] = '/static/' + str(coupon.pic)
     couponInfo['expiredTime'] = coupon.expiredtime.strftime("%Y-%m-%d")
-    couponInfo['bought'] = coupon.bought
-    couponInfo['sold'] = coupon.sold
+    # couponInfo['bought'] = coupon.bought
+    # couponInfo['sold'] = coupon.sold
     limitList = []
     if limits.exists():
         for content in limits:
@@ -727,10 +728,10 @@ def couponInfo(couponID, request):
         return couponInfo
     sellerInfo = couponInfo['sellerInfo']
     if not sellerInfo or sellerInfo['userid'] == request.uid:
-        if coupon.onsale is True:
+        if coupon.onsale == 1:
             couponInfo['stat'] = '2'
             return couponInfo
-        elif coupon.store is True:
+        elif coupon.store == 1:
             couponInfo['stat'] = '3'
             return couponInfo
     else:
@@ -878,11 +879,11 @@ def post_buy(request):
     coupon.used = False
     coupon.expired = False
     coupon.sold = date
-    newCoupon = models.Coupon(couponid=coupon, userid=buyer, brandid=coupon.brandid, catid=coupon.catid,
-                              listPrice=coupon.listPrice,
-                              value=coupon.value, product=coupon.product, discount=coupon.discount, store=True,
-                              bought=date, pic=coupon.pic,
-                              expiredTime=coupon.expiredTime)
+    newCoupon = models.Coupon(couponid=coupon.couponid, userid=buyer, brandid=coupon.brandid, catid=coupon.catid,
+                              listprice=coupon.listprice,
+                              value=coupon.value, product=coupon.product, discount=coupon.discount, onsale=False,
+                              store=True, expired=False, used=False, bought=date, pic=coupon.pic,
+                              expiredtime=coupon.expiredtime)
     buyer.save()
     coupon.save()
     newCoupon.save()
@@ -913,7 +914,7 @@ def post_like(request):
     couponID = request.POST['couponID']
     sellerID = request.uid
     try:
-        coupon = models.Coupon.objects.get(couponid=couponID)
+        coupon = models.Coupon.objects.get(Q(store=True) | Q(onsale=True), couponid=couponID)
     except ObjectDoesNotExist:
         return JsonResponse({'errno': '1', 'message': '优惠券不存在', 'like': '0'})
 
@@ -924,7 +925,7 @@ def post_like(request):
     if models.Like.objects.filter(uid=sellerID, cid=couponID).exists():
         return JsonResponse({'errno': '1', 'message': '该优惠券已被关注', 'like': '1'})
 
-    models.Like.objects.create(uid=user, couponid=coupon)
+    models.Like.objects.create(uid=user, cid=coupon)
     return JsonResponse({'errno': '0', 'message': '关注成功', 'like': '1'})
 
 
@@ -967,7 +968,7 @@ def createMessage(messageType, couponID, content=None):
     messageID = randomID()
     # 为该优惠券所有符合messageType的用户添加messageType的消息
     # 找owner
-    coupon = models.Coupon.objects.get(couponid=couponID)
+    coupon = models.Coupon.objects.filter(couponid=couponID)[0]
     # 根据messageType的不同寻找不同的接收USER，并填入相应的content
     #               0                    1                   2                3                 4
     types = ['上架的优惠券被购买', '上架的优惠券即将过期', '上架的优惠券已过期', '关注的优惠券即将过期', '关注的优惠券已被购买',
@@ -986,8 +987,8 @@ def createMessage(messageType, couponID, content=None):
         pass
     else:
         # own列表
-        if models.Coupon.objects.filter(Q(store=True) | Q(store=True), couponid=couponID).exists():
-            users = models.Coupon.objects.filter(Q(store=True) | Q(store=True), couponid=couponID)
+        if models.Coupon.objects.filter(Q(store=True) | Q(onsale=True), couponid=couponID).exists():
+            users = models.Coupon.objects.filter(Q(store=True) | Q(onsale=True), couponid=couponID)
             for user in users:
                 userlist.append(user.userid)
 
