@@ -92,20 +92,38 @@ def searchForAndroid(request):
     orderBy = request.POST.get('order', None)
     if key == 0:
         return {'error': '101'}
-    if orderBy == None:
+    if orderBy == '':
         orderBy = 'expiredtime'
     else:
         pass
-    productResult = models.Coupon.objects.filter(product__icontains=key, onsale=1).values('couponid','listprice','value','product','discount','pic','expiredtime').order_by(orderBy)
+    productResult = models.Coupon.objects.filter(product__icontains=key, onsale=1).order_by(orderBy)
     result = []
-    for coupon in productResult:
-        result.append(coupon)
+    for each in productResult:
+        dic = {
+            'couponid': each.couponid,
+            'listprice': each.listprice,
+            'value': Valueset.objects.get(vid=each.value.value).value,
+            'product': each.product,
+            'discount': each.discount,
+            'pic':str(each.pic),
+            'expiredtime': each.expiredtime,
+                   }
+        result.append(dic)
     brandIDResult = models.Brand.objects.filter(name__icontains=key)
     for brand in brandIDResult:
-        temp = models.Coupon.objects.filter(brandid=brand.brandid,onsale = 1).values('couponid','listprice','value','product','discount','pic','expiredtime')
+        temp = models.Coupon.objects.filter(brandid=brand.brandid,onsale = 1)
         if temp.exists():
-            for info in temp:
-                result.append(info)
+            for each in temp:
+                dic = {
+                    'couponid': each.couponid,
+                    'listprice': each.listprice,
+                    'value': Valueset.objects.get(vid=each.value.value).value,
+                    'product': each.product,
+                    'discount': each.discount,
+                    'pic': str(each.pic),
+                    'expiredtime': each.expiredtime,
+                }
+                result.append(dic)
         return JsonResponse({'result': result})
     if result == None:
         return JsonResponse({'error':'102'})
@@ -116,30 +134,43 @@ def searchForAndroid(request):
 def searchInCategory(request):
     key = request.POST.get('keyWord', 0)
     cat = request.POST.get('category',0)
-    orderBy = request.POST.get('order', None)
+    orderBy = request.POST.get('order',None)
     if cat == 0:
         return JsonResponse({'error': '103'})
     if key == 0:
         return JsonResponse({'error': '101'})
-    if orderBy == None:
+    if orderBy == '':
         orderBy = 'expiredtime'
     else:
         pass
-    productResult = models.Coupon.objects.filter(product__contains=key, onsale=1,catid=cat).values('couponid', 'listprice',
-                                                                                              'value', 'product',
-                                                                                              'discount', 'pic',
-                                                                                              'expiredtime').order_by(orderBy)
+    productResult = models.Coupon.objects.filter(product__contains=key, onsale=1,catid=cat).order_by(orderBy)
     result = []
-    for coupon in productResult:
-        result.append(coupon)
+    for each in productResult:
+        dic = {
+            'couponid': each.couponid,
+            'listprice': each.listprice,
+            'value': Valueset.objects.get(vid=each.value.value).value,
+            'product': each.product,
+            'discount': each.discount,
+            'pic':str(each.pic),
+            'expiredtime': each.expiredtime,
+                   }
+        result.append(dic)
     brandIDResult = models.Brand.objects.filter(name__contains=key)
     for brand in brandIDResult:
-        temp = models.Coupon.objects.filter(brandid=brand.brandid, onsale=1,catid=cat).values('couponid', 'listprice',
-                                                                                         'value', 'product', 'discount',
-                                                                                         'pic', 'expiredtime')
+        temp = models.Coupon.objects.filter(brandid=brand.brandid, onsale=1,catid=cat)
         if temp.exists():
-            for info in temp:
-                result.append(info)
+            for each in temp:
+                dic = {
+                    'couponid': each.couponid,
+                    'listprice': each.listprice,
+                    'value': Valueset.objects.get(vid=each.value.value).value,
+                    'product': each.product,
+                    'discount': each.discount,
+                    'pic': str(each.pic),
+                    'expiredtime': each.expiredtime,
+                }
+                result.append(dic)
         return JsonResponse({'result': result})
     if result == None:
         return JsonResponse({'error': '102'})
@@ -152,11 +183,18 @@ def searchByCategory(request):
     orderBy = request.POST.get('order', 'expiredtime')
     if Category.objects.filter(catid=catID).exists():
         result = []
-        couponList = Coupon.objects.filter(catid=catID, onsale=1).values('couponid', 'listprice', 'value',
-                                                                              'product', 'discount', 'pic',
-                                                                              'expiredtime').order_by(orderBy)
+        couponList = Coupon.objects.filter(catid=catID, onsale=1).order_by(orderBy)
         for each in couponList:
-            result.append(each)
+            dic = {
+                'couponid': each.couponid,
+                'listprice': each.listprice,
+                'value': Valueset.objects.get(vid=each.value.value).value,
+                'product': each.product,
+                'discount': each.discount,
+                'pic': str(each.pic),
+                'expiredtime': each.expiredtime,
+            }
+            result.append(dic)
         return JsonResponse({'result': result})
     return JsonResponse({'error':'103'})
 
@@ -214,11 +252,11 @@ def returnInformation(request):
     SResult = []
     for seller in Seller:
         SResult.append(seller)
-    brandID = Coupon.objects.get(couponid=cpID, store=1).brandid.brandid
+    brandID = Coupon.objects.get(couponid=cpID, onsale=1).brandid.brandid
     brandResult = Brand.objects.filter(brandid=brandID).values('name')
-    brand = Brand.objects.get(brandid = brandID)
+    #brand = Brand.objects.get(brandid = brandID)
     BResult = []
-    AResult = []
+    #AResult = []
     for b in brandResult:
         BResult.append(b)
     #AreaResult = Area.objects.filter(areaid=brand.areaid.areaid).values('areaid','x','y')
@@ -627,7 +665,15 @@ def getLikeList(request):
     if User.objects.filter(id = u_id).exists():
         tmp = Like.objects.filter(uid=u_id)
         for each in tmp:
-            likeList.append(each)
+            cp = Coupon.objects.get(couponid=each.cid.couponid)
+            tempDic = {'couponid': cp.couponid,
+                       'product': cp.product,
+                       'listprice': cp.listprice,
+                       'value': Valueset.objects.get(vid=cp.value.value).value,
+                       'expiredtime': cp.expiredtime,
+                       'discount': cp.discount,
+                       }
+            likeList.append(tempDic)
         return JsonResponse({'result':likeList})
     else:
         return JsonResponse({'error':'105'})
@@ -637,7 +683,7 @@ def getLikeList(request):
 def changeCouponState(request):
     cpID = request.POST.get('couponID')
     newStat = request.POST.get('state')
-    cp = Coupon.objects.get(couponid=cpID)
+    cp = Coupon.objects.get(couponid=cpID,sold__isnull=True)
     if newStat=='onSale':
         if  cp.store == 1:
             cp.store = 0
