@@ -251,7 +251,7 @@ class Valuecalculate(models.Model):
 
 
 class Valueset(models.Model):
-    vid = models.IntegerField(db_column='VID', primary_key=True)  # Field name made lowercase.
+    vid = models.AutoField(db_column='VID', primary_key=True)  # Field name made lowercase.
     value = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     description = models.CharField(max_length=45, blank=True, null=True)
 
