@@ -1,3 +1,4 @@
+
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -216,7 +217,7 @@ class Message(models.Model):
     time = models.DateField(blank=True, null=True)
     messagecat = models.CharField(db_column='messageCat', max_length=10, blank=True, null=True)  # Field name made lowercase.
     hasread = models.IntegerField(db_column='hasRead')  # Field name made lowercase.
-    couponid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='couponID')  # Field name made lowercase.
+    couponid = models.CharField(db_column='couponID', max_length=16)  # Field name made lowercase.
     hassend = models.IntegerField(db_column='hasSend')  # Field name made lowercase.
 
     class Meta:
