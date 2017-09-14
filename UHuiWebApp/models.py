@@ -103,14 +103,12 @@ class Limit(models.Model):
 
 class Message(models.Model):
     messageid = models.CharField(db_column='messageID', primary_key=True, max_length=16)  # Field name made lowercase.
-    userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userID', blank=True,
-                               null=True)  # Field name made lowercase.
+    userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userID', blank=True, null=True)  # Field name made lowercase.
     content = models.CharField(max_length=128, blank=True, null=True)
     time = models.DateField(blank=True, null=True)
-    messagecat = models.CharField(db_column='messageCat', max_length=10, blank=True,
-                                  null=True)  # Field name made lowercase.
+    messagecat = models.CharField(db_column='messageCat', max_length=10, blank=True, null=True)  # Field name made lowercase.
     hasread = models.IntegerField(db_column='hasRead')  # Field name made lowercase.
-    couponid = models.ForeignKey(Coupon, models.DO_NOTHING, db_column='couponID')  # Field name made lowercase.
+    couponid = models.CharField(db_column='couponID', max_length=16)  # Field name made lowercase.
     hassend = models.IntegerField(db_column='hasSend')  # Field name made lowercase.
 
     class Meta:
