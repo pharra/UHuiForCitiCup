@@ -133,7 +133,7 @@ def searchForAndroid(request):
 #在分类下搜索
 def searchInCategory(request):
     key = request.POST.get('keyWord', 0)
-    cat = request.POST.get('category',0)
+    cat = request.POST.get('catId',0)
     orderBy = request.POST.get('order',None)
     if cat == 0:
         return JsonResponse({'error': '103'})
@@ -252,7 +252,7 @@ def returnInformation(request):
     SResult = []
     for seller in Seller:
         SResult.append(seller)
-    brandID = Coupon.objects.get(couponid=cpID, onsale=1).brandid.brandid
+    brandID = Coupon.objects.get(couponid=cpID, sold__isnull=True).brandid.brandid
     brandResult = Brand.objects.filter(brandid=brandID).values('name')
     #brand = Brand.objects.get(brandid = brandID)
     BResult = []
@@ -265,20 +265,55 @@ def returnInformation(request):
     return JsonResponse({'brand': BResult, 'limit': LResult, 'seller': SResult,'isLike':isLike})
 
 
-#返回出售者卖过的、正在卖的优惠券
-def sellerInformation(request):
+#返回出售者正在卖的优惠券
+def sellerOnSaleList(request):
     sellerID = request.POST.get('sellerID',0)
     if sellerID ==0:
         return JsonResponse({'error':'105'})
-    sellerOnSaleList = Coupon.objects.filter(userid=sellerID,onsale=1).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount','pic')
-    sellerSoldList = Coupon.objects.filter(userid=sellerID,sold__isnull=False).values('couponid', 'product', 'listprice', 'value', 'expiredtime','discount','pic')
+    sellerOnSaleList = Coupon.objects.filter(userid=sellerID,onsale=1)
+    #sellerSoldList = Coupon.objects.filter(userid=sellerID,sold__isnull=False)
     onSaleList =[]
-    soldList = []
+    #soldList = []
     for each in sellerOnSaleList:
-        onSaleList.append(each)
-    for each in sellerSoldList:
-        soldList.append(each)
-    return JsonResponse({'onSale':onSaleList,'sold':soldList})
+        dic = {
+            'couponid': each.couponid,
+            'listprice': each.listprice,
+            'value': Valueset.objects.get(vid=each.value.value).value,
+            'product': each.product,
+            'discount': each.discount,
+            'pic': str(each.pic),
+            'expiredtime': each.expiredtime,
+        }
+        onSaleList.append(dic)
+    #for each in sellerSoldList:
+    #    soldList.append(each)
+    return JsonResponse({'result':onSaleList})
+
+
+#返回出售者正在卖的优惠券
+def sellerSoldList(request):
+    sellerID = request.POST.get('sellerID',0)
+    if sellerID ==0:
+        return JsonResponse({'error':'105'})
+    #sellerOnSaleList = Coupon.objects.filter(userid=sellerID,onsale=1)
+    sellerSoldList = Coupon.objects.filter(userid=sellerID,sold__isnull=False)
+    #onSaleList =[]
+    soldList = []
+    if sellerSoldList != None:
+        for each in sellerSoldList:
+            dic = {
+                'couponid': each.couponid,
+                'listprice': each.listprice,
+                'value': Valueset.objects.get(vid=each.value.value).value,
+                'product': each.product,
+                'discount': each.discount,
+                'pic': str(each.pic),
+                'expiredtime': each.expiredtime,
+            }
+            soldList.append(dic)
+    #for each in sellerSoldList:
+    #    soldList.append(each)
+    return JsonResponse({'result':soldList})
 
 
 #通过优惠券ID查询所有
@@ -683,44 +718,42 @@ def getLikeList(request):
 def changeCouponState(request):
     cpID = request.POST.get('couponID')
     newStat = request.POST.get('state')
-    cp = Coupon.objects.get(couponid=cpID,sold__isnull=True)
+    cp = Coupon.objects.filter(couponid=cpID,sold__isnull=True)
     if newStat=='onSale':
-        if  cp.store == 1:
-            cp.store = 0
-            cp.onsale = 1
-            cp.save()
-            return JsonResponse({'result':'200'})
-        else :
-            return JsonResponse({'error':'113'})
+        for each in cp:
+            if each.store == 1:
+                cp.update(store = 0,onsale = 1)
+                return JsonResponse({'result': '200'})
+            else:
+                return JsonResponse({'error': '113'})
     elif newStat == 'store':
-        if cp.onsale == 1:
-            cp.store = 1
-            cp.onsale = 0
-            cp.save()
-            return JsonResponse({'result':'200'})
-        else:
-            return JsonResponse({'error':'113'})
+        for each in cp:
+            if each.onsale == 1:
+                cp.update(store =1,onsale = 0)
+                return JsonResponse({'result': '200'})
+            else:
+                return JsonResponse({'error': '113'})
     else:
         return JsonResponse({'error':'114'})
 
 
 #主页的推荐
 def homepageCoupon(request):
-    couponCat_1 = Coupon.objects.filter(catid = 1)
+    couponCat_1 = Coupon.objects.filter(catid = 1,onsale = 1)
     tmp1 = couponCat_1.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_1.count(),5)].reverse()#生活百货
-    couponCat_2 = Coupon.objects.filter(catid = 2)
+    couponCat_2 = Coupon.objects.filter(catid = 2,onsale = 1)
     tmp2 = couponCat_2.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_2.count(),5)].reverse()#美妆装饰
-    couponCat_3 = Coupon.objects.filter(catid = 3)
+    couponCat_3 = Coupon.objects.filter(catid = 3,onsale = 1)
     tmp3 = couponCat_3.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_3.count(),5)].reverse()#文娱体育
-    couponCat_4 = Coupon.objects.filter(catid = 4)
+    couponCat_4 = Coupon.objects.filter(catid = 4,onsale = 1)
     tmp4 = couponCat_4.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_4.count(),5)].reverse()#家具家居
-    couponCat_5 = Coupon.objects.filter(catid = 5)
+    couponCat_5 = Coupon.objects.filter(catid = 5,onsale = 1)
     tmp5 = couponCat_5.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_5.count(),5)].reverse()#电子产品
-    couponCat_6 = Coupon.objects.filter(catid = 6)
+    couponCat_6 = Coupon.objects.filter(catid = 6,onsale = 1)
     tmp6 = couponCat_6.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_6.count(),5)].reverse()#服装服饰
-    couponCat_7 = Coupon.objects.filter(catid = 7)
+    couponCat_7 = Coupon.objects.filter(catid = 7,onsale = 1)
     tmp7 = couponCat_7.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_7.count(),5)].reverse()#旅行住宿
-    couponCat_8 = Coupon.objects.filter(catid = 8)
+    couponCat_8 = Coupon.objects.filter(catid = 8,onsale = 1)
     tmp8 = couponCat_8.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_8.count(),5)].reverse()#饮食保健
     result=[]
     for each in tmp1:
