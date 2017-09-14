@@ -39,15 +39,16 @@ def stdev(percentage):
 # 估值算法
 def calculateValue(couponid):
     getCoupon = models.Coupon.objects.filter(couponid=couponid)
+
     if getCoupon.exists():
         coupon = getCoupon[0]
     else:
-        return 1
+        return -1
     valueSets = models.Valueset.objects.filter(vid=coupon.value.value)
     if valueSets.exists():
         valueSet = valueSets[0]
     else:
-        return 1
+        return -1
     listprices = models.Valuecalculate.objects.filter(vid=valueSet.vid)
     # s0现价， k
     r = pow(1.0035, 1 / 365) - 1
@@ -73,6 +74,8 @@ def calculateValue(couponid):
     Cdd = max(d * d * s - x, 0)
 
     C = (p * p * Cuu + p * (1 - p) * Cud + p * (1 - p) * Cdu + (1 - p) * (1 - p) * Cdd) / ((1 + r) * (1 + r))
+    valueSet.value = C
+    valueSet.save()
     return C
 
 
@@ -332,6 +335,7 @@ def changeCouponStat(couponID, stat, listPrice='-1'):
 
         coupon.save()
         calculateValue(couponID)
+
         return JsonResponse({'errno': '0', 'message': '操作成功', 'stat': stat,
                              'listPrice': removeTailZero(str(coupon.listprice))})
 
