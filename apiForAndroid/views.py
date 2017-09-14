@@ -404,8 +404,9 @@ def sendMessage(request):
     for each in msg:
         messageResult.append(each)
     for i in tmp:
-        cpid = i.couponid
-        cp = Coupon.objects.filter(couponid=cpid , userid=userID).values('product','listprice','pic')
+
+
+        cp = Coupon.objects.filter(couponid=i.couponid , userid=userID).values('product','listprice','pic')
         for coupon in cp:
             couponResult.append(coupon)
     return JsonResponse({'messageResult':messageResult,'couponResult':couponResult})
@@ -502,13 +503,13 @@ def getValue(request):
     discount = request.POST.get('discount')
     result = []
     if Valueset.objects.filter(description=discount).exists():
-        temp = Valueset.objects.filter(description=discount).values('value')
+        temp = Valueset.objects.filter(description=discount).values('vid','value')
         for each in temp:
             result.append(each)
         return JsonResponse({'result':result})
     else:
         Valueset.objects.create(value = 0,description = discount)
-        temp = Valueset.objects.filter(description=discount).values('value')
+        temp = Valueset.objects.filter(description=discount).values('vid','value')
         for each in temp:
             result.append(each)
         return JsonResponse({'result': result})
@@ -542,15 +543,16 @@ def addCoupon(request):
     #else:
     catID = models.Category.objects.get(catid=cat)
     user = models.User.objects.get(id=u_id)
+    temp_v = Valueset.objects.get(vid=value)
     couponID = randomID()
     if stat == 'store':
-        coupon = models.Coupon(couponid=couponID, brandid=brandID, catid=catID, listprice=listPrice,
-                               value=value, product=product, discount=discount, onsale=0,store=1,expired=0,used=0, pic=pic,
+        coupon = models.Coupon(couponid=couponID, userid = user, brandid=brandID, catid=catID, listprice=listPrice,
+                               value=temp_v, product=product, discount=discount, onsale=0,store=1,expired=0,used=0, pic=pic,
                                expiredtime=expiredTime)
         coupon.save()
     elif stat == 'onsale':
-        coupon = models.Coupon(couponid=couponID, brandid=brandID, catid=catID, listprice=listPrice,
-                               value=value, product=product, discount=discount, onsale=1, store=0, expired=0, used=0,
+        coupon = models.Coupon(couponid=couponID,  userid = user, brandid=brandID, catid=catID, listprice=listPrice,
+                               value=temp_v, product=product, discount=discount, onsale=1, store=0, expired=0, used=0,
                                pic=pic,
                                expiredtime=expiredTime)
         coupon.save()
