@@ -76,7 +76,7 @@ urlpatterns = [
     url(r'^checkUsername$', androidViews.checkUsername, name='post_checkUsername'),
     url(r'^sellerOnSaleList$', androidViews.sellerOnSaleList, name='sellerOnSaleList'),
     url(r'^sellerSoldList$', androidViews.sellerSoldList, name='sellerSoldList'),
-    url(r'^_getValue$', androidViews.getValue, name='post_getValue'),
+    url(r'^getValue$', androidViews.getValue, name='post_getValue'),
     url(r'^updatePhoneOrEmail$', androidViews.updatePhoneOrEmail, name='post_updatePhoneOrEmail'),
     url(r'^preSearchInCategory$', androidViews.preSearchInCategory, name='post_preSearchInCategory'),
 

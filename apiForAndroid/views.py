@@ -499,7 +499,21 @@ def updatePhoneOrEmail(request):
 
 #估值
 def getValue(request):
-    return JsonResponse({'value':100.00})
+    discount = request.POST.get('discount')
+    result = []
+    if Valueset.objects.filter(description=discount).exists():
+        temp = Valueset.objects.filter(description=discount).values('value')
+        for each in temp:
+            result.append(each)
+        return JsonResponse({'result':result})
+    else:
+        Valueset.objects.create(value = 0,description = discount)
+        temp = Valueset.objects.filter(description=discount).values('value')
+        for each in temp:
+            result.append(each)
+        return JsonResponse({'result': result})
+
+
 
 
 #添加优惠券
@@ -514,8 +528,8 @@ def addCoupon(request):
     stat = request.POST.get('stat', 'store')
     pic = request.FILES.get('pic', DEFAULT_PIC)
     limit = request.POST.getlist('limit[]')
+    value = request.POST.get('value')
     #估值
-    value = 0
     # 判断brand是否存在
     if not models.Brand.objects.filter(name=brandName).exists():
         brandID = models.Brand(brandid=None, name=brandName)
@@ -723,6 +737,8 @@ def changeCouponState(request):
         for each in cp:
             if each.store == 1:
                 cp.update(store = 0,onsale = 1)
+                Valuecalculate.objects.create(vid=each.value,listprice=each.listprice)
+                calculateValue(each.id)
                 return JsonResponse({'result': '200'})
             else:
                 return JsonResponse({'error': '113'})
@@ -730,6 +746,8 @@ def changeCouponState(request):
         for each in cp:
             if each.onsale == 1:
                 cp.update(store =1,onsale = 0)
+                Valuecalculate.objects.filter(listprice=each.listprice)[0].delete()
+                calculateValue(each.id)
                 return JsonResponse({'result': '200'})
             else:
                 return JsonResponse({'error': '113'})
