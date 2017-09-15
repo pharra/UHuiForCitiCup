@@ -5,7 +5,8 @@ USE `uhui2`;
 -- Host: localhost    Database: uhui2
 -- ------------------------------------------------------
 -- Server version	5.7.16-log
-
+CREATE USER 'uhui'@'localhost' IDENTIFIED BY 'uhuiforciti';
+GRANT ALL ON uhui2.* TO 'uhui'@'localhost';
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
