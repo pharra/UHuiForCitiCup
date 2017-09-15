@@ -1,13 +1,7 @@
 Vue.component('coupon-img', {
     template: '<div class="spinnerdiv" v-if="loading">\n'+
-    '<div class="spinner">\n' +
-        '    <div class="rect1"></div>\n' +
-        '    <div class="rect2"></div>\n' +
-        '    <div class="rect3"></div>\n' +
-        '    <div class="rect4"></div>\n' +
-        '    <div class="rect5"></div>\n' +
-        '  </div> \n' +
-        '  </div> ' +
+        '<img src="/static/images/coupons_empty.png">\n' +
+        ' </div> ' +
         '<img :src="url" v-else>',
     props: ['imgurl'],
     data: function () {
