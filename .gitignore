@@ -108,6 +108,3 @@ ENV/
 
 # nginx log
 log/
-
-# config DEBUG
-UHuiProject/config.py
