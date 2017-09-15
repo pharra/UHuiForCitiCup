@@ -102,7 +102,7 @@ def searchForAndroid(request):
         dic = {
             'couponid': each.couponid,
             'listprice': each.listprice,
-            'value': Valueset.objects.get(vid=each.value.value).value,
+            'value': Valueset.objects.get(vid=each.value.vid).value,
             'product': each.product,
             'discount': each.discount,
             'pic':str(each.pic),
@@ -117,7 +117,7 @@ def searchForAndroid(request):
                 dic = {
                     'couponid': each.couponid,
                     'listprice': each.listprice,
-                    'value': Valueset.objects.get(vid=each.value.value).value,
+                    'value': Valueset.objects.get(vid=each.value.vid).value,
                     'product': each.product,
                     'discount': each.discount,
                     'pic': str(each.pic),
@@ -149,7 +149,7 @@ def searchInCategory(request):
         dic = {
             'couponid': each.couponid,
             'listprice': each.listprice,
-            'value': Valueset.objects.get(vid=each.value.value).value,
+            'value': Valueset.objects.get(vid=each.value.vid).value,
             'product': each.product,
             'discount': each.discount,
             'pic':str(each.pic),
@@ -164,7 +164,7 @@ def searchInCategory(request):
                 dic = {
                     'couponid': each.couponid,
                     'listprice': each.listprice,
-                    'value': Valueset.objects.get(vid=each.value.value).value,
+                    'value': Valueset.objects.get(vid=each.value.vid).value,
                     'product': each.product,
                     'discount': each.discount,
                     'pic': str(each.pic),
@@ -188,7 +188,7 @@ def searchByCategory(request):
             dic = {
                 'couponid': each.couponid,
                 'listprice': each.listprice,
-                'value': Valueset.objects.get(vid=each.value.value).value,
+                'value': Valueset.objects.get(vid=each.value.vid).value,
                 'product': each.product,
                 'discount': each.discount,
                 'pic': str(each.pic),
@@ -243,12 +243,14 @@ def returnInformation(request):
     LResult = []
     for limit in limitResult:
         LResult.append(limit)
-    userid = None
+    sellerID = None
     if stat == 1:
-        userid = Coupon.objects.filter(couponid=cpID,sold__isnull=True)[0].userid.id
+        if Coupon.objects.filter(couponid=cpID,sold__isnull=True).exists():
+            sellerID = Coupon.objects.filter(couponid=cpID,sold__isnull=True)[0].userid.id
     elif stat == 0:
-        userid = Coupon.objects.filter(couponid=cpID,expired=0,used=0,onsale=0,store=0)[0].userid.id
-    Seller = User.objects.filter(pk=userid).values('id','nickname','gender','avatar')
+        if Coupon.objects.filter(couponid=cpID,expired=0,used=0,onsale=0,store=0).exists():
+            sellerID = Coupon.objects.filter(couponid=cpID,expired=0,used=0,onsale=0,store=0)[0].userid.id
+    Seller = User.objects.filter(pk=sellerID).values('id','nickname','gender','avatar')
     SResult = []
     for seller in Seller:
         SResult.append(seller)
@@ -278,7 +280,7 @@ def sellerOnSaleList(request):
         dic = {
             'couponid': each.couponid,
             'listprice': each.listprice,
-            'value': Valueset.objects.get(vid=each.value.value).value,
+            'value': Valueset.objects.get(vid=each.value.vid).value,
             'product': each.product,
             'discount': each.discount,
             'pic': str(each.pic),
@@ -304,7 +306,7 @@ def sellerSoldList(request):
             dic = {
                 'couponid': each.couponid,
                 'listprice': each.listprice,
-                'value': Valueset.objects.get(vid=each.value.value).value,
+                'value': Valueset.objects.get(vid=each.value.vid).value,
                 'product': each.product,
                 'discount': each.discount,
                 'pic': str(each.pic),
@@ -404,11 +406,17 @@ def sendMessage(request):
     for each in msg:
         messageResult.append(each)
     for i in tmp:
-
-
-        cp = Coupon.objects.filter(couponid=i.couponid , userid=userID).values('product','listprice','pic')
-        for coupon in cp:
-            couponResult.append(coupon)
+        cp = Coupon.objects.filter(couponid=i.couponid)
+        dic = {
+                'couponid': cp[0].couponid,
+                'listprice': cp[0].listprice,
+                'value': Valueset.objects.get(vid=cp[0].value.vid).value,
+                'product': cp[0].product,
+                'discount': cp[0].discount,
+                'pic': str(cp[0].pic),
+                'expiredtime': cp[0].expiredtime,
+            }
+        couponResult.append(dic)
     return JsonResponse({'messageResult':messageResult,'couponResult':couponResult})
 
 
@@ -574,7 +582,7 @@ def getBoughtList(request):
             tempDic = {'couponid': each.couponid,
                        'product': each.product,
                        'listprice': each.listprice,
-                       'value': Valueset.objects.get(vid=each.value.value).value,
+                       'value': Valueset.objects.get(vid=each.value.vid).value,
                        'expiredtime': each.expiredtime,
                        'discount': each.discount,
                        }
@@ -618,7 +626,7 @@ def getOnSaleList(request):
             tempDic = {'couponid': each.couponid,
                        'product': each.product,
                        'listprice': each.listprice,
-                       'value': Valueset.objects.get(vid=each.value.value).value,
+                       'value': Valueset.objects.get(vid=each.value.vid).value,
                        'expiredtime': each.expiredtime,
                        'discount': each.discount,
                        }
@@ -638,7 +646,7 @@ def getStoreList(request):
             tempDic = {'couponid':each.couponid,
                        'product':each.product,
                        'listprice': each.listprice,
-                       'value': Valueset.objects.get(vid=each.value.value).value,
+                       'value': Valueset.objects.get(vid=each.value.vid).value,
                        'expiredtime': each.expiredtime,
                        'discount': each.discount,
                        }
@@ -658,7 +666,7 @@ def getUsedList(request):
             tempDic = {'couponid': each.couponid,
                        'product': each.product,
                        'listprice': each.listprice,
-                       'value': Valueset.objects.get(vid=each.value.value).value,
+                       'value': Valueset.objects.get(vid=each.value.vid).value,
                        'expiredtime': each.expiredtime,
                        'discount': each.discount,
                        }
@@ -678,7 +686,7 @@ def getSoldList(request):
             tempDic = {'couponid': each.couponid,
                        'product': each.product,
                        'listprice': each.listprice,
-                       'value': Valueset.objects.get(vid=each.value.value).value,
+                       'value': Valueset.objects.get(vid=each.value.vid).value,
                        'expiredtime': each.expiredtime,
                        'discount': each.discount,
                        }
@@ -720,7 +728,7 @@ def getLikeList(request):
             tempDic = {'couponid': cp.couponid,
                        'product': cp.product,
                        'listprice': cp.listprice,
-                       'value': Valueset.objects.get(vid=cp.value.value).value,
+                       'value': Valueset.objects.get(vid=cp.value.vid).value,
                        'expiredtime': cp.expiredtime,
                        'discount': cp.discount,
                        }
