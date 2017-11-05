@@ -794,28 +794,28 @@ def homepageCoupon(request):
     tmp8 = couponCat_8.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_8.count(),5)].reverse()#饮食保健
     result=[]
     for each in tmp1:
-        each["category"] = Category.objects.get(catid=1).name
+        each['category'] = Category.objects.get(catid=1).name
         result.append(each)
     for each in tmp2:
-        each["category"] = Category.objects.get(catid=2).name
+        each['category'] = Category.objects.get(catid=2).name
         result.append(each)
     for each in tmp3:
-        each["category"] = Category.objects.get(catid=3).name
+        each['category'] = Category.objects.get(catid=3).name
         result.append(each)
     for each in tmp4:
-        each["category"] = Category.objects.get(catid=4).name
+        each['category'] = Category.objects.get(catid=4).name
         result.append(each)
     for each in tmp5:
-        each["category"] = Category.objects.get(catid=5).name
+        each['category'] = Category.objects.get(catid=5).name
         result.append(each)
     for each in tmp6:
-        each["category"] = Category.objects.get(catid=6).name
+        each['category'] = Category.objects.get(catid=6).name
         result.append(each)
     for each in tmp7:
-        each["category"] = Category.objects.get(catid=7).name
+        each['category'] = Category.objects.get(catid=7).name
         result.append(each)
     for each in tmp8:
-        each["category"] = Category.objects.get(catid=8).name
+        each['category'] = Category.objects.get(catid=8).name
         result.append(each)
     return JsonResponse({'result':result})
 
