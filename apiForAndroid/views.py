@@ -107,6 +107,7 @@ def searchForAndroid(request):
             'discount': each.discount,
             'pic':str(each.pic),
             'expiredtime': each.expiredtime,
+            'category': Category.objects.get(catid=each.catid.catid).name,
                    }
         result.append(dic)
     brandIDResult = models.Brand.objects.filter(name__icontains=key)
@@ -122,6 +123,7 @@ def searchForAndroid(request):
                     'discount': each.discount,
                     'pic': str(each.pic),
                     'expiredtime': each.expiredtime,
+                    'category': Category.objects.get(catid=each.catid.catid).name,
                 }
                 result.append(dic)
         return JsonResponse({'result': result})
@@ -154,6 +156,7 @@ def searchInCategory(request):
             'discount': each.discount,
             'pic':str(each.pic),
             'expiredtime': each.expiredtime,
+            'category': Category.objects.get(catid=each.catid.catid).name,
                    }
         result.append(dic)
     brandIDResult = models.Brand.objects.filter(name__contains=key)
@@ -169,6 +172,7 @@ def searchInCategory(request):
                     'discount': each.discount,
                     'pic': str(each.pic),
                     'expiredtime': each.expiredtime,
+                    'category': Category.objects.get(catid=each.catid.catid).name,
                 }
                 result.append(dic)
         return JsonResponse({'result': result})
@@ -585,6 +589,7 @@ def getBoughtList(request):
                        'value': Valueset.objects.get(vid=each.value.vid).value,
                        'expiredtime': each.expiredtime,
                        'discount': each.discount,
+                       'pic': str(each.pic),
                        }
             boughtList.append(tempDic)
         return JsonResponse({'result':boughtList})
@@ -629,6 +634,7 @@ def getOnSaleList(request):
                        'value': Valueset.objects.get(vid=each.value.vid).value,
                        'expiredtime': each.expiredtime,
                        'discount': each.discount,
+                       'pic': str(each.pic),
                        }
             onSaleList.append(tempDic)
         return JsonResponse({'result':onSaleList})
@@ -649,6 +655,7 @@ def getStoreList(request):
                        'value': Valueset.objects.get(vid=each.value.vid).value,
                        'expiredtime': each.expiredtime,
                        'discount': each.discount,
+                       'pic': str(each.pic),
                        }
             storeList.append(tempDic)
         return JsonResponse({'result':storeList})
@@ -689,6 +696,7 @@ def getSoldList(request):
                        'value': Valueset.objects.get(vid=each.value.vid).value,
                        'expiredtime': each.expiredtime,
                        'discount': each.discount,
+                       'pic': str(each.pic),
                        }
             soldList.append(tempDic)
         return JsonResponse({'result':soldList})
@@ -731,6 +739,7 @@ def getLikeList(request):
                        'value': Valueset.objects.get(vid=cp.value.vid).value,
                        'expiredtime': cp.expiredtime,
                        'discount': cp.discount,
+                       'pic': str(each.pic),
                        }
             likeList.append(tempDic)
         return JsonResponse({'result':likeList})
@@ -748,7 +757,7 @@ def changeCouponState(request):
             if each.store == 1:
                 cp.update(store = 0,onsale = 1)
                 Valuecalculate.objects.create(vid=each.value,listprice=each.listprice)
-                calculateValue(each.id)
+                calculateValue(each.couponid)
                 return JsonResponse({'result': '200'})
             else:
                 return JsonResponse({'error': '113'})
@@ -757,7 +766,7 @@ def changeCouponState(request):
             if each.onsale == 1:
                 cp.update(store =1,onsale = 0)
                 Valuecalculate.objects.filter(listprice=each.listprice)[0].delete()
-                calculateValue(each.id)
+                calculateValue(each.couponid)
                 return JsonResponse({'result': '200'})
             else:
                 return JsonResponse({'error': '113'})
@@ -785,20 +794,28 @@ def homepageCoupon(request):
     tmp8 = couponCat_8.values('couponid','listprice','value','product','discount','pic','expiredtime')[0:min(couponCat_8.count(),5)].reverse()#饮食保健
     result=[]
     for each in tmp1:
+        each["category"] = Category.objects.get(catid=1).name
         result.append(each)
     for each in tmp2:
+        each["category"] = Category.objects.get(catid=2).name
         result.append(each)
     for each in tmp3:
+        each["category"] = Category.objects.get(catid=3).name
         result.append(each)
     for each in tmp4:
+        each["category"] = Category.objects.get(catid=4).name
         result.append(each)
     for each in tmp5:
+        each["category"] = Category.objects.get(catid=5).name
         result.append(each)
     for each in tmp6:
+        each["category"] = Category.objects.get(catid=6).name
         result.append(each)
     for each in tmp7:
+        each["category"] = Category.objects.get(catid=7).name
         result.append(each)
     for each in tmp8:
+        each["category"] = Category.objects.get(catid=8).name
         result.append(each)
     return JsonResponse({'result':result})
 

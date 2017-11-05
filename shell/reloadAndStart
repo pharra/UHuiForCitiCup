@@ -1,6 +1,7 @@
 #!/bin/bash
-cd /home/ubuntu/UHuiForCitiCup
+cd /home/uhui/UHuiForCitiCup
 git pull
+cd shell
 ./loadNginx
 sudo supervisorctl reload << EOF
 uhuiforciti123
