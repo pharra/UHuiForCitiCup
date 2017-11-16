@@ -30,9 +30,14 @@ def stdev(percentage):
     if len(percentage) < 1:
         return None
     else:
-        avg = percentage.avg()
-        sdsq = sum([(i - avg) ** 2 for i in percentage.sequence])
-        stdev = (sdsq / (len(percentage.sequence) - 1)) ** .5
+        avg = 0.0
+        for i in range(0, len(percentage)):
+            avg = avg + float(percentage[i])
+        avg = avg/len(percentage)
+        sdsq = 0.0
+        for i in range(0, len(percentage)):
+            sdsq = sdsq + (float(percentage[i])-avg)**2
+        stdev = (sdsq / (len(percentage))) ** .5
         return stdev
 
 
@@ -44,18 +49,18 @@ def calculateValue(couponid):
         coupon = getCoupon[0]
     else:
         return -1
-    valueSets = models.Valueset.objects.filter(vid=coupon.value.value)
+    valueSets = models.Valueset.objects.filter(vid=coupon.value.vid)
     if valueSets.exists():
         valueSet = valueSets[0]
     else:
         return -1
-    listprices = models.Valuecalculate.objects.filter(vid=valueSet.vid)
+    listprices = models.Valuecalculate.objects.filter(vid=valueSets[0].vid)
     # s0现价， k
     r = pow(1.0035, 1 / 365) - 1
     # 利率
-    percentage = [Decimal]
+    percentage = []
     for i in range(1, listprices.count()):
-        percentage.append(listprices[i - 1].listprice / listprices[i].listprice)
+        percentage.append(str(listprices[i - 1].listprice / listprices[i].listprice))
 
     standard = stdev(percentage)
     u = standard / ((1 / 365) ** 0.5)
@@ -63,9 +68,9 @@ def calculateValue(couponid):
     # 系数1
     d = 1 / u
     # 系数2
-    s = valueSet.value
+    s = float(str(valueSet.value))
     # lastC
-    x = coupon.discount
+    x = 10
     # 面额discount
     p = ((1 + r) - d) / (u - d)
     Cuu = max(u * u * s - x, 0)
@@ -330,8 +335,7 @@ def changeCouponStat(couponID, stat, listPrice='-1'):
         coupon.store = False
         if listPrice != '-1':
             coupon.listprice = Decimal(listPrice)
-            price = models.Valuecalculate(vid=coupon.value, listprice=Decimal(listPrice))
-            price.save()
+            price = models.Valuecalculate.objects.create(vid=coupon.value, listprice=Decimal(listPrice))
 
         coupon.save()
         calculateValue(couponID)
@@ -910,7 +914,7 @@ def post_putOnSale(request):
 def post_putOffSale(request):
     couponID = request.POST['couponID']
     sellerID = request.uid
-    return changeCouponStat(couponID, sellerID, 'store')
+    return changeCouponStat(couponID, 'store')
 
 
 def post_like(request):

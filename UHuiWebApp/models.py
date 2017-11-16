@@ -134,7 +134,9 @@ class User(models.Model):
 
 
 class Valuecalculate(models.Model):
-    vid = models.ForeignKey('Valueset', models.DO_NOTHING, db_column='vid', primary_key=True)
+
+    id = models.AutoField(blank=True, db_column='id', primary_key=True)
+    vid = models.ForeignKey('Valueset', models.DO_NOTHING, db_column='vid')
     listprice = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     class Meta:

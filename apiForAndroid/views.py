@@ -512,16 +512,17 @@ def updatePhoneOrEmail(request):
 
 #估值
 def getValue(request):
-    discount = request.POST.get('discount')
+    couponID = request.POST.get('couponID')
+    coupon = Coupon.objects.get(couponid=couponID)
     result = []
-    if Valueset.objects.filter(description=discount).exists():
-        temp = Valueset.objects.filter(description=discount).values('vid','value')
+    if Valueset.objects.filter(vid=coupon.value).exists():
+        temp = Valueset.objects.filter(vid=coupon.value).values('vid','value')
         for each in temp:
             result.append(each)
         return JsonResponse({'result':result})
     else:
-        Valueset.objects.create(value = 0,description = discount)
-        temp = Valueset.objects.filter(description=discount).values('vid','value')
+        Valueset.objects.create(value = 0, description = coupon.discount)
+        temp = Valueset.objects.filter(description=coupon.discount).values('vid','value')
         for each in temp:
             result.append(each)
         return JsonResponse({'result': result})
