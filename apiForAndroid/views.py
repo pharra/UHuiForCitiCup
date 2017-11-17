@@ -513,16 +513,17 @@ def updatePhoneOrEmail(request):
 
 #估值
 def getValue(request):
-    couponID = request.POST.get('couponID')
-    coupon = Coupon.objects.get(couponid=couponID)
+    #couponID = request.POST.get('couponID')
+    #coupon = Coupon.objects.get(couponid=couponID)
+    discount = request.POST.get('discount')
     result = []
-    if Valueset.objects.filter(vid=coupon.value_id).exists():
-        temp = Valueset.objects.filter(vid=coupon.value_id)[0]
+    if Valueset.objects.filter(description=discount).exists():
+        temp = Valueset.objects.filter(description=discount)[0]
         result.append({'vid':temp.vid, 'value': float(str(temp.value))})
         return JsonResponse({'result': result})
     else:
-        Valueset.objects.create(value = 0, description = coupon.discount)
-        temp = Valueset.objects.filter(description=coupon.discount)
+        Valueset.objects.create(value = 0.0, description = discount)
+        temp = Valueset.objects.filter(description=discount)[0]
         result.append({'vid': temp.vid, 'value': float(str(temp.value))})
         return JsonResponse({'result': result})
 
@@ -541,7 +542,13 @@ def addCoupon(request):
     stat = request.POST.get('stat', 'store')
     pic = request.FILES.get('pic', DEFAULT_PIC)
     limit = request.POST.getlist('limit[]')
-    value = request.POST.get('value')
+
+    if Valueset.objects.filter(description=discount).exists():
+        temp_v = Valueset.objects.filter(description=discount)[0]
+    else:
+        Valueset.objects.create(value = 0.0, description = discount)
+        temp_v = Valueset.objects.filter(description=discount)[0]
+
     #估值
     # 判断brand是否存在
     if not models.Brand.objects.filter(name=brandName).exists():
@@ -555,7 +562,7 @@ def addCoupon(request):
     #else:
     catID = models.Category.objects.get(catid=cat)
     user = models.User.objects.get(id=u_id)
-    temp_v = Valueset.objects.get(vid=value)
+    #temp_v = Valueset.objects.get(vid=value)
     couponID = randomID()
     if stat == 'store':
         coupon = models.Coupon(couponid=couponID, userid = user, brandid=brandID, catid=catID, listprice=listPrice,
