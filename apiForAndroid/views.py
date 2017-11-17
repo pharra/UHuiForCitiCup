@@ -512,23 +512,24 @@ def updatePhoneOrEmail(request):
 
 
 #估值
-def getValue(request):
+def getValueObj(request):
     #couponID = request.POST.get('couponID')
     #coupon = Coupon.objects.get(couponid=couponID)
     discount = request.POST.get('discount')
-    result = []
+
     if Valueset.objects.filter(description=discount).exists():
         temp = Valueset.objects.filter(description=discount)[0]
-        result.append({'vid':temp.vid, 'value': float(str(temp.value))})
-        return JsonResponse({'result': result})
+        return temp
     else:
         Valueset.objects.create(value = 0.0, description = discount)
         temp = Valueset.objects.filter(description=discount)[0]
-        result.append({'vid': temp.vid, 'value': float(str(temp.value))})
-        return JsonResponse({'result': result})
+        return temp
 
-
-
+def getValue(request):
+    result = []
+    temp = getValueObj(request)
+    result.append({'vid': temp.vid, 'value': float(str(temp.value))})
+    return JsonResponse({'result': result})
 
 #添加优惠券
 def addCoupon(request):
@@ -543,11 +544,7 @@ def addCoupon(request):
     pic = request.FILES.get('pic', DEFAULT_PIC)
     limit = request.POST.getlist('limit[]')
 
-    if Valueset.objects.filter(description=discount).exists():
-        temp_v = Valueset.objects.filter(description=discount)[0]
-    else:
-        Valueset.objects.create(value = 0.0, description = discount)
-        temp_v = Valueset.objects.filter(description=discount)[0]
+    temp_v = getValueObj(request)
 
     #估值
     # 判断brand是否存在
