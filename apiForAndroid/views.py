@@ -557,7 +557,7 @@ def addCoupon(request):
     #if not models.Category.objects.filter(name=cat).exists():
     #    return JsonResponse({'errno': 1, 'message': 'category not found'})
     #else:
-    catID = models.Category.objects.get(catid=cat)
+    catID = models.Category.objects.get(name=cat)
     user = models.User.objects.get(id=u_id)
     #temp_v = Valueset.objects.get(vid=value)
     couponID = randomID()
