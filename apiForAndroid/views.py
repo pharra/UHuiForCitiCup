@@ -564,17 +564,20 @@ def addCoupon(request):
     user = models.User.objects.get(id=u_id)
     #temp_v = Valueset.objects.get(vid=value)
     couponID = randomID()
+
     if stat == 'store':
-        coupon = models.Coupon(couponid=couponID, userid = user, brandid=brandID, catid=catID, listprice=listPrice,
-                               value=temp_v, product=product, discount=discount, onsale=0,store=1,expired=0,used=0, pic=pic,
-                               expiredtime=expiredTime)
-        coupon.save()
-    elif stat == 'onsale':
-        coupon = models.Coupon(couponid=couponID,  userid = user, brandid=brandID, catid=catID, listprice=listPrice,
-                               value=temp_v, product=product, discount=discount, onsale=1, store=0, expired=0, used=0,
+        coupon = models.Coupon(couponid=couponID, userid=user, brandid=brandID, catid=catID, listprice=listPrice,
+                               value=temp_v, product=product, discount=discount, onsale=0, store=1, expired=0, used=0,
                                pic=pic,
                                expiredtime=expiredTime)
         coupon.save()
+    elif stat == 'onsale':
+        coupon = models.Coupon(couponid=couponID, userid=user, brandid=brandID, catid=catID, listprice=listPrice,
+                               value=temp_v, product=product, discount=discount, onsale=0, store=1, expired=0, used=0,
+                               pic=pic,
+                               expiredtime=expiredTime)
+        coupon.save()
+        changeCouponStat(couponID, stat, listPrice)
     else:
         return JsonResponse({'error':'113'})
 
