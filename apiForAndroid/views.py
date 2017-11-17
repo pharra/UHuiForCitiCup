@@ -108,6 +108,7 @@ def searchForAndroid(request):
             'pic':str(each.pic),
             'expiredtime': each.expiredtime,
             'category': Category.objects.get(catid=each.catid.catid).name,
+            'brand': Brand.objects.get(brandid=each.brandid.brandid).name,
                    }
         result.append(dic)
     brandIDResult = models.Brand.objects.filter(name__icontains=key)
@@ -515,16 +516,14 @@ def getValue(request):
     couponID = request.POST.get('couponID')
     coupon = Coupon.objects.get(couponid=couponID)
     result = []
-    if Valueset.objects.filter(vid=coupon.value).exists():
-        temp = Valueset.objects.filter(vid=coupon.value).values('vid','value')
-        for each in temp:
-            result.append(each)
-        return JsonResponse({'result':result})
+    if Valueset.objects.filter(vid=coupon.value_id).exists():
+        temp = Valueset.objects.filter(vid=coupon.value_id)[0]
+        result.append({'vid':temp.vid, 'value': float(str(temp.value))})
+        return JsonResponse({'result': result})
     else:
         Valueset.objects.create(value = 0, description = coupon.discount)
-        temp = Valueset.objects.filter(description=coupon.discount).values('vid','value')
-        for each in temp:
-            result.append(each)
+        temp = Valueset.objects.filter(description=coupon.discount)
+        result.append({'vid': temp.vid, 'value': float(str(temp.value))})
         return JsonResponse({'result': result})
 
 
