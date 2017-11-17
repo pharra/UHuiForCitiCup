@@ -577,7 +577,7 @@ def addCoupon(request):
                                pic=pic,
                                expiredtime=expiredTime)
         coupon.save()
-        changeCouponStat(couponID, stat, listPrice)
+        changeCouponStat(couponID, 'onSale', listPrice)
     else:
         return JsonResponse({'error':'113'})
 
