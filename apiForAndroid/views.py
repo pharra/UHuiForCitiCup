@@ -746,7 +746,7 @@ def getLikeList(request):
                        'value': Valueset.objects.get(vid=cp.value.vid).value,
                        'expiredtime': cp.expiredtime,
                        'discount': cp.discount,
-                       'pic': str(each.pic),
+                       'pic': str(cp.pic),
                        }
             likeList.append(tempDic)
         return JsonResponse({'result':likeList})
